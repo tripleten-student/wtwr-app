@@ -5,3 +5,12 @@
 /* stylesheets for the block - page */
 @import url(./blocks/page/page.css);
 @import url(./blocks/page/__wrapper/page__wrapper.css);
+
+/* stylesheets for the block - WeatherCards and WeatherCard */
+@import url(./blocks/weathercard/weathercard.css);
+@import url(./blocks/weathercards/weathercards.css);
+/* WeatherCards modifiers */
+@import url(./blocks/weathercards/_morning/weathercards_morning.css);
+@import url(./blocks/weathercards/_afternoon/weathercards_afternoon.css);
+@import url(./blocks/weathercards/_evening/weathercards_evening.css);
+@import url(./blocks/weathercards/_overnight/weathercards_overnight.css);
