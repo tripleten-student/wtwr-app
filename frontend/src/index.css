@@ -1,0 +1,5 @@
+/* stylesheet from the external vendor */
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts/fonts.css);
+
+/* stylesheets for the block - page */
