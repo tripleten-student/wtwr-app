@@ -1,0 +1,10 @@
+.page__wrapper {
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 32px 40px 24px;
+  width: 100%;
+  max-width: 1440px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

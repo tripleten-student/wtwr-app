@@ -1,1 +1,29 @@
-/* @font-face setup for custom fonts*/
+@font-face {
+  font-family: 'CabinetGrotesk-Medium';
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+  src: url('CabinetGrotesk-Medium.woff2') format('woff2'),
+       url('CabinetGrotesk-Medium.woff') format('woff'),
+       url('CabinetGrotesk-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CabinetGrotesk-Bold';
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+  src: url('CabinetGrotesk-Bold.woff2') format('woff2'),
+       url('CabinetGrotesk-Bold.woff') format('woff'),
+       url('CabinetGrotesk-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CabinetGrotesk-Black';
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
+  src: url('CabinetGrotesk-Black.woff2') format('woff2'),
+       url('CabinetGrotesk-Black.woff') format('woff'),
+       url('CabinetGrotesk-Black.ttf') format('truetype');
+}

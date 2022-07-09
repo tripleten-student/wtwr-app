@@ -1,8 +1,15 @@
 import React from 'react';
 
+/**
+ * The main React **App** component.
+ */
 const App = () => {
   return (
-    <div>App</div>
+    <div className="page">
+      <div className="page__wrapper">
+        App
+      </div>
+    </div>
   )
 }
 

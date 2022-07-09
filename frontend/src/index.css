@@ -3,3 +3,5 @@
 @import url(./vendor/fonts/fonts.css);
 
 /* stylesheets for the block - page */
+@import url(./blocks/page/page.css);
+@import url(./blocks/page/__wrapper/page__wrapper.css);
