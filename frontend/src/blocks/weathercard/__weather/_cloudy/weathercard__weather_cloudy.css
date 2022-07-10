@@ -1,0 +1,8 @@
+.weathercard__weather_cloudy {
+  background-image: url(../../../../images/cloudy.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top right;
+}
+
+/* this one looks weird on the shorter cards */

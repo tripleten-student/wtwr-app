@@ -1,0 +1,6 @@
+.weathercard__weather_snow {
+  background-image: url('../../../../images/snow.svg');
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-origin: border-box;
+}

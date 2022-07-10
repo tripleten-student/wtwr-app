@@ -1,0 +1,8 @@
+.weathercard__time {
+  color: #ffffffcc;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.2;
+  margin: 0;
+  grid-area: time;
+}

@@ -1,0 +1,8 @@
+.weathercards {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  column-gap: 20px;
+  height: 80px;
+}

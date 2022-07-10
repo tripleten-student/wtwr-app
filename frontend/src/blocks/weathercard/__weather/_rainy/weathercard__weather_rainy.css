@@ -1,0 +1,5 @@
+.weathercard__weather_fog {
+  background-image: url('../../../../images/rainy.svg');
+  background-repeat: no-repeat;
+  background-position: top right;
+}

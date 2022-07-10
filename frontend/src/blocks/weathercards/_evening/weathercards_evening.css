@@ -1,0 +1,3 @@
+.weathercards_evening {
+  grid-template-columns: 1fr 1fr 7fr 1fr;
+}
