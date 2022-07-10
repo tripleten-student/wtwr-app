@@ -5,3 +5,11 @@
 /* stylesheets for the block - page */
 @import url(./blocks/page/page.css);
 @import url(./blocks/page/__wrapper/page__wrapper.css);
+
+/* stylesheets for the block - footer */
+@import url(./blocks/page/footer/footer.css);
+@import url(./blocks/page/footer/__text/footer__text.css);
+@import url(./blocks/page/footer/__year/footer__year.css);
+
+/* stylesheets for the block - footer */
+@import url(./blocks/main/main.css);

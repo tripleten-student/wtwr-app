@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 24px auto;
+  margin: 24px auto 0;
   box-sizing: border-box;
   color: #000000;
 }
