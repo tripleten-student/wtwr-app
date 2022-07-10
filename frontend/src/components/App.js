@@ -1,7 +1,7 @@
 import React from 'react';
 import WeatherCards from './WeatherCards';
 import '../index.css';
-import determineTimeOfTheDay from '../utils/time';
+import determineTimeOfTheDay from '../utils/weatherCards';
 
 /**
  * The main React **App** component.
@@ -15,7 +15,7 @@ const App = () => {
     <div className="page">
       <div className="page__wrapper">
         App
-        <WeatherCards timeOfTheDay={timeOfTheDay} />
+        <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
       </div>
     </div>
   );

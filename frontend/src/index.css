@@ -23,3 +23,9 @@
 /* WeatherCard modifiers */
 @import url(./blocks/weathercard/_day/weathercard_day.css);
 @import url(./blocks/weathercard/_night/weathercard_night.css);
+@import url(./blocks/weathercard/__weather/_sunny/weathercard__weather_sunny.css);
+@import url(./blocks/weathercard/__weather/_rainy/weathercard__weather_rainy.css);
+@import url(./blocks/weathercard/__weather/_storm/weathercard__weather_storm.css);
+@import url(./blocks/weathercard/__weather/_snow/weathercard__weather_snow.css);
+@import url(./blocks/weathercard/__weather/_cloudy/weathercard__weather_cloudy.css);
+@import url(./blocks/weathercard/__weather/_fog/weathercard__weather_fog.css);
