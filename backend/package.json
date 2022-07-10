@@ -4,8 +4,8 @@
   "description": "Node backend for WTWR",
   "main": "index.js",
   "scripts": {
-    "start" : "node index.js",
-    "dev" : "nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "Practicum Apiary",
   "license": "ISC",
@@ -16,6 +16,9 @@
     "mongoose": "^6.4.4"
   },
   "devDependencies": {
+    "eslint": "^8.19.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.19"
   }
 }
