@@ -9,8 +9,17 @@
 /* stylesheets for the block - WeatherCards and WeatherCard */
 @import url(./blocks/weathercard/weathercard.css);
 @import url(./blocks/weathercards/weathercards.css);
+/* WeatherCard elements */
+@import url(./blocks/weathercard/__info-container/weathercard__info-container.css);
+@import url(./blocks/weathercard/__time/weathercard__time.css);
+@import url(./blocks/weathercard/__temperature/weathercard__temperature.css);
+@import url(./blocks/weathercard/__description/weathercard__description.css);
+
 /* WeatherCards modifiers */
 @import url(./blocks/weathercards/_morning/weathercards_morning.css);
 @import url(./blocks/weathercards/_afternoon/weathercards_afternoon.css);
 @import url(./blocks/weathercards/_evening/weathercards_evening.css);
 @import url(./blocks/weathercards/_overnight/weathercards_overnight.css);
+/* WeatherCard modifiers */
+@import url(./blocks/weathercard/_day/weathercard_day.css);
+@import url(./blocks/weathercard/_night/weathercard_night.css);
