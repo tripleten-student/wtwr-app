@@ -2,6 +2,10 @@
 @import url(./vendor/normalize.css);
 @import url(./vendor/fonts/fonts.css);
 
+@import url(./blocks/footer/footer.css);
+@import url(./blocks/footer/__text/footer__text.css);
+@import url(./blocks/footer/__year/footer__year.css);
+
 /* stylesheets for the block - page */
 @import url(./blocks/page/page.css);
 @import url(./blocks/page/__wrapper/page__wrapper.css);
