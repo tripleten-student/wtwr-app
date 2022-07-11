@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './Logo.css';
 import logoImg from '../../images/logo.svg';
 /**
@@ -7,7 +8,9 @@ import logoImg from '../../images/logo.svg';
  */
 const Logo = () => {
   return (
-    <img src={logoImg} alt="logo for what to wear web app" className="logo" />
+    <Link to="/">
+      <img src={logoImg} alt="logo for what to wear web app" className="logo" />
+    </Link>
   );
 }
 

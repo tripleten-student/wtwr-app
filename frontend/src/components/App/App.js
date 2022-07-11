@@ -14,7 +14,6 @@ const App = () => {
   return (
     <div className="page">
       <div className="page__wrapper">
-        App
         <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
       </div>
     </div>
