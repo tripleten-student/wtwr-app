@@ -1,0 +1,31 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 32px auto 28px;
+
+}
+
+.header__container {
+    display: flex;
+}
+
+.header__logo {
+    height: 40px;
+    width: 80px;
+    margin: 0;
+    padding: 0;
+}
+
+.header__date {
+    margin: 11px 0 5px 24px;
+    padding: 0;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    color: #000;
+}
+
+.header__navContainer {
+    display: flex;
+}

@@ -1,16 +1,16 @@
-function Header(
-  {
-    /** children */
-  }
-) {
+import './Header.css';
+
+function Header() {
   return (
     <header className="header">
-      <img className="header__logo" alt="WTWR Logo" src={require('../images/wtwr_logo.png')} />
-      <p className="header__date">June 15, New York</p>
+      <div className="header__container">
+        <img className="header__logo" alt="WTWR Logo" src={require('../../images/wtwr_logo.png')} />
+        <p className="header__date">June 15, New York</p>
+      </div>
       <div className="header__navContainer">
-        <p>toggle switch placeholder</p>
-        <p>+ Add Clothes</p>
-        <p>Terrence Tegegene</p>
+        <p>placeholder</p>
+        <p>placeholder</p>
+        <p>placeholder</p>
       </div>
     </header>
   );

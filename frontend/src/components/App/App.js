@@ -4,6 +4,7 @@ import WeatherCards from '../WeatherCards/WeatherCards';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 
 /**
  * The main React **App** component.
@@ -17,6 +18,7 @@ const App = () => {
     <div className="page">
       <div className="page__wrapper">
         App
+        <Header />
         <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
         <Main/>
         <Footer />
