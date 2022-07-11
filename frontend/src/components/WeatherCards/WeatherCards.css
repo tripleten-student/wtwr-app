@@ -1,0 +1,6 @@
+.weathercards {
+  display: flex;
+  height: 80px;
+  width: 100%;
+  column-gap: 20px;
+}
