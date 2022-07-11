@@ -5,6 +5,6 @@ const clothingRouter = require('./clothing');
 const router = express.Router();
 
 // router.use('/users', userRouter);
-// router.use('/articles', clothingRouter);
+router.use('/clothing', clothingRouter);
 
 module.exports = router;
