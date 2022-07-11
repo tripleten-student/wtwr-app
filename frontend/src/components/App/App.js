@@ -1,6 +1,7 @@
 import React from 'react';
-import WeatherCards from './WeatherCards/WeatherCards';
-import { determineTimeOfTheDay } from '../utils/weatherCards';
+import './App.css';
+import WeatherCards from '../WeatherCards/WeatherCards';
+import { determineTimeOfTheDay } from '../../utils/weatherCards';
 
 /**
  * The main React **App** component.
