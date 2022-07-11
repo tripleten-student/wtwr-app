@@ -1,0 +1,23 @@
+.navigation {
+    display: flex;
+}
+
+.navigation__button {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    border: none;
+    width: 67px;
+    height: 24px;
+    background-color: transparent;
+    color: #000;
+}
+
+.navigation__user {
+    margin: 0;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+}

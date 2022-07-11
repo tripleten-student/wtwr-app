@@ -5,6 +5,7 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
+import Navigation from '../Navigation/Navigation';
 
 /**
  * The main React **App** component.
@@ -28,6 +29,7 @@ const App = () => {
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
+          <Navigation/>
           App
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
