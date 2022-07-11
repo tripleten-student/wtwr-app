@@ -1,3 +1,4 @@
+import './Footer.css'
 /**
  * The **Footer** component displays copyright and year information
  *
