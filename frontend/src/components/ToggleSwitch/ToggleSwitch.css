@@ -34,9 +34,17 @@
   cursor: pointer;
 }
 
+.toggleswitch__checkbox_state_visible::before,
+.toggleswitch__checkbox_state_visible::after {
+  font-family: 'CabinetGrotesk-Bold';
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.24;
+}
+
 /* Styles of the rectangular strip when the checkbox is unchecked */
 .toggleswitch__checkbox_state_visible::before {
-  content: "C";
+  content: 'C';
   position: absolute;
   top: 0;
   left: 0;
@@ -45,23 +53,23 @@
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  background-color: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 1);
+  border: 2px solid rgba(126, 126, 126, 1);
   color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  transition: background-color 0.2s 0.3s linear;
+  transition: all 0.2s 0.3s linear;
 }
 
 /* Styles of the circular disc when the checkbox is unchecked */
 .toggleswitch__checkbox_state_visible::after {
-  content: "F";
+  content: 'F';
   position: absolute;
   top: 0;
   left: 0;
-  width: 29px;
-  height: 29px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 1);
   color: rgba(255, 255, 255, 1);
@@ -73,14 +81,12 @@
 
 /* Styles of the rectangular strip when the checkbox is checked */
 .toggleswitch__checkbox_state_hidden:checked ~ .toggleswitch__checkbox_state_visible::before {
-  content: "F";
+  content: 'F';
   justify-content: flex-start;
 }
 
 /* Styles of the circular disc when the checkbox is checked */
 .toggleswitch__checkbox_state_hidden:checked ~ .toggleswitch__checkbox_state_visible::after {
-  content: "C";
-  top: 0;
+  content: 'C';
   left: 28px;
-  transition: left 0.3s ease-in;
 }
