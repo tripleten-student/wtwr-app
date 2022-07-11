@@ -5,27 +5,3 @@
 /* stylesheets for the block - page */
 @import url(./blocks/page/page.css);
 @import url(./blocks/page/__wrapper/page__wrapper.css);
-
-/* stylesheets for the block - WeatherCards and WeatherCard */
-@import url(./blocks/weathercard/weathercard.css);
-@import url(./blocks/weathercards/weathercards.css);
-/* WeatherCard elements */
-@import url(./blocks/weathercard/__info-container/weathercard__info-container.css);
-@import url(./blocks/weathercard/__time/weathercard__time.css);
-@import url(./blocks/weathercard/__temperature/weathercard__temperature.css);
-@import url(./blocks/weathercard/__description/weathercard__description.css);
-
-/* WeatherCards modifiers */
-@import url(./blocks/weathercards/_morning/weathercards_morning.css);
-@import url(./blocks/weathercards/_afternoon/weathercards_afternoon.css);
-@import url(./blocks/weathercards/_evening/weathercards_evening.css);
-@import url(./blocks/weathercards/_overnight/weathercards_overnight.css);
-/* WeatherCard modifiers */
-@import url(./blocks/weathercard/_day/weathercard_day.css);
-@import url(./blocks/weathercard/_night/weathercard_night.css);
-@import url(./blocks/weathercard/__weather/_sunny/weathercard__weather_sunny.css);
-@import url(./blocks/weathercard/__weather/_rainy/weathercard__weather_rainy.css);
-@import url(./blocks/weathercard/__weather/_storm/weathercard__weather_storm.css);
-@import url(./blocks/weathercard/__weather/_snow/weathercard__weather_snow.css);
-@import url(./blocks/weathercard/__weather/_cloudy/weathercard__weather_cloudy.css);
-@import url(./blocks/weathercard/__weather/_fog/weathercard__weather_fog.css);
