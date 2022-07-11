@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const auth = require('./middleware/auth');
+const { localdb } = require('./utils/config');
 
 const app = express();
 app.use(helmet());
@@ -20,7 +21,9 @@ app.use(express.json());
 
 const mainRouter = require('./routes/index');
 
-app.use(requestLogger)
+const { registerUser, loginUser } = require('./middleware/validateUser');
+
+app.use(requestLogger);
 
 /// Sign up requires validation first, then create user ///
 app.post('/signup', registerUser, createUser);
