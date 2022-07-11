@@ -1,11 +1,14 @@
-import WeatherCard from './WeatherCard';
+import WeatherCard from '../WeatherCard/WeatherCard';
 import './WeatherCards.css';
 
-// WeatherCards is a container that holds all four WeatherCards. It is a CSS flexbox
-// assuming celsius/fahrenheit, temperature, and weather parameters will be passed down from App.js using global context, I'm not including them as one of the parameters here
+/**
+ *  WeatherCards is a container that holds all four WeatherCards. It is a CSS flexbox
+ * @author [Yuffie Hu](https://github.com/yuff1006)
+ *
+ *  assuming celsius/fahrenheit, temperature, and weather parameters will be passed down from App.js using global context, I'm not including them as one of the parameters here
+ */
 
-// description parameter comes from the API
-const WeatherCards = ({ timeOfTheDay, description }) => {
+const WeatherCards = ({ timeOfTheDay }) => {
   return (
     // modifier to adjust different CSS grid layout according to different times of the day
     <div className={`weathercards weathercards_${timeOfTheDay}`}>

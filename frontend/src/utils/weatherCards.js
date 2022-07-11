@@ -9,4 +9,9 @@ function determineTimeOfTheDay(currentHour) {
     return 'overnight';
   }
 }
-export default determineTimeOfTheDay;
+function shortenDescription(description) {
+  const regex = /\d{1,3}%/gi;
+  return description.match(regex)[0];
+}
+
+export { determineTimeOfTheDay, shortenDescription };
