@@ -1,3 +1,9 @@
+/**
+ * This module enables API requests related to registration and authorization using API
+ * @module Auth
+ * @author [Hoang Le Chau](https://github.com/hoanglechau)
+ */
+
 // Need to update BASE_URL with the registered URL of the project later
 
 class Auth {
