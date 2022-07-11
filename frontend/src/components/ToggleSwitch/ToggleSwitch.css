@@ -1,0 +1,86 @@
+.toggleswitch {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 56px;
+}
+
+.toggleswitch__label {
+  box-sizing: border-box;
+  position: relative;
+}
+
+.toggleswitch__checkbox {
+  margin: 0;
+  padding: 0;
+}
+
+.toggleswitch__checkbox_state_hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.toggleswitch__checkbox_state_visible {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 28px;
+  cursor: pointer;
+}
+
+/* Styles of the rectangular strip when the checkbox is unchecked */
+.toggleswitch__checkbox_state_visible::before {
+  content: "C";
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transition: background-color 0.2s 0.3s linear;
+}
+
+/* Styles of the circular disc when the checkbox is unchecked */
+.toggleswitch__checkbox_state_visible::after {
+  content: "F";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 1);
+  color: rgba(255, 255, 255, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.3s ease-in;
+}
+
+/* Styles of the rectangular strip when the checkbox is checked */
+.toggleswitch__checkbox_state_hidden:checked ~ .toggleswitch__checkbox_state_visible::before {
+  content: "F";
+  justify-content: flex-start;
+}
+
+/* Styles of the circular disc when the checkbox is checked */
+.toggleswitch__checkbox_state_hidden:checked ~ .toggleswitch__checkbox_state_visible::after {
+  content: "C";
+  top: 0;
+  left: 28px;
+  transition: left 0.3s ease-in;
+}
