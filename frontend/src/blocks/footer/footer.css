@@ -6,4 +6,10 @@
   margin: 24px auto 0;
   box-sizing: border-box;
   color: #000000;
+  font-family: 'CabinetGrotesk-Medium';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  /* identical to box height, or 125% */
 }
