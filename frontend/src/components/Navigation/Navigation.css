@@ -2,6 +2,7 @@
     padding: 0;
     margin: 0;
     max-width: 345px;
+    height: 40px;
     width: fit-content;
     display: flex;
 }
@@ -38,5 +39,5 @@
 
 .navigation__user_signin {
     visibility: hidden;
-    display: none;
+    position: absolute;
 }
