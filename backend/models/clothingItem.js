@@ -12,20 +12,20 @@ const clothingItemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  weather: [
-    {
-      type: String,
-      required: true,
-      default: [],
-      // enum can be used here if types are fixed enum:['rainy', 'chilly', 'etc']
-    },
-  ],
+  // weather set as array assuming multiple types may be possible //
+  temperature: {
+    type: Number,
+    required: true,
+  },
+
   imageUrl: {
     type: String,
     required: true,
     validate: {
       validator(v) {
-        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&'\(\)\*\+,;=.]+/.test(v);
+        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&'\(\)\*\+,;=.]+/.test(
+          v
+        );
       },
     },
   },
