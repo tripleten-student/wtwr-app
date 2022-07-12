@@ -13,6 +13,11 @@ import Navigation from '../Navigation/Navigation';
 const App = () => {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
 
+// logic with actual data needed in the future 
+  const [isLoggedIn, setLoggedIn] = React.useState(false);
+  const [userAvatar, setUserAvatar] = React.useState(false);
+  const [userName, setUserName] = React.useState(false);
+  
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
@@ -29,7 +34,7 @@ const App = () => {
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
-          <Navigation/>
+          <Navigation isLoggedIn={isLoggedIn} username={userName} hasAvatar={userAvatar}/>
           App
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />

@@ -2,18 +2,21 @@ import React from 'react';
 import './Navigation.css';
 
 /**
- * The Navigation component includes the ToggleSwitch component
+ * The Navigation component
  *
  * @author [Sam](https://github.com/Samm96)
+ * 
+ * NOTE: actual username prop needs to be added in place of `defaultUser`
+ * NOTE: routes to respective modals need to be added
  */
 
-function Navigation({ isLoggedIn, username, hasAvatar }) {
+function Navigation({ isLoggedIn, hasAvatar }) {
   const defaultUser = 'Terrence Tegegne';
 
   return (
     <div className="navigation">
-      <button className="navigation__button">{ isLoggedIn ? (username || defaultUser) : 'Sign In'}</button>
-      <button className="navigation__button">{ isLoggedIn ? '+ Add clothes' : 'Log In'}</button>
+      <button className="navigation__button">{ isLoggedIn ? '+ Add clothes' : 'Sign In'}</button>
+      <button className="navigation__button">{ isLoggedIn ? defaultUser : 'Log In'}</button>
       {isLoggedIn ? (
         <img
           className="navigation__user"
