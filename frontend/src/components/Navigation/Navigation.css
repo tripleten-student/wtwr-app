@@ -1,18 +1,30 @@
 .navigation {
+    padding: 0;
+    margin: 0;
+    max-width: 345px;
+    width: fit-content;
     display: flex;
 }
 
 .navigation__button {
-    margin: 0;
+    margin: 6px 20px 6px 0;
     padding: 0;
+    width: fit-content;
     font-size: 20px;
     font-weight: 700;
     line-height: 24px;
     border: none;
-    width: 67px;
-    height: 24px;
     background-color: transparent;
     color: #000;
+}
+
+.navigation__button:last-of-type {
+    margin-right: 12px;
+}
+
+.navigation__button:hover {
+    cursor: pointer;
+    opacity: 0.6;
 }
 
 .navigation__user {
@@ -20,4 +32,11 @@
     padding: 0;
     width: 40px;
     height: 40px;
+    visibility: visible;
+    display: block;
+}
+
+.navigation__user_signin {
+    visibility: hidden;
+    display: none;
 }
