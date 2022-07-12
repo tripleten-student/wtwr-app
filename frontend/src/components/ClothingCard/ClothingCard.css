@@ -1,0 +1,66 @@
+.clothingcard {
+  height: 328px;
+  width: 325px;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+.clothingcard__image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.clothingcard__info-container {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 0;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.clothingcard__title-and-like {
+  display: flex;
+  align-items: center;
+}
+.clothingcard__like {
+  background-color: transparent;
+  border: none;
+  background-image: url(../../images/heart.svg);
+  height: 15px;
+  width: 18px;
+  background-size: cover;
+  padding: 0;
+  cursor: pointer;
+}
+.clothingcard__title {
+  padding: 2px 12px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  color: rgba(0, 0, 0, 0.6);
+  background-color: white;
+  border-radius: 4px;
+  margin: 0;
+  margin-right: 10px;
+}
+.clothingcard__add-photo {
+  padding: 2px 12px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  color: rgba(0, 0, 0, 0.6);
+  background-color: white;
+  border-radius: 4px;
+  margin: 0;
+  margin-right: 10px;
+  border: none;
+}
