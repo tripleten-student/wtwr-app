@@ -1,8 +1,8 @@
 const { NotFoundError } = require('../errors/not-found-error');
-const { itemsNotFound } = require('../utils/error');
+const { BadRequestError } = require('../errors/bad-request-error');
+const { itemsNotFound, itemNotFound, cannotDelete } = require('../utils/error');
 
 const Item = require('../models/clothingItem');
-const BadRequestError = require('../errors/bad-request-error');
 
 const getAllItems = (req, res, next) => {
   Item.find()
@@ -35,7 +35,7 @@ const createItem = (res, req, next) => {
 
 const deleteItem = (res, req, next) => {
   Item.findById({ _id: req.params.itemId })
-    .orFail(() => new NotFoundError('That clothing item does not exist'))
+    .orFail(() => new NotFoundError(itemNotFound))
     .then((item) => {
       if (req.user._id === item.owner._id.toString()) {
         Item.findByIdAndRemove({ _id: req.params.itemId })
@@ -45,13 +45,31 @@ const deleteItem = (res, req, next) => {
       }
     })
     .catch(() => {
-      next(new BadRequestError('You cant delete that'));
+      next(new BadRequestError(cannotDelete));
     });
 };
 
-const likeItem = (res, req, next) => {};
+const likeItem = (res, req, next) => {
+  Item.findByIdAndUpdate(
+    req.params.ItemId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true },
+  )
+    .orFail()
+    .then((itemData) => res.send(itemData))
+    .catch(next);
+};
 
-const unlikeItem = (res, req, next) => {};
+const unlikeItem = (res, req, next) => {
+  Item.findByIdAndUpdate(
+    req.params.ItemId,
+    { $pull: { likes: req.user._id } },
+    { new: true },
+  )
+    .orFail()
+    .then((itemData) => res.send(itemData))
+    .catch(next);
+};
 
 module.exports = {
   getAllItems,
