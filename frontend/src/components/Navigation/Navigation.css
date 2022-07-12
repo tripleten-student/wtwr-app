@@ -1,14 +1,17 @@
 .navigation {
-    padding: 0;
-    margin: 0;
-    max-width: 345px;
     height: 40px;
     width: fit-content;
+}
+
+.navigation__container {
     display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .navigation__button {
-    margin: 6px 20px 6px 0;
+    margin-right: 20px;
     padding: 0;
     width: fit-content;
     font-size: 20px;
@@ -19,17 +22,24 @@
     color: #000;
 }
 
-.navigation__button:last-of-type {
-    margin-right: 12px;
-}
-
 .navigation__button:hover {
     cursor: pointer;
     opacity: 0.6;
 }
 
-.navigation__user {
+.navigation__link {
     margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    color: #000;
+    display: flex;
+}
+
+.navigation__user {
+    margin: -6px 0px 0px 12px;
     padding: 0;
     width: 40px;
     height: 40px;
