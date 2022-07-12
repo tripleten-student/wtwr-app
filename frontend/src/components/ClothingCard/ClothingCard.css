@@ -4,8 +4,10 @@
   position: relative;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  background-color: #e9e9e9;
 }
-
 .clothingcard__image {
   height: 100%;
   width: 100%;
@@ -34,12 +36,19 @@
 .clothingcard__like {
   background-color: transparent;
   border: none;
-  background-image: url(../../images/heart.svg);
+  background-image: url(../../images/ClothingCard/heart.svg);
   height: 15px;
   width: 18px;
   background-size: cover;
   padding: 0;
   cursor: pointer;
+  transition: 0.3s ease-out opacity;
+}
+.clothingcard__like:hover {
+  opacity: 0.6;
+}
+.clothingcard__like_active {
+  background-image: url(../../images/ClothingCard/heart-liked.svg);
 }
 .clothingcard__title {
   padding: 2px 12px;
@@ -63,4 +72,10 @@
   margin: 0;
   margin-right: 10px;
   border: none;
+}
+
+.clothingcard__image_default {
+  width: 250px;
+  height: 180px;
+  margin-top: 74px;
 }

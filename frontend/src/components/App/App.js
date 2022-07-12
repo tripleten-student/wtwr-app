@@ -58,7 +58,17 @@ const App = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsModalOpen(false);
   };
-
+  // mock clothingCardData for testing ClothingCard component
+  const clothingCardData = {
+    imageName: 'T-shirt',
+    imageLink:
+      'https://cdn.rushordertees.com/design/ZoomImage.php?src=NTUyMTM2Mw_f&style=RT2000&colorCode=WHT&x=240&y=300&width=880&height=880&scale=1.7&watermark=false&autoInvertDesign=true/',
+    favorited: true,
+  };
+  function handleLikeClick(cardData) {
+    console.log(cardData);
+    // insert logic to interact with WTWR API
+  }
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -78,8 +88,10 @@ const App = () => {
           <Main />
           <ClothingCard
             imageName="T-shirt"
-            imageLink="https://cdn.rushordertees.com/design/ZoomImage.php?src=NTUyMTM2Mw_f&style=RT2000&colorCode=WHT&x=240&y=300&width=880&height=880&scale=1.7&watermark=false&autoInvertDesign=true/ "
-            clothingType="T-shirt"
+            // please test with empty string to see the default image show up on card with "add your photo" button
+            cardData={clothingCardData}
+            clothingType="t-shirt"
+            onCardLike={handleLikeClick}
           />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
