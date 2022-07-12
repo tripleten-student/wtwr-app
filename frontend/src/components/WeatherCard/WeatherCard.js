@@ -12,13 +12,15 @@ const WeatherCard = ({ displayedTime, timeOfTheDay }) => {
    * const {weather, description} = useContext()
    * this is just a placeholder for testing
    */
-  const weather = 'sunny';
+  const weather = 'cloudy';
   const description = 'Chance of Rain: 70%';
   const shortenedDescription = shortenDescription(description);
   return (
     <div
       className={`weathercard weathercard_${dayOrNight} ${
-        displayedTime.toLowerCase() === timeOfTheDay && 'weathercard_elongated'
+        displayedTime.toLowerCase() === timeOfTheDay
+          ? 'weathercard_elongated'
+          : 'weathercard_overlay'
       } weathercard_weather_${dayOrNight}-${weather}`}
     >
       <div className="weathercard__info-container">
