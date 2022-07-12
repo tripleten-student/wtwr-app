@@ -94,7 +94,7 @@ const getCurrentUser = (req, res, next) => {
     .catch(next);
 };
 
-const updateUserName = (req, res, next) => {
+const updateName = (req, res, next) => {
   const currentUser = req.user._id;
   const { name } = req.body;
 
@@ -150,6 +150,6 @@ module.exports = {
   getUsers,
   getCurrentUser,
   getUserById,
-  updateUserName,
+  updateName,
   updateAvatar,
 };
