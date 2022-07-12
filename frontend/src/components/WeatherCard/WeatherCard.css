@@ -30,6 +30,7 @@
     'temperature description';
   position: relative;
   z-index: 1;
+  align-items: baseline;
 }
 .weathercard__description {
   color: white;
@@ -38,7 +39,7 @@
   font-weight: 500;
   grid-area: description;
   margin: 0;
-  align-self: flex-end;
+  align-self: baseline;
 }
 
 .weathercard__time {
