@@ -1,15 +1,18 @@
 import React from 'react';
 import './App.css';
+import Main from '../Main/Main';
+import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
-import Main from '../Main/Main';
-import Footer from '../Footer/Footer';
+import Modal from '../Modal/Modal';
 
 /**
  * The main React **App** component.
  */
 const App = () => {
+  // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
+  const [isModalOpen, setIsModalOpen] = React.useState(true);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
 
   const handleToggleSwitchChange = () => {
@@ -22,6 +25,39 @@ const App = () => {
   const currentHour = new Date().getHours();
   const timeOfTheDay = determineTimeOfTheDay(currentHour);
 
+  // Handle mouse click or Esc key down event
+  //Check if all the other modals are open using || operator
+  const isAnyPopupOpen = (isModalOpen);
+
+  React.useEffect(() => {
+    const handleClickClose = e => {
+      if (e.target.classList.contains('modal_opened')) {
+        closeAllPopups();
+      }
+    }
+
+    const handleEscClose = e => {
+      if (e.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+
+    if (isAnyPopupOpen) {
+      document.addEventListener("click", handleClickClose);
+      document.addEventListener("keydown", handleEscClose);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickClose);
+      document.removeEventListener("keydown", handleEscClose);
+    }
+  }, [isAnyPopupOpen]);
+
+  const closeAllPopups = () => {
+    //Remove the code below & set modal's specific setState function to false
+    setIsModalOpen(false);
+  }
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -29,6 +65,14 @@ const App = () => {
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
           App
+          {/* Replace the Modal below with specific modals */}
+          <Modal
+            name="test"
+            position="middle"
+            width="wide"
+            isOpen={isModalOpen}
+            onClose={closeAllPopups}
+          />
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           <Footer />
