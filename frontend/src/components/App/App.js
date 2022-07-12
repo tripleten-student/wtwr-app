@@ -70,6 +70,7 @@ const App = () => {
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
+          {/* isLoggedIn will be determined by a future user context */}
           <Navigation isLoggedIn={isLoggedIn} username={userName} hasAvatar={userAvatar}/>
           App
           {/* Replace the Modal below with specific modals */}
