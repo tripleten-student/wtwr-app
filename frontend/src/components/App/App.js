@@ -11,7 +11,7 @@ import Login from '../Login';
 /**
  * The main React **App** component.
  */
-const App = () => { 
+const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(true);
   const [currentUser, setCurrentUser] = React.useState({});
