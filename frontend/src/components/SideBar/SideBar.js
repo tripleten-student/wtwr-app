@@ -1,5 +1,7 @@
 import React from 'react';
 import './SideBar.css';
+import PropTypes from 'prop-types';
+
 import avatar from '../../images/Avatars/elise.png';
 
 /**
@@ -8,13 +10,13 @@ import avatar from '../../images/Avatars/elise.png';
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
-function SideBar({
+const SideBar = ({
   onChangePasswordClick,
   onChangeProfileClick,
   onChangeClothesPreferencesClick,
   onLogOutClick,
   onDeleteProfileClick,
-}) {
+}) => {
   // we will add the context and use it to retrive the avatar and name of the user
   //  ADD LATER const currentUser = React.useContext(CurrentUserContext);
   //   asd
@@ -50,6 +52,14 @@ function SideBar({
       </ul>
     </div>
   );
-}
+};
+
+SideBar.propTypes = {
+  onChangePasswordClick: PropTypes.func.isRequired,
+  onChangeProfileClick: PropTypes.func.isRequired,
+  onChangeClothesPreferencesClick: PropTypes.func.isRequired,
+  onLogOutClick: PropTypes.func.isRequired,
+  onDeleteProfileClick: PropTypes.func.isRequired,
+};
 
 export default SideBar;
