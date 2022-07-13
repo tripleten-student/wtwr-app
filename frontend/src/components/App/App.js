@@ -5,6 +5,7 @@ import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
+import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 
 /**
@@ -70,7 +71,7 @@ const App = () => {
         >
           App
           {/* Replace the ModalWithForm below with specific modals */}
-          <ModalWithForm
+          {/* <ModalWithForm
             formTitle="Edit garment"
             name="edit-garment"
             position="top-right"
@@ -81,8 +82,9 @@ const App = () => {
             submitButtonLabel="Update garment"
           >
 
-          </ModalWithForm>
+          </ModalWithForm> */}
 
+          <CreateClothingModal isOpen={isModalWithFormOpen} onClose={closeAllPopups}/>
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           <Footer />

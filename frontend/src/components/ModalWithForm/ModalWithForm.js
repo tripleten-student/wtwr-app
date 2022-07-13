@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
 
-const ModalWithForm = ({ formTitle, name, position, width, onSubmit, submitButtonLabel, children }) => {
+const ModalWithForm = ({ formTitle, name, position, width, onSubmit, submitButtonLabel, isOpen, onClose, children }) => {
   const formRef = React.createRef();
   const [isFormValid, setIsFormValid] = React.useState(false);
 
@@ -24,7 +24,7 @@ const ModalWithForm = ({ formTitle, name, position, width, onSubmit, submitButto
   const submitButtonClassName = `form__save-button form__save-button_rel_${name} ${!isFormValid && 'form__save-button_disabled'}`;
 
   return (
-    <Modal {...{ name, position, width }}>
+    <Modal {...{ name, position, width, isOpen, onClose }}>
       <form
         className="form"
         name={name}
