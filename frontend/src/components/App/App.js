@@ -5,14 +5,14 @@ import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
-import Modal from '../Modal/Modal';
+import ModalWithForm from '../ModalWithForm/ModalWithForm';
 
 /**
  * The main React **App** component.
  */
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [isModalOpen, setIsModalOpen] = React.useState(true);
+  const [isModalWithFormOpen, setIsModalWithFormOpen] = React.useState(true);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
 
   const handleToggleSwitchChange = () => {
@@ -27,8 +27,7 @@ const App = () => {
 
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
-  const isAnyPopupOpen = (isModalOpen);
-
+  const isAnyPopupOpen = (isModalWithFormOpen);
   React.useEffect(() => {
     const handleClickClose = e => {
       if (e.target.classList.contains('modal_opened')) {
@@ -55,7 +54,12 @@ const App = () => {
 
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
-    setIsModalOpen(false);
+    setIsModalWithFormOpen(false);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted");
   }
 
   return (
@@ -65,14 +69,20 @@ const App = () => {
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
           App
-          {/* Replace the Modal below with specific modals */}
-          <Modal
-            name="test"
-            position="middle"
-            width="wide"
-            isOpen={isModalOpen}
+          {/* Replace the ModalWithForm below with specific modals */}
+          <ModalWithForm
+            formTitle="Edit garment"
+            name="edit-garment"
+            position="top-right"
+            width="normal"
+            isOpen={isModalWithFormOpen}
             onClose={closeAllPopups}
-          />
+            onSubmit={handleSubmit}
+            submitButtonLabel="Update garment"
+          >
+
+          </ModalWithForm>
+
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           <Footer />
