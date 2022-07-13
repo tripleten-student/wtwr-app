@@ -5,7 +5,8 @@ import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
-import Login from "../Login";
+import ClothingCard from '../ClothingCard/ClothingCard';
+import Login from '../Login';
 
 /**
  * The main React **App** component.
@@ -30,36 +31,48 @@ const App = () => {
       : setCurrentTemperatureUnit('F');
   };
 
-
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
-  const isAnyPopupOpen = (isLoginOpen);
+  const isAnyPopupOpen = isLoginOpen;
   React.useEffect(() => {
-    const handleClickClose = e => {
-      if (e.target.classList.contains('modal_opened')) {
+    const handleClickClose = (event) => {
+      if (event.target.classList.contains('modal_opened')) {
         closeAllPopups();
       }
-    }
+    };
 
-    const handleEscClose = e => {
-      if (e.key === "Escape") {
+    const handleEscClose = (event) => {
+      if (event.key === 'Escape') {
         closeAllPopups();
       }
-    }
+    };
 
     if (isAnyPopupOpen) {
-      document.addEventListener("click", handleClickClose);
-      document.addEventListener("keydown", handleEscClose);
+      document.addEventListener('click', handleClickClose);
+      document.addEventListener('keydown', handleEscClose);
     }
 
     return () => {
-      document.removeEventListener("click", handleClickClose);
-      document.removeEventListener("keydown", handleEscClose);
-    }
+      document.removeEventListener('click', handleClickClose);
+      document.removeEventListener('keydown', handleEscClose);
+    };
   }, [isAnyPopupOpen]);
 
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
+    setIsLoginOpen(false);
+  };
+  // mock clothingCardData for testing ClothingCard component, please test the like button
+  // by changing favorited from true to false
+  const clothingCardData = {
+    name: 'T-shirt',
+    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
+    isLiked: true,
+    type: 't-shirt',
+  };
+  function handleLikeClick(cardData) {
+    console.log(cardData);
+    // insert logic to interact with WTWR API
     setIsLoginOpen(false);
   }
 
@@ -71,14 +84,13 @@ const App = () => {
     setLoginPassword('');
     setIsLoggedIn(true);
     //else catch error
-  }
+  };
 
   const handleLogOut = () => {
     setIsLoggedIn(false);
     setCurrentUser({});
     setCurrentUserEmail('');
-  }
-
+  };
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -96,9 +108,14 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
-
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
+          <ClothingCard
+            name="T-shirt"
+            // please test with empty string to see the default image show up on card with "add your photo" button
+            cardData={clothingCardData}
+            onCardLike={handleLikeClick}
+          />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
       </div>
