@@ -17,7 +17,7 @@ const SideBar = ({
   onLogOutClick,
   onDeleteProfileClick,
 }) => {
-  // we will add the context and use it to retrive the avatar and name of the user
+  // we will add the  context and use it to retrive the avatar and name of the user
   //  ADD LATER const currentUser = React.useContext(CurrentUserContext);
   //   asd
 
