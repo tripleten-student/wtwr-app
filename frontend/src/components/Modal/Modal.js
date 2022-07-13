@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
  * @author [Shraddha](https://github.com/5hraddha)
  */
 const Modal = ({ name, position, width, isOpen, onClose, children }) => {
+  
   const modalPositionClass = (position === 'middle')
     ? `modal_position_middle`
     : `modal_position_top-right`;

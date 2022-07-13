@@ -9,10 +9,20 @@ import PropTypes from 'prop-types';
  */
 
  const CreateClothingModal = () => {
+   
+    const [isOpen, setIsOpen] = React.useState(true);
+    
+    const closeModal = () => {
+        setIsOpen(false);
+    };
+
+    const handleSubmit = () => {
+
+    };
 
     return (
-        <ModalWithForm>
-            
+        <ModalWithForm formTitle="New garment" name="add-clothes" position="middle" width="normal" isOpen={isOpen} onClose={closeModal} onSubmit={handleSubmit} submitButtonLabel="Add garment">
+
         </ModalWithForm>
     )
  };
