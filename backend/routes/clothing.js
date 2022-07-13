@@ -10,13 +10,6 @@ const {
 
 const router = express.Router();
 
-// GET /items - returns all items
-// POST /items - creates a new item
-// DELETE /items/:itemId - deletes an item by _id
-
-// PUT /items/:itemId/likes — like an item
-// DELETE /items/:itemId/likes — unlike an item
-
 router.get('/', getAllItems);
 
 router.post('/', createItem);
