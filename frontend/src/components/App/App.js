@@ -5,15 +5,24 @@ import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
-import ModalWithForm from '../ModalWithForm/ModalWithForm';
+import Login from "../Login";
 
 /**
  * The main React **App** component.
  */
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [isModalWithFormOpen, setIsModalWithFormOpen] = React.useState(true);
+  const [isLoginOpen, setIsLoginOpen] = React.useState(true);
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [currentUserEmail, setCurrentUserEmail] = React.useState('');
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [loginEmail, setLoginEmail] = React.useState('');
+  const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
+
+  // not using state here, assuming the time only gets read every time user refreshes the page
+  const currentHour = new Date().getHours();
+  const timeOfTheDay = determineTimeOfTheDay(currentHour);
 
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
@@ -21,13 +30,10 @@ const App = () => {
       : setCurrentTemperatureUnit('F');
   };
 
-  // not using state here, assuming the time only gets read every time user refreshes the page
-  const currentHour = new Date().getHours();
-  const timeOfTheDay = determineTimeOfTheDay(currentHour);
 
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
-  const isAnyPopupOpen = (isModalWithFormOpen);
+  const isAnyPopupOpen = (isLoginOpen);
   React.useEffect(() => {
     const handleClickClose = e => {
       if (e.target.classList.contains('modal_opened')) {
@@ -54,12 +60,23 @@ const App = () => {
 
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
-    setIsModalWithFormOpen(false);
+    setIsLoginOpen(false);
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted");
+  const handleLoginSubmit = () => {
+    //call the auth.login(loginEmail, loginPassword)
+    //if login successful
+    setCurrentUserEmail(loginEmail);
+    setLoginEmail('');
+    setLoginPassword('');
+    setIsLoggedIn(true);
+    //else catch error
+  }
+
+  const handleLogOut = () => {
+    setIsLoggedIn(false);
+    setCurrentUser({});
+    setCurrentUserEmail('');
   }
 
   return (
@@ -70,18 +87,15 @@ const App = () => {
         >
           App
           {/* Replace the ModalWithForm below with specific modals */}
-          <ModalWithForm
-            formTitle="Edit garment"
-            name="edit-garment"
-            position="top-right"
-            width="normal"
-            isOpen={isModalWithFormOpen}
+          <Login
+            isOpen={isLoginOpen}
             onClose={closeAllPopups}
-            onSubmit={handleSubmit}
-            submitButtonLabel="Update garment"
-          >
-
-          </ModalWithForm>
+            onSubmit={handleLoginSubmit}
+            loginEmail={loginEmail}
+            setLoginEmail={setLoginEmail}
+            loginPassword={loginPassword}
+            setLoginPassword={setLoginPassword}
+          />
 
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
