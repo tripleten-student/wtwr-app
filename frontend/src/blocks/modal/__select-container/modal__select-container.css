@@ -1,0 +1,14 @@
+.modal__select-container {
+    width: 100%;
+    border-bottom: 1px solid #000;
+    cursor: pointer;
+    background-color: #fff;
+    position: relative;
+}
+
+.modal__select-container:after {
+    content: url(../../../images/arrow-input.svg); 
+    right: 9px;
+    bottom: 5px;
+    position: absolute;
+  }
