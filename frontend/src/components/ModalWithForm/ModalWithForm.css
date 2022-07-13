@@ -1,0 +1,46 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  font-family: 'CabinetGrotesk-Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  /* identical to box height, or 125% */
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.form__title {
+  margin: 0;
+  padding-bottom: 24px;
+}
+
+.form__save-button {
+  color: #ffffff;
+  border-radius: 4px;
+  border: none;
+  min-height: 36px;
+  width: 128px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 32px;
+}
+
+.form__save-button:hoover {
+  opacity: 0.8;
+}
+
+.form__save-button_disabled {
+  border: 1px solid #000;
+  opacity: 0.2;
+  color: #000;
+  background-color: #fff;
+  cursor: not-allowed;
+}
+
+.form__save-button_disabled:hover {
+  opacity: 0.2;
+}
