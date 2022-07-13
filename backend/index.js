@@ -13,7 +13,7 @@ app.use(helmet());
 app.use(cors());
 app.options('*', cors());
 
-const { PORT = 5500, NODE_ENV, MONGO_URI } = process.env;
+const { PORT = 4000, NODE_ENV, MONGO_URI } = process.env;
 
 mongoose.connect(NODE_ENV === 'production' ? MONGO_URI : localdb);
 
