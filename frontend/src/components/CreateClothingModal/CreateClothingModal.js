@@ -1,6 +1,8 @@
 import React from 'react';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import PropTypes from 'prop-types';
+import '../../blocks/modal/__input/modal__input.css';
+import '../../blocks/modal/__input-label/modal__input-label.css'
 /**
  * The **CreateClothingModal** component will let users add new clothes to the database.
  * It uses the ModalWithForm component.
@@ -16,25 +18,25 @@ import PropTypes from 'prop-types';
 
     return (
         <ModalWithForm formTitle="New garment" name="add-clothes" position="middle" width="normal" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} submitButtonLabel="Add garment">
-            <label for="name">Name</label>
-            <input type="text" name="name" placeholder="Name"/>
-            <label for="type">Type</label>
-            <select name="type">
+            <label className="modal__input-label" for="name">Name</label>
+            <input className="modal__input" type="text" name="name" placeholder="Name" required/>
+            <label className="modal__input-label" for="type">Type</label>
+            <select name="type" required>
                 <option value="" disabled selected hidden>Choose</option>
                 <option value="tops">Tops & Outerwear</option>
                 <option value="bottoms">Bottoms</option>
                 <option value="accessories">Accessories</option>
                 <option value="shoes">Shoes</option>
             </select>
-            <label for="weather">Weather</label>
-            <select name="weather">
+            <label className="modal__input-label" for="weather">Weather</label>
+            <select name="weather" required>
                 <option value="" disabled selected hidden>Choose</option>
                 <option value="cold">Cold (30° F)</option>
                 <option value="moderate">Moderate (50° F)</option>
                 <option value="hot">Hot (70° F)</option>
             </select>
-            <label for="image">Image</label>
-            <input type="text" name="image" placeholder="Image URL"/>
+            <label className="modal__input-label" for="image">Image</label>
+            <input className="modal__input" type="text" name="image" placeholder="Image URL" required/>
         </ModalWithForm>
     )
  };
