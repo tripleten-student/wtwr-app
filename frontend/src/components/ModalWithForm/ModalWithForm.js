@@ -1,57 +1,58 @@
 import React from 'react';
 import Modal from '../Modal/Modal';
 import './ModalWithForm.css';
-import '../Modal/Modal.css';
 import PropTypes from 'prop-types';
 /**
- * The **ModalWithForm** component is the base markup that could be used to create - <EditPasswordModal />, <EditProfileDataModal />, <EditPreferencesModal />, etc.
+ * The **ModalWithForm** component is the base component that could be used to create any modal that has form in it.
+ * For example - <EditPasswordModal />, <EditProfileDataModal />, <EditPreferencesModal />, etc.
  *
- * @author
+ *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
 
-const ModalWithForm = ({ name, title, children, onSubmit, buttonLabel }) => {
-  const [isValid, setFormValidity] = React.useState(false);
-  const formRef = React.useRef();
+const ModalWithForm = ({ formTitle, name, position, width, isOpen, onClose, onSubmit, submitButtonLabel, children }) => {
+  const formRef = React.createRef();
+  const [isFormValid, setIsFormValid] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   setIsFormValid(formRef.current.checkValidity());
-  // }, [isOpen, formRef]);
+  React.useEffect(() => {
+    setIsFormValid(formRef.current.checkValidity());
+  }, [isOpen, formRef]);
 
-  const checkFormValidity = () => {
-    setFormValidity(formRef.current.checkValidity());
-  };
+  const handleChange = () => {
+    setIsFormValid(formRef.current.checkValidity());
+  }
+
+  const submitButtonClassName = `form__save-button form__save-button_rel_${name} ${!isFormValid && 'form__save-button_disabled'}`;
 
   return (
-    <Modal name="form" position="middle" width="normal" isOpen onClose>
+    <Modal {...{ name, position, width, isOpen, onClose }}>
       <form
-        noValidate
+        className="form"
+        name={name}
+        action="#"
         ref={formRef}
-        onChange={checkFormValidity}
         onSubmit={onSubmit}
-        name={title}
-        className={`modal__form modal__form_role_${name}`}
-      >
-        <h3 className="modal__form-title">{title}</h3>
+        onChange={handleChange}
+        noValidate>
+        <h2 className="form__title">{formTitle}</h2>
         {children}
-        <button
-          type="submit"
-          className={`modal__save-button modal__save-button_role_${name} ${
-            !isValid && 'modal__save-button_disabled'
-          }`}
-          disabled={!isValid}
-        >
-          {buttonLabel}
+        <button type="submit" className={submitButtonClassName} disabled={!isFormValid} aria-label={`${submitButtonLabel} ${name}`}>
+          {submitButtonLabel}
         </button>
       </form>
     </Modal>
   );
 };
+
 ModalWithForm.propTypes = {
-  children: PropTypes.any,
-  buttonLabel: PropTypes.string.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  formTitle: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  position: PropTypes.oneOf(['middle', 'top-right']),
+  width: PropTypes.oneOf(['normal', 'wide']),
+  isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  submitButtonLabel: PropTypes.string.isRequired,
+  children: PropTypes.any,
 };
 
 export default ModalWithForm;

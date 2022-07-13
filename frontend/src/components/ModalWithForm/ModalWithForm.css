@@ -1,4 +1,4 @@
-.modal__form {
+.form {
   display: flex;
   flex-direction: column;
   font-family: 'CabinetGrotesk-Bold';
@@ -10,11 +10,13 @@
   color: #000000;
   margin-bottom: 8px;
 }
-.modal__form-title{
+
+.form__title {
   margin: 0;
   padding-bottom: 24px;
 }
-.modal__save-button {
+
+.form__save-button {
   color: #ffffff;
   border-radius: 4px;
   border: none;
@@ -25,12 +27,13 @@
   padding: 0;
   box-sizing: border-box;
   margin-top: 32px;
- 
 }
-.modal__save-button:hoover {
+
+.form__save-button:hoover {
   opacity: 0.8;
 }
-.modal__save-button_disabled {
+
+.form__save-button_disabled {
   border: 1px solid #000;
   opacity: 0.2;
   color: #000;
@@ -38,6 +41,6 @@
   cursor: not-allowed;
 }
 
-.popup__save-button_disabled:hover {
+.form__save-button_disabled:hover {
   opacity: 0.2;
 }
