@@ -22,7 +22,7 @@ router.get('/', getAllItems);
 router.post('/', createItem);
 
 router.delete(
-  '/:clothingItemId',
+  '/:ItemId',
   celebrate({
     body: Joi.object().keys({
       _id: Joi.string().hex().length(24),
@@ -31,7 +31,7 @@ router.delete(
   deleteItem,
 );
 
-router.put('/:clothingItemId/likes', likeItem);
-router.delete('/:clothingItemId/likes', unlikeItem);
+router.put('/:ItemId/likes', likeItem);
+router.delete('/:ItemId/likes', unlikeItem);
 
 module.exports = router;

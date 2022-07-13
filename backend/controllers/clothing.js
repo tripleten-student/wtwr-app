@@ -16,7 +16,6 @@ const getAllItems = (req, res, next) => {
 };
 
 const createItem = (req, res, next) => {
-  console.log(req.body);
   const {
     name,
     type,
@@ -34,7 +33,7 @@ const createItem = (req, res, next) => {
     .catch(next);
 };
 
-const deleteItem = (res, req, next) => {
+const deleteItem = (req, res, next) => {
   Item.findById({ _id: req.params.itemId })
     .orFail(() => new NotFoundError(itemNotFound))
     .then((item) => {
@@ -50,7 +49,7 @@ const deleteItem = (res, req, next) => {
     });
 };
 
-const likeItem = (res, req, next) => {
+const likeItem = (req, res, next) => {
   Item.findByIdAndUpdate(
     req.params.ItemId,
     { $addToSet: { likes: req.user._id } },
@@ -61,7 +60,7 @@ const likeItem = (res, req, next) => {
     .catch(next);
 };
 
-const unlikeItem = (res, req, next) => {
+const unlikeItem = (req, res, next) => {
   Item.findByIdAndUpdate(
     req.params.ItemId,
     { $pull: { likes: req.user._id } },
