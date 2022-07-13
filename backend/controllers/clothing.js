@@ -15,19 +15,20 @@ const getAllItems = (req, res, next) => {
     .catch(next);
 };
 
-const createItem = (res, req, next) => {
+const createItem = (req, res, next) => {
+  console.log(req.body);
   const {
     name,
     type,
-    temperature,
+    weather,
     imageUrl,
   } = req.body;
   Item.create({
     name,
     type,
-    temperature,
+    weather,
     imageUrl,
-    owner: req.user._id,
+    owner: '61e6aefe17929d486d4c77de',
   })
     .then((item) => res.send(item))
     .catch(next);

@@ -33,3 +33,5 @@ router.delete(
 
 router.put('/:clothingItemId/likes', likeItem);
 router.delete('/:clothingItemId/likes', unlikeItem);
+
+module.exports = router;

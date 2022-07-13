@@ -10,10 +10,10 @@ const { localdb } = require('./utils/config');
 
 const app = express();
 app.use(helmet());
-app.use(cors);
+app.use(cors());
 app.options('*', cors());
 
-const { PORT = 5000, NODE_ENV, MONGO_URI } = process.env;
+const { PORT = 5500, NODE_ENV, MONGO_URI } = process.env;
 
 mongoose.connect(NODE_ENV === 'production' ? MONGO_URI : localdb);
 
@@ -21,17 +21,17 @@ app.use(express.json());
 
 const mainRouter = require('./routes/index');
 
-const { registerUser, loginUser } = require('./middleware/validateUser');
+// const { registerUser, loginUser } = require('./middleware/validateUser');
 
 app.use(requestLogger);
 
 /// Sign up requires validation first, then create user ///
-app.post('/signup', registerUser, createUser);
+// app.post('/signup', registerUser, createUser);
 
 /// Sign in requires email and password validation, then login ///
-app.post('/signin', loginUser, login);
+// app.post('/signin', loginUser, login);
 
-app.use('/', auth, mainRouter);
+app.use('/', mainRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);

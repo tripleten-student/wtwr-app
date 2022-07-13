@@ -13,8 +13,8 @@ const clothingItemSchema = new mongoose.Schema({
     required: true,
   },
   // weather set as array assuming multiple types may be possible //
-  temperature: {
-    type: Number,
+  weather: {
+    type: String,
     required: true,
   },
 
@@ -23,9 +23,7 @@ const clothingItemSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(v) {
-        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&'\(\)\*\+,;=.]+/.test(
-          v
-        );
+        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&'\(\)\*\+,;=.]+/.test(v);
       },
     },
   },
@@ -34,13 +32,9 @@ const clothingItemSchema = new mongoose.Schema({
     ref: user,
     required: true,
   },
-  likes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: user,
-      default: [],
-    },
-  ],
+  isLiked: {
+    type: Boolean,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
