@@ -27,7 +27,7 @@ const createItem = (req, res, next) => {
     type,
     weather,
     imageUrl,
-    owner: '61e6aefe17929d486d4c77de',
+    owner: req.user._id,
   })
     .then((item) => res.send(item))
     .catch(next);
