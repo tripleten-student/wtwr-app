@@ -7,13 +7,13 @@ import PropTypes from 'prop-types';
  * @author [Yuffie](https://github.com/yuff1006)
  */
 
-const ClothingCard = ({ cardData, clothingType, onCardLike }) => {
+const ClothingCard = ({ cardData, onCardLike }) => {
   const clothingItemPresent = cardData;
   const handleLike = () => {
     onCardLike(cardData);
   };
-  const isLiked = cardData.favorited;
-  const cardHeartButtonClassName = isLiked
+
+  const cardHeartButtonClassName = cardData.isLiked
     ? 'clothingcard__like clothingcard__like_active'
     : 'clothingcard__like';
   return (
@@ -22,15 +22,15 @@ const ClothingCard = ({ cardData, clothingType, onCardLike }) => {
         className={`clothingcard__image ${!clothingItemPresent && 'clothingcard__image_default'}`}
         src={
           clothingItemPresent
-            ? cardData.imageLink
-            : require(`../../images/ClothingCard/${clothingType.toLowerCase()}.svg`)
+            ? cardData.imageUrl
+            : require(`../../images/ClothingCard/${cardData.type.toLowerCase()}.svg`)
         }
-        alt={clothingItemPresent ? cardData.imageName : clothingType}
+        alt={clothingItemPresent ? cardData.name : cardData.type}
       />
       <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
           <p className="clothingcard__title">
-            {clothingType.charAt(0).toUpperCase() + clothingType.slice(1)}
+            {cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1)}
           </p>
           <button
             className={cardHeartButtonClassName}
@@ -50,8 +50,8 @@ const ClothingCard = ({ cardData, clothingType, onCardLike }) => {
 };
 
 ClothingCard.propTypes = {
-  imageName: PropTypes.string,
-  imageLink: PropTypes.string,
-  clothingType: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  imageUrl: PropTypes.string,
+  type: PropTypes.string,
 };
 export default ClothingCard;

@@ -31,14 +31,14 @@ const App = () => {
   const isAnyPopupOpen = isModalOpen;
 
   React.useEffect(() => {
-    const handleClickClose = (e) => {
-      if (e.target.classList.contains('modal_opened')) {
+    const handleClickClose = (event) => {
+      if (event.target.classList.contains('modal_opened')) {
         closeAllPopups();
       }
     };
 
-    const handleEscClose = (e) => {
-      if (e.key === 'Escape') {
+    const handleEscClose = (event) => {
+      if (event.key === 'Escape') {
         closeAllPopups();
       }
     };
@@ -58,12 +58,13 @@ const App = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsModalOpen(false);
   };
-  // mock clothingCardData for testing ClothingCard component
+  // mock clothingCardData for testing ClothingCard component, please test the like button
+  // by changing favorited from true to false
   const clothingCardData = {
-    imageName: 'T-shirt',
-    imageLink:
-      'https://cdn.rushordertees.com/design/ZoomImage.php?src=NTUyMTM2Mw_f&style=RT2000&colorCode=WHT&x=240&y=300&width=880&height=880&scale=1.7&watermark=false&autoInvertDesign=true/',
-    favorited: true,
+    name: 'T-shirt',
+    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
+    isLiked: true,
+    type: 't-shirt',
   };
   function handleLikeClick(cardData) {
     console.log(cardData);
@@ -87,10 +88,9 @@ const App = () => {
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           <ClothingCard
-            imageName="T-shirt"
+            name="T-shirt"
             // please test with empty string to see the default image show up on card with "add your photo" button
             cardData={clothingCardData}
-            clothingType="t-shirt"
             onCardLike={handleLikeClick}
           />
           <Footer />
