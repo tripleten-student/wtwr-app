@@ -1,6 +1,6 @@
 import React from 'react';
-import ModalWithForm from '../ModalWithForm/ModalWithForm';
-import { useFormAndValidation } from '../../hooks/useFormAndValidation';
+import ModalWithForm from './ModalWithForm/ModalWithForm';
+import { useFormAndValidation } from '../hooks/useFormAndValidation';
 
 /**
  * The **Login** component representing user authorization or login form.

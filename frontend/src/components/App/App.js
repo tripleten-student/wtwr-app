@@ -5,7 +5,7 @@ import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
-import Login from "../Login/Login";
+import Login from "../Login";
 
 /**
  * The main React **App** component.
