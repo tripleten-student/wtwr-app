@@ -23,7 +23,7 @@ const WeatherCard = ({ displayedTime, timeOfTheDay }) => {
           : 'weathercard_overlay'
       } weathercard_weather_${dayOrNight}-${weather}`}
     >
-      <div className="weathercard__info-container" aria-label="description">
+      <div className="weathercard__info-container">
         <p className="weathercard__time">{displayedTime}</p>
         <p className="weathercard__temperature">73°</p>
         <p className="weathercard__description">
