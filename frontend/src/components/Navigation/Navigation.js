@@ -11,7 +11,7 @@ import { NavLink } from 'react-router-dom';
  * NOTE: routes to respective modals need to be added
  */
 
-function Navigation({ isLoggedIn, hasAvatar }) {
+function Navigation({ isLoggedIn, hasAvatar, username }) {
   const defaultUser = 'Terrence Tegegne';
 
   return (
@@ -23,7 +23,7 @@ function Navigation({ isLoggedIn, hasAvatar }) {
           </li>
           <li>
             <NavLink to="/profile" className="navigation__link">
-              {defaultUser}
+              {defaultUser} || {username}
               {hasAvatar ? (
                 <img
                   className="navigation__user"

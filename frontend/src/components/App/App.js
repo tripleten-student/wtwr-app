@@ -104,7 +104,8 @@ const App = () => {
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
           {/* isLoggedIn will be determined by a future user context */}
-          <Navigation isLoggedIn={isLoggedIn} username={userName} hasAvatar={userAvatar}/>
+          {/* I left the userName state in for the purpose of seeing the different navigation css */}
+          <Navigation isLoggedIn={isLoggedIn} username={currentUser || userName} hasAvatar={userAvatar}/>
           App
           {/* Replace the ModalWithForm below with specific modals */}
           <Login
