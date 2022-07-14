@@ -1,5 +1,12 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
+
+/**
+ * The **clothing** module contains the routes for clothing items
+ *
+ * @author [Devin Jaggernauth](https://github.com/mentalcaries)
+ */
+
 const {
   getAllItems,
   createItem,
