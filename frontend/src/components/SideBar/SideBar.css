@@ -1,0 +1,55 @@
+.sidebar{
+    width: 248px;
+    height: 237px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'CabinetGrotesk-Bold';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.25;
+    color: rgba(0, 0, 0, 1);
+}
+
+.sidebar__user{
+    display: flex;
+    align-items: center;
+    margin:0;
+    padding: 0;
+}
+
+.sidebar__user-avatar{
+    height: 56px;
+    width: 56px;
+    margin:0 16px 0 0;
+    border-radius: 50%;
+}
+
+.sidebar__user-name{
+    margin:0;
+    padding:0;
+}
+
+.sidebar__links{
+    margin: 24px 0 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.sidebar__link{
+    margin: 0 0 8px 0;
+    cursor: pointer;
+}
+
+.sidebar__link:hover{
+    opacity: 0.6;
+}
+
+.sidebar__link_type_delete{
+    margin:0;
+    color:red;
+}
