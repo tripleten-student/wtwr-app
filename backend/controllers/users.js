@@ -16,6 +16,7 @@ const { devkey } = require('../utils/config');
 
 const { NODE_ENV, WTWR_JWT_KEY } = process.env;
 
+// Sign in
 const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
@@ -34,6 +35,7 @@ const login = (req, res, next) => {
     });
 };
 
+// Sign up
 const createUser = (req, res, next) => {
   const {
     email, password, name, avatar,
@@ -93,6 +95,7 @@ const getCurrentUser = (req, res, next) => {
     .catch(next);
 };
 
+// Change profile name and avatar
 const updateUserProfile = (req, res, next) => {
   const currentUser = req.user._id;
   const { name, avatar } = req.body;
@@ -118,6 +121,7 @@ const updateUserProfile = (req, res, next) => {
     });
 };
 
+// Change password
 const updatePassword = (req, res, next) => {
   const currentUser = req.user._id;
   const { oldPassword, newPassword } = req.body;
