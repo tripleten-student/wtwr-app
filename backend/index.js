@@ -20,8 +20,7 @@ const app = express();
 
 const { PORT = 4000, NODE_ENV, MONGO_URI } = process.env;
 
-// mongoose.connect(NODE_ENV === 'production' ? MONGO_URI : localdb);
-mongoose.connect('mongodb://0.0.0.0:27017/wtwr');
+mongoose.connect(NODE_ENV === 'production' ? MONGO_URI : localdb);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
