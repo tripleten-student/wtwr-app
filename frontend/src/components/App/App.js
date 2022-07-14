@@ -6,13 +6,15 @@ import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Login from "../Login";
+import Register from '../Register/Register';
 
 /**
  * The main React **App** component.
  */
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [isLoginOpen, setIsLoginOpen] = React.useState(true);
+  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
+  const [isRegisterOpen, setisRegisterOpen] = React.useState(true)
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -95,6 +97,10 @@ const App = () => {
             setLoginEmail={setLoginEmail}
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
+          />
+
+          <Register 
+          isOpen={isRegisterOpen}
           />
 
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
