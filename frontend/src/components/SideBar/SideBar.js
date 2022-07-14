@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import avatar from '../../images/Avatars/elise.png';
 
 /**
- * The **Footer** component displays copyright and year information
+ * The **SideBar** component displays all the
+ *links to open the modals that will allow the user to modify some of the data
  *
  * @author [Santiago](https://github.com/Santiag0SR)
  */
