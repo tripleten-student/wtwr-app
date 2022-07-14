@@ -5,7 +5,7 @@ import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
-import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
+import CreateClothingModal from '../CreateClothingModal/ClothingModal';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 
 /**
@@ -113,7 +113,7 @@ const App = () => {
 
           </ModalWithForm> */}
 
-          <CreateClothingModal isOpen={isModalWithFormOpen} onClose={closeAllPopups}/>
+          <CreateClothingModal handleSubmit={() => {}} isOpen={isModalWithFormOpen} onClose={closeAllPopups}/>
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           {/* <ClothingCard
