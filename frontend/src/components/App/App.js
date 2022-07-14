@@ -25,6 +25,7 @@ const App = () => {
 
 // logic with actual data needed in the future 
   const [userAvatar, setUserAvatar] = React.useState(false);
+  // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
   const [userName, setUserName] = React.useState(false);
   
   // not using state here, assuming the time only gets read every time user refreshes the page
