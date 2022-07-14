@@ -51,31 +51,10 @@
 
 
 
-.modal__select {
-    /*styles reset, including removing the default dropdown arrow */
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: transparent;
-  border: none;
-  padding: 0 1em 0 0;
-  margin: 0;
-  width: 100%;
-  font-family: inherit;
-  font-size: inherit;
-  cursor: inherit;
-  line-height: inherit;
-  z-index: 1;
-  outline: none;
-}
 
-option[hidden] {
-    color: #9e9e9e;
-  }
 
   .modal__select-container {
     width: 100%;
-    border-bottom: 1px solid #000;
     cursor: pointer;
     background-color: #fff;
     position: relative;
@@ -87,3 +66,7 @@ option[hidden] {
     bottom: 5px;
     position: absolute;
   }
+
+.modal__dropdown-input {
+    color: rgba(0,0,0,0.5);
+}

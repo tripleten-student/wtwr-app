@@ -36,25 +36,27 @@ import './CreateClothingModal.css'
         <ModalWithForm formTitle="New garment" name="add-clothes" position="middle" width="normal" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} submitButtonLabel="Add garment">
             <label className="modal__input-label" htmlFor="name">Name</label>
             <input className="modal__input" type="text" name="name" id="name" placeholder="Name" required/>
-            <label className="modal__input-label" htmlFor="type">Type</label>
+            <p className="modal__input-label">Type</p>
             <div className="modal__select-container">
-                <select name="type" id="type" required className="modal__select">
-                    <option value="" disabled selected hidden>Choose</option>
-                    <option value="tops">Tops & Outerwear</option>
-                    <option value="bottoms">Bottoms</option>
-                    <option value="accessories">Accessories</option>
-                    <option value="shoes">Shoes</option>
-                </select>
-            </div>
-            <label className="modal__input-label" htmlFor="weather">Weather</label>
+                <div  className="modal__input modal__dropdown-input">Choose</div>
+                </div>
+                    <ul>
+                        <li>Tops & Outerwear</li>
+                        <li>Bottoms</li>
+                        <li>Accessories</li>
+                        <li>Shoes</li>
+                    </ul>
+          
+            <p className="modal__input-label">Weather</p>
             <div className="modal__select-container">
-                <select name="weather" id="weather" required className="modal__select">
-                    <option value="" disabled selected hidden>Choose</option>
-                    <option value="cold">Cold (30° F)</option>
-                    <option value="moderate">Moderate (50° F)</option>
-                    <option value="hot">Hot (70° F)</option>
-                </select>
-            </div>
+                <div  className="modal__input modal__dropdown-input">Choose</div>
+                </div>
+                    <ul>
+                        <li>Cold (30° F)</li>
+                        <li>Moderate (50° F)</li>
+                        <li>Hot (70° F)</li>
+                    </ul>
+                
             <label className="modal__input-label" htmlFor="image">Image</label>
             <input className="modal__input" type="text" name="image" id="image" placeholder="Image URL" onChange={handleChange} required/>
             {image && (
