@@ -144,6 +144,42 @@ const updateAvatar = (req, res, next) => {
     });
 };
 
+const updatePassword = (req, res, next) => {
+  const currentUser = req.user._id;
+  const { password } = req.body;
+  const newPassword = bcrypt.hash(password, 10);
+
+  User.findByIdAndUpdate(
+    currentUser,
+    { password: newPassword },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .orFail(new NotFoundError('User ID not found'))
+    .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Invalid password'));
+      } else if (err.name === 'CastError') {
+        next(new BadRequestError('Invalid User ID'));
+      } else {
+        next(err);
+      }
+    });
+};
+
+const deleteUser = (req, res, next) => {
+  const currentUser = req.user._id;
+  User.findByIdAndRemove(currentUser)
+    .orFail(new NotFoundError('User ID not found'))
+    .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
+    .catch(() => {
+      next(new BadRequestError('Cannot delete user'));
+    });
+};
+
 module.exports = {
   login,
   createUser,
@@ -152,4 +188,6 @@ module.exports = {
   getUserById,
   updateName,
   updateAvatar,
+  updatePassword,
+  deleteUser,
 };
