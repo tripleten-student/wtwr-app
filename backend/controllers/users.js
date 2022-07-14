@@ -93,13 +93,13 @@ const getCurrentUser = (req, res, next) => {
     .catch(next);
 };
 
-const updateName = (req, res, next) => {
+const updateUserProfile = (req, res, next) => {
   const currentUser = req.user._id;
-  const { name } = req.body;
+  const { name, avatar } = req.body;
 
   User.findByIdAndUpdate(
     currentUser,
-    { name },
+    { name, avatar },
     {
       new: true,
       runValidators: true,
@@ -109,32 +109,7 @@ const updateName = (req, res, next) => {
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Invalid name'));
-      } else if (err.name === 'CastError') {
-        next(new BadRequestError('Invalid User ID'));
-      } else {
-        next(err);
-      }
-    });
-};
-
-const updateAvatar = (req, res, next) => {
-  const currentUser = req.user._id;
-  const { avatar } = req.body;
-
-  User.findByIdAndUpdate(
-    currentUser,
-    { avatar },
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
-    .orFail(new NotFoundError('User ID not found'))
-    .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Invalid URL'));
+        next(new BadRequestError('Invalid name or avatar URL'));
       } else if (err.name === 'CastError') {
         next(new BadRequestError('Invalid User ID'));
       } else {
@@ -145,18 +120,22 @@ const updateAvatar = (req, res, next) => {
 
 const updatePassword = (req, res, next) => {
   const currentUser = req.user._id;
-  const { password } = req.body;
-  const newPassword = bcrypt.hash(password, 10);
+  const { oldPassword, newPassword } = req.body;
 
-  User.findByIdAndUpdate(
-    currentUser,
-    { password: newPassword },
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
+  User.findById(currentUser)
+    .select('+password')
     .orFail(new NotFoundError('User ID not found'))
+    .then((user) => {
+      user.comparePassword(oldPassword).then((match) => {
+        if (!match) {
+          return next(new UnauthorizedError('Wrong Old Password'));
+        }
+        const hashedPassword = bcrypt.hash(newPassword, 10);
+        const thisUser = user;
+        thisUser.password = hashedPassword;
+        return user;
+      });
+    })
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -185,8 +164,7 @@ module.exports = {
   getUsers,
   getCurrentUser,
   getUserById,
-  updateName,
-  updateAvatar,
+  updateUserProfile,
   updatePassword,
   deleteUser,
 };
