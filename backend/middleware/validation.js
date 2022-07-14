@@ -25,22 +25,17 @@ const validateEmail = (value, helpers) => {
 
 const validateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).messages({
-      'string.min': 'The name field needs at least 2 characters',
-      'string.max': 'The maximum length of the name field is 30 characters',
-      'string.empty': 'The name field is empty',
-    }),
-    about: Joi.string().min(2).max(30).messages({
-      'string.min': 'The about field needs at least two characters',
-      'string.max': 'The maximum length of the about field is 30 characters',
-      'string.empty': 'The about field is empty',
-    }),
-    avatar: Joi.string().custom(validateURL),
     email: Joi.string().required().custom(validateEmail),
     password: Joi.string().min(8).required().messages({
       'string.min': 'The password field needs at least 8 characters',
       'string.empty': 'The password field is empty',
     }),
+    name: Joi.string().min(2).max(30).messages({
+      'string.min': 'The name field needs at least 2 characters',
+      'string.max': 'The maximum length of the name field is 30 characters',
+      'string.empty': 'The name field is empty',
+    }),
+    avatar: Joi.string().custom(validateURL),
   }),
 });
 
