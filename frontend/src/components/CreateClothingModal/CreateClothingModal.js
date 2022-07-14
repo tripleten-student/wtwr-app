@@ -1,13 +1,7 @@
 import React from 'react';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import PropTypes from 'prop-types';
-import '../../blocks/modal/__input/modal__input.css';
-import '../../blocks/modal/__input-label/modal__input-label.css';
-import '../../blocks/modal/__select/modal__select.css';
-import '../../blocks/modal/__select-container/modal__select-container.css';
-import '../../blocks/modal/__image/modal__image.css';
-import '../../blocks/modal/__image-button/modal__image-button.css';
-import '../../blocks/modal/__image-container/modal__image-container.css';
+import './CreateClothingModal.css'
 
 /**
  * The **CreateClothingModal** component will let users add new clothes to the database.

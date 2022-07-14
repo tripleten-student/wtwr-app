@@ -1,7 +1,0 @@
-.modal__input-label {
-    margin-bottom: 8px;
-}
-
-.modal__input-label:not(:first-child) {
-    margin-top: 24px;
-}

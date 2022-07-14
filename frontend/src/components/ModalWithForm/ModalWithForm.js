@@ -9,19 +9,8 @@ import PropTypes from 'prop-types';
  *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
 
-const ModalWithForm = ({ formTitle, name, position, width, onSubmit, submitButtonLabel, isOpen, onClose, children }) => {
-  const formRef = React.createRef();
-  const [isFormValid, setIsFormValid] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsFormValid(formRef.current.checkValidity());
-  }, [isOpen, formRef]);
-
-  const handleChange = () => {
-    setIsFormValid(formRef.current.checkValidity());
-  }
-
-  const submitButtonClassName = `form__save-button form__save-button_rel_${name} ${!isFormValid && 'form__save-button_disabled'}`;
+const ModalWithForm = React.forwardRef((props, ref) => {
+  const { formTitle, name, position, width, isOpen, onClose, onSubmit, onChange, children } = props;
 
   return (
     <Modal {...{ name, position, width, isOpen, onClose }}>
@@ -29,19 +18,16 @@ const ModalWithForm = ({ formTitle, name, position, width, onSubmit, submitButto
         className="form"
         name={name}
         action="#"
-        ref={formRef}
+        ref={ref}
         onSubmit={onSubmit}
-        onChange={handleChange}
+        onChange={onChange}
         noValidate>
         <h2 className="form__title">{formTitle}</h2>
         {children}
-        <button type="submit" className={submitButtonClassName} disabled={!isFormValid} aria-label={`${submitButtonLabel} ${name}`}>
-          {submitButtonLabel}
-        </button>
       </form>
     </Modal>
   );
-};
+});
 
 ModalWithForm.propTypes = {
   formTitle: PropTypes.string.isRequired,
@@ -51,7 +37,7 @@ ModalWithForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  submitButtonLabel: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   children: PropTypes.any,
 };
 
