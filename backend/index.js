@@ -5,6 +5,7 @@ const { errors } = require('celebrate');
 const helmet = require('helmet');
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middleware/logger');
+const errorHandler = require('./middleware/errorHandler');
 const { localdb } = require('./utils/config');
 const routes = require('./routes');
 
@@ -19,7 +20,8 @@ const app = express();
 
 const { PORT = 4000, NODE_ENV, MONGO_URI } = process.env;
 
-mongoose.connect(NODE_ENV === 'production' ? MONGO_URI : localdb);
+// mongoose.connect(NODE_ENV === 'production' ? MONGO_URI : localdb);
+mongoose.connect('mongodb://0.0.0.0:27017/wtwr');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,7 +30,7 @@ app.use(cors());
 app.use(helmet());
 
 app.use(cors());
-app.options('*', cors()); // Enable requests for all routes
+app.options('*', cors());
 app.use(requestLogger);
 
 app.use(routes);
@@ -40,4 +42,4 @@ app.listen(PORT, () => {
 app.use(errorLogger);
 app.use(errors());
 
-app.use('./middleware/errorHandler');
+app.use(errorHandler);
