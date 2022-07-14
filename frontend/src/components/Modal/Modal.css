@@ -30,6 +30,7 @@
 
 .modal_position_top-right {
   justify-content: flex-end;
+  align-items: flex-start;
 }
 
 .modal__container {
@@ -67,6 +68,11 @@
   background-size: cover;
   border: none;
   cursor: pointer;
+  transition: opacity .1s;
+}
+
+.modal__close-btn:hover {
+  opacity: .6;
 }
 
 .modal__close-btn_wide {
