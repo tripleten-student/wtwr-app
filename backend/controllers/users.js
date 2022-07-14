@@ -72,7 +72,9 @@ const getUsers = (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  User.findById(req.params._id)
+  const { userId } = req.params;
+
+  User.findById(userId)
     .orFail(new NotFoundError('User ID not found'))
     .then((users) => users.find((user) => user._id === req.params._id))
     .then((user) => {
@@ -85,14 +87,14 @@ const getUserById = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  User.findById(req.params._id)
+  User.findById(req.user._id)
     .orFail(new NotFoundError('User ID not found'))
     .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
     .catch(next);
 };
 
 const updateName = (req, res, next) => {
-  const currentUser = req.params._id;
+  const currentUser = req.user._id;
   const { name } = req.body;
 
   User.findByIdAndUpdate(
@@ -117,7 +119,7 @@ const updateName = (req, res, next) => {
 };
 
 const updateAvatar = (req, res, next) => {
-  const currentUser = req.params._id;
+  const currentUser = req.user._id;
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(
@@ -142,7 +144,7 @@ const updateAvatar = (req, res, next) => {
 };
 
 const updatePassword = (req, res, next) => {
-  const currentUser = req.params._id;
+  const currentUser = req.user._id;
   const { password } = req.body;
   const newPassword = bcrypt.hash(password, 10);
 
@@ -168,7 +170,7 @@ const updatePassword = (req, res, next) => {
 };
 
 const deleteUser = (req, res, next) => {
-  const currentUser = req.params._id;
+  const currentUser = req.user._id;
   User.findByIdAndRemove(currentUser)
     .orFail(new NotFoundError('User ID not found'))
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
