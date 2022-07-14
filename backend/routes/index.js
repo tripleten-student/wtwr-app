@@ -1,5 +1,12 @@
 const express = require('express');
 
+/**
+ * This module contains the main routes
+ *
+ * @author [Devin Jaggernauth](https://github.com/mentalcaries)
+ * @author [Hoang Le Chau](https://github.com/hoanglechau)
+ */
+
 const router = express.Router();
 const auth = require('../middleware/auth');
 const { createUser, login } = require('../controllers/users');
