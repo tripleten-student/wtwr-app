@@ -31,7 +31,7 @@ const WeatherCard = ({ displayedTime, timeOfTheDay }) => {
           : 'weathercard_overlay'
       } ${backgroundImage}`}
     >
-      <div className="weathercard__info-container">
+      <div className="weathercard__info-container" aria-label="description">
         <p className="weathercard__time">{displayedTime}</p>
         <p className="weathercard__temperature">73°</p>
         <p className="weathercard__description">
