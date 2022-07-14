@@ -4,6 +4,12 @@ const { itemsNotFound, itemNotFound, cannotDelete } = require('../utils/error');
 
 const Item = require('../models/clothingItem');
 
+/**
+ * The **clothing** module contains the controllers for clothing items
+ *
+ * @author [Devin Jaggernauth](https://github.com/mentalcaries)
+ */
+
 const getAllItems = (req, res, next) => {
   Item.find()
     .orFail(() => {
