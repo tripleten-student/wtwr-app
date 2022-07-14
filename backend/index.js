@@ -9,7 +9,7 @@ const { localdb } = require('./utils/config');
 const routes = require('./routes');
 
 /**
- * Main entry point for the backend
+ * This is the main entry point for the backend
  *
  * @author [Devin Jaggernauth](https://github.com/mentalcaries)
  * @author [Hoang Le Chau](https://github.com/hoanglechau)
