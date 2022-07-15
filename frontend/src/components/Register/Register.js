@@ -1,61 +1,71 @@
 import './Register.css';
-import React from 'react';
+import React, { useState } from 'react';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
-import { useFormAndValidation } from '../hooks/useFormAndValidation';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
+const Register = ({ isOpen, onClose, onSubmit }) => {
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-const Register = ({ isOpen, onClose }) => {
-
-
-  const { isValid, errors, handleChange, resetForm } = useFormAndValidation(['login-email', 'login-pwd']);
+  const { isValid, errors, handleChange, resetForm } = useFormAndValidation([
+    'register-email',
+    'register-pwd',
+  ]);
 
   const formRef = React.useRef(null);
   const [isFormValid, setIsFormValid] = React.useState(false);
 
-  React.useEffect(() => {
-    setIsFormValid(formRef.current.checkValidity());
-  }, [isOpen, formRef]);
+  // React.useEffect(() => {
+  //   setIsFormValid(formRef.current.checkValidity());
+  // }, [isOpen, formRef]);
 
   const handleFormChange = () => {
-    setIsFormValid(formRef.current.checkValidity());
-  }
+    formRef && setIsFormValid(formRef.current.checkValidity());
+  };
 
   // Reset form values every time the popup opens
   React.useEffect(() => {
     const initialValues = {
-      'login-email': '',
+      'register-email': '',
       'login-password': '',
     };
-    setLoginEmail('');
-    setLoginPassword('');
+    setRegisterEmail('');
+    setRegisterPassword('');
     resetForm({ ...initialValues }, { ...initialValues }, true);
-  }, [resetForm, setLoginEmail, setLoginPassword]);
+  }, [resetForm, setRegisterEmail, setRegisterPassword]);
 
   const handleInputChange = (e) => {
-    if (e.target.name === 'login-email') {
-      setLoginEmail(e.target.value);
+    if (e.target.name === 'register-email') {
+      setRegisterEmail(e.target.value);
     }
-    if (e.target.name === 'login-pwd') {
-      setLoginPassword(e.target.value);
+    if (e.target.name === 'register-pwd') {
+      setRegisterPassword(e.target.value);
+    }
+    if (e.target.name === 'confirm-pwd') {
+      setConfirmPassword(e.target.value);
     }
     handleChange(e);
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (isValid || (loginEmail && loginPassword)) {
-      onSubmit({ loginEmail, loginPassword });
+    if (isValid || (registerEmail && registerPassword === confirmPassword)) {
+      onSubmit({ registerEmail, registerPassword });
     }
-  }
+  };
 
   const emailInputClassName = ``;
   const emailErrorClassName = ``;
   const passwordInputClassName = ``;
   const passwordErrorClassName = ``;
-  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${!isFormValid && 'form__submit-button_disabled'}`;
+  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${
+    !isFormValid && 'form__submit-button_disabled'
+  }`;
 
   return (
     <ModalWithForm
+      ref={formRef}
       formTitle="Sign up"
       name="register"
       position="top-right"
@@ -63,37 +73,55 @@ const Register = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={() => {}}
-      onChange={() => {}}
+      onChange={handleFormChange}
     >
       <div className="form__input-container">
-        <label htmlFor="login-email" className="form__input-label">
+        <label htmlFor="register-email" className="form__input-label">
           Email
-          <span id="login-email-error" className={emailErrorClassName}></span>
+          <span id="register-email-error" className={emailErrorClassName}></span>
         </label>
         <input
           type="email"
-          id="login-email"
-          name="login-email"
+          id="register-email"
+          name="register-email"
           placeholder="Email"
           className="form__input"
-          value={loginEmail}
+          value={registerEmail}
           onChange={handleInputChange}
           required
         />
       </div>
 
       <div className="form__input-container">
-        <label htmlFor="login-pwd" className="form__input-label">
+        <label htmlFor="register-pwd" className="form__input-label">
           Password
-          <span id="login-pwd-error" className={passwordErrorClassName}></span>
+          <span id="register-pwd-error" className={passwordErrorClassName}></span>
         </label>
         <input
           type="password"
-          id="login-pwd"
-          name="login-pwd"
+          id="register-pwd"
+          name="register-pwd"
           placeholder="Password"
           className="form__input"
-          value={loginPassword}
+          value={registerPassword}
+          minLength="8"
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <div className="form__input-container">
+        <label htmlFor="confirm-pwd" className="form__input-label">
+          Confirm Password
+          <span id="confirm-pwd-error" className={passwordErrorClassName}></span>
+        </label>
+        <input
+          type="password"
+          id="confirm-pwd"
+          name="confirm-pwd"
+          placeholder="Password"
+          className="form__input"
+          value={confirmPassword}
           minLength="8"
           onChange={handleInputChange}
           required
@@ -107,11 +135,11 @@ const Register = ({ isOpen, onClose }) => {
           disabled={!isFormValid}
           aria-label="Log in"
         >
-          Log in
+          Next
         </button>
         <p>or</p>
         <button type="button" className="form__secondary-button" aria-label="Register">
-          Register
+          Login
         </button>
       </div>
     </ModalWithForm>

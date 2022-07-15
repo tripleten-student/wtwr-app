@@ -101,6 +101,7 @@ const App = () => {
 
           <Register 
           isOpen={isRegisterOpen}
+          onClose={closeAllPopups}
           />
 
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
