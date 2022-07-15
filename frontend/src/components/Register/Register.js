@@ -11,29 +11,34 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   const { isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'register-email',
     'register-pwd',
+    'confirm-pwd'
   ]);
 
   const formRef = React.useRef(null);
   const [isFormValid, setIsFormValid] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   setIsFormValid(formRef.current.checkValidity());
-  // }, [isOpen, formRef]);
+  React.useEffect(() => {
+    setIsFormValid(formRef.current.checkValidity());
+  }, [isOpen, formRef]);
 
   const handleFormChange = () => {
-    formRef && setIsFormValid(formRef.current.checkValidity());
+    console.log(registerPassword)
+    console.log(confirmPassword)
+    setIsFormValid(formRef.current.checkValidity());
   };
 
   // Reset form values every time the popup opens
   React.useEffect(() => {
     const initialValues = {
       'register-email': '',
-      'login-password': '',
+      'register-password': '',
+      'confirm-password':''
     };
     setRegisterEmail('');
     setRegisterPassword('');
+    setConfirmPassword('')
     resetForm({ ...initialValues }, { ...initialValues }, true);
-  }, [resetForm, setRegisterEmail, setRegisterPassword]);
+  }, [resetForm, setRegisterEmail, setRegisterPassword, setConfirmPassword]);
 
   const handleInputChange = (e) => {
     if (e.target.name === 'register-email') {
