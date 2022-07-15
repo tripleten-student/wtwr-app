@@ -34,7 +34,7 @@ function Navigation({ isLoggedIn, hasAvatar, username }) {
               ) : (
                 /** takes username, turns string to uppercase and takes first letter */
                 <span className="navigation__user navigation__user_type_none">
-                  {'T' || { username }.toUpperCase().charAt(0)}
+                  {username.toUpperCase().charAt(0) || 'T'}
                 </span>
               )}
             </NavLink>
