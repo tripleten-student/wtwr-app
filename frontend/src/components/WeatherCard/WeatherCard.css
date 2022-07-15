@@ -93,8 +93,12 @@
   background-color: #6ca6c7;
 }
 .weathercard_weather_day-sunny {
-  background-image: url('../../images/WeatherCard/night-sunny.svg');
+  background-image: url('../../images/WeatherCard/day-sunny.svg');
   background-size: content-box;
+}
+.weathercard_weather_day-sleet {
+  background-image: url('../../images/WeatherCard/day-sleet.svg');
+  background-size: contain;
 }
 
 .weathercard_weather_night-cloudy {
@@ -120,4 +124,8 @@
 .weathercard_weather_night-sunny {
   background-image: url('../../images/WeatherCard/night-sunny.svg');
   background-size: content-box;
+}
+.weathercard_weather_night-sleet {
+  background-image: url('../../images/WeatherCard/night-sleet.svg');
+  background-size: contain;
 }

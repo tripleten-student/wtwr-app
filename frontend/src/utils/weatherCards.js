@@ -94,9 +94,30 @@ function determineTimeOfTheDay(currentHour) {
     return 'overnight';
   }
 }
-function shortenDescription(description) {
-  const regex = /\d{1,3}%/gi;
-  return description.match(regex)[0];
+function generateDescription(
+  categorizedWeather,
+  chance_of_rain,
+  chance_of_snow,
+  displayedTime,
+  timeOfTheDay
+) {
+  if (displayedTime.toLowerCase() === timeOfTheDay) {
+    if (categorizedWeather === 'snowy') {
+      return `Chance of snow: ${chance_of_snow}`;
+    } else if (categorizedWeather === 'rainy') {
+      return `Chance of rain: ${chance_of_rain}`;
+    } else {
+      return categorizedWeather.charAt(0).toUpperCase() + categorizedWeather.slice(1);
+    }
+  } else {
+    if (categorizedWeather === 'snowy') {
+      return chance_of_snow;
+    } else if (categorizedWeather === 'rainy') {
+      return chance_of_rain;
+    } else {
+      return categorizedWeather.charAt(0).toUpperCase() + categorizedWeather.slice(1);
+    }
+  }
 }
 
-export { determineTimeOfTheDay, shortenDescription, categorizeWeatherTypeForImage };
+export { determineTimeOfTheDay, generateDescription, categorizeWeatherTypeForImage };
