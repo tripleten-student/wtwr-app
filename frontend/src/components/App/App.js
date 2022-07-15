@@ -63,6 +63,7 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
+    setIsEditProfileDataOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -106,7 +107,7 @@ const App = () => {
         >
           App
           {/* Replace the ModalWithForm below with specific modals */}
-          <Login
+          {/* <Login
             isOpen={isLoginOpen}
             onClose={closeAllPopups}
             onSubmit={handleLoginSubmit}
@@ -114,7 +115,7 @@ const App = () => {
             setLoginEmail={setLoginEmail}
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
-          />
+          /> */}
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           <EditProfileDataModal

@@ -12,12 +12,13 @@ const EditProfileDataModal = ({
   isOpen,
   onClose,
   onSubmit,
-  name,
+  //name,
   avatar,
   currentUser,
   setAvatar,
   setUserName,
 }) => {
+  const [name, setName] = React.useState('');
   const { isValid, errors, handleChange } = useFormAndValidation(['userName', 'avatar-url']);
   const formRef = React.useRef();
   const [isFormValid, setIsFormValid] = React.useState(false);
@@ -32,21 +33,25 @@ const EditProfileDataModal = ({
   React.useEffect(() => {
     setIsFormValid(formRef.current.checkValidity());
   }, [isOpen, formRef]);
-  const handleInputChange = (e) => {
-    if (e.target.name === 'userName') {
-      setUserName(e.target.value);
+  const handleInputChange = (event) => {
+    if (event.target.name === 'userName') {
+      setUserName(event.target.value);
     }
-    if (e.target.name === 'avatar-url') {
-      setAvatar(e.target.value);
+    if (event.target.name === 'avatar-url') {
+      setAvatar(event.target.value);
     }
-    handleChange(e);
+    handleChange(event);
   };
 
-  const handleFormSubmit = (evt) => {
-    evt.preventDefault();
+
+  
+
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
     onSubmit({
-      name,
-      avatar,
+      username:name,
+      avatar:avatar,
     });
   };
   const handleFormChange = () => {
