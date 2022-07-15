@@ -7,6 +7,7 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
+import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 
 /**
  * The main React **App** component.
@@ -20,6 +21,7 @@ const App = () => {
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
+  const [isEditProfileDataOpen, setIsEditProfileDataOpen]= React.useState(true);
 
   // not using state here, assuming the time only gets read every time user refreshes the page
   const currentHour = new Date().getHours();
@@ -91,6 +93,11 @@ const App = () => {
     setCurrentUser({});
     setCurrentUserEmail('');
   };
+
+  const handleUpdateProfileData=()=>{
+    setCurrentUser({});
+    
+  }
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -110,6 +117,11 @@ const App = () => {
           />
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
+          <EditProfileDataModal
+          isOpen={isEditProfileDataOpen}
+          onSubmit={handleUpdateProfileData}
+          onClose={closeAllPopups}
+          ></EditProfileDataModal>
           <ClothingCard
             name="T-shirt"
             // please test with empty string to see the default image show up on card with "add your photo" button
