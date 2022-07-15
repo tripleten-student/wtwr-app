@@ -7,8 +7,9 @@ import { NavLink } from 'react-router-dom';
  *
  * @author [Sam](https://github.com/Samm96)
  *
- * NOTE: actual username prop needs to be added in place of `defaultUser`
  * NOTE: routes to respective modals need to be added
+ * NOTE: add signup modal prop
+ * NOTE: add `onClick` to buttons for signin / login modals
  */
 
 function Navigation({ isLoggedIn, hasAvatar, username }) {
@@ -23,7 +24,7 @@ function Navigation({ isLoggedIn, hasAvatar, username }) {
           </li>
           <li>
             <NavLink to="/profile" className="navigation__link">
-              {defaultUser} || {username}
+              {username || defaultUser}
               {hasAvatar ? (
                 <img
                   className="navigation__user"
@@ -31,11 +32,10 @@ function Navigation({ isLoggedIn, hasAvatar, username }) {
                   alt="user avatar"
                 />
               ) : (
-                <img
-                  className="navigation__user"
-                  src={require('../../images/avatar-false.png')}
-                  alt="user avatar"
-                />
+                /** takes username, turns string to uppercase and takes first letter */
+                <span className="navigation__user navigation__user_type_none">
+                  {'T' || { username }.toUpperCase().charAt(0)}
+                </span>
               )}
             </NavLink>
           </li>
@@ -47,9 +47,6 @@ function Navigation({ isLoggedIn, hasAvatar, username }) {
           </li>
           <li>
             <button className="navigation__button">Log In</button>
-          </li>
-          <li>
-            <img className="navigation__user navigation__user_signin" alt="user avatar" />
           </li>
         </ul>
       )}
