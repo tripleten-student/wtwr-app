@@ -9,6 +9,7 @@ import Navigation from '../Navigation/Navigation';
 import Modal from '../Modal/Modal';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
+import EditPasswordModal from '../EditPasswordModal/EditPasswordModal'
 
 /**
  * The main React **App** component.
@@ -16,11 +17,13 @@ import Login from '../Login';
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(true);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
+  const [loginNewPassword, setLoginNewPassword]=React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
 
 // logic with actual data needed in the future 
@@ -68,6 +71,7 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
+    setIsEditPasswordModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -98,6 +102,11 @@ const App = () => {
     setCurrentUser({});
     setCurrentUserEmail('');
   };
+  const handleLChangePasswordSubmit=()=>{
+    setLoginPassword('');
+    setLoginNewPassword('');
+    console.log('new password set');
+  }
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -125,6 +134,14 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
+          <EditPasswordModal
+          isOpen={isEditPasswordModalOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleLChangePasswordSubmit}
+            loginPassword={loginPassword}
+            setLoginPassword={setLoginPassword}
+            loginNewPassword ={loginNewPassword}
+            setLoginNewPassword={setLoginNewPassword}/>
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           <ClothingCard
