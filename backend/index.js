@@ -7,7 +7,7 @@ const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const errorHandler = require('./middleware/errorHandler');
 const { localdb } = require('./utils/config');
-const routes = require('./routes');
+const mainRouter = require('./routes/index');
 
 /**
  * This is the main entry point for the backend
@@ -32,7 +32,7 @@ app.use(cors());
 app.options('*', cors());
 app.use(requestLogger);
 
-app.use(routes);
+app.use('/', mainRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
