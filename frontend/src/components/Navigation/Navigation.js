@@ -28,6 +28,7 @@ function Navigation({ isLoggedIn, hasAvatar, username }) {
               {hasAvatar ? (
                 <img
                   className="navigation__user"
+                /** Add user avatar prop and replace this with it */
                   src={require('../../images/avatar-default.png')}
                   alt="user avatar"
                 />
