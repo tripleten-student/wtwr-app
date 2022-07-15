@@ -121,25 +121,20 @@ const updateUserProfile = (req, res, next) => {
     });
 };
 
-// Change password
 const updatePassword = (req, res, next) => {
   const currentUser = req.user._id;
   const { oldPassword, newPassword } = req.body;
 
   User.findById(currentUser)
-    .select('+password')
     .orFail(new NotFoundError('User ID not found'))
-    .then((user) => {
-      user.comparePassword(oldPassword).then((match) => {
-        if (!match) {
-          return next(new UnauthorizedError('Wrong Old Password'));
-        }
-        const hashedPassword = bcrypt.hash(newPassword, 10);
-        const thisUser = user;
-        thisUser.password = hashedPassword;
-        return user;
-      });
-    })
+    .then((user) => bcrypt.compare(oldPassword, user.password).then((match) => {
+      if (!match) {
+        return next(new UnauthorizedError('Wrong Old Password'));
+      }
+      const thisUser = user;
+      thisUser.password = bcrypt.hash(newPassword, 10);
+      return user;
+    }))
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
