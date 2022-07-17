@@ -4,16 +4,20 @@
  * @author [Hoang Le Chau](https://github.com/hoanglechau)
  */
 
-module.exports.HTTP_SUCCESS_OK = 200;
-module.exports.HTTP_CLIENT_ERROR_BAD_REQUEST = 400;
-module.exports.HTTP_CLIENT_ERROR_NOT_FOUND = 404;
-module.exports.HTTP_INTERNAL_SERVER_ERROR = 500;
+const HTTP_SUCCESS_OK = 200;
+const HTTP_CLIENT_ERROR_BAD_REQUEST = 400;
+const HTTP_CLIENT_ERROR_NOT_FOUND = 404;
+const HTTP_INTERNAL_SERVER_ERROR = 500;
 
 const itemsNotFound = 'No items were found';
 const itemNotFound = 'That clothing item does not exist';
 const cannotDelete = 'You cant delete that';
 
 module.exports = {
+  HTTP_SUCCESS_OK,
+  HTTP_CLIENT_ERROR_BAD_REQUEST,
+  HTTP_CLIENT_ERROR_NOT_FOUND,
+  HTTP_INTERNAL_SERVER_ERROR,
   itemsNotFound,
   itemNotFound,
   cannotDelete,
