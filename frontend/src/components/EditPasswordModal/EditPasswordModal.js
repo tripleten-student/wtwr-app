@@ -3,9 +3,9 @@ import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
 /**
- * The **Login** component representing user authorization or login form.
+ * The **EditPasswordComponent** component representing user authorization or login form.
  *
- * @author
+ *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
 
 const EditPasswordModal = ({
@@ -17,7 +17,7 @@ const EditPasswordModal = ({
   setLoginPassword,
   setLoginNewPassword,
 }) => {
-  const { isValid, errors, handleChange, resetForm } = useFormAndValidation(['login-pwd']);
+  const { isValid, errors, handleChange, resetForm } = useFormAndValidation(['login-password']);
 
   const formRef = React.useRef(null);
   const [isFormValid, setIsFormValid] = React.useState(false);
@@ -36,7 +36,6 @@ const EditPasswordModal = ({
       'login-password': '',
       'login-newPassword': '',
     };
-
     setLoginPassword('');
     setLoginNewPassword('');
     resetForm({ ...initialValues }, { ...initialValues }, true);
@@ -63,7 +62,7 @@ const EditPasswordModal = ({
   const newPasswordErrorClassName = ``;
   const passwordInputClassName = ``;
   const passwordErrorClassName = ``;
-  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${
+  const submitButtonClassName = `form__submit-button-wide form__submit-button_rel_login ${
     !isFormValid && 'form__submit-button_disabled'
   }`;
 
@@ -71,8 +70,8 @@ const EditPasswordModal = ({
     <ModalWithForm
       ref={formRef}
       formTitle="Change password"
-      name="change password"
-      position="top-right"
+      name="change-password"
+      position="middle"
       width="normal"
       isOpen={isOpen}
       onClose={onClose}
@@ -106,7 +105,7 @@ const EditPasswordModal = ({
           type="password"
           id="login-password"
           name="login-password"
-          placeholder=" Password"
+          placeholder="Password"
           className="form__input"
           value={loginNewPassword}
           minLength="8"
@@ -123,7 +122,7 @@ const EditPasswordModal = ({
           type="password"
           id="login-password"
           name="login-password"
-          placeholder=" Password"
+          placeholder="Password"
           className="form__input"
           value={loginNewPassword}
           minLength="8"
@@ -136,7 +135,7 @@ const EditPasswordModal = ({
           type="submit"
           className={submitButtonClassName}
           disabled={!isFormValid}
-          aria-label="change password"
+          aria-label="Change password"
         >
           Change password
         </button>

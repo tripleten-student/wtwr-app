@@ -125,7 +125,7 @@ const App = () => {
             />
           App
           {/* Replace the ModalWithForm below with specific modals */}
-          <Login
+          {/* <Login
             isOpen={isLoginOpen}
             onClose={closeAllPopups}
             onSubmit={handleLoginSubmit}
@@ -133,7 +133,7 @@ const App = () => {
             setLoginEmail={setLoginEmail}
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
-          />
+          /> */}
           <EditPasswordModal
           isOpen={isEditPasswordModalOpen}
             onClose={closeAllPopups}
