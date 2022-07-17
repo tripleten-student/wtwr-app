@@ -1,6 +1,12 @@
 const { NotFoundError } = require('../errors/not-found-error');
 const { BadRequestError } = require('../errors/bad-request-error');
-const { itemsNotFound, itemNotFound, cannotDelete } = require('../utils/error');
+const { UnauthorizedError } = require('../errors/unauthorized-error');
+const {
+  itemsNotFound,
+  itemNotFound,
+  cannotDelete,
+  userNotAuthorised,
+} = require('../utils/error');
 
 const Item = require('../models/clothingItem');
 
@@ -55,25 +61,24 @@ const deleteItem = (req, res, next) => {
     });
 };
 
-const likeItem = (req, res, next) => {
-  Item.findByIdAndUpdate(
-    req.params.ItemId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true },
-  )
+const toggleLikeStatus = (req, res, next) => {
+  const currentUser = req.user._id;
+  const itemId = req.params.ItemId;
+  Item.findById(itemId)
     .orFail()
-    .then((itemData) => res.send(itemData))
-    .catch(next);
-};
-
-const unlikeItem = (req, res, next) => {
-  Item.findByIdAndUpdate(
-    req.params.ItemId,
-    { $pull: { likes: req.user._id } },
-    { new: true },
-  )
-    .orFail()
-    .then((itemData) => res.send(itemData))
+    .then((itemData) => {
+      if (itemData.owner.toString() !== currentUser) {
+        throw new UnauthorizedError(userNotAuthorised);
+      }
+      Item.findByIdAndUpdate(
+        itemId,
+        { isLiked: !itemData.isLiked },
+        { new: true },
+      )
+        .orFail()
+        .then((updatedData) => res.send(updatedData))
+        .catch(next);
+    })
     .catch(next);
 };
 
@@ -81,6 +86,5 @@ module.exports = {
   getAllItems,
   createItem,
   deleteItem,
-  likeItem,
-  unlikeItem,
+  toggleLikeStatus,
 };

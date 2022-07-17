@@ -11,7 +11,7 @@ const {
   getAllItems,
   createItem,
   deleteItem,
-  likeItem,
+  toggleLikeStatus,
   unlikeItem,
 } = require('../controllers/clothing');
 
@@ -31,7 +31,6 @@ router.delete(
   deleteItem,
 );
 
-router.put('/:ItemId/likes', likeItem);
-router.delete('/:ItemId/likes', unlikeItem);
+router.patch('/:ItemId/likes', toggleLikeStatus);
 
 module.exports = router;

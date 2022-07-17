@@ -12,6 +12,7 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const itemsNotFound = 'No items were found';
 const itemNotFound = 'That clothing item does not exist';
 const cannotDelete = 'You cant delete that';
+const userNotAuthorised = 'User is not authorized to make changes';
 
 module.exports = {
   HTTP_SUCCESS_OK,
@@ -21,4 +22,5 @@ module.exports = {
   itemsNotFound,
   itemNotFound,
   cannotDelete,
+  userNotAuthorised,
 };
