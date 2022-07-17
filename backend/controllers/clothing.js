@@ -11,12 +11,12 @@ const Item = require('../models/clothingItem');
  */
 
 const getAllItems = (req, res, next) => {
-  Item.find()
+  Item.find({ owner: req.owner._id })
     .orFail(() => {
       throw new NotFoundError(itemsNotFound);
     })
-    .then((savedArticles) => {
-      res.send(savedArticles);
+    .then((clothingItems) => {
+      res.send(clothingItems);
     })
     .catch(next);
 };
