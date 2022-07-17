@@ -1,7 +1,13 @@
 const jwt = require('jsonwebtoken');
 
-const { SECRET_KEY } = process.env;
+const { WTWR_JWT_KEY } = process.env;
 const UnauthorizedError = require('../errors/unauthorized-error');
+
+/**
+ * The **auth** module contains the middleware for authorization
+ *
+ * @author [Hoang Le Chau](https://github.com/hoanglechau)
+ */
 
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
@@ -15,7 +21,7 @@ const auth = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, SECRET_KEY);
+    payload = jwt.verify(token, WTWR_JWT_KEY);
   } catch (err) {
     return next(new UnauthorizedError('Authorization Required'));
   }
