@@ -5,31 +5,32 @@ const { errors } = require('celebrate');
 const helmet = require('helmet');
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middleware/logger');
-const auth = require('./middleware/auth');
+const errorHandler = require('./middleware/errorHandler');
 const { localdb } = require('./utils/config');
+const mainRouter = require('./routes/index');
+
+/**
+ * This is the main entry point for the backend
+ *
+ * @author [Devin Jaggernauth](https://github.com/mentalcaries)
+ * @author [Hoang Le Chau](https://github.com/hoanglechau)
+ */
 
 const app = express();
-app.use(helmet());
-app.use(cors());
-app.options('*', cors());
 
 const { PORT = 4000, NODE_ENV, MONGO_URI } = process.env;
 
 mongoose.connect(NODE_ENV === 'production' ? MONGO_URI : localdb);
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-const mainRouter = require('./routes/index');
+app.use(helmet());
 
-// const { registerUser, loginUser } = require('./middleware/validateUser');
-
+app.use(cors());
+app.options('*', cors());
 app.use(requestLogger);
-
-/// Sign up requires validation first, then create user ///
-// app.post('/signup', registerUser, createUser);
-
-/// Sign in requires email and password validation, then login ///
-// app.post('/signin', loginUser, login);
 
 app.use('/', mainRouter);
 
@@ -38,8 +39,6 @@ app.listen(PORT, () => {
 });
 
 app.use(errorLogger);
-
 app.use(errors());
 
-// ** Error handler not yet set up **
-// app.use(errorHandler);
+app.use(errorHandler);
