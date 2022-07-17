@@ -12,7 +12,6 @@ const {
   createItem,
   deleteItem,
   toggleLikeStatus,
-  unlikeItem,
 } = require('../controllers/clothing');
 
 const router = express.Router();
