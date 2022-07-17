@@ -51,12 +51,13 @@ const deleteItem = (req, res, next) => {
   Item.findById({ _id: itemId })
     .orFail(() => new NotFoundError(itemNotFound))
     .then((item) => {
-      if (currentUser === item.owner._id.toString()) {
-        Item.findByIdAndRemove({ _id: itemId })
-          .orFail()
-          .then((itemData) => res.send({ data: itemData }))
-          .catch(next);
+      if (currentUser !== item.owner._id.toString()) {
+        throw new UnauthorizedError(userNotAuthorised);
       }
+      Item.findByIdAndRemove({ _id: itemId })
+        .orFail()
+        .then((itemData) => res.send({ data: itemData }))
+        .catch(next);
     })
     .catch(next);
 };
