@@ -46,19 +46,19 @@ const createItem = (req, res, next) => {
 };
 
 const deleteItem = (req, res, next) => {
-  Item.findById({ _id: req.params.itemId })
+  const itemId = req.params.ItemId;
+  const currentUser = req.user._id;
+  Item.findById({ _id: itemId })
     .orFail(() => new NotFoundError(itemNotFound))
     .then((item) => {
-      if (req.user._id === item.owner._id.toString()) {
-        Item.findByIdAndRemove({ _id: req.params.itemId })
+      if (currentUser === item.owner._id.toString()) {
+        Item.findByIdAndRemove({ _id: itemId })
           .orFail()
           .then((itemData) => res.send({ data: itemData }))
           .catch(next);
       }
     })
-    .catch(() => {
-      next(new BadRequestError(cannotDelete));
-    });
+    .catch(next);
 };
 
 const toggleLikeStatus = (req, res, next) => {
