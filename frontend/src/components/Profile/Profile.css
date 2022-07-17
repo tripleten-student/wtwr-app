@@ -1,0 +1,59 @@
+.profile{
+    display: flex;
+    flex-direction: row;
+    margin: 47px 0 80px 0;
+    box-sizing: border-box;
+    font-family: 'CabinetGrotesk-Bold';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.25;
+    color: rgba(0, 0, 0, 1);
+}
+
+.profile-sidebar{
+    margin:0;
+    padding: 0;
+}
+
+.profile-clothes{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 0 0 93px;
+    padding: 0;
+}
+
+.profile-section__info{
+    display: flex;
+    padding: 0 0 17px 0;
+}
+
+.profile-section__title{
+    margin:0;
+    padding: 0 20px 0 0;
+}
+
+.profile-section__button{
+    margin:0;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.profile-section__button:hover{
+    opacity: 1;
+}
+
+
+.profile-clothes__section{
+    margin:0;
+    padding: 0 0 41px 0 ;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 325px);
+    grid-template-rows: auto;
+    grid-gap: 22px;
+    box-sizing: border-box;
+}
