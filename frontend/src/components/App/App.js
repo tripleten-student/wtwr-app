@@ -4,6 +4,7 @@ import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
@@ -15,13 +16,13 @@ import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(true);
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({ username: 'Practicum', avatar: '', email: 'practicum@email.com' });
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
-  const [isEditProfileDataOpen, setIsEditProfileDataOpen]= React.useState(true);
+  const [isEditProfileDataOpen, setIsEditProfileDataOpen] = React.useState(true);
 
   // not using state here, assuming the time only gets read every time user refreshes the page
   const currentHour = new Date().getHours();
@@ -95,19 +96,20 @@ const App = () => {
     setCurrentUserEmail('');
   };
 
-  const handleUpdateProfileData=()=>{
-    console.log("api patch will be implemented");
-    
+  const handleUpdateProfileData = (userData) => {
+    console.log(`api patch will be implemented - ${userData}`);
   }
   return (
     <div className="page">
       <div className="page__wrapper">
-        <CurrentTemperatureUnitContext.Provider
-          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-        >
-          App
-          {/* Replace the ModalWithForm below with specific modals */}
-          {/* <Login
+        {/* current user state should have all the user data - username, email, avatar */}
+        <CurrentUserContext.Provider value={currentUser}>
+          <CurrentTemperatureUnitContext.Provider
+            value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+          >
+            App
+            {/* Replace the ModalWithForm below with specific modals */}
+            {/* <Login
             isOpen={isLoginOpen}
             onClose={closeAllPopups}
             onSubmit={handleLoginSubmit}
@@ -116,21 +118,22 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           /> */}
-          <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
-          <Main />
-          <EditProfileDataModal
-          isOpen={isEditProfileDataOpen}
-          onUpdate={handleUpdateProfileData}
-          onClose={closeAllPopups}
-          ></EditProfileDataModal>
-          <ClothingCard
-            name="T-shirt"
-            // please test with empty string to see the default image show up on card with "add your photo" button
-            cardData={clothingCardData}
-            onCardLike={handleLikeClick}
-          />
-          <Footer />
-        </CurrentTemperatureUnitContext.Provider>
+            <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
+            <Main />
+            <EditProfileDataModal
+              isOpen={isEditProfileDataOpen}
+              onClose={closeAllPopups}
+              onUpdateUserProfile={handleUpdateProfileData}
+            />
+            <ClothingCard
+              name="T-shirt"
+              // please test with empty string to see the default image show up on card with "add your photo" button
+              cardData={clothingCardData}
+              onCardLike={handleLikeClick}
+            />
+            <Footer />
+          </CurrentTemperatureUnitContext.Provider>
+        </CurrentUserContext.Provider>
       </div>
     </div>
   );
