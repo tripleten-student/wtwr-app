@@ -9,6 +9,7 @@ import Navigation from '../Navigation/Navigation';
 import Modal from '../Modal/Modal';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
+import weatherAPI from '../../utils/weatherApi';
 
 /**
  * The main React **App** component.
@@ -23,14 +24,47 @@ const App = () => {
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
 
-// logic with actual data needed in the future 
+  // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(false);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
   const [userName, setUserName] = React.useState(false);
-  
+
   // not using state here, assuming the time only gets read every time user refreshes the page
   const currentHour = new Date().getHours();
   const timeOfTheDay = determineTimeOfTheDay(currentHour);
+  // userLocation is a state within a useEffect as the state should only be changed once after loading
+  const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
+  const weatherApi = new weatherAPI({ baseUrl: '', headers: '' });
+  React.useEffect(() => {
+    weatherApi
+      .getGeolocation()
+      .then(({ coords }) => {
+        setUserLocation({
+          ...userLocation,
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        });
+        localStorage.setItem(
+          'userLocation',
+          JSON.stringify({ latitude: coords.latitude, longitude: coords.longitude })
+        );
+      })
+      .catch(() => {
+        const savedLocation = localStorage.getItem('userLocation');
+        if (savedLocation !== null) {
+          const parsedLocation = JSON.parse(savedLocation);
+          if (parsedLocation.latitude && parsedLocation.longitude) {
+            setUserLocation({
+              ...userLocation,
+              latitude: parsedLocation.latitude,
+              longitude: parsedLocation.longitude,
+            });
+          }
+        } else {
+          setUserLocation({ ...userLocation, latitude: '40.730610', longitude: '-73.935242' });
+        }
+      });
+  }, []);
 
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
@@ -106,14 +140,14 @@ const App = () => {
         >
           {/* isLoggedIn will be determined by a future user context */}
           {/* I left the userName state in for the purpose of seeing the different navigation css */}
-          <Navigation 
-            isLoggedIn={isLoggedIn} 
+          <Navigation
+            isLoggedIn={isLoggedIn}
             /** rewrite `{userName}` to `{currentUser}` when ready */
-            username={userName} 
+            username={userName}
             hasAvatar={userAvatar}
             /** place signup modal open state here */
             /** place login modal open state here */
-            />
+          />
           App
           {/* Replace the ModalWithForm below with specific modals */}
           <Login
@@ -125,7 +159,7 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
-          <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
+          <WeatherCards timeOfTheDay={timeOfTheDay} />
           <Main />
           <ClothingCard
             name="T-shirt"

@@ -12,23 +12,27 @@ export default class weatherAPI {
 
   getGeolocation = () => {
     /** if successfully obtained user location, store it in local storage */
-    const successCallBack = ({ coords }) => {
-      this._userLocation = {
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-      };
-      localStorage.setItem('userLocation', JSON.stringify(this._userLocation));
-    };
-    /** when user didn't allow location sharing, check to fetch data from the last read, if present. If not, default to New York City coordinates */
-    const failCallBack = () => {
-      if (localStorage.getItem('userLocation')) {
-        this._userLocation = JSON.parse(localStorage.getItem('userLocation'));
-      }
-      this._userLocation = {
-        latitude: '40.730610',
-        longitude: '-73.935242',
-      };
-    };
-    navigator.geolocation.getCurrentPosition(successCallBack, failCallBack);
+    // const successCallBack = ({ coords }) => {
+    //   this._userLocation = {
+    //     latitude: coords.latitude,
+    //     longitude: coords.longitude,
+    //   };
+    //   localStorage.setItem('userLocation', JSON.stringify(this._userLocation));
+    //   return this._userLocation;
+    // };
+    // /** when user didn't allow location sharing, check to fetch data from the last read, if present. If not, default to New York City coordinates */
+    // const failCallBack = () => {
+    //   if (localStorage.getItem('userLocation')) {
+    //     this._userLocation = JSON.parse(localStorage.getItem('userLocation'));
+    //   }
+    //   this._userLocation = {
+    //     latitude: '40.730610',
+    //     longitude: '-73.935242',
+    //   };
+    //   return this._userLocation;
+    // };
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
   };
 }

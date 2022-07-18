@@ -1,6 +1,5 @@
 import './WeatherCard.css';
 import { generateDescription, categorizeWeatherTypeForImage } from '../../utils/weatherCards';
-import weatherAPI from '../../utils/weatherApi';
 
 /**
  * WeatherCard component is individual weathercard that displays morning, afternoon, evening and overnight weather report
@@ -9,8 +8,7 @@ import weatherAPI from '../../utils/weatherApi';
 
 const WeatherCard = ({ displayedTime, timeOfTheDay }) => {
   const dayOrNight = displayedTime === 'Morning' || displayedTime === 'Afternoon' ? 'day' : 'night';
-  const weatherApi = new weatherAPI({ baseUrl: '', headers: '' });
-  weatherApi.getGeolocation();
+
   /**
    * const {weatherCondition, chance_of_rain, chance_of_snow, temperature} = useContext()
    * this is just a placeholder for testing
