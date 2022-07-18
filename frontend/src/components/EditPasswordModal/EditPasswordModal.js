@@ -18,7 +18,11 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
 
   const formRef = React.useRef();
   const [isFormValid, setIsFormValid] = React.useState(false);
+  const [password, setPassword]=React.useState('');
+  const [newpassword, setNewPassword] = React.useState('');
 
+  const [confirmpassword, setConfirmPassword] = React.useState('');
+ 
   React.useEffect(() => {
     setIsFormValid(formRef.current.checkValidity());
   }, [isOpen, formRef]);
@@ -26,34 +30,40 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   const handleFormChange = () => {
     setIsFormValid(formRef.current.checkValidity());
   };
-  // const [loginNewPassword, setLoginNewPassword]=React.useState('');
+ 
 
   // Reset form values every time the popup opens
   React.useEffect(() => {
     const initialValues = {
-      password: currentUser.password,
+      password: '',
+      newpassword: '',
+      confirmpassword:''
     };
     const initialErrorValues = {
       password: '',
+      newpassword: '',
+      confirmpassword:''
     };
+    setConfirmPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
     resetForm({ ...initialValues }, { ...initialErrorValues }, true);
-  }, [isOpen, resetForm, currentUser]);
+  }, [isOpen, resetForm, setNewPassword,setConfirmPassword]);
 
   const handleInputChange = (event) => {
-    // if (event.target.name === 'login-passrword') {
-    //   setLoginPassword(event.target.value);
-    // }
-    // if (event.target.name === 'login-newPassword') {
-    //   setLoginNewPassword(event.target.value);
-    // }
-    handleChange(event);
-  };
-
+    if (event.target.name === 'new-login-password') {
+      setNewPassword(event.target.value);
+    }
+    if (event.target.name === 'confirm-login-password') {
+      setConfirmPassword(event.target.value);
+    }
+    
+    handleChange(event);}
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    const { password, newpassword } = values;
-    if (isValid || (password && newpassword)) {
-      onUpdatePassword({ password: newpassword });
+    const { password,newpassword, confirmpassword } = values;
+    if (isValid || (newpassword === confirmpassword) && (password===password))  {
+      onUpdatePassword({ password: confirmpassword });
     }
   };
 
@@ -86,7 +96,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
           placeholder="Old password"
           className="form__input"
           minLength="8"
-          value={values.password}
+          value={password}
           onChange={handleInputChange}
           required
         />
@@ -99,11 +109,11 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
         </label>
         <input
           type="password"
-          id="login-password"
-          name="login-password"
+          id="new-login-password"
+          name="new-login-password"
           placeholder="Password"
           className="form__input"
-          value={values.password}
+          value={newpassword}
           minLength="8"
           onChange={handleInputChange}
           required
@@ -116,11 +126,11 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
         </label>
         <input
           type="password"
-          id="login-password"
-          name="login-password"
+          id="confirm-login-password"
+          name="confirm-login-password"
           placeholder="Password"
           className="form__input"
-          value={values.password}
+          value={confirmpassword}
           minLength="8"
           onChange={handleInputChange}
           required
@@ -139,5 +149,9 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
     </ModalWithForm>
   );
 };
-
+EditPasswordModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onUpdatePassword: PropTypes.func.isRequired,
+};
 export default EditPasswordModal;

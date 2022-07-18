@@ -19,19 +19,24 @@ import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(true);
-  const [currentUser, setCurrentUser] = React.useState({ username: 'Practicum', avatar: '', email: 'practicum@email.com' });
+  const [currentUser, setCurrentUser] = React.useState({
+    username: 'Practicum',
+    avatar: '',
+    email: 'practicum@email.com',
+   
+  });
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
-  
+
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
   const [isEditProfileDataOpen, setIsEditProfileDataOpen] = React.useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
   // logic with actual data needed in the future
-  const [userAvatar, setUserAvatar] = React.useState(false);
+  // const [userAvatar, setUserAvatar] = React.useState(false);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = React.useState(false);
+  // const [userName, setUserName] = React.useState(false);
 
   // not using state here, assuming the time only gets read every time user refreshes the page
   const currentHour = new Date().getHours();
@@ -108,9 +113,8 @@ const App = () => {
 
   const handleUpdateProfileData = (userData) => {
     console.log(`api patch will be implemented - ${userData}`);
-  }
-  const handleLChangePasswordSubmit = () => {
-   
+  };
+  const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
   return (
@@ -139,15 +143,11 @@ const App = () => {
               onClose={closeAllPopups}
               onUpdateUserProfile={handleUpdateProfileData}
             />
-             <EditPasswordModal
-            isOpen={isEditPasswordModalOpen}
-            onClose={closeAllPopups}
-            onUpdate={handleLChangePasswordSubmit}
-            // loginPassword={loginPassword}
-            // setLoginPassword={setLoginPassword}
-            // loginNewPassword={loginNewPassword}
-            // setLoginNewPassword={setLoginNewPassword}
-          />
+            <EditPasswordModal
+              isOpen={isEditPasswordModalOpen}
+              onClose={closeAllPopups}
+              onUpdatePassword={handlelChangePasswordSubmit}
+            />
             <ClothingCard
               name="T-shirt"
               // please test with empty string to see the default image show up on card with "add your photo" button
