@@ -11,14 +11,14 @@ import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 const EditPasswordModal = ({
   isOpen,
   onClose,
-  onSubmit,
+  onUpdate,
   loginPassword,
-  loginNewPassword,
+  // loginNewPassword,
   setLoginPassword,
-  setLoginNewPassword,
+  // setLoginNewPassword,
 }) => {
   const { isValid, errors, handleChange, resetForm } = useFormAndValidation(['login-password']);
-
+const [loginNewPassword, setLoginNewPassword]=React.useState('');
   const formRef = React.useRef(null);
   const [isFormValid, setIsFormValid] = React.useState(false);
 
@@ -54,7 +54,7 @@ const EditPasswordModal = ({
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (isValid || (loginPassword && loginNewPassword)) {
-      onSubmit({ loginPassword, loginNewPassword });
+      onUpdate({ password: loginNewPassword });
     }
   };
 
@@ -62,8 +62,8 @@ const EditPasswordModal = ({
   const newPasswordErrorClassName = ``;
   const passwordInputClassName = ``;
   const passwordErrorClassName = ``;
-  const submitButtonClassName = `form__submit-button-wide form__submit-button_rel_login ${
-    !isFormValid && 'form__submit-button_disabled'
+  const submitWideButtonClassName = `form__submit-button-wide form__submit-button-wide_rel_login ${
+    !isFormValid && 'form__submit-button-wide_disabled'
   }`;
 
   return (
@@ -133,7 +133,7 @@ const EditPasswordModal = ({
       <div className="form__button-grp">
         <button
           type="submit"
-          className={submitButtonClassName}
+          className={submitWideButtonClassName}
           disabled={!isFormValid}
           aria-label="Change password"
         >

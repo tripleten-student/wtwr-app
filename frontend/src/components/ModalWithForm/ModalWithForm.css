@@ -102,3 +102,14 @@
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.6);
 }
+.form__submit-button-wide:hover.form__submit-button-wide_disabled,
+.form__submit-button-wide_disabled {
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.form__submit-button-wide:hover.form__submit-button-wide_disabled:hover,
+.form__submit-button-wide_disabled:hover {
+  cursor: not-allowed;
+  pointer-events: none;
+}
