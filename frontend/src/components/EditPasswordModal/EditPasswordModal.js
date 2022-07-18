@@ -1,25 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
- * The **EditPasswordComponent** component representing user authorization or login form.
+ * The **EditPasswordComponent** component representing form to change user's login password.
  *
  *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
 
-const EditPasswordModal = ({
-  isOpen,
-  onClose,
-  onUpdate,
-  loginPassword,
-  // loginNewPassword,
-  setLoginPassword,
-  // setLoginNewPassword,
-}) => {
-  const { isValid, errors, handleChange, resetForm } = useFormAndValidation(['login-password']);
-const [loginNewPassword, setLoginNewPassword]=React.useState('');
-  const formRef = React.useRef(null);
+const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
+  const currentUser = React.useContext(CurrentUserContext);
+  const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
+    'login-password',
+  ]);
+
+  const formRef = React.useRef();
   const [isFormValid, setIsFormValid] = React.useState(false);
 
   React.useEffect(() => {
@@ -29,38 +26,37 @@ const [loginNewPassword, setLoginNewPassword]=React.useState('');
   const handleFormChange = () => {
     setIsFormValid(formRef.current.checkValidity());
   };
+  // const [loginNewPassword, setLoginNewPassword]=React.useState('');
 
   // Reset form values every time the popup opens
   React.useEffect(() => {
     const initialValues = {
-      'login-password': '',
-      'login-newPassword': '',
+      password: currentUser.password,
     };
-    setLoginPassword('');
-    setLoginNewPassword('');
-    resetForm({ ...initialValues }, { ...initialValues }, true);
-  }, [resetForm, setLoginPassword, setLoginNewPassword]);
+    const initialErrorValues = {
+      password: '',
+    };
+    resetForm({ ...initialValues }, { ...initialErrorValues }, true);
+  }, [isOpen, resetForm, currentUser]);
 
   const handleInputChange = (event) => {
-    if (event.target.name === 'login-passrword') {
-      setLoginPassword(event.target.value);
-    }
-    if (event.target.name === 'login-newPassword') {
-      setLoginNewPassword(event.target.value);
-    }
+    // if (event.target.name === 'login-passrword') {
+    //   setLoginPassword(event.target.value);
+    // }
+    // if (event.target.name === 'login-newPassword') {
+    //   setLoginNewPassword(event.target.value);
+    // }
     handleChange(event);
   };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    if (isValid || (loginPassword && loginNewPassword)) {
-      onUpdate({ password: loginNewPassword });
+    const { password, newpassword } = values;
+    if (isValid || (password && newpassword)) {
+      onUpdatePassword({ password: newpassword });
     }
   };
 
-  const newPasswordInputClassName = ``;
-  const newPasswordErrorClassName = ``;
-  const passwordInputClassName = ``;
   const passwordErrorClassName = ``;
   const submitWideButtonClassName = `form__submit-button-wide form__submit-button-wide_rel_login ${
     !isFormValid && 'form__submit-button-wide_disabled'
@@ -79,7 +75,7 @@ const [loginNewPassword, setLoginNewPassword]=React.useState('');
       onChange={handleFormChange}
     >
       <div className="form__input-container">
-        <label htmlFor="change password" className="form__input-label">
+        <label htmlFor="login-password" className="form__input-label">
           Old Password
           <span id="login-password-error" className={passwordErrorClassName}></span>
         </label>
@@ -90,7 +86,7 @@ const [loginNewPassword, setLoginNewPassword]=React.useState('');
           placeholder="Old password"
           className="form__input"
           minLength="8"
-          value={loginPassword}
+          value={values.password}
           onChange={handleInputChange}
           required
         />
@@ -107,7 +103,7 @@ const [loginNewPassword, setLoginNewPassword]=React.useState('');
           name="login-password"
           placeholder="Password"
           className="form__input"
-          value={loginNewPassword}
+          value={values.password}
           minLength="8"
           onChange={handleInputChange}
           required
@@ -124,7 +120,7 @@ const [loginNewPassword, setLoginNewPassword]=React.useState('');
           name="login-password"
           placeholder="Password"
           className="form__input"
-          value={loginNewPassword}
+          value={values.password}
           minLength="8"
           onChange={handleInputChange}
           required
