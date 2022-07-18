@@ -1,6 +1,12 @@
 const { NotFoundError } = require('../errors/not-found-error');
 const { BadRequestError } = require('../errors/bad-request-error');
-const { itemsNotFound, itemNotFound, cannotDelete } = require('../utils/error');
+const { UnauthorizedError } = require('../errors/unauthorized-error');
+const {
+  itemsNotFound,
+  itemNotFound,
+  cannotDelete,
+  userNotAuthorised,
+} = require('../utils/error');
 
 const Item = require('../models/clothingItem');
 
@@ -11,12 +17,12 @@ const Item = require('../models/clothingItem');
  */
 
 const getAllItems = (req, res, next) => {
-  Item.find()
+  Item.find({ owner: req.owner._id })
     .orFail(() => {
       throw new NotFoundError(itemsNotFound);
     })
-    .then((savedArticles) => {
-      res.send(savedArticles);
+    .then((clothingItems) => {
+      res.send(clothingItems);
     })
     .catch(next);
 };
@@ -40,40 +46,40 @@ const createItem = (req, res, next) => {
 };
 
 const deleteItem = (req, res, next) => {
-  Item.findById({ _id: req.params.itemId })
+  const itemId = req.params.ItemId;
+  const currentUser = req.user._id;
+  Item.findById({ _id: itemId })
     .orFail(() => new NotFoundError(itemNotFound))
     .then((item) => {
-      if (req.user._id === item.owner._id.toString()) {
-        Item.findByIdAndRemove({ _id: req.params.itemId })
-          .orFail()
-          .then((itemData) => res.send({ data: itemData }))
-          .catch(next);
+      if (currentUser !== item.owner._id.toString()) {
+        throw new UnauthorizedError(userNotAuthorised);
       }
+      Item.findByIdAndRemove({ _id: itemId })
+        .orFail()
+        .then((itemData) => res.send({ data: itemData }))
+        .catch(next);
     })
-    .catch(() => {
-      next(new BadRequestError(cannotDelete));
-    });
-};
-
-const likeItem = (req, res, next) => {
-  Item.findByIdAndUpdate(
-    req.params.ItemId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true },
-  )
-    .orFail()
-    .then((itemData) => res.send(itemData))
     .catch(next);
 };
 
-const unlikeItem = (req, res, next) => {
-  Item.findByIdAndUpdate(
-    req.params.ItemId,
-    { $pull: { likes: req.user._id } },
-    { new: true },
-  )
+const toggleLikeStatus = (req, res, next) => {
+  const currentUser = req.user._id;
+  const itemId = req.params.ItemId;
+  Item.findById(itemId)
     .orFail()
-    .then((itemData) => res.send(itemData))
+    .then((itemData) => {
+      if (itemData.owner.toString() !== currentUser) {
+        throw new UnauthorizedError(userNotAuthorised);
+      }
+      Item.findByIdAndUpdate(
+        itemId,
+        { isLiked: !itemData.isLiked },
+        { new: true },
+      )
+        .orFail()
+        .then((updatedData) => res.send(updatedData))
+        .catch(next);
+    })
     .catch(next);
 };
 
@@ -81,6 +87,5 @@ module.exports = {
   getAllItems,
   createItem,
   deleteItem,
-  likeItem,
-  unlikeItem,
+  toggleLikeStatus,
 };
