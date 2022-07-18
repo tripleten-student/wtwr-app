@@ -4,12 +4,14 @@ import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Navigation from '../Navigation/Navigation';
 import Modal from '../Modal/Modal';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
+import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 
 /**
  * The main React **App** component.
@@ -17,15 +19,15 @@ import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(true);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({ username: 'Practicum', avatar: '', email: 'practicum@email.com' });
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
-
+  const [isEditProfileDataOpen, setIsEditProfileDataOpen] = React.useState(false);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(false);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
@@ -72,6 +74,7 @@ const App = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
     setIsEditPasswordModalOpen(false);
+    setIsEditProfileDataOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -102,6 +105,10 @@ const App = () => {
     setCurrentUser({});
     setCurrentUserEmail('');
   };
+
+  const handleUpdateProfileData = (userData) => {
+    console.log(`api patch will be implemented - ${userData}`);
+  }
   const handleLChangePasswordSubmit = () => {
    
     console.log('new password set');
@@ -109,22 +116,14 @@ const App = () => {
   return (
     <div className="page">
       <div className="page__wrapper">
-        <CurrentTemperatureUnitContext.Provider
-          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-        >
-          {/* isLoggedIn will be determined by a future user context */}
-          {/* I left the userName state in for the purpose of seeing the different navigation css */}
-          <Navigation
-            isLoggedIn={isLoggedIn}
-            /** rewrite `{userName}` to `{currentUser}` when ready */
-            username={userName}
-            hasAvatar={userAvatar}
-            /** place signup modal open state here */
-            /** place login modal open state here */
-          />
-          App
-          {/* Replace the ModalWithForm below with specific modals */}
-          {/* <Login
+        {/* current user state should have all the user data - username, email, avatar */}
+        <CurrentUserContext.Provider value={currentUser}>
+          <CurrentTemperatureUnitContext.Provider
+            value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+          >
+            App
+            {/* Replace the ModalWithForm below with specific modals */}
+            {/* <Login
             isOpen={isLoginOpen}
             onClose={closeAllPopups}
             onSubmit={handleLoginSubmit}
@@ -133,25 +132,31 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           /> */}
-          <EditPasswordModal
+            <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
+            <Main />
+            <EditProfileDataModal
+              isOpen={isEditProfileDataOpen}
+              onClose={closeAllPopups}
+              onUpdateUserProfile={handleUpdateProfileData}
+            />
+             <EditPasswordModal
             isOpen={isEditPasswordModalOpen}
             onClose={closeAllPopups}
             onUpdate={handleLChangePasswordSubmit}
-            loginPassword={loginPassword}
-            setLoginPassword={setLoginPassword}
+            // loginPassword={loginPassword}
+            // setLoginPassword={setLoginPassword}
             // loginNewPassword={loginNewPassword}
             // setLoginNewPassword={setLoginNewPassword}
           />
-          <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
-          <Main />
-          <ClothingCard
-            name="T-shirt"
-            // please test with empty string to see the default image show up on card with "add your photo" button
-            cardData={clothingCardData}
-            onCardLike={handleLikeClick}
-          />
-          <Footer />
-        </CurrentTemperatureUnitContext.Provider>
+            <ClothingCard
+              name="T-shirt"
+              // please test with empty string to see the default image show up on card with "add your photo" button
+              cardData={clothingCardData}
+              onCardLike={handleLikeClick}
+            />
+            <Footer />
+          </CurrentTemperatureUnitContext.Provider>
+        </CurrentUserContext.Provider>
       </div>
     </div>
   );
