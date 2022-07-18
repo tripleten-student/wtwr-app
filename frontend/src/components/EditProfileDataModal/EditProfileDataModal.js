@@ -11,21 +11,22 @@ import PropTypes from 'prop-types';
 const EditProfileDataModal = ({
   isOpen,
   onClose,
-  onSubmit,
-  //name,
-  avatar,
+  onUpdate,
+  // userName,
+  // avatarLink,
   currentUser,
-  setAvatar,
-  setUserName,
+ // setAvatarLink,
+  //setUserName,
 }) => {
-  const [name, setName] = React.useState('');
+  const [userName, setUserName] = React.useState('');
+  const [avatarLink, setAvatarLink] = React.useState('');
   const { isValid, errors, handleChange } = useFormAndValidation(['userName', 'avatar-url']);
   const formRef = React.useRef();
   const [isFormValid, setIsFormValid] = React.useState(false);
 
   React.useEffect(() => {
     if (currentUser) {
-      setAvatar(currentUser.avatar);
+      setAvatarLink(currentUser.avatar);
       setUserName(currentUser.name);
     }
   }, [currentUser]);
@@ -33,32 +34,30 @@ const EditProfileDataModal = ({
   React.useEffect(() => {
     setIsFormValid(formRef.current.checkValidity());
   }, [isOpen, formRef]);
+
   const handleInputChange = (event) => {
+   
     if (event.target.name === 'userName') {
       setUserName(event.target.value);
     }
     if (event.target.name === 'avatar-url') {
-      setAvatar(event.target.value);
+      setAvatarLink(event.target.value);
     }
     handleChange(event);
   };
 
-
-  
-
-
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    onSubmit({
-      username:name,
-      avatar:avatar,
+    onUpdate({
+      username:userName,
+      avatar:avatarLink,
     });
   };
   const handleFormChange = () => {
     setIsFormValid(formRef.current.checkValidity());
   };
   const userNameErrorClassName = ``;
-  const avatarErrorClassName = ``;
+  const avatarLinkErrorClassName = ``;
   const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${
     !isFormValid && 'form__submit-button_disabled'
   }`;
@@ -88,7 +87,7 @@ const EditProfileDataModal = ({
           name="userName"
           placeholder="Name"
           className="form__input"
-          value={name || ' '}
+          value={userName || ' '}
           onChange={handleInputChange}
           minLength="2"
           maxLength="40"
@@ -99,7 +98,7 @@ const EditProfileDataModal = ({
       <div className="form__input-container">
         <label htmlFor="userAvatar" className="form__input-label">
           Avatar
-          <span id="userAvatar-error" className={avatarErrorClassName}></span>
+          <span id="userAvatar-error" className={avatarLinkErrorClassName}></span>
         </label>
         <input
           type="URL"
@@ -107,7 +106,7 @@ const EditProfileDataModal = ({
           name="avatar-url"
           placeholder="Avatar URL"
           className="form__input"
-          value={avatar || ' '}
+          value={avatarLink || ' '}
           onChange={handleInputChange}
           required
         />

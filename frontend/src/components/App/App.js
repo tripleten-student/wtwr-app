@@ -96,7 +96,7 @@ const App = () => {
   };
 
   const handleUpdateProfileData=()=>{
-    setCurrentUser({});
+    console.log("api patch will be implemented");
     
   }
   return (
@@ -120,7 +120,7 @@ const App = () => {
           <Main />
           <EditProfileDataModal
           isOpen={isEditProfileDataOpen}
-          onSubmit={handleUpdateProfileData}
+          onUpdate={handleUpdateProfileData}
           onClose={closeAllPopups}
           ></EditProfileDataModal>
           <ClothingCard
