@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
-import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
  * The **EditPasswordComponent** component representing form to change user's login password.
@@ -11,9 +10,9 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
  */
 
 const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
-  const currentUser = React.useContext(CurrentUserContext);
+  // const currentUser = React.useContext(CurrentUserContext);
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
-    'login-password',
+    'login-password', 'new-login-password', 'confirm-login-password'
   ]);
 
   const formRef = React.useRef();
@@ -33,9 +32,6 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
 
   // Reset form values every time the popup opens
   React.useEffect(() => {
-    console.log(password);
-    console.log(newpassword);
-    console.log(confirmpassword);
     const initialValues = {
       password: '',
       newpassword: '',
@@ -50,7 +46,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
     setNewPassword('');
     setConfirmPassword('');
     resetForm({ ...initialValues }, { ...initialErrorValues }, true);
-  }, [isOpen, resetForm, setNewPassword, setConfirmPassword]);
+  }, [isOpen, resetForm,setPassword, setNewPassword, setConfirmPassword]);
 
   const handleInputChange = (event) => {
     if (event.target.name === 'login-password') {
@@ -67,9 +63,10 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   };
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    // naming of the fields to be checked again when backend API is connected
     const { password, newpassword, confirmpassword } = values;
-    if (isValid || (newpassword === confirmpassword && password === password)) {
-      onUpdatePassword({ password: confirmpassword });
+    if (isValid || (newpassword !== password && newpassword === confirmpassword)) {
+      onUpdatePassword({confirmpassword });
     }
   };
 
