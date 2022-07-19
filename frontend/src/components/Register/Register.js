@@ -3,19 +3,28 @@ import React, { useState } from 'react';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
+/**
+ * The **Login** component representing user authorization or login form.
+ *
+ * @author [Devin](https://github.com/mentalcaries)
+ */
+
+
 const Register = ({ isOpen, onClose, onSubmit }) => {
-  const [credentialsOpen, setCredentialsOpen] = useState(true)
-  const [personalInfoOpen, setPersonalInfoOpen] = useState(false)
+  const [credentialsOpen, setCredentialsOpen] = useState(true);
+  const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
+  const [preferencesOpen, setPreferencesOpen] = useState(false)
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState('')
+  const [avatar, setAvatar] = useState('');
+  const [preferences, setPreferences] = useState([])
 
   const { isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'register-email',
     'register-pwd',
-    'confirm-pwd'
+    'confirm-pwd',
   ]);
 
   const credentialsRef = React.useRef(null);
@@ -29,7 +38,6 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   const handleFormChange = () => {
     credentialsRef.current.name && setIsFormValid(credentialsRef.current.checkValidity());
     personalInfoRef.current.name && setIsFormValid(personalInfoRef.current.checkValidity());
-    
   };
 
   // Reset form values every time the popup opens
@@ -37,11 +45,11 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     const initialValues = {
       'register-email': '',
       'register-password': '',
-      'confirm-password':''
+      'confirm-password': '',
     };
     setRegisterEmail('');
     setRegisterPassword('');
-    setConfirmPassword('')
+    setConfirmPassword('');
     resetForm({ ...initialValues }, { ...initialValues }, true);
   }, [resetForm, setRegisterEmail, setRegisterPassword, setConfirmPassword]);
 
@@ -66,9 +74,16 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
 
   const handleNext = (event) => {
     event.preventDefault();
-    if (isValid || (registerEmail && registerPassword === confirmPassword)) {
-      setCredentialsOpen(false)
-      setPersonalInfoOpen(true)
+    if (event.target.name === 'register') {
+      if (isValid) {
+        setCredentialsOpen(false);
+        setPersonalInfoOpen(true);
+      }
+
+      if (event.target.name === 'personal-details') {
+        setPersonalInfoOpen(false);
+        setPreferencesOpen(true);
+      }
     }
   };
 
@@ -80,142 +95,150 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     !isFormValid && 'form__submit-button_disabled'
   }`;
 
-  return (<>
-    <ModalWithForm
-      ref={credentialsRef}
-      formTitle="Sign up"
-      name="register"
-      position="top-right"
-      width="normal"
-      isOpen={credentialsOpen}
-      onClose={onClose}
-      onSubmit={handleNext}
-      onChange={handleFormChange}
-    >
-      <div className="form__input-container">
-        <label htmlFor="register-email" className="form__input-label">
-          Email
-          <span id="register-email-error" className={emailErrorClassName}></span>
-        </label>
-        <input
-          type="email"
-          id="register-email"
-          name="register-email"
-          placeholder="Email"
-          className="form__input"
-          value={registerEmail}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
+  return (
+    <>
+      <ModalWithForm
+        ref={credentialsRef}
+        formTitle="Sign up"
+        name="register"
+        position="top-right"
+        width="normal"
+        isOpen={credentialsOpen}
+        onClose={onClose}
+        onSubmit={handleNext}
+        onChange={handleFormChange}
+      >
+        <div className="form__input-container">
+          <label htmlFor="register-email" className="form__input-label">
+            Email
+            <span id="register-email-error" className={emailErrorClassName}></span>
+          </label>
+          <input
+            type="email"
+            id="register-email"
+            name="register-email"
+            placeholder="Email"
+            className="form__input"
+            value={registerEmail}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
 
-      <div className="form__input-container">
-        <label htmlFor="register-pwd" className="form__input-label">
-          Password
-          <span id="register-pwd-error" className={passwordErrorClassName}></span>
-        </label>
-        <input
-          type="password"
-          id="register-pwd"
-          name="register-pwd"
-          placeholder="Password"
-          className="form__input"
-          value={registerPassword}
-          minLength="8"
-          onChange={handleInputChange}
-          required
-        />
-      </div>
+        <div className="form__input-container">
+          <label htmlFor="register-pwd" className="form__input-label">
+            Password
+            <span id="register-pwd-error" className={passwordErrorClassName}></span>
+          </label>
+          <input
+            type="password"
+            id="register-pwd"
+            name="register-pwd"
+            placeholder="Password"
+            className="form__input"
+            value={registerPassword}
+            minLength="8"
+            onChange={handleInputChange}
+            required
+          />
+        </div>
 
-      <div className="form__input-container">
-        <label htmlFor="confirm-pwd" className="form__input-label">
-          Confirm Password
-          <span id="confirm-pwd-error" className={passwordErrorClassName}></span>
-        </label>
-        <input
-          type="password"
-          id="confirm-pwd"
-          name="confirm-pwd"
-          placeholder="Password"
-          className="form__input"
-          value={confirmPassword}
-          minLength="8"
-          onChange={handleInputChange}
-          required
-        />
-      </div>
+        <div className="form__input-container">
+          <label htmlFor="confirm-pwd" className="form__input-label">
+            Confirm Password
+            <span id="confirm-pwd-error" className={passwordErrorClassName}></span>
+          </label>
+          <input
+            type="password"
+            id="confirm-pwd"
+            name="confirm-pwd"
+            placeholder="Password"
+            className="form__input"
+            value={confirmPassword}
+            minLength="8"
+            onChange={handleInputChange}
+            required
+          />
+        </div>
 
-      <div className="form__button-grp">
-        <button
-          type="submit"
-          className={submitButtonClassName}
-          disabled={!isFormValid}
-          aria-label="Next page"
-        >
-          Next
-        </button>
-        <p>or</p>
-        <button type="button" className="form__secondary-button" aria-label="Login">
-          Login
-        </button>
-      </div>
-    </ModalWithForm>
+        <div className="form__button-grp">
+          <button
+            type="submit"
+            className={submitButtonClassName}
+            disabled={!isFormValid}
+            aria-label="Next page"
+          >
+            Next
+          </button>
+          <p>or</p>
+          <button type="button" className="form__secondary-button" aria-label="Login">
+            Login
+          </button>
+        </div>
+      </ModalWithForm>
 
-<ModalWithForm
-ref={personalInfoRef}
-formTitle="Log in"
-name="login"
-position="top-right"
-width="normal"
-isOpen={personalInfoOpen}
-onClose={onClose}
-onSubmit={()=>{}}
-onChange={handleFormChange}
->
-<div className="form__input-container">
-  <label htmlFor="register-name" className="form__input-label">
-    Name*
-    <span id="register-name-error" className={emailErrorClassName}></span>
-  </label>
-  <input
-    type="text"
-    id="register-name"
-    name="register-name"
-    placeholder="Terry"
-    className="form__input"
-    value={name}
-    minLength="2"
-    onChange={handleInputChange}
-    required />
-</div>
+      <ModalWithForm
+        ref={personalInfoRef}
+        formTitle="Sign up"
+        name="personal-details"
+        position="top-right"
+        width="normal"
+        isOpen={personalInfoOpen}
+        onClose={onClose}
+        onSubmit={() => {}}
+        onChange={handleFormChange}
+      >
+        <div className="form__input-container">
+          <label htmlFor="register-name" className="form__input-label">
+            Name*
+            <span id="register-name-error" className={emailErrorClassName}></span>
+          </label>
+          <input
+            type="text"
+            id="register-name"
+            name="register-name"
+            placeholder="Terry"
+            className="form__input"
+            value={name}
+            minLength="2"
+            onChange={handleInputChange}
+            required
+          />
+        </div>
 
-<div className="form__input-container">
-  <label htmlFor="register-avatar" className="form__input-label">
-    Avatar
-    <span id="register-avatar-error" className={passwordErrorClassName}></span>
-  </label>
-  <input
-    type="url"
-    id="register-avatar"
-    name="register-avatar"
-    placeholder="https://unsplash.com/random"
-    className="form__input"
-    value={avatar}
-    onChange={handleInputChange}
-     />
-</div>
+        <div className="form__input-container">
+          <label htmlFor="register-avatar" className="form__input-label">
+            Avatar
+            <span id="register-avatar-error" className={passwordErrorClassName}></span>
+          </label>
+          <input
+            type="url"
+            id="register-avatar"
+            name="register-avatar"
+            placeholder="https://unsplash.com/random"
+            className="form__input"
+            value={avatar}
+            onChange={handleInputChange}
+          />
+        </div>
 
-<div className="form__button-grp">
-  <button type="submit" className={submitButtonClassName} disabled={!isFormValid} aria-label="Log in">
-    Next
-  </button>
-  <p>or</p>
-  <button type="button" className="form__secondary-button" aria-label="Register">
-    Login
-  </button>
-</div>
-</ModalWithForm>
-</>);
+        <div className="form__button-grp">
+          <button
+            type="submit"
+            className={submitButtonClassName}
+            disabled={!isFormValid}
+            aria-label="Log in"
+          >
+            Next
+          </button>
+          <p>or</p>
+          <button type="button" className="form__secondary-button" aria-label="Register">
+            Login
+          </button>
+        </div>
+      </ModalWithForm>
+    </>
+  );
 };
 
 export default Register;
