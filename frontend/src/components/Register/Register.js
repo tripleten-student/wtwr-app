@@ -11,9 +11,9 @@ import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
 
 const Register = ({ isOpen, onClose, onSubmit }) => {
-  const [credentialsOpen, setCredentialsOpen] = useState(true);
+  const [credentialsOpen, setCredentialsOpen] = useState(false);
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
-  const [preferencesOpen, setPreferencesOpen] = useState(false)
+  const [preferencesOpen, setPreferencesOpen] = useState(true)
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -74,18 +74,22 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
 
   const handleNext = (event) => {
     event.preventDefault();
-    if (event.target.name === 'register') {
-      if (isValid) {
+    if (event.target.name === 'register' && isValid) {
         setCredentialsOpen(false);
         setPersonalInfoOpen(true);
+        setIsFormValid(false)
       }
 
       if (event.target.name === 'personal-details') {
         setPersonalInfoOpen(false);
         setPreferencesOpen(true);
       }
-    }
+    
   };
+
+  const handleSubmit = () => {
+    console.log('submit')
+  }
 
   const emailInputClassName = ``;
   const emailErrorClassName = ``;
@@ -185,7 +189,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
         width="normal"
         isOpen={personalInfoOpen}
         onClose={onClose}
-        onSubmit={() => {}}
+        onSubmit={handleNext}
         onChange={handleFormChange}
       >
         <div className="form__input-container">
@@ -230,6 +234,49 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
             aria-label="Log in"
           >
             Next
+          </button>
+          <p>or</p>
+          <button type="button" className="form__secondary-button" aria-label="Register">
+            Login
+          </button>
+        </div>
+      </ModalWithForm>
+
+      <ModalWithForm 
+        formTitle="Sign up"
+        name="preferences"
+        position="top-right"
+        width="normal"
+        isOpen={preferencesOpen}
+        onClose={onClose}
+        onSubmit={handleSubmit}
+        onChange={()=>{}}
+        >
+          <p className="preferences__text">
+          Choose clothes you wear, so we can recommend what's right for you
+          </p>
+
+          <div className="preferences__buttons">
+            <button className="preferences__button preferences__button_selected">T-shirt</button>
+            <button className="preferences__button">Tall boots</button>
+            <button className="preferences__button">Down jacket</button>
+            <button className="preferences__button">Dress</button>
+            <button className="preferences__button">Short pants</button>
+            <button className="preferences__button">Jeans</button>
+            <button className="preferences__button">Sneakers</button>
+          </div>
+
+
+
+
+          <div className="form__button-grp">
+          <button
+            type="submit"
+            className={submitButtonClassName}
+            disabled={!isFormValid}
+            aria-label="Log in"
+          >
+            Register
           </button>
           <p>or</p>
           <button type="button" className="form__secondary-button" aria-label="Register">
