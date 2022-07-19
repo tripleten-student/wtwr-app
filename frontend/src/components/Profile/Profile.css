@@ -24,6 +24,13 @@
     padding: 0;
 }
 
+.profile-section{
+    display: flex;
+    flex-direction: column;
+    margin: 0 ;
+    padding: 0;
+}
+
 .profile-section__info{
     display: flex;
     padding: 0 0 17px 0;
