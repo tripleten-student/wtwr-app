@@ -4,35 +4,42 @@
  *
  * @author [Yuffie Hu](https://github.com/yuff1006)
  */
-export default class weatherAPI {
-  constructor({ baseUrl, headers }) {
+export class weatherAPI {
+  constructor({ baseUrl, headers, forecastNumOfDays }) {
     this._baseUrl = baseUrl;
     this._headers = headers;
+    this._forecastMethod = '/forecast.json';
+    this._forecastNumOfDays = forecastNumOfDays;
+    this._APIkey = '';
   }
 
   getGeolocation = () => {
-    /** if successfully obtained user location, store it in local storage */
-    // const successCallBack = ({ coords }) => {
-    //   this._userLocation = {
-    //     latitude: coords.latitude,
-    //     longitude: coords.longitude,
-    //   };
-    //   localStorage.setItem('userLocation', JSON.stringify(this._userLocation));
-    //   return this._userLocation;
-    // };
-    // /** when user didn't allow location sharing, check to fetch data from the last read, if present. If not, default to New York City coordinates */
-    // const failCallBack = () => {
-    //   if (localStorage.getItem('userLocation')) {
-    //     this._userLocation = JSON.parse(localStorage.getItem('userLocation'));
-    //   }
-    //   this._userLocation = {
-    //     latitude: '40.730610',
-    //     longitude: '-73.935242',
-    //   };
-    //   return this._userLocation;
-    // };
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject);
     });
   };
+
+  getForecastWeather = (location) => {
+    /** location passed in will be an object with latitude and longitude keys
+     * the API takes the two combined(latitude first) seperated by a comma
+     */
+    const parsedLocation = `${location.latitude},${location.longitude}`;
+    return fetch(
+      `${this._baseUrl}${this._forecastMethod}?key=${this._APIkey}&q=${parsedLocation}&days=${this._forecastNumOfDays}`
+    ).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+    });
+  };
 }
+
+export const weatherForecastApi = new weatherAPI({
+  baseUrl: 'http://api.weatherapi.com/v1',
+  headers: {
+    authorization: '',
+  },
+  forecastNumOfDays: '1',
+});

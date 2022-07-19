@@ -9,7 +9,7 @@ import Navigation from '../Navigation/Navigation';
 import Modal from '../Modal/Modal';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
-import weatherAPI from '../../utils/weatherApi';
+import { weatherForecastApi } from '../../utils/weatherApi';
 
 /**
  * The main React **App** component.
@@ -34,9 +34,8 @@ const App = () => {
   const timeOfTheDay = determineTimeOfTheDay(currentHour);
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
-  const weatherApi = new weatherAPI({ baseUrl: '', headers: '' });
   React.useEffect(() => {
-    weatherApi
+    weatherForecastApi
       .getGeolocation()
       .then(({ coords }) => {
         setUserLocation({
@@ -66,6 +65,16 @@ const App = () => {
       });
   }, []);
 
+  React.useEffect(() => {
+    weatherForecastApi
+      .getForecastWeather(userLocation)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
