@@ -4,9 +4,13 @@ import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
 const Register = ({ isOpen, onClose, onSubmit }) => {
+  const [credentialsOpen, setCredentialsOpen] = useState(true)
+  const [personalInfoOpen, setPersonalInfoOpen] = useState(false)
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
+  const [avatar, setAvatar] = useState('')
 
   const { isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'register-email',
@@ -14,17 +18,18 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     'confirm-pwd'
   ]);
 
-  const formRef = React.useRef(null);
+  const credentialsRef = React.useRef(null);
+  const personalInfoRef = React.useRef(null);
   const [isFormValid, setIsFormValid] = React.useState(false);
 
   React.useEffect(() => {
-    setIsFormValid(formRef.current.checkValidity());
-  }, [isOpen, formRef]);
+    setIsFormValid(registerPassword === confirmPassword && credentialsRef.current.checkValidity());
+  }, [isOpen, credentialsRef, registerPassword, confirmPassword]);
 
   const handleFormChange = () => {
-    console.log(registerPassword)
-    console.log(confirmPassword)
-    setIsFormValid(formRef.current.checkValidity());
+    credentialsRef.current.name && setIsFormValid(credentialsRef.current.checkValidity());
+    personalInfoRef.current.name && setIsFormValid(personalInfoRef.current.checkValidity());
+    
   };
 
   // Reset form values every time the popup opens
@@ -40,23 +45,30 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     resetForm({ ...initialValues }, { ...initialValues }, true);
   }, [resetForm, setRegisterEmail, setRegisterPassword, setConfirmPassword]);
 
-  const handleInputChange = (e) => {
-    if (e.target.name === 'register-email') {
-      setRegisterEmail(e.target.value);
+  const handleInputChange = (event) => {
+    if (event.target.name === 'register-email') {
+      setRegisterEmail(event.target.value);
     }
-    if (e.target.name === 'register-pwd') {
-      setRegisterPassword(e.target.value);
+    if (event.target.name === 'register-pwd') {
+      setRegisterPassword(event.target.value);
     }
-    if (e.target.name === 'confirm-pwd') {
-      setConfirmPassword(e.target.value);
+    if (event.target.name === 'confirm-pwd') {
+      setConfirmPassword(event.target.value);
     }
-    handleChange(e);
+    if (event.target.name === 'register-name') {
+      setName(event.target.value);
+    }
+    if (event.target.name === 'register-avatar') {
+      setAvatar(event.target.value);
+    }
+    handleChange(event);
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
+  const handleNext = (event) => {
+    event.preventDefault();
     if (isValid || (registerEmail && registerPassword === confirmPassword)) {
-      onSubmit({ registerEmail, registerPassword });
+      setCredentialsOpen(false)
+      setPersonalInfoOpen(true)
     }
   };
 
@@ -68,16 +80,16 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     !isFormValid && 'form__submit-button_disabled'
   }`;
 
-  return (
+  return (<>
     <ModalWithForm
-      ref={formRef}
+      ref={credentialsRef}
       formTitle="Sign up"
       name="register"
       position="top-right"
       width="normal"
-      isOpen={isOpen}
+      isOpen={credentialsOpen}
       onClose={onClose}
-      onSubmit={() => {}}
+      onSubmit={handleNext}
       onChange={handleFormChange}
     >
       <div className="form__input-container">
@@ -138,17 +150,72 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
           type="submit"
           className={submitButtonClassName}
           disabled={!isFormValid}
-          aria-label="Log in"
+          aria-label="Next page"
         >
           Next
         </button>
         <p>or</p>
-        <button type="button" className="form__secondary-button" aria-label="Register">
+        <button type="button" className="form__secondary-button" aria-label="Login">
           Login
         </button>
       </div>
     </ModalWithForm>
-  );
+
+<ModalWithForm
+ref={personalInfoRef}
+formTitle="Log in"
+name="login"
+position="top-right"
+width="normal"
+isOpen={personalInfoOpen}
+onClose={onClose}
+onSubmit={()=>{}}
+onChange={handleFormChange}
+>
+<div className="form__input-container">
+  <label htmlFor="register-name" className="form__input-label">
+    Name*
+    <span id="register-name-error" className={emailErrorClassName}></span>
+  </label>
+  <input
+    type="text"
+    id="register-name"
+    name="register-name"
+    placeholder="Terry"
+    className="form__input"
+    value={name}
+    minLength="2"
+    onChange={handleInputChange}
+    required />
+</div>
+
+<div className="form__input-container">
+  <label htmlFor="register-avatar" className="form__input-label">
+    Avatar
+    <span id="register-avatar-error" className={passwordErrorClassName}></span>
+  </label>
+  <input
+    type="url"
+    id="register-avatar"
+    name="register-avatar"
+    placeholder="https://unsplash.com/random"
+    className="form__input"
+    value={avatar}
+    onChange={handleInputChange}
+     />
+</div>
+
+<div className="form__button-grp">
+  <button type="submit" className={submitButtonClassName} disabled={!isFormValid} aria-label="Log in">
+    Next
+  </button>
+  <p>or</p>
+  <button type="button" className="form__secondary-button" aria-label="Register">
+    Login
+  </button>
+</div>
+</ModalWithForm>
+</>);
 };
 
 export default Register;
