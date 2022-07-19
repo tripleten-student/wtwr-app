@@ -34,6 +34,9 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
 
   // Reset form values every time the popup opens
   React.useEffect(() => {
+    console.log(password);
+    console.log(newpassword);
+    console.log(confirmpassword);
     const initialValues = {
       password: '',
       newpassword: '',
