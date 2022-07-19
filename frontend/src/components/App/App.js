@@ -129,12 +129,6 @@ const App = () => {
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
-          <ClothingCard
-            name="T-shirt"
-            // please test with empty string to see the default image show up on card with "add your photo" button
-            cardData={clothingCardData}
-            onCardLike={handleLikeClick}
-          />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
       </div>

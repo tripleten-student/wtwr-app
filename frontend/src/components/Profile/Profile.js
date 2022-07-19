@@ -15,14 +15,15 @@ function Profile({ cardData, onCardLike }) {
         <SideBar />
       </section>
       <section className="profile-clothes">
-        <div className="profile-section">
-          <div className="profile-section__info">
-            <h3 className="profile-section__title">Accessories</h3>
-            <button className="profile-section__button"> +Add new</button>
+        <div className="clothes-section">
+          <div className="clothes-section__info">
+            <h3 className="clothes-section__title">Accessories</h3>
+            <button className="clothes-section__button"> +Add new</button>
           </div>
-          <ul className="profile-clothes__section Accessories">
+          <ul className="clothes-section__list">
             {accessories.map((card) => (
               <ClothingCard
+                key={card.name}
                 name="T-shirt"
                 // please test with empty string to see the default image show up on card with "add your photo" button
                 cardData={card}
@@ -31,14 +32,15 @@ function Profile({ cardData, onCardLike }) {
             ))}
           </ul>
         </div>
-        <div className="profile-section">
-          <div className="profile-section__info">
-            <h3 className="profile-section__title">Tops and outerwear</h3>
-            <button className="profile-section__button"> +Add new</button>
+        <div className="clothes-section">
+          <div className="clothes-section__info">
+            <h3 className="clothes-section__title">Tops and outerwear</h3>
+            <button className="clothes-section__button"> +Add new</button>
           </div>
-          <ul className="profile-clothes__section Topsandoutwear">
+          <ul className="clothes-section__list">
             {topsandoutwear.map((card) => (
               <ClothingCard
+                key={card.name}
                 name="T-shirt"
                 // please test with empty string to see the default image show up on card with "add your photo" button
                 cardData={card}
@@ -47,15 +49,15 @@ function Profile({ cardData, onCardLike }) {
             ))}
           </ul>
         </div>
-        <div className="profile-section">
-          <div className="profile-section__info">
-            <h3 className="profile-section__title">Bottoms</h3>
-            <button className="profile-section__button"> +Add new</button>
+        <div className="clothes-section">
+          <div className="clothes-section__info">
+            <h3 className="clothes-section__title">Bottoms</h3>
+            <button className="clothes-section__button"> +Add new</button>
           </div>
-          <ul className="profile-clothes__section Topsandoutwear">
+          <ul className="clothes-section__list">
             {bottoms.map((card) => (
               <ClothingCard
-                name="T-shirt"
+                key={card.name}
                 // please test with empty string to see the default image show up on card with "add your photo" button
                 cardData={card}
                 onCardLike={onCardLike}
@@ -63,15 +65,15 @@ function Profile({ cardData, onCardLike }) {
             ))}
           </ul>
         </div>
-        <div className="profile-section">
-          <div className="profile-section__info">
-            <h3 className="profile-section__title">Shoes</h3>
-            <button className="profile-section__button"> +Add new</button>
+        <div className="clothes-section">
+          <div className="clothes-section__info">
+            <h3 className="clothes-section__title">Shoes</h3>
+            <button className="clothes-section__button"> +Add new</button>
           </div>
-          <ul className="profile-clothes__section Topsandoutwear">
+          <ul className="clothes-section__list">
             {shoes.map((card) => (
               <ClothingCard
-                name="T-shirt"
+                key={card.name}
                 // please test with empty string to see the default image show up on card with "add your photo" button
                 cardData={card}
                 onCardLike={onCardLike}

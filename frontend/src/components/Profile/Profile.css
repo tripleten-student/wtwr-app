@@ -24,24 +24,24 @@
     padding: 0;
 }
 
-.profile-section{
+.clothes-section{
     display: flex;
     flex-direction: column;
     margin: 0 ;
     padding: 0;
 }
 
-.profile-section__info{
+.clothes-section__info{
     display: flex;
     padding: 0 0 17px 0;
 }
 
-.profile-section__title{
+.clothes-section__title{
     margin:0;
     padding: 0 20px 0 0;
 }
 
-.profile-section__button{
+.clothes-section__button{
     margin:0;
     padding: 0;
     background: none;
@@ -50,12 +50,12 @@
     opacity: 0.6;
 }
 
-.profile-section__button:hover{
+.clothes-section__button:hover{
     opacity: 1;
 }
 
 
-.profile-clothes__section{
+.clothes-section__list{
     margin:0;
     padding: 0 0 41px 0 ;
     display: grid;
@@ -64,3 +64,34 @@
     grid-gap: 22px;
     box-sizing: border-box;
 }
+
+@media screen and (max-width: 800px) {
+    .profile{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-clothes{
+        align-items: center;
+        margin: 0;
+    }
+
+    .clothes-section{
+        align-items: center;
+        width: 100%;
+    }
+
+    .clothes-section__info{
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .clothes-section__list{
+        grid-gap: 15px;
+    }
+  }
+  
+  @media screen and (max-width: 500px) {
+  
+  }
