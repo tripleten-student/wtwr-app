@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const user = require('./user');
 
+/**
+ * The **clothing** module contains the schemas and models for clothing items
+ *
+ * @author [Devin Jaggernauth](https://github.com/mentalcaries)
+ */
+
 const clothingItemSchema = new mongoose.Schema({
   name: {
     type: String,

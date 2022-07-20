@@ -1,11 +1,17 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
+
+/**
+ * The **clothing** module contains the routes for clothing items
+ *
+ * @author [Devin Jaggernauth](https://github.com/mentalcaries)
+ */
+
 const {
   getAllItems,
   createItem,
   deleteItem,
-  likeItem,
-  unlikeItem,
+  toggleLikeStatus,
 } = require('../controllers/clothing');
 
 const router = express.Router();
@@ -24,7 +30,6 @@ router.delete(
   deleteItem,
 );
 
-router.put('/:ItemId/likes', likeItem);
-router.delete('/:ItemId/likes', unlikeItem);
+router.patch('/:ItemId/likes', toggleLikeStatus);
 
 module.exports = router;
