@@ -80,7 +80,7 @@ const categorizeWeatherTypeForImage = (description) => {
     return 'stormy';
   } else if (description.includes('snow') || description.includes('blizzard')) {
     return 'snowy';
-  } else if (description.includes('cloud')) {
+  } else if (description.includes('cloud') || description.includes('overcast')) {
     return 'cloudy';
   } else {
     return 'not found';
@@ -99,9 +99,9 @@ const determineTimeOfTheDay = (currentHour) => {
   }
 };
 
-const generateDescription = (weatherData, displayedTime) => {
-  const categorizedWeather = categorizeWeatherTypeForImage(weatherData.condition);
-  if (displayedTime.toLowerCase() === timeOfTheDay) {
+/** this function generates description based on weather condition, if it's rainy or snowy, chance of rain/snow will be displayed, otherwise, weather condition alone is displayed. On shorter cards, chance of snow/rain is shortened */
+const generateDescription = (categorizedWeather, elongateOrNot, weatherData) => {
+  if (elongateOrNot) {
     if (categorizedWeather === 'snowy') {
       return `Chance of snow: ${weatherData.chance_of_snow}`;
     } else if (categorizedWeather === 'rainy') {
@@ -121,22 +121,32 @@ const generateDescription = (weatherData, displayedTime) => {
 };
 const currentHour = new Date().getHours();
 const timeOfTheDay = determineTimeOfTheDay(currentHour);
+
 const filterDataFromWeatherAPI = (data) => {
   const forecastArr = [];
   const timeBreakPoints = [7, 13, 18, 22];
+  const currentForecastDataPth = data.forecast.forecastday[0].hour[currentHour - 1];
 
   timeBreakPoints.forEach((point) => {
+    const elongateOrNot = determineTimeOfTheDay(point) === timeOfTheDay ? true : false;
     const dayOrNight = point > 13 ? 'night' : 'day';
     const forecastDataPath = data.forecast.forecastday[0].hour[point - 1];
+
+    const categorizedWeather = categorizeWeatherTypeForImage(forecastDataPath.condition.text);
     forecastArr.push({
+      // lowercase afternoon, morning ... for CSS
       timeName: determineTimeOfTheDay(point),
-      condition: categorizeWeatherTypeForImage(forecastDataPath.condition.text),
-      temperature: Math.trunc(forecastDataPath.temp_f),
-      chance_of_rain: forecastDataPath.chance_of_rain,
-      chance_of_snow: forecastDataPath.chance_of_snow,
+      condition: categorizedWeather,
+      temperature: elongateOrNot
+        ? `${Math.trunc(currentForecastDataPth.temp_f)}°`
+        : `${Math.trunc(forecastDataPath.temp_f)}°`,
       dayOrNight: dayOrNight,
-      elongate: determineTimeOfTheDay(point) === timeOfTheDay ? true : false,
-      description: 
+      elongate: elongateOrNot,
+      // first letter uppercase for displaying on the card
+      displayedTime:
+        determineTimeOfTheDay(point).charAt(0).toUpperCase() +
+        determineTimeOfTheDay(point).slice(1),
+      description: generateDescription(categorizedWeather, elongateOrNot, forecastDataPath),
     });
   });
   return forecastArr;

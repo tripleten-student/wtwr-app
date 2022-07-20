@@ -15,7 +15,7 @@ const WeatherCards = ({ weatherData }) => {
     // modifier to adjust different CSS grid layout according to different times of the day
     <div className="weathercards">
       {weatherData.map((card) => (
-        <WeatherCard displayedTime={card.timeName} weatherData={card} key={card.timeName} />
+        <WeatherCard weatherData={card} key={card.timeName} />
       ))}
     </div>
   );
