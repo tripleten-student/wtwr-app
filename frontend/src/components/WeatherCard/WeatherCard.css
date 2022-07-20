@@ -30,6 +30,7 @@
     'temperature description';
   position: relative;
   z-index: 1;
+  align-items: baseline;
 }
 .weathercard__description {
   color: white;
@@ -38,7 +39,7 @@
   font-weight: 500;
   grid-area: description;
   margin: 0;
-  align-self: flex-end;
+  align-self: baseline;
 }
 
 .weathercard__time {
@@ -68,55 +69,55 @@
   flex-basis: 72%;
 }
 .weathercard_weather_day-cloudy {
-  background-image: url('../../images/day-cloudy.svg');
+  background-image: url('../../images/WeatherCard/day-cloudy.svg');
   background-size: content-box;
 }
 .weathercard_weather_day-rainy {
-  background-image: url('../../images/day-rainy.svg');
+  background-image: url('../../images/WeatherCard/day-rainy.svg');
   background-size: contain;
   background-color: #6ca6c7;
 }
 .weathercard_weather_day-foggy {
-  background-image: url('../../images/day-foggy.svg');
+  background-image: url('../../images/WeatherCard/day-foggy.svg');
   background-size: content-box;
   background-color: #6ca6c7;
 }
 .weathercard_weather_day-snowy {
-  background-image: url('../../images/day-snowy.svg');
+  background-image: url('../../images/WeatherCard/day-snowy.svg');
   background-size: contain;
   background-color: #6ca6c7;
 }
 .weathercard_weather_day-stormy {
-  background-image: url('../../images/day-stormy.svg');
+  background-image: url('../../images/WeatherCard/day-stormy.svg');
   background-size: contain;
   background-color: #6ca6c7;
 }
 .weathercard_weather_day-sunny {
-  background-image: url('../../images/night-sunny.svg');
+  background-image: url('../../images/WeatherCard/night-sunny.svg');
   background-size: content-box;
 }
 
 .weathercard_weather_night-cloudy {
-  background-image: url('../../images/night-cloudy.svg');
+  background-image: url('../../images/WeatherCard/night-cloudy.svg');
   background-size: content-box;
 }
 .weathercard_weather_night-rainy {
-  background-image: url('../../images/night-rainy.svg');
+  background-image: url('../../images/WeatherCard/night-rainy.svg');
   background-size: contain;
 }
 .weathercard_weather_night-foggy {
-  background-image: url('../../images/night-foggy.svg');
+  background-image: url('../../images/WeatherCard/night-foggy.svg');
   background-size: content-box;
 }
 .weathercard_weather_night-snowy {
-  background-image: url('../../images/night-snowy.svg');
+  background-image: url('../../images/WeatherCard/night-snowy.svg');
   background-size: contain;
 }
 .weathercard_weather_night-stormy {
-  background-image: url('../../images/night-stormy.svg');
+  background-image: url('../../images/WeatherCard/night-stormy.svg');
   background-size: contain;
 }
 .weathercard_weather_night-sunny {
-  background-image: url('../../images/night-sunny.svg');
+  background-image: url('../../images/WeatherCard/night-sunny.svg');
   background-size: content-box;
 }
