@@ -42,7 +42,7 @@ const App = () => {
 
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
-  const isAnyPopupOpen = isLoginOpen;
+  const isAnyPopupOpen = isLoginOpen || isRegisterOpen;
   React.useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
@@ -70,6 +70,7 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
+    setisRegisterOpen(false)
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -130,8 +131,8 @@ const App = () => {
           <Register 
           isOpen={isRegisterOpen}
           onClose={closeAllPopups}
-
           />
+
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           <ClothingCard
