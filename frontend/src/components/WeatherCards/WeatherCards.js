@@ -8,14 +8,15 @@ import './WeatherCards.css';
  *  assuming celsius/fahrenheit, temperature, and weather parameters will be passed down from App.js using global context, I'm not including them as one of the parameters here
  */
 
-const WeatherCards = ({ timeOfTheDay }) => {
+const WeatherCards = ({ weatherData }) => {
+  if (!weatherData) return null;
+
   return (
     // modifier to adjust different CSS grid layout according to different times of the day
-    <div className={`weathercards weathercards_${timeOfTheDay}`}>
-      <WeatherCard displayedTime="Morning" timeOfTheDay={timeOfTheDay} />
-      <WeatherCard displayedTime="Afternoon" timeOfTheDay={timeOfTheDay} />
-      <WeatherCard displayedTime="Evening" timeOfTheDay={timeOfTheDay} />
-      <WeatherCard displayedTime="Overnight" timeOfTheDay={timeOfTheDay} />
+    <div className="weathercards">
+      {weatherData.map((card) => (
+        <WeatherCard displayedTime={card.timeName} weatherData={card} key={card.timeName} />
+      ))}
     </div>
   );
 };

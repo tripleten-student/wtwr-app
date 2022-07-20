@@ -4,12 +4,15 @@ import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
-import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Navigation from '../Navigation/Navigation';
 import Modal from '../Modal/Modal';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
-import { weatherForecastApi } from '../../utils/weatherApi';
+import {
+  getGeolocation,
+  getForecastWeather,
+  filterDataFromWeatherAPI,
+} from '../../utils/weatherApi';
 
 /**
  * The main React **App** component.
@@ -29,14 +32,15 @@ const App = () => {
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
   const [userName, setUserName] = React.useState(false);
 
-  // not using state here, assuming the time only gets read every time user refreshes the page
-  const currentHour = new Date().getHours();
-  const timeOfTheDay = determineTimeOfTheDay(currentHour);
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
+  const [weatherData, setweatherData] = React.useState();
+  // to access the weatherAPI, please create an .env file in the rooter directly
+  // then input REACT_APP_WEATHER_API_KEY=keyThatYouGeneratedFromTheWebsite with no quotes
+  const WeatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
+
   React.useEffect(() => {
-    weatherForecastApi
-      .getGeolocation()
+    getGeolocation()
       .then(({ coords }) => {
         setUserLocation({
           ...userLocation,
@@ -64,17 +68,20 @@ const App = () => {
         }
       });
   }, []);
-
+  // after getting the location, send the API request to weatherAPI
   React.useEffect(() => {
-    weatherForecastApi
-      .getForecastWeather(userLocation)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
+    if (userLocation.latitude && userLocation.longitude) {
+      getForecastWeather(userLocation, WeatherApiKey)
+        .then((data) => {
+          setweatherData(filterDataFromWeatherAPI(data));
+        })
+        .catch((err) => {
+          // is there better error handling here? Error may occur when the weather API has problems
+          console.log(err);
+        });
+    }
+  }, [userLocation]);
+
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
@@ -121,7 +128,6 @@ const App = () => {
     type: 't-shirt',
   };
   function handleLikeClick(cardData) {
-    console.log(cardData);
     // insert logic to interact with WTWR API
     setIsLoginOpen(false);
   }
@@ -141,9 +147,12 @@ const App = () => {
     setCurrentUser({});
     setCurrentUserEmail('');
   };
+
   return (
     <div className="page">
       <div className="page__wrapper">
+        {/* <p>{userLocation.latitude}</p>
+        <p>{userLocation.longitude}</p> */}
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
@@ -168,7 +177,7 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
-          <WeatherCards timeOfTheDay={timeOfTheDay} />
+          <WeatherCards weatherData={weatherData} />
           <Main />
           <ClothingCard
             name="T-shirt"
