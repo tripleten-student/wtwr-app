@@ -1,86 +1,67 @@
 import './Profile.css';
 import SideBar from '../SideBar/SideBar';
-import ClothingCard from '../ClothingCard/ClothingCard';
+import ClothesSection from '../ClothesSection/ClothesSection';
 import { clothes } from '../../utils/testData';
 
-function Profile({ cardData, onCardLike }) {
+/**
+ * The **Profile** component displays all the data saved by the user using the "ClothesSection" component
+ * the SideBar with the links to change the user data.
+ *
+ * @author [Santiago](https://github.com/Santiag0SR)
+ */
+
+function Profile({
+  cardData,
+  onCardLike,
+  onAddNewClick,
+  onChangePasswordClick,
+  onChangeProfileClick,
+  onChangeClothesPreferencesClick,
+  onLogOutClick,
+  onDeleteProfileClick,
+}) {
+  // Once ready we will change "clothes" for "cardData".
   const accessories = clothes.filter((cloth) => cloth.type === 'Accessories');
   const topsandoutwear = clothes.filter((cloth) => cloth.type === 'Tops & outerwear');
-  const shoes = clothes.filter((cloth) => cloth.type === 'Shoes');
   const bottoms = clothes.filter((cloth) => cloth.type === 'Bottoms');
+  const shoes = clothes.filter((cloth) => cloth.type === 'Shoes');
 
   return (
     <div className="profile">
       <section className="profile-sidebar">
-        <SideBar />
+        <SideBar
+          onChangePasswordClick={onChangePasswordClick}
+          onChangeProfileClick={onChangeProfileClick}
+          onChangeClothesPreferencesClick={onChangeClothesPreferencesClick}
+          onLogOutClick={onLogOutClick}
+          onDeleteProfileClick={onDeleteProfileClick}
+        />
       </section>
       <section className="profile-clothes">
-        <div className="clothes-section">
-          <div className="clothes-section__info">
-            <h3 className="clothes-section__title">Accessories</h3>
-            <button className="clothes-section__button"> +Add new</button>
-          </div>
-          <ul className="clothes-section__list">
-            {accessories.map((card) => (
-              <ClothingCard
-                key={card.name}
-                name="T-shirt"
-                // please test with empty string to see the default image show up on card with "add your photo" button
-                cardData={card}
-                onCardLike={onCardLike}
-              />
-            ))}
-          </ul>
-        </div>
-        <div className="clothes-section">
-          <div className="clothes-section__info">
-            <h3 className="clothes-section__title">Tops and outerwear</h3>
-            <button className="clothes-section__button"> +Add new</button>
-          </div>
-          <ul className="clothes-section__list">
-            {topsandoutwear.map((card) => (
-              <ClothingCard
-                key={card.name}
-                name="T-shirt"
-                // please test with empty string to see the default image show up on card with "add your photo" button
-                cardData={card}
-                onCardLike={onCardLike}
-              />
-            ))}
-          </ul>
-        </div>
-        <div className="clothes-section">
-          <div className="clothes-section__info">
-            <h3 className="clothes-section__title">Bottoms</h3>
-            <button className="clothes-section__button"> +Add new</button>
-          </div>
-          <ul className="clothes-section__list">
-            {bottoms.map((card) => (
-              <ClothingCard
-                key={card.name}
-                // please test with empty string to see the default image show up on card with "add your photo" button
-                cardData={card}
-                onCardLike={onCardLike}
-              />
-            ))}
-          </ul>
-        </div>
-        <div className="clothes-section">
-          <div className="clothes-section__info">
-            <h3 className="clothes-section__title">Shoes</h3>
-            <button className="clothes-section__button"> +Add new</button>
-          </div>
-          <ul className="clothes-section__list">
-            {shoes.map((card) => (
-              <ClothingCard
-                key={card.name}
-                // please test with empty string to see the default image show up on card with "add your photo" button
-                cardData={card}
-                onCardLike={onCardLike}
-              />
-            ))}
-          </ul>
-        </div>
+        <ClothesSection
+          sectionName={'Accessories'}
+          sectionData={accessories}
+          onAddNewclick={onAddNewClick}
+          onCardLike={onCardLike}
+        />
+        <ClothesSection
+          sectionName={'Tops & outerwear'}
+          sectionData={topsandoutwear}
+          onAddNewclick={onAddNewClick}
+          onCardLike={onCardLike}
+        />
+        <ClothesSection
+          sectionName={'Bottoms'}
+          sectionData={bottoms}
+          onAddNewclick={onAddNewClick}
+          onCardLike={onCardLike}
+        />
+        <ClothesSection
+          sectionName={'Shoes'}
+          sectionData={shoes}
+          onAddNewclick={onAddNewClick}
+          onCardLike={onCardLike}
+        />
       </section>
     </div>
   );
