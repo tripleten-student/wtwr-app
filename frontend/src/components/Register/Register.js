@@ -48,12 +48,15 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
       'register-email': '',
       'register-password': '',
       'confirm-password': '',
+      'register-name':''
     };
     setRegisterEmail('');
     setRegisterPassword('');
     setConfirmPassword('');
+    setName('');
+    setClothingPreferences([])
     resetForm({ ...initialValues }, { ...initialValues }, true);
-  }, [resetForm, setRegisterEmail, setRegisterPassword, setConfirmPassword]);
+  }, [isOpen, resetForm, setRegisterEmail, setRegisterPassword, setConfirmPassword]);
 
   const handleInputChange = (event) => {
     if (event.target.name === 'register-email') {
@@ -90,8 +93,9 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
 
   const handleItemSelect = (selection) => {
     clothingPreferences.includes(selection)
-      ? setClothingPreferences(clothingPreferences.filter((item) => item !== selection))
-      : clothingPreferences.push(selection);
+    ? setClothingPreferences(clothingPreferences.filter((item) => item !== selection))
+    : clothingPreferences.push(selection);
+    console.log('top', clothingPreferences)
   };
 
 
@@ -105,6 +109,8 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
       clothingPreferences,
     });
     onClose();
+    setPreferencesOpen(false);
+    setCredentialsOpen(true)
   };
 
   const emailInputClassName = ``;
@@ -268,6 +274,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
                 item={item}
                 key={item.value}
                 onItemSelect={handleItemSelect}
+                clothingPreferences={clothingPreferences}
               />
             ))}
           </div>
