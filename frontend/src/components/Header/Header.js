@@ -1,16 +1,18 @@
 import './Header.css';
+import Logo from '../Logo/Logo';
+import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 
-function Header() {
+function Header({ children }) {
   return (
     <header className="header">
       <div className="header__container">
-        <img className="header__logo" alt="WTWR Logo" src={require('../../images/wtwr_logo.png')} />
+        <div className="header__logo">
+          <Logo />
+        </div>
         <p className="header__date">June 15, New York</p>
-      </div>
+      </div> 
       <div className="header__navContainer">
-        <p>placeholder</p>
-        <p>placeholder</p>
-        <p>placeholder</p>
+        {children}
       </div>
     </header>
   );

@@ -107,14 +107,17 @@ const App = () => {
         >
           {/* isLoggedIn will be determined by a future user context */}
           {/* I left the userName state in for the purpose of seeing the different navigation css */}
-          <Navigation 
-            isLoggedIn={isLoggedIn} 
-            /** rewrite `{userName}` to `{currentUser}` when ready */
-            username={userName} 
-            hasAvatar={userAvatar}
-            /** place signup modal open state here */
-            /** place login modal open state here */
+          {/** rewrite `{userName}` to `{currentUser}` when ready */}            
+          {/** place signup modal open state in Navigation*/}
+          {/** place login modal open state in Navigation*/}
+          <Header> 
+            <Navigation 
+              isLoggedIn={isLoggedIn} 
+              username={userName} 
+              hasAvatar={userAvatar}
             />
+          </Header>
+
           App
           {/* Replace the ModalWithForm below with specific modals */}
           <Login
