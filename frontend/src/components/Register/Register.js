@@ -94,15 +94,10 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
       : clothingPreferences.push(selection);
   };
 
-  // const registerFormSubmit = (event) => {
-  //   // event.preventDefault()
-  //   (credentialsOpen || personalInfoOpen) && handleNext(event);
-
-  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({
+    onSubmit({
       registerEmail,
       registerPassword,
       name,

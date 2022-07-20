@@ -6,7 +6,6 @@ import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Navigation from '../Navigation/Navigation';
-import Modal from '../Modal/Modal';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
 import Register from '../Register/Register'
@@ -101,6 +100,12 @@ const App = () => {
     setCurrentUser({});
     setCurrentUserEmail('');
   };
+
+  const handleRegisterSubmit = (credentials) =>{
+    // credentials to be used in API call to backend
+    console.log(credentials)
+  }
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -116,6 +121,7 @@ const App = () => {
             hasAvatar={userAvatar}
             /** place signup modal open state here */
             /** place login modal open state here */
+            handleRegisterClick={()=> setisRegisterOpen(true)}
             />
           App
           {/* Replace the ModalWithForm below with specific modals */}
@@ -131,6 +137,7 @@ const App = () => {
           <Register 
           isOpen={isRegisterOpen}
           onClose={closeAllPopups}
+          onSubmit={handleRegisterSubmit}
           />
 
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
