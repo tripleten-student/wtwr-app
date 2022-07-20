@@ -3,13 +3,12 @@ import ClothingCard from '../ClothingCard/ClothingCard';
 import PropTypes from 'prop-types';
 
 function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike }) {
-  console.log(typeof sectionData);
   return (
     <div className="clothes-section">
       <div className="clothes-section__info">
         <h3 className="clothes-section__title">{sectionName}</h3>
         <button className="clothes-section__button" onClick={onAddNewClick}>
-          +Add new
+          + Add new
         </button>
       </div>
       <ul className="clothes-section__list">
@@ -19,7 +18,7 @@ function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike })
           sectionData.map((card) => (
             <ClothingCard
               key={card.name}
-              name="T-shirt"
+              name={card.name}
               // please test with empty string to see the default image show up on card with "add your photo" button
               cardData={card}
               onCardLike={onCardLike}
