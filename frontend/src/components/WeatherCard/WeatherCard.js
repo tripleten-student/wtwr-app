@@ -22,7 +22,7 @@ const WeatherCard = ({ weatherData }) => {
         elongate ? 'weathercard_elongated' : 'weathercard_overlay'
       } ${backgroundImage}`}
     >
-      <div className="weathercard__info-container" aria-label="description">
+      <div className="weathercard__info-container" aria-label={description}>
         <p className="weathercard__time">{displayedTime}</p>
         <p className="weathercard__temperature">{temperature}</p>
         <p className="weathercard__description">{description}</p>
