@@ -29,5 +29,7 @@
 }
 
 .header__navContainer {
+    display: flex;
+    min-width: 215px;
     margin: 6px 0 6px;
 }

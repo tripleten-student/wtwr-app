@@ -10,8 +10,9 @@ function Header({ children }) {
           <Logo />
         </div>
         <p className="header__date">June 15, New York</p>
-      </div> 
+      </div>
       <div className="header__navContainer">
+        <ToggleSwitch /> 
         {children}
       </div>
     </header>
