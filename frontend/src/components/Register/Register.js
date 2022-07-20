@@ -6,7 +6,7 @@ import ClothingSelectorButton from '../ClothingSelectorButton/ClothingSelectorBu
 import { clothingItems } from '../../utils/formConstants';
 
 /**
- * The **Login** component representing user authorization or login form.
+ * The **Register** component for user sign up and submission to the backend.
  *
  * @author [Devin](https://github.com/mentalcaries)
  */
@@ -15,19 +15,22 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   const [credentialsOpen, setCredentialsOpen] = useState(isOpen);
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
-  const [registerEmail, setRegisterEmail] = useState('');
-  const [registerPassword, setRegisterPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('');
   const [clothingPreferences, setClothingPreferences] = useState([]);
 
-  const { isValid, errors, handleChange, resetForm } = useFormAndValidation([
+  const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'register-email',
-    'register-pwd',
-    'confirm-pwd',
+    'register-password',
+    'confirm-password',
     'register-name',
   ]);
+
+  const {
+    'register-email': registerEmail,
+    'register-password': registerPassword,
+    'confirm-password': confirmPassword,
+    'register-name': name,
+  } = values;
 
   const credentialsRef = React.useRef(null);
   const personalInfoRef = React.useRef(null);
@@ -43,38 +46,17 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   };
 
   // Reset form values every time the popup opens
-  React.useEffect(() => {
-    const initialValues = {
-      'register-email': '',
-      'register-password': '',
-      'confirm-password': '',
-      'register-name':''
-    };
-    setRegisterEmail('');
-    setRegisterPassword('');
-    setConfirmPassword('');
-    setName('');
-    setClothingPreferences([])
-    resetForm({ ...initialValues }, { ...initialValues }, true);
-  }, [isOpen, resetForm, setRegisterEmail, setRegisterPassword, setConfirmPassword]);
+
+  const initialValues = {
+    'register-email': '',
+    'register-password': '',
+    'confirm-password': '',
+    'register-name': '',
+  };
 
   const handleInputChange = (event) => {
-    if (event.target.name === 'register-email') {
-      setRegisterEmail(event.target.value);
-    }
-    if (event.target.name === 'register-pwd') {
-      setRegisterPassword(event.target.value);
-    }
-    if (event.target.name === 'confirm-pwd') {
-      setConfirmPassword(event.target.value);
-    }
-    if (event.target.name === 'register-name') {
-      setName(event.target.value);
-    }
-    if (event.target.name === 'register-avatar') {
-      setAvatar(event.target.value);
-    }
     handleChange(event);
+    event.target.name === 'register-avatar' && setAvatar(event.target.value);
   };
 
   const handleNext = (event) => {
@@ -93,24 +75,23 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
 
   const handleItemSelect = (selection) => {
     clothingPreferences.includes(selection)
-    ? setClothingPreferences(clothingPreferences.filter((item) => item !== selection))
-    : clothingPreferences.push(selection);
-    console.log('top', clothingPreferences)
+      ? setClothingPreferences(clothingPreferences.filter((item) => item !== selection))
+      : clothingPreferences.push(selection);
   };
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit({
-      registerEmail,
-      registerPassword,
-      name,
+      registerEmail: values['register-email'],
+      registerPassword: values['register-password'],
+      name: values['register-name'],
       avatar,
       clothingPreferences,
     });
     onClose();
+    resetForm({ ...initialValues }, { ...initialValues }, true);
     setPreferencesOpen(false);
-    setCredentialsOpen(true)
+    setCredentialsOpen(true);
   };
 
   const emailInputClassName = ``;
@@ -158,14 +139,14 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
             />
           </div>
           <div className="form__input-container">
-            <label htmlFor="register-pwd" className="form__input-label">
+            <label htmlFor="register-password" className="form__input-label">
               Password
-              <span id="register-pwd-error" className={passwordErrorClassName}></span>
+              <span id="register-password-error" className={passwordErrorClassName}></span>
             </label>
             <input
               type="password"
-              id="register-pwd"
-              name="register-pwd"
+              id="register-password"
+              name="register-password"
               placeholder="Password"
               className="form__input"
               value={registerPassword}
@@ -175,14 +156,14 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
             />
           </div>
           <div className="form__input-container">
-            <label htmlFor="confirm-pwd" className="form__input-label">
+            <label htmlFor="confirm-password" className="form__input-label">
               Confirm Password
-              <span id="confirm-pwd-error" className={passwordErrorClassName}></span>
+              <span id="confirm-password-error" className={passwordErrorClassName}></span>
             </label>
             <input
               type="password"
-              id="confirm-pwd"
-              name="confirm-pwd"
+              id="confirm-password"
+              name="confirm-password"
               placeholder="Password"
               className="form__input"
               value={confirmPassword}

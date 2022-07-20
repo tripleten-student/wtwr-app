@@ -13,6 +13,7 @@ export function useFormAndValidation(inputNamesArr) {
   const [errors, setErrors] = React.useState(initialValues);
   const [isValid, setIsValid] = React.useState(true);
 
+
   const handleChange = (e) => {
     const { name, value, validationMessage } = e.target
     setValues({ ...values, [name]: value });
