@@ -9,6 +9,7 @@ import Navigation from '../Navigation/Navigation';
 import Modal from '../Modal/Modal';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
+import Profile from '../Profile/Profile';
 
 /**
  * The main React **App** component.
@@ -23,11 +24,11 @@ const App = () => {
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
 
-// logic with actual data needed in the future 
+  // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(false);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
   const [userName, setUserName] = React.useState(false);
-  
+
   // not using state here, assuming the time only gets read every time user refreshes the page
   const currentHour = new Date().getHours();
   const timeOfTheDay = determineTimeOfTheDay(currentHour);
@@ -106,14 +107,14 @@ const App = () => {
         >
           {/* isLoggedIn will be determined by a future user context */}
           {/* I left the userName state in for the purpose of seeing the different navigation css */}
-          <Navigation 
-            isLoggedIn={isLoggedIn} 
+          <Navigation
+            isLoggedIn={isLoggedIn}
             /** rewrite `{userName}` to `{currentUser}` when ready */
-            username={userName} 
+            username={userName}
             hasAvatar={userAvatar}
             /** place signup modal open state here */
             /** place login modal open state here */
-            />
+          />
           App
           {/* Replace the ModalWithForm below with specific modals */}
           <Login
@@ -127,12 +128,7 @@ const App = () => {
           />
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
-          <ClothingCard
-            name="T-shirt"
-            // please test with empty string to see the default image show up on card with "add your photo" button
-            cardData={clothingCardData}
-            onCardLike={handleLikeClick}
-          />
+          <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
       </div>
