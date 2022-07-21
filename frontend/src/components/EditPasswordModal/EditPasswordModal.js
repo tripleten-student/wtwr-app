@@ -10,17 +10,14 @@ import { useFormAndValidation } from '../../hooks/useFormAndValidation';
  */
 
 const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
-  // const currentUser = React.useContext(CurrentUserContext);
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
-    'login-password', 'new-login-password', 'confirm-login-password'
+    'login-password',
+    'new-login-password',
+    'confirm-login-password',
   ]);
 
   const formRef = React.useRef();
   const [isFormValid, setIsFormValid] = React.useState(false);
-
-  const [password, setPassword] = React.useState('');
-  const [newpassword, setNewPassword] = React.useState('');
-  const [confirmpassword, setConfirmPassword] = React.useState('');
 
   React.useEffect(() => {
     setIsFormValid(formRef.current.checkValidity());
@@ -33,40 +30,32 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   // Reset form values every time the popup opens
   React.useEffect(() => {
     const initialValues = {
-      password: '',
-      newpassword: '',
-      confirmpassword: '',
+      'login-password': '',
+      'new-login-password': '',
+      'confirm-login-password': '',
     };
+
     const initialErrorValues = {
-      password: '',
-      newpassword: '',
-      confirmpassword: '',
+      'login-password': '',
+      'new-login-password': '',
+      'confirm-login-password': '',
     };
 
-    setNewPassword('');
-    setConfirmPassword('');
     resetForm({ ...initialValues }, { ...initialErrorValues }, true);
-  }, [isOpen, resetForm,setPassword, setNewPassword, setConfirmPassword]);
+  }, [isOpen, resetForm]);
 
-  const handleInputChange = (event) => {
-    if (event.target.name === 'login-password') {
-      setPassword(event.target.value);
-    }
-    if (event.target.name === 'new-login-password') {
-      setNewPassword(event.target.value);
-    }
-    if (event.target.name === 'confirm-login-password') {
-      setConfirmPassword(event.target.value);
-    }
+  const handleInputChange = (event) => handleChange(event);
 
-    handleChange(event);
-  };
   const handleFormSubmit = (event) => {
+    console.log(values);
     event.preventDefault();
     // naming of the fields to be checked again when backend API is connected
-    const { password, newpassword, confirmpassword } = values;
-    if (isValid || (newpassword !== password && newpassword === confirmpassword)) {
-      onUpdatePassword({confirmpassword });
+    if (
+      isValid &&
+      values['new-login-password'] !== values['login-password'] &&
+      values['new-login-password'] === values['confirm-login-password']
+    ) {
+      onUpdatePassword(values['confirm-login-password']);
     }
   };
 
@@ -99,7 +88,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
           placeholder="Old password"
           className="form__input"
           minLength="8"
-          value={password}
+          value={values['login-password']}
           onChange={handleInputChange}
           required
         />
@@ -116,7 +105,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
           name="new-login-password"
           placeholder="Password"
           className="form__input"
-          value={newpassword}
+          value={values['new-login-password']}
           minLength="8"
           onChange={handleInputChange}
           required
@@ -133,7 +122,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
           name="confirm-login-password"
           placeholder="Password"
           className="form__input"
-          value={confirmpassword}
+          value={values['confirm-login-password']}
           minLength="8"
           onChange={handleInputChange}
           required

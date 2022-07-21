@@ -31,7 +31,7 @@ const App = () => {
   const [loginPassword, setLoginPassword] = React.useState('');
 
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
-  const [isEditProfileDataOpen, setIsEditProfileDataOpen] = React.useState(false);
+  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
   // logic with actual data needed in the future
   // const [userAvatar, setUserAvatar] = React.useState(false);
@@ -50,7 +50,7 @@ const App = () => {
 
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
-  const isAnyPopupOpen = isLoginOpen;
+  const isAnyPopupOpen = isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen;
   React.useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
@@ -79,7 +79,7 @@ const App = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
     setIsEditPasswordModalOpen(false);
-    setIsEditProfileDataOpen(false);
+    setIsEditProfileDataModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -139,7 +139,7 @@ const App = () => {
             <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
             <Main />
             <EditProfileDataModal
-              isOpen={isEditProfileDataOpen}
+              isOpen={isEditProfileDataModalOpen}
               onClose={closeAllPopups}
               onUpdateUserProfile={handleUpdateProfileData}
             />
