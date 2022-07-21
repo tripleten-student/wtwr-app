@@ -1,0 +1,61 @@
+.clothes-section{
+    display: flex;
+    flex-direction: column;
+    margin: 0 ;
+    padding: 0;
+}
+
+.clothes-section__info{
+    display: flex;
+    padding: 0 0 17px 0;
+}
+
+.clothes-section__title{
+    margin:0;
+    padding: 0 20px 0 0;
+}
+
+.clothes-section__button{
+    margin:0;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.clothes-section__button:hover{
+    opacity: 1;
+}
+
+
+.clothes-section__list{
+    margin:0;
+    padding: 0 0 41px 0 ;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 325px);
+    grid-template-rows: auto;
+    grid-gap: 22px;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 800px) {
+
+    .clothes-section{
+        align-items: center;
+        width: 100%;
+    }
+
+    .clothes-section__info{
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .clothes-section__list{
+        grid-gap: 15px;
+    }
+  }
+  
+  @media screen and (max-width: 500px) {
+  
+  }
