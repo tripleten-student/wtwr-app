@@ -12,6 +12,7 @@ import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
 import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
+import Profile from '../Profile/Profile';
 
 /**
  * The main React **App** component.
@@ -23,7 +24,6 @@ const App = () => {
     username: 'Practicum',
     avatar: '',
     email: 'practicum@email.com',
-   
   });
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -33,10 +33,10 @@ const App = () => {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
-  // logic with actual data needed in the future
-  // const [userAvatar, setUserAvatar] = React.useState(false);
+
+  const [userAvatar, setUserAvatar] = React.useState(false);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  // const [userName, setUserName] = React.useState(false);
+  const [userName, setUserName] = React.useState(false);
 
   // not using state here, assuming the time only gets read every time user refreshes the page
   const currentHour = new Date().getHours();
@@ -120,14 +120,22 @@ const App = () => {
   return (
     <div className="page">
       <div className="page__wrapper">
-        {/* current user state should have all the user data - username, email, avatar */}
-        <CurrentUserContext.Provider value={currentUser}>
-          <CurrentTemperatureUnitContext.Provider
-            value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-          >
-            App
-            {/* Replace the ModalWithForm below with specific modals */}
-            {/* <Login
+        <CurrentTemperatureUnitContext.Provider
+          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+        >
+          {/* isLoggedIn will be determined by a future user context */}
+          {/* I left the userName state in for the purpose of seeing the different navigation css */}
+          <Navigation
+            isLoggedIn={isLoggedIn}
+            /** rewrite `{userName}` to `{currentUser}` when ready */
+            username={userName}
+            hasAvatar={userAvatar}
+            /** place signup modal open state here */
+            /** place login modal open state here */
+          />
+          App
+          {/* Replace the ModalWithForm below with specific modals */}
+          <Login
             isOpen={isLoginOpen}
             onClose={closeAllPopups}
             onSubmit={handleLoginSubmit}
@@ -135,28 +143,22 @@ const App = () => {
             setLoginEmail={setLoginEmail}
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
-          /> */}
-            <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
-            <Main />
-            <EditProfileDataModal
-              isOpen={isEditProfileDataModalOpen}
-              onClose={closeAllPopups}
-              onUpdateUserProfile={handleUpdateProfileData}
-            />
-            <EditPasswordModal
-              isOpen={isEditPasswordModalOpen}
-              onClose={closeAllPopups}
-              onUpdatePassword={handlelChangePasswordSubmit}
-            />
-            <ClothingCard
-              name="T-shirt"
-              // please test with empty string to see the default image show up on card with "add your photo" button
-              cardData={clothingCardData}
-              onCardLike={handleLikeClick}
-            />
-            <Footer />
-          </CurrentTemperatureUnitContext.Provider>
-        </CurrentUserContext.Provider>
+          />
+          <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
+          <Main />
+          <EditProfileDataModal
+            isOpen={isEditProfileDataModalOpen}
+            onClose={closeAllPopups}
+            onUpdateUserProfile={handleUpdateProfileData}
+          />
+          <EditPasswordModal
+            isOpen={isEditPasswordModalOpen}
+            onClose={closeAllPopups}
+            onUpdatePassword={handlelChangePasswordSubmit}
+          />
+          <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
+          <Footer />
+        </CurrentTemperatureUnitContext.Provider>
       </div>
     </div>
   );
