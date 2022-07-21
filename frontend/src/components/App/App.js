@@ -6,9 +6,9 @@ import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Navigation from '../Navigation/Navigation';
-import Modal from '../Modal/Modal';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
+import Register from '../Register/Register'
 import Profile from '../Profile/Profile';
 
 /**
@@ -16,7 +16,8 @@ import Profile from '../Profile/Profile';
  */
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [isLoginOpen, setIsLoginOpen] = React.useState(true);
+  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
+  const [isRegisterOpen, setisRegisterOpen] = React.useState(true)
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -41,7 +42,7 @@ const App = () => {
 
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
-  const isAnyPopupOpen = isLoginOpen;
+  const isAnyPopupOpen = isLoginOpen || isRegisterOpen;
   React.useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
@@ -69,6 +70,7 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
+    setisRegisterOpen(false)
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -99,6 +101,12 @@ const App = () => {
     setCurrentUser({});
     setCurrentUserEmail('');
   };
+
+  const handleRegisterSubmit = (credentials) =>{
+    // credentials to be used in API call to backend
+    console.log(credentials)
+  }
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -114,7 +122,9 @@ const App = () => {
             hasAvatar={userAvatar}
             /** place signup modal open state here */
             /** place login modal open state here */
-          />
+            handleRegisterClick={()=> setisRegisterOpen(true)}
+            />
+  
           App
           {/* Replace the ModalWithForm below with specific modals */}
           <Login
@@ -126,6 +136,12 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
+          <Register 
+          isOpen={isRegisterOpen}
+          onClose={closeAllPopups}
+          onSubmit={handleRegisterSubmit}
+          />
+
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
           <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
