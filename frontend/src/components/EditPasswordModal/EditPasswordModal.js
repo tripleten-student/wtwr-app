@@ -47,7 +47,6 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   const handleInputChange = (event) => handleChange(event);
 
   const handleFormSubmit = (event) => {
-    console.log(values);
     event.preventDefault();
     // naming of the fields to be checked again when backend API is connected
     if (

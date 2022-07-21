@@ -19,7 +19,7 @@ import Profile from '../Profile/Profile';
  */
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [isLoginOpen, setIsLoginOpen] = React.useState(true);
+  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({
     username: 'Practicum',
     avatar: '',
@@ -29,14 +29,13 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
-
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
-  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
+  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(true);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(false);
 
   const [userAvatar, setUserAvatar] = React.useState(false);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = React.useState(false);
+  const [userName, setUserName] = React.useState(true);
 
   // not using state here, assuming the time only gets read every time user refreshes the page
   const currentHour = new Date().getHours();
@@ -120,6 +119,7 @@ const App = () => {
   return (
     <div className="page">
       <div className="page__wrapper">
+      <CurrentUserContext.Provider value={currentUser}>
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
@@ -159,6 +159,7 @@ const App = () => {
           <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
+        </CurrentUserContext.Provider>
       </div>
     </div>
   );
