@@ -159,8 +159,6 @@ const App = () => {
   return (
     <div className="page">
       <div className="page__wrapper">
-        {/* <p>{userLocation.latitude}</p>
-        <p>{userLocation.longitude}</p> */}
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
