@@ -2,6 +2,13 @@ import './Header.css';
 import Logo from '../Logo/Logo';
 import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 
+/**
+ * The Navigation component
+ *
+ * @author [Sam](https://github.com/Samm96)
+ *
+*/
+
 function Header({ children }) {
   return (
     <header className="header">

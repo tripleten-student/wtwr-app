@@ -2,11 +2,6 @@ import React from 'react';
 import ModalWithForm from './ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
 
-/**
- * The **Login** component representing user authorization or login form.
- *
- * @author [Shraddha](https://github.com/5hraddha)
- */
 
 const Login = ({ isOpen, onClose, onSubmit, loginEmail, setLoginEmail, loginPassword, setLoginPassword }) => {
   const { isValid, errors, handleChange, resetForm } = useFormAndValidation(['login-email', 'login-pwd']);

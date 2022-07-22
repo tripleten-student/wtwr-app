@@ -7,16 +7,18 @@ import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Navigation from '../Navigation/Navigation';
-import Modal from '../Modal/Modal';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
+import Register from '../Register/Register'
+import Profile from '../Profile/Profile';
 
 /**
  * The main React **App** component.
  */
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [isLoginOpen, setIsLoginOpen] = React.useState(true);
+  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
+  const [isRegisterOpen, setisRegisterOpen] = React.useState(true)
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -24,11 +26,11 @@ const App = () => {
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
 
-// logic with actual data needed in the future 
+  // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(false);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
   const [userName, setUserName] = React.useState(false);
-  
+
   // not using state here, assuming the time only gets read every time user refreshes the page
   const currentHour = new Date().getHours();
   const timeOfTheDay = determineTimeOfTheDay(currentHour);
@@ -41,7 +43,7 @@ const App = () => {
 
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
-  const isAnyPopupOpen = isLoginOpen;
+  const isAnyPopupOpen = isLoginOpen || isRegisterOpen;
   React.useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
@@ -69,6 +71,7 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
+    setisRegisterOpen(false)
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -99,6 +102,12 @@ const App = () => {
     setCurrentUser({});
     setCurrentUserEmail('');
   };
+
+  const handleRegisterSubmit = (credentials) =>{
+    // credentials to be used in API call to backend
+    console.log(credentials)
+  }
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -129,14 +138,15 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
+          <Register 
+          isOpen={isRegisterOpen}
+          onClose={closeAllPopups}
+          onSubmit={handleRegisterSubmit}
+          />
+
           <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
           <Main />
-          <ClothingCard
-            name="T-shirt"
-            // please test with empty string to see the default image show up on card with "add your photo" button
-            cardData={clothingCardData}
-            onCardLike={handleLikeClick}
-          />
+          <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
       </div>
