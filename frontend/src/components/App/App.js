@@ -5,7 +5,6 @@ import Footer from '../Footer/Footer';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import Navigation from '../Navigation/Navigation';
-import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
 import {
   getGeolocation,
@@ -178,6 +177,7 @@ const App = () => {
           />
           App
           {/* Replace the ModalWithForm below with specific modals */}
+          <WeatherCards weatherData={weatherData} />
           <Login
             isOpen={isLoginOpen}
             onClose={closeAllPopups}
@@ -192,7 +192,6 @@ const App = () => {
             onClose={closeAllPopups}
             onSubmit={handleRegisterSubmit}
           />
-          <WeatherCards weatherData={weatherData} />
           <Main></Main>
           <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
           <Footer />
