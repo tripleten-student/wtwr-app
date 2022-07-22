@@ -124,6 +124,7 @@ const App = () => {
               isLoggedIn={isLoggedIn} 
               username={userName} 
               hasAvatar={userAvatar}
+              handleRegisterClick={()=> setisRegisterOpen(true)}
             />
           </Header>
 
