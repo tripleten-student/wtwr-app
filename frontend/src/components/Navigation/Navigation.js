@@ -12,7 +12,7 @@ import { NavLink } from 'react-router-dom';
  * NOTE: add `onClick` to buttons for signin / login modals
  */
 
-function Navigation({ isLoggedIn, hasAvatar, username }) {
+function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick }) {
   const defaultUser = 'Terrence Tegegne';
 
   return (
@@ -44,7 +44,7 @@ function Navigation({ isLoggedIn, hasAvatar, username }) {
       ) : (
         <ul className="navigation__container">
           <li>
-            <button className="navigation__button">Sign Up</button>
+            <button onClick={handleRegisterClick}className="navigation__button">Sign Up</button>
           </li>
           <li>
             <button className="navigation__button">Log In</button>
