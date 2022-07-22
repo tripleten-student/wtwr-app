@@ -103,17 +103,17 @@ const determineTimeOfTheDay = (currentHour) => {
 const generateDescription = (categorizedWeather, elongateOrNot, weatherData) => {
   if (elongateOrNot) {
     if (categorizedWeather === 'snowy') {
-      return `Chance of snow: ${weatherData.chance_of_snow}`;
+      return `Chance of snow: ${weatherData.chance_of_snow}%`;
     } else if (categorizedWeather === 'rainy') {
-      return `Chance of rain: ${weatherData.chance_of_rain}`;
+      return `Chance of rain: ${weatherData.chance_of_rain}%`;
     } else {
       return categorizedWeather.charAt(0).toUpperCase() + categorizedWeather.slice(1);
     }
   } else {
     if (categorizedWeather === 'snowy') {
-      return weatherData.chance_of_snow;
+      return `${weatherData.chance_of_snow}%`;
     } else if (categorizedWeather === 'rainy') {
-      return weatherData.chance_of_rain;
+      return `${weatherData.chance_of_rain}%`;
     } else {
       return categorizedWeather.charAt(0).toUpperCase() + categorizedWeather.slice(1);
     }
