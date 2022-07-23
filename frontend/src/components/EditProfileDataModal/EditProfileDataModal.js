@@ -33,7 +33,7 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
   React.useEffect(() => {
     const initialInputValues = {
       username: currentUser.username || '',
-      avatarurl: currentUser.avatar || '',
+      avatar: currentUser.avatar || '',
     };
     const initialErrorValues = {
       username: '',
@@ -46,10 +46,12 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    const { username, avatarurl } = values;
-    if (isValid || (username && avatarurl)) {
+    const { username, avatar } = values;
+
+    if (isValid || (username && avatar)) {
       // naming of the fields to be checked again when backend API is connected
-      onUpdateUserProfile({ username: username, avatar: avatarurl });
+      onUpdateUserProfile(values);
+      onClose();
     }
   };
 

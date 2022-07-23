@@ -15,12 +15,16 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
     'new-login-password',
     'confirm-login-password',
   ]);
-
+  // const {
+  //   'login-password': oldPassword,
+  //   'new-login-password': newPassword,
+  //   'confirm-login-password': confirmPassword,
+  //   } = values;
   const formRef = React.useRef();
   const [isFormValid, setIsFormValid] = React.useState(false);
 
   React.useEffect(() => {
-    setIsFormValid(formRef.current.checkValidity());
+    setIsFormValid(values['new-login-password'] === values['confirm-login-password'] && formRef.current.checkValidity());
   }, [isOpen, formRef]);
 
   const handleFormChange = () => {
@@ -55,6 +59,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
       values['new-login-password'] === values['confirm-login-password']
     ) {
       onUpdatePassword(values['confirm-login-password']);
+      onClose();
     }
   };
 

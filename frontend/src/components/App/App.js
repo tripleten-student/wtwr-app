@@ -6,7 +6,7 @@ import Header from '../Header/Header';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
-import { determineTimeOfTheDay } from '../../utils/weatherCards';
+
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
@@ -14,7 +14,7 @@ import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 import {
   getGeolocation,
   getForecastWeather,
-  filterDataFromWeatherAPI,
+  filterDataFromWeatherAPI,determineTimeOfTheDay 
 } from '../../utils/weatherApi';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
@@ -37,8 +37,8 @@ const App = () => {
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
-  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(true);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(false);
+  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
 
   const [userAvatar, setUserAvatar] = React.useState(false);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
@@ -165,7 +165,8 @@ const App = () => {
   };
 
   const handleUpdateProfileData = (userData) => {
-    console.log(`api patch will be implemented - ${userData}`);
+    //console.log(`api patch will be implemented - ${userData}`);
+    console.log(userData);
   };
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
@@ -207,7 +208,7 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
-          <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
+          {/* <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" /> */}
           <Main />
           <EditProfileDataModal
             isOpen={isEditProfileDataModalOpen}
