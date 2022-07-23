@@ -6,8 +6,11 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
+import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 import {
   getGeolocation,
   getForecastWeather,
@@ -23,13 +26,20 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState({
+    username: 'Practicum',
+    avatar:
+      'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
+    email: 'practicum@email.com',
+  });
   const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({});
+ 
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
+  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(true);
 
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
@@ -94,7 +104,9 @@ const App = () => {
 
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
-  const isAnyPopupOpen = isLoginOpen || isRegisterOpen;
+  const isAnyPopupOpen =
+    isLoginOpen || isEditProfileDataModalOpen || isRegisterOpen;
+
   React.useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
@@ -122,6 +134,7 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
+    setIsEditProfileDataModalOpen(false);
     setisRegisterOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
@@ -153,6 +166,11 @@ const App = () => {
     setCurrentUserEmail('');
   };
 
+  const handleUpdateProfileData = (userData) => {
+    console.log("api patch will be implemented" );
+    console.log(userData);
+  };
+ 
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
     console.log(credentials);
@@ -161,6 +179,7 @@ const App = () => {
   return (
     <div className="page">
       <div className="page__wrapper">
+      <CurrentUserContext.Provider value={currentUser}>
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
@@ -203,6 +222,11 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
+           <EditProfileDataModal
+              isOpen={isEditProfileDataModalOpen}
+              onClose={closeAllPopups}
+              onUpdateUserProfile={handleUpdateProfileData}
+            />
           <Register
             isOpen={isRegisterOpen}
             onClose={closeAllPopups}
@@ -210,6 +234,7 @@ const App = () => {
           />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
+        </CurrentUserContext.Provider>
       </div>
     </div>
   );
