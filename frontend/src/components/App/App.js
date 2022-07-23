@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -9,8 +10,9 @@ import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Navigation from '../Navigation/Navigation';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
-import Register from '../Register/Register'
+import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 /**
  * The main React **App** component.
@@ -18,16 +20,16 @@ import Profile from '../Profile/Profile';
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(false);
-  const [isRegisterOpen, setisRegisterOpen] = React.useState(false)
+  const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
 
   // logic with actual data needed in the future
-  const [userAvatar, setUserAvatar] = React.useState(false);
+  const [userAvatar, setUserAvatar] = React.useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
   const [userName, setUserName] = React.useState(false);
 
@@ -71,7 +73,7 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
-    setisRegisterOpen(false)
+    setisRegisterOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -103,10 +105,10 @@ const App = () => {
     setCurrentUserEmail('');
   };
 
-  const handleRegisterSubmit = (credentials) =>{
+  const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
-    console.log(credentials)
-  }
+    console.log(credentials);
+  };
 
   return (
     <div className="page">
@@ -116,18 +118,32 @@ const App = () => {
         >
           {/* isLoggedIn will be determined by a future user context */}
           {/* I left the userName state in for the purpose of seeing the different navigation css */}
-          {/** rewrite `{userName}` to `{currentUser}` when ready */}            
+          {/** rewrite `{userName}` to `{currentUser}` when ready */}
           {/** place login modal open state in Navigation*/}
-          <Header> 
-            <Navigation 
-              isLoggedIn={isLoggedIn} 
-              username={userName} 
+          <Header>
+            <Navigation
+              isLoggedIn={isLoggedIn}
+              username={userName}
               hasAvatar={userAvatar}
-              handleRegisterClick={()=> setisRegisterOpen(true)}
+              handleRegisterClick={() => setisRegisterOpen(true)}
               handleLoginClick={() => setIsLoginOpen(true)}
             />
           </Header>
-
+          <Routes>
+            <Route exact path="/" element={<Main timeOfTheDay={timeOfTheDay} />}></Route>
+            <Route
+              exact
+              path="/profile"
+              element={
+                <ProtectedRoute
+                  handleLoginClick={() => setIsLoginOpen(true)}
+                  isLoggedIn={isLoggedIn}
+                >
+                  <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
+                </ProtectedRoute>
+              }
+            ></Route>
+          </Routes>
           App
           {/* Replace the ModalWithForm below with specific modals */}
           <Login
@@ -139,15 +155,11 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
-          <Register 
-          isOpen={isRegisterOpen}
-          onClose={closeAllPopups}
-          onSubmit={handleRegisterSubmit}
+          <Register
+            isOpen={isRegisterOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleRegisterSubmit}
           />
-
-          <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
-          <Main />
-          <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
       </div>
