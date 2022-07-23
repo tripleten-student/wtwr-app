@@ -33,7 +33,7 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
   React.useEffect(() => {
     const initialInputValues = {
       username: currentUser.username || '',
-      avatar: currentUser.avatar || '',
+      avatarurl: currentUser.avatar || '',
     };
     const initialErrorValues = {
       username: '',
@@ -103,7 +103,7 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
           name="avatarurl"
           placeholder="Avatar"
           className="form__input"
-          value={values.avatar}
+          value={values.avatarurl}
           onChange={handleInputChange}
         />
       </div>
