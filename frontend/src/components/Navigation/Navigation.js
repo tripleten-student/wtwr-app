@@ -8,11 +8,9 @@ import { NavLink } from 'react-router-dom';
  * @author [Sam](https://github.com/Samm96)
  *
  * NOTE: routes to respective modals need to be added
- * NOTE: add signup modal prop
- * NOTE: add `onClick` to buttons for signin / login modals
  */
 
-function Navigation({ isLoggedIn, hasAvatar, username }) {
+function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, handleLoginClick }) {
   const defaultUser = 'Terrence Tegegne';
 
   return (
@@ -44,10 +42,10 @@ function Navigation({ isLoggedIn, hasAvatar, username }) {
       ) : (
         <ul className="navigation__container">
           <li>
-            <button className="navigation__button">Sign Up</button>
+            <button onClick={handleRegisterClick} className="navigation__button">Sign Up</button>
           </li>
           <li>
-            <button className="navigation__button">Log In</button>
+            <button className="navigation__button" onClick={handleLoginClick}>Log In</button>
           </li>
         </ul>
       )}
