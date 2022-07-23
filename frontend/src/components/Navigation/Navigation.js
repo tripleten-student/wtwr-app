@@ -26,7 +26,7 @@ function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
               {hasAvatar ? (
                 <img
                   className="navigation__user"
-                /** Add user avatar prop and replace this with it */
+                  /** Add user avatar prop and replace this with it */
                   src={require('../../images/avatar-default.png')}
                   alt="user avatar"
                 />
@@ -42,10 +42,14 @@ function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
       ) : (
         <ul className="navigation__container">
           <li>
-            <button onClick={handleRegisterClick} className="navigation__button">Sign Up</button>
+            <button onClick={handleRegisterClick} className="navigation__button">
+              Sign Up
+            </button>
           </li>
           <li>
-            <button className="navigation__button" onClick={handleLoginClick}>Log In</button>
+            <button className="navigation__button" onClick={handleLoginClick}>
+              Log In
+            </button>
           </li>
         </ul>
       )}
