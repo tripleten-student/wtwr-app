@@ -18,7 +18,7 @@ import Profile from '../Profile/Profile';
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(false);
-  const [isRegisterOpen, setisRegisterOpen] = React.useState(true)
+  const [isRegisterOpen, setisRegisterOpen] = React.useState(false)
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -117,7 +117,6 @@ const App = () => {
           {/* isLoggedIn will be determined by a future user context */}
           {/* I left the userName state in for the purpose of seeing the different navigation css */}
           {/** rewrite `{userName}` to `{currentUser}` when ready */}            
-          {/** place signup modal open state in Navigation*/}
           {/** place login modal open state in Navigation*/}
           <Header> 
             <Navigation 
@@ -125,6 +124,7 @@ const App = () => {
               username={userName} 
               hasAvatar={userAvatar}
               handleRegisterClick={()=> setisRegisterOpen(true)}
+              // handleLoginClick={() =>}
             />
           </Header>
 
