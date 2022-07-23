@@ -12,7 +12,7 @@ import { clothingItems } from '../../utils/formConstants';
  */
 
 const Register = ({ isOpen, onClose, onSubmit }) => {
-  const [credentialsOpen, setCredentialsOpen] = useState(isOpen);
+  const [credentialsOpen, setCredentialsOpen] = useState(true);
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [avatar, setAvatar] = useState('');
