@@ -16,6 +16,7 @@ import {
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
  * The main React **App** component.
@@ -208,6 +209,8 @@ const App = () => {
             onClose={closeAllPopups}
             onSubmit={handleRegisterSubmit}
           />
+
+          <ShowClothingModal />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
       </div>
