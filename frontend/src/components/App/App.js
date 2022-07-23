@@ -11,12 +11,11 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
-
+import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 import {
   getGeolocation,
   getForecastWeather,
   filterDataFromWeatherAPI,
-  determineTimeOfTheDay,
 } from '../../utils/weatherApi';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
@@ -35,19 +34,19 @@ const App = () => {
     email: 'practicum@email.com',
   });
   const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
-  // const [currentUser, setCurrentUser] = React.useState({});
+ 
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(true)
 
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = React.useState(true);
+  const [userName, setUserName] = React.useState(false);
 
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
@@ -137,7 +136,6 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
-    setIsEditPasswordModalOpen(false);
     setIsEditProfileDataModalOpen(false);
     setisRegisterOpen(false);
   };
@@ -174,6 +172,11 @@ const App = () => {
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
+  const handleUpdateProfileData = (userData) => {
+    console.log("api patch will be implemented" );
+    console.log(userData);
+  };
+ 
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
     console.log(credentials);
@@ -238,6 +241,16 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
+           <EditProfileDataModal
+              isOpen={isEditProfileDataModalOpen}
+              onClose={closeAllPopups}
+              onUpdateUserProfile={handleUpdateProfileData}
+            />
+            <EditPasswordModal
+              isOpen={isEditPasswordModalOpen}
+              onClose={closeAllPopups}
+              onUpdatePassword={handlelChangePasswordSubmit}
+            />
           <Register
             isOpen={isRegisterOpen}
             onClose={closeAllPopups}
