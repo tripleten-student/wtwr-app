@@ -185,36 +185,23 @@ const App = () => {
   return (
     <div className="page">
       <div className="page__wrapper">
-        <CurrentUserContext.Provider value={currentUser}>
-          <CurrentTemperatureUnitContext.Provider
-            value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-          >
-            {/* isLoggedIn will be determined by a future user context */}
-            {/* I left the userName state in for the purpose of seeing the different navigation css */}
-            {/** rewrite `{userName}` to `{currentUser}` when ready */}
-            {/** place login modal open state in Navigation*/}
-            <Header>
-              <Navigation
-                isLoggedIn={isLoggedIn}
-                username={userName}
-                hasAvatar={userAvatar}
-                handleRegisterClick={() => setisRegisterOpen(true)}
-                handleLoginClick={() => setIsLoginOpen(true)}
-              />
-            </Header>
-            App
-            {/* Replace the ModalWithForm below with specific modals */}
-            <WeatherCards weatherData={weatherData} />
-            <Login
-              isOpen={isLoginOpen}
-              onClose={closeAllPopups}
-              onSubmit={handleLoginSubmit}
-              loginEmail={loginEmail}
-              setLoginEmail={setLoginEmail}
-              loginPassword={loginPassword}
-              setLoginPassword={setLoginPassword}
+      <CurrentUserContext.Provider value={currentUser}>
+        <CurrentTemperatureUnitContext.Provider
+          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+        >
+          {/* isLoggedIn will be determined by a future user context */}
+          {/* I left the userName state in for the purpose of seeing the different navigation css */}
+          {/** rewrite `{userName}` to `{currentUser}` when ready */}
+          {/** place login modal open state in Navigation*/}
+          <Header>
+            <Navigation
+              isLoggedIn={isLoggedIn}
+              username={userName}
+              hasAvatar={userAvatar}
+              handleRegisterClick={() => setisRegisterOpen(true)}
+              handleLoginClick={() => setIsLoginOpen(true)}
             />
-          
+          </Header>
           <Routes>
             <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
             <Route
