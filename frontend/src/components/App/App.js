@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -19,6 +20,7 @@ import {
 } from '../../utils/weatherApi';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 /**
  * The main React **App** component.
@@ -42,7 +44,8 @@ const App = () => {
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(true);
 
-  const [userAvatar, setUserAvatar] = React.useState(false);
+  // logic with actual data needed in the future
+  const [userAvatar, setUserAvatar] = React.useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
   const [userName, setUserName] = React.useState(true);
 
@@ -208,22 +211,40 @@ const App = () => {
               loginPassword={loginPassword}
               setLoginPassword={setLoginPassword}
             />
-            {/* <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" /> */}
-            <Main />
-            <EditPasswordModal
-              isOpen={isEditPasswordModalOpen}
-              onClose={closeAllPopups}
-              onUpdatePassword={handlelChangePasswordSubmit}
-            />
-            <Register
-              isOpen={isRegisterOpen}
-              onClose={closeAllPopups}
-              onSubmit={handleRegisterSubmit}
-            />
-            <Main></Main>
-            <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
-            <Footer />
-          </CurrentTemperatureUnitContext.Provider>
+          
+          <Routes>
+            <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
+            <Route
+              exact
+              path="/profile"
+              element={
+                <ProtectedRoute
+                  handleLoginClick={() => setIsLoginOpen(true)}
+                  isLoggedIn={isLoggedIn}
+                >
+                  <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
+                </ProtectedRoute>
+              }
+            ></Route>
+          </Routes>
+          Apps
+          {/* Replace the ModalWithForm below with specific modals */}
+          <Login
+            isOpen={isLoginOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleLoginSubmit}
+            loginEmail={loginEmail}
+            setLoginEmail={setLoginEmail}
+            loginPassword={loginPassword}
+            setLoginPassword={setLoginPassword}
+          />
+          <Register
+            isOpen={isRegisterOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleRegisterSubmit}
+          />
+          <Footer />
+        </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>
     </div>
