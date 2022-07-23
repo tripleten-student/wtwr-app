@@ -15,7 +15,6 @@ import {
   getGeolocation,
   getForecastWeather,
   filterDataFromWeatherAPI,
-  determineTimeOfTheDay,
 } from '../../utils/weatherApi';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
@@ -34,6 +33,7 @@ const App = () => {
     email: 'practicum@email.com',
   });
   const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
+ 
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
@@ -44,7 +44,7 @@ const App = () => {
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = React.useState(true);
+  const [userName, setUserName] = React.useState(false);
 
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
@@ -179,34 +179,21 @@ const App = () => {
   return (
     <div className="page">
       <div className="page__wrapper">
-        <CurrentUserContext.Provider value={currentUser}>
-          <CurrentTemperatureUnitContext.Provider
-            value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-          >
-            {/* isLoggedIn will be determined by a future user context */}
-            {/* I left the userName state in for the purpose of seeing the different navigation css */}
-            {/** rewrite `{userName}` to `{currentUser}` when ready */}
-            {/** place login modal open state in Navigation*/}
-            <Header>
-              <Navigation
-                isLoggedIn={isLoggedIn}
-                username={userName}
-                hasAvatar={userAvatar}
-                handleRegisterClick={() => setisRegisterOpen(true)}
-                handleLoginClick={() => setIsLoginOpen(true)}
-              />
-            
-            App
-            {/* Replace the ModalWithForm below with specific modals */}
-            <WeatherCards weatherData={weatherData} />
-            <Login
-              isOpen={isLoginOpen}
-              onClose={closeAllPopups}
-              onSubmit={handleLoginSubmit}
-              loginEmail={loginEmail}
-              setLoginEmail={setLoginEmail}
-              loginPassword={loginPassword}
-              setLoginPassword={setLoginPassword}
+      <CurrentUserContext.Provider value={currentUser}>
+        <CurrentTemperatureUnitContext.Provider
+          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+        >
+          {/* isLoggedIn will be determined by a future user context */}
+          {/* I left the userName state in for the purpose of seeing the different navigation css */}
+          {/** rewrite `{userName}` to `{currentUser}` when ready */}
+          {/** place login modal open state in Navigation*/}
+          <Header>
+            <Navigation
+              isLoggedIn={isLoggedIn}
+              username={userName}
+              hasAvatar={userAvatar}
+              handleRegisterClick={() => setisRegisterOpen(true)}
+              handleLoginClick={() => setIsLoginOpen(true)}
             />
           </Header>
           <Routes>
