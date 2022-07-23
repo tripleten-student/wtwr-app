@@ -15,17 +15,25 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
     'new-login-password',
     'confirm-login-password',
   ]);
-  // const {
-  //   'login-password': oldPassword,
-  //   'new-login-password': newPassword,
-  //   'confirm-login-password': confirmPassword,
-  //   } = values;
+
   const formRef = React.useRef();
   const [isFormValid, setIsFormValid] = React.useState(false);
 
+//the validation if user entered the correct old password  needs to be implemented
+
   React.useEffect(() => {
-    setIsFormValid(values['new-login-password'] !== values['login-password'] &&values['new-login-password'] === values['confirm-login-password'] && formRef.current.checkValidity());
-  }, [isOpen, formRef]);
+    setIsFormValid(
+      values['new-login-password'] !== values['login-password'] &&
+        values['new-login-password'] === values['confirm-login-password'] &&
+        formRef.current.checkValidity()
+    );
+  }, [
+    isOpen,
+    formRef,
+    values['new-login-password'],
+    values['new-login-password'],
+    values['confirm-login-password'],
+  ]);
 
   const handleFormChange = () => {
     setIsFormValid(formRef.current.checkValidity());
