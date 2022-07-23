@@ -56,11 +56,11 @@ const SideBar = ({
 };
 
 SideBar.propTypes = {
-  onChangePasswordClick: PropTypes.func.isRequired,
-  onChangeProfileClick: PropTypes.func.isRequired,
-  onChangeClothesPreferencesClick: PropTypes.func.isRequired,
-  onLogOutClick: PropTypes.func.isRequired,
-  onDeleteProfileClick: PropTypes.func.isRequired,
+  // onChangePasswordClick: PropTypes.func.isRequired,
+  // onChangeProfileClick: PropTypes.func.isRequired,
+  // onChangeClothesPreferencesClick: PropTypes.func.isRequired,
+  // onLogOutClick: PropTypes.func.isRequired,
+  // onDeleteProfileClick: PropTypes.func.isRequired,
 };
 
 export default SideBar;
