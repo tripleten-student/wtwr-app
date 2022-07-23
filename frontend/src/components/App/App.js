@@ -75,7 +75,6 @@ const App = () => {
     if (userLocation.latitude && userLocation.longitude) {
       getForecastWeather(userLocation, WeatherApiKey)
         .then((data) => {
-          console.log(data);
           setweatherData(filterDataFromWeatherAPI(data));
         })
         .catch((err) => {
@@ -83,7 +82,7 @@ const App = () => {
           console.log(err);
         });
     }
-  }, [userLocation]);
+  }, [userLocation, WeatherApiKey]);
 
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
