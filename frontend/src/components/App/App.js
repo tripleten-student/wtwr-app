@@ -138,6 +138,7 @@ const App = () => {
     setIsLoginOpen(false);
     setIsEditProfileDataModalOpen(false);
     setisRegisterOpen(false);
+    setIsEditPasswordModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
