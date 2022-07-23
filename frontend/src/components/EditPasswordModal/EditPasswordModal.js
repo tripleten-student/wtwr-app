@@ -24,7 +24,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   const [isFormValid, setIsFormValid] = React.useState(false);
 
   React.useEffect(() => {
-    setIsFormValid(values['new-login-password'] === values['confirm-login-password'] && formRef.current.checkValidity());
+    setIsFormValid(values['new-login-password'] !== values['login-password'] &&values['new-login-password'] === values['confirm-login-password'] && formRef.current.checkValidity());
   }, [isOpen, formRef]);
 
   const handleFormChange = () => {
@@ -51,6 +51,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   const handleInputChange = (event) => handleChange(event);
 
   const handleFormSubmit = (event) => {
+    console.log(values);
     event.preventDefault();
     // naming of the fields to be checked again when backend API is connected
     if (
