@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import Navigation from '../Navigation/Navigation';
@@ -20,7 +21,7 @@ import Profile from '../Profile/Profile';
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(false);
-  const [isRegisterOpen, setisRegisterOpen] = React.useState(true);
+  const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -164,15 +165,17 @@ const App = () => {
         >
           {/* isLoggedIn will be determined by a future user context */}
           {/* I left the userName state in for the purpose of seeing the different navigation css */}
-          <Navigation
-            isLoggedIn={isLoggedIn}
-            /** rewrite `{userName}` to `{currentUser}` when ready */
-            username={userName}
-            hasAvatar={userAvatar}
-            /** place signup modal open state here */
-            /** place login modal open state here */
-            handleRegisterClick={() => setisRegisterOpen(true)}
-          />
+          {/** rewrite `{userName}` to `{currentUser}` when ready */}
+          {/** place login modal open state in Navigation*/}
+          <Header>
+            <Navigation
+              isLoggedIn={isLoggedIn}
+              username={userName}
+              hasAvatar={userAvatar}
+              handleRegisterClick={() => setisRegisterOpen(true)}
+              handleLoginClick={() => setIsLoginOpen(true)}
+            />
+          </Header>
           App
           {/* Replace the ModalWithForm below with specific modals */}
           <WeatherCards weatherData={weatherData} />
