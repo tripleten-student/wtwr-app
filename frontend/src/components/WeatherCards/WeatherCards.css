@@ -6,7 +6,7 @@
   scrollbar-width: none;
   scrollbar-color: #9d9d9d #dbdbdb;
   padding-bottom: 14px;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .weathercards::-webkit-scrollbar {
