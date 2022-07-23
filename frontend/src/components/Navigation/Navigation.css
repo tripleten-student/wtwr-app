@@ -4,6 +4,7 @@
 }
 
 .navigation__container {
+    min-width: fit-content;
     display: flex;
     list-style: none;
     margin: 0;
@@ -11,7 +12,7 @@
 }
 
 .navigation__button {
-    margin-right: 20px;
+    margin-left: 20px;
     padding: 0;
     width: fit-content;
     font-size: 20px;
@@ -28,7 +29,7 @@
 }
 
 .navigation__link {
-    margin: 0;
+    margin-left: 20px;
     padding: 0;
     text-decoration: none;
     font-size: 20px;
