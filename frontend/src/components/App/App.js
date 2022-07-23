@@ -124,7 +124,7 @@ const App = () => {
               username={userName} 
               hasAvatar={userAvatar}
               handleRegisterClick={()=> setisRegisterOpen(true)}
-              // handleLoginClick={() =>}
+              handleLoginClick={() => setIsLoginOpen(true)}
             />
           </Header>
 
