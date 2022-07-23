@@ -3,23 +3,21 @@ import Logo from '../Logo/Logo';
 import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 
 /**
- * The Navigation component
+ * The Header component
  *
  * @author [Sam](https://github.com/Samm96)
  *
-*/
+ */
 
 function Header({ children }) {
   return (
     <header className="header">
       <div className="header__container">
-        <div className="header__logo">
-          <Logo />
-        </div>
+        <Logo />
         <p className="header__date">June 15, New York</p>
       </div>
       <div className="header__navContainer">
-        <ToggleSwitch /> 
+        <ToggleSwitch />
         {children}
       </div>
     </header>
