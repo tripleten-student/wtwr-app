@@ -8,10 +8,10 @@ import './Main.css';
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
-function Main({ timeOfTheDay }) {
+function Main({ weatherData }) {
   return (
     <main className="main">
-      <WeatherCards timeOfTheDay={timeOfTheDay} description="Data from Weather API" />
+      <WeatherCards weatherData={weatherData} />
     </main>
   );
 }

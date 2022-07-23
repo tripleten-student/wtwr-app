@@ -6,10 +6,13 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
-import { determineTimeOfTheDay } from '../../utils/weatherCards';
 import Navigation from '../Navigation/Navigation';
-import ClothingCard from '../ClothingCard/ClothingCard';
 import Login from '../Login';
+import {
+  getGeolocation,
+  getForecastWeather,
+  filterDataFromWeatherAPI,
+} from '../../utils/weatherApi';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
@@ -23,7 +26,7 @@ const App = () => {
   const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
-  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
@@ -33,9 +36,55 @@ const App = () => {
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
   const [userName, setUserName] = React.useState(false);
 
-  // not using state here, assuming the time only gets read every time user refreshes the page
-  const currentHour = new Date().getHours();
-  const timeOfTheDay = determineTimeOfTheDay(currentHour);
+  // userLocation is a state within a useEffect as the state should only be changed once after loading
+  const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
+  const [weatherData, setweatherData] = React.useState();
+  // to access the weatherAPI, please create an .env file in the rooter directly
+  // then input REACT_APP_WEATHER_API_KEY=keyThatYouGeneratedFromTheWebsite with no quotes
+  const WeatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
+
+  React.useEffect(() => {
+    getGeolocation()
+      .then(({ coords }) => {
+        setUserLocation({
+          ...userLocation,
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        });
+        localStorage.setItem(
+          'userLocation',
+          JSON.stringify({ latitude: coords.latitude, longitude: coords.longitude })
+        );
+      })
+      .catch(() => {
+        const savedLocation = localStorage.getItem('userLocation');
+        if (savedLocation !== null) {
+          const parsedLocation = JSON.parse(savedLocation);
+          if (parsedLocation.latitude && parsedLocation.longitude) {
+            setUserLocation({
+              ...userLocation,
+              latitude: parsedLocation.latitude,
+              longitude: parsedLocation.longitude,
+            });
+          }
+        } else {
+          setUserLocation({ ...userLocation, latitude: '40.730610', longitude: '-73.935242' });
+        }
+      });
+  }, []);
+  // after getting the location, send the API request to weatherAPI
+  React.useEffect(() => {
+    if (userLocation.latitude && userLocation.longitude) {
+      getForecastWeather(userLocation, WeatherApiKey)
+        .then((data) => {
+          setweatherData(filterDataFromWeatherAPI(data));
+        })
+        .catch((err) => {
+          // is there better error handling here? Error may occur when the weather API has problems
+          console.log(err);
+        });
+    }
+  }, [userLocation, WeatherApiKey]);
 
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
@@ -84,7 +133,6 @@ const App = () => {
     type: 't-shirt',
   };
   function handleLikeClick(cardData) {
-    console.log(cardData);
     // insert logic to interact with WTWR API
     setIsLoginOpen(false);
   }
@@ -130,7 +178,7 @@ const App = () => {
             />
           </Header>
           <Routes>
-            <Route exact path="/" element={<Main timeOfTheDay={timeOfTheDay} />}></Route>
+            <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
             <Route
               exact
               path="/profile"
@@ -144,7 +192,7 @@ const App = () => {
               }
             ></Route>
           </Routes>
-          App
+          Apps
           {/* Replace the ModalWithForm below with specific modals */}
           <Login
             isOpen={isLoginOpen}

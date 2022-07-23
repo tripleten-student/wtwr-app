@@ -9,10 +9,14 @@ import { Navigate } from 'react-router-dom';
  */
 
 const ProtectedRoute = ({ isLoggedIn, children, handleLoginClick, ...props }) => {
+  // const jwt = localStorage.getItem('jwt');
+
   if (isLoggedIn) {
     return children;
   } else {
-    handleLoginClick();
+    // handleLoginClick(); Now it gives an error, this has to be added later once
+    // JWT (token) is in local storage and we can change
+    //  the variable isLoggedIn for jwt, that way it doesnt give any errors.
     return <Navigate to="/" />;
   }
 };
