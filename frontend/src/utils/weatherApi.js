@@ -5,9 +5,6 @@
  * @author [Yuffie Hu](https://github.com/yuff1006)
  */
 
-const WeatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
-const fifteenMinutesInMilleseconds = 900000;
-
 const categorizeWeatherTypeForImage = (description) => {
   description = description.toLowerCase();
   if (
@@ -168,6 +165,4 @@ export {
   getGeolocation,
   getWeatherDataWithExpiry,
   setWeatherDataWithExpiry,
-  WeatherApiKey,
-  fifteenMinutesInMilleseconds,
 };

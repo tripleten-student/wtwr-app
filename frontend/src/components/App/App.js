@@ -13,9 +13,8 @@ import {
   filterDataFromWeatherAPI,
   getWeatherDataWithExpiry,
   setWeatherDataWithExpiry,
-  WeatherApiKey,
-  fifteenMinutesInMilleseconds,
 } from '../../utils/weatherApi';
+import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 
@@ -79,7 +78,7 @@ const App = () => {
   React.useEffect(() => {
     const getWeatherDataUsingLocation = () => {
       if (userLocation.latitude && userLocation.longitude) {
-        getForecastWeather(userLocation, WeatherApiKey)
+        getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
           .then((data) => {
             setweatherData(filterDataFromWeatherAPI(data));
             setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
