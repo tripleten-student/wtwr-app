@@ -23,6 +23,7 @@ import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 
 /**
  * The main React **App** component.
@@ -44,7 +45,8 @@ const App = () => {
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(true)
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(false);
+  const [isDeleteProfileOpen,setIsDeleteProfileOpen] = React.useState(true);
 
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
@@ -152,6 +154,7 @@ const App = () => {
     setIsEditProfileDataModalOpen(false);
     setisRegisterOpen(false);
     setIsEditPasswordModalOpen(false);
+    setIsDeleteProfileOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -195,7 +198,9 @@ const App = () => {
     // credentials to be used in API call to backend
     console.log(credentials);
   };
-
+const handleDeleteProfileSubmit =() =>{
+  console.log("profile deleted");
+}
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -252,6 +257,10 @@ const App = () => {
               onClose={closeAllPopups}
               onUpdatePassword={handlelChangePasswordSubmit}
             />
+            <DeleteProfileModal
+            isOpen ={isDeleteProfileOpen}
+            onClose ={closeAllPopups}
+            onDeleteProfile = {handleDeleteProfileSubmit}/>
           <Register
             isOpen={isRegisterOpen}
             onClose={closeAllPopups}
