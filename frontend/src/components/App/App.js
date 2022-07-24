@@ -6,13 +6,20 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
+import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
+import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 import {
   getGeolocation,
   getForecastWeather,
   filterDataFromWeatherAPI,
+  getWeatherDataWithExpiry,
+  setWeatherDataWithExpiry,
 } from '../../utils/weatherApi';
+import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
@@ -24,13 +31,21 @@ import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [isLoginOpen, setIsLoginOpen] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState({
+    username: 'Practicum',
+    avatar:
+      'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
+    email: 'practicum@email.com',
+  });
   const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({});
+ 
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
+  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(true)
 
   const [isShowClothingModalOpen, setIsShowClothingModalOpen] = React.useState(false);
 
@@ -44,8 +59,8 @@ const App = () => {
   const [weatherData, setweatherData] = React.useState();
   // to access the weatherAPI, please create an .env file in the rooter directly
   // then input REACT_APP_WEATHER_API_KEY=keyThatYouGeneratedFromTheWebsite with no quotes
-  const WeatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
+  /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   React.useEffect(() => {
     getGeolocation()
       .then(({ coords }) => {
@@ -75,19 +90,29 @@ const App = () => {
         }
       });
   }, []);
-  // after getting the location, send the API request to weatherAPI
+
+  /** the weather API gets called or pulled from local storage every time the location changes or gets read */
   React.useEffect(() => {
-    if (userLocation.latitude && userLocation.longitude) {
-      getForecastWeather(userLocation, WeatherApiKey)
-        .then((data) => {
-          setweatherData(filterDataFromWeatherAPI(data));
-        })
-        .catch((err) => {
-          // is there better error handling here? Error may occur when the weather API has problems
-          console.log(err);
-        });
-    }
-  }, [userLocation, WeatherApiKey]);
+    const getWeatherDataUsingLocation = () => {
+      if (userLocation.latitude && userLocation.longitude) {
+        getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
+          .then((data) => {
+            setweatherData(filterDataFromWeatherAPI(data));
+            setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    };
+    /** does the local storage already have weather data? if so, setState with this data and pass it on to components, if not (written in the function itself that's imported from ../utils/weatherApi.js), make the api call detailed above */
+    getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
+      setweatherData(
+        filterDataFromWeatherAPI(
+          getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation)
+        )
+      );
+  }, [userLocation]);
 
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
@@ -97,7 +122,9 @@ const App = () => {
 
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
-  const isAnyPopupOpen = isLoginOpen || isRegisterOpen;
+  const isAnyPopupOpen =
+    isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen;
+
   React.useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
@@ -125,8 +152,10 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
+    setIsEditProfileDataModalOpen(false);
     setisRegisterOpen(false);
     setIsShowClothingModalOpen(false);
+    setIsEditPasswordModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -157,6 +186,15 @@ const App = () => {
     setCurrentUserEmail('');
   };
 
+ 
+  const handlelChangePasswordSubmit = (password) => {
+    console.log('new password set');
+  };
+  const handleUpdateProfileData = (userData) => {
+    console.log("api patch will be implemented" );
+    console.log(userData);
+  };
+ 
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
     console.log(credentials);
@@ -165,6 +203,7 @@ const App = () => {
   return (
     <div className="page">
       <div className="page__wrapper">
+      <CurrentUserContext.Provider value={currentUser}>
         <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
@@ -207,6 +246,16 @@ const App = () => {
             loginPassword={loginPassword}
             setLoginPassword={setLoginPassword}
           />
+           <EditProfileDataModal
+              isOpen={isEditProfileDataModalOpen}
+              onClose={closeAllPopups}
+              onUpdateUserProfile={handleUpdateProfileData}
+            />
+            <EditPasswordModal
+              isOpen={isEditPasswordModalOpen}
+              onClose={closeAllPopups}
+              onUpdatePassword={handlelChangePasswordSubmit}
+            />
           <Register
             isOpen={isRegisterOpen}
             onClose={closeAllPopups}
@@ -225,6 +274,7 @@ const App = () => {
           />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
+        </CurrentUserContext.Provider>
       </div>
     </div>
   );

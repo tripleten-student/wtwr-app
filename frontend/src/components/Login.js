@@ -3,8 +3,19 @@ import ModalWithForm from './ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
 
 
-const Login = ({ isOpen, onClose, onSubmit, loginEmail, setLoginEmail, loginPassword, setLoginPassword }) => {
-  const { isValid, errors, handleChange, resetForm } = useFormAndValidation(['login-email', 'login-pwd']);
+const Login = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  loginEmail,
+  setLoginEmail,
+  loginPassword,
+  setLoginPassword,
+}) => {
+  const { isValid, errors, handleChange, resetForm } = useFormAndValidation([
+    'login-email',
+    'login-pwd',
+  ]);
 
   const formRef = React.useRef(null);
   const [isFormValid, setIsFormValid] = React.useState(false);
@@ -15,7 +26,7 @@ const Login = ({ isOpen, onClose, onSubmit, loginEmail, setLoginEmail, loginPass
 
   const handleFormChange = () => {
     setIsFormValid(formRef.current.checkValidity());
-  }
+  };
 
   // Reset form values every time the popup opens
   React.useEffect(() => {
@@ -43,13 +54,15 @@ const Login = ({ isOpen, onClose, onSubmit, loginEmail, setLoginEmail, loginPass
     if (isValid || (loginEmail && loginPassword)) {
       onSubmit({ loginEmail, loginPassword });
     }
-  }
+  };
 
   const emailInputClassName = ``;
   const emailErrorClassName = ``;
   const passwordInputClassName = ``;
   const passwordErrorClassName = ``;
-  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${!isFormValid && 'form__submit-button_disabled'}`;
+  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${
+    !isFormValid && 'form__submit-button_disabled'
+  }`;
 
   return (
     <ModalWithForm
@@ -76,7 +89,8 @@ const Login = ({ isOpen, onClose, onSubmit, loginEmail, setLoginEmail, loginPass
           className="form__input"
           value={loginEmail}
           onChange={handleInputChange}
-          required />
+          required
+        />
       </div>
 
       <div className="form__input-container">
@@ -93,11 +107,17 @@ const Login = ({ isOpen, onClose, onSubmit, loginEmail, setLoginEmail, loginPass
           value={loginPassword}
           minLength="8"
           onChange={handleInputChange}
-          required />
+          required
+        />
       </div>
 
       <div className="form__button-grp">
-        <button type="submit" className={submitButtonClassName} disabled={!isFormValid} aria-label="Log in">
+        <button
+          type="submit"
+          className={submitButtonClassName}
+          disabled={!isFormValid}
+          aria-label="Log in"
+        >
           Log in
         </button>
         <p>or</p>
@@ -107,6 +127,6 @@ const Login = ({ isOpen, onClose, onSubmit, loginEmail, setLoginEmail, loginPass
       </div>
     </ModalWithForm>
   );
-}
+};
 
 export default Login;
