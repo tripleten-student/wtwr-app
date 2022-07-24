@@ -32,10 +32,22 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     validate: {
-      validator: validator.isURL,
+      validator: (value) => {
+        if (value === '') {
+          return true;
+        }
+        return validator.isURL;
+      },
       message: 'You must enter a valid URL',
     },
   },
+  preferences: [
+    {
+      type: String,
+      minlength: 2,
+      maxlength: 30,
+    },
+  ],
 });
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(
