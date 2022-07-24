@@ -7,6 +7,7 @@ const validator = require('validator');
  * and a function to find users by their credentials
  *
  * @author [Hoang Le Chau](https://github.com/hoanglechau)
+ * @author [Devin Jaggernauth](https://github.com/mentalcaries)
  */
 
 const userSchema = new mongoose.Schema({
@@ -32,12 +33,7 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     validate: {
-      validator: (value) => {
-        if (value === '') {
-          return true;
-        }
-        return validator.isURL;
-      },
+      validator: (value) => (value === '' ? true : validator.isURL),
       message: 'You must enter a valid URL',
     },
   },
