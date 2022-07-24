@@ -5,58 +5,6 @@
  * @author [Yuffie Hu](https://github.com/yuff1006)
  */
 
-const uniqueDayAndNightConditions = [
-  'Sunny',
-  'Clear',
-  'Partly cloudy',
-  'Cloudy',
-  'Overcast',
-  'Mist',
-  'Patchy rain possible',
-  'Patchy snow possible',
-  'Patchy sleet possible',
-  'Patchy freezing drizzle possible',
-  'Thundery outbreaks possible',
-  'Blowing snow',
-  'Blizzard',
-  'Fog',
-  'Freezing fog',
-  'Patchy light drizzle',
-  'Light drizzle',
-  'Freezing drizzle',
-  'Heavy freezing drizzle',
-  'Patchy light rain',
-  'Light rain',
-  'Moderate rain at times',
-  'Moderate rain',
-  'Heavy rain at times',
-  'Heavy rain',
-  'Light freezing rain',
-  'Moderate or heavy freezing rain',
-  'Light sleet',
-  'Moderate or heavy sleet',
-  'Patchy light snow',
-  'Light snow',
-  'Patchy moderate snow',
-  'Moderate snow',
-  'Patchy heavy snow',
-  'Heavy snow',
-  'Ice pellets',
-  'Light rain shower',
-  'Moderate or heavy rain shower',
-  'Torrential rain shower',
-  'Light sleet showers',
-  'Moderate or heavy sleet showers',
-  'Light snow showers',
-  'Moderate or heavy snow showers',
-  'Light showers of ice pellets',
-  'Moderate or heavy showers of ice pellets',
-  'Patchy light rain with thunder',
-  'Moderate or heavy rain with thunder',
-  'Patchy light snow with thunder',
-  'Moderate or heavy snow with thunder',
-];
-
 const categorizeWeatherTypeForImage = (description) => {
   description = description.toLowerCase();
   if (
@@ -159,6 +107,11 @@ const getGeolocation = () => {
 };
 
 const getForecastWeather = (location, APIkey) => {
+  /** For testing, please console.log("api called") and see that it only gets called upon initial render
+   * If you don't see it, go into DevTools => Application => Storange => LocalStorage
+   * To see what is stored in local storage
+   * Clear it so nothing is in there and refresh the page, and watch that "api call" gets logged to the console, refresh again, see nothing gets logged to the console, meaning the api didn't get called upon refresh within 15 minutes
+   */
   /** location passed in will be an object with latitude and longitude keys
    * the API takes the two combined(latitude first) seperated by a comma
    */
@@ -174,11 +127,42 @@ const getForecastWeather = (location, APIkey) => {
   });
 };
 
+const setWeatherDataWithExpiry = (key, weatherAPIData, ttl) => {
+  const currentTime = new Date().getTime();
+  // `item` is an object which contains the original value
+  // as well as the time when it's supposed to expire
+  const item = {
+    value: weatherAPIData,
+    expiry: currentTime + ttl,
+  };
+  localStorage.setItem(key, JSON.stringify(item));
+};
+
+const getWeatherDataWithExpiry = (key, getWeatherDataUsingLocation) => {
+  const weatherDataString = localStorage.getItem(key);
+  // if the item doesn't exist, return null
+  if (weatherDataString) {
+    const weatherData = JSON.parse(weatherDataString);
+    const currentTime = new Date().getTime();
+    // compare the expiry time of the item with the current time
+    if (currentTime > weatherData.expiry) {
+      // If the item is expired, delete the item from storage
+      // and return null
+      localStorage.removeItem(key);
+      //cal getForecastWeather
+      getWeatherDataUsingLocation();
+    }
+    // returns the weatherData from the last call
+    return weatherData.value;
+  } else {
+    getWeatherDataUsingLocation();
+  }
+};
+
 export {
-  determineTimeOfTheDay,
-  generateDescription,
-  categorizeWeatherTypeForImage,
   filterDataFromWeatherAPI,
   getForecastWeather,
   getGeolocation,
+  getWeatherDataWithExpiry,
+  setWeatherDataWithExpiry,
 };

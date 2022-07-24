@@ -94,15 +94,19 @@
   background-size: contain;
   background-color: #6ca6c7;
 }
+.weathercard_weather_day-sleet {
+  background-image: url('../../images/WeatherCard/day-sleet.svg');
+  background-size: contain;
+  background-color: #6ca6c7;
+}
 .weathercard_weather_day-sunny {
   background-image: url('../../images/WeatherCard/day-sunny.svg');
   background-size: content-box;
 }
-.weathercard_weather_day-sleet {
-  background-image: url('../../images/WeatherCard/day-sleet.svg');
-  background-size: contain;
+.weathercard_weather_day-clear {
+  background-image: url('../../images/WeatherCard/day-sunny.svg');
+  background-size: content-box;
 }
-
 .weathercard_weather_night-cloudy {
   background-image: url('../../images/WeatherCard/night-cloudy.svg');
   background-size: content-box;
