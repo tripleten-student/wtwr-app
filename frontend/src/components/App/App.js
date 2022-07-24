@@ -13,6 +13,8 @@ import {
   filterDataFromWeatherAPI,
   getWeatherDataWithExpiry,
   setWeatherDataWithExpiry,
+  WeatherApiKey,
+  fifteenMinutesInMilleseconds,
 } from '../../utils/weatherApi';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
@@ -41,7 +43,6 @@ const App = () => {
   const [weatherData, setweatherData] = React.useState();
   // to access the weatherAPI, please create an .env file in the rooter directly
   // then input REACT_APP_WEATHER_API_KEY=keyThatYouGeneratedFromTheWebsite with no quotes
-  const WeatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   React.useEffect(() => {
@@ -74,21 +75,20 @@ const App = () => {
       });
   }, []);
 
-  const getWeatherDataUsingLocation = () => {
-    if (userLocation.latitude && userLocation.longitude) {
-      getForecastWeather(userLocation, WeatherApiKey)
-        .then((data) => {
-          setweatherData(filterDataFromWeatherAPI(data));
-          // 900000 milliseconds = 15 minutes
-          setWeatherDataWithExpiry('weatherData', data, 900000);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
   /** the weather API gets called or pulled from local storage every time the location changes or gets read */
   React.useEffect(() => {
+    const getWeatherDataUsingLocation = () => {
+      if (userLocation.latitude && userLocation.longitude) {
+        getForecastWeather(userLocation, WeatherApiKey)
+          .then((data) => {
+            setweatherData(filterDataFromWeatherAPI(data));
+            setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    };
     /** does the local storage already have weather data? if so, setState with this data and pass it on to components, if not (written in the function itself that's imported from ../utils/weatherApi.js), make the api call detailed above */
     getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
       setweatherData(

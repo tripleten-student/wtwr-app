@@ -5,6 +5,9 @@
  * @author [Yuffie Hu](https://github.com/yuff1006)
  */
 
+const WeatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
+const fifteenMinutesInMilleseconds = 900000;
+
 const categorizeWeatherTypeForImage = (description) => {
   description = description.toLowerCase();
   if (
@@ -141,9 +144,7 @@ const setWeatherDataWithExpiry = (key, weatherAPIData, ttl) => {
 const getWeatherDataWithExpiry = (key, getWeatherDataUsingLocation) => {
   const weatherDataString = localStorage.getItem(key);
   // if the item doesn't exist, return null
-  if (!weatherDataString) {
-    getWeatherDataUsingLocation();
-  } else {
+  if (weatherDataString) {
     const weatherData = JSON.parse(weatherDataString);
     const currentTime = new Date().getTime();
     // compare the expiry time of the item with the current time
@@ -156,6 +157,8 @@ const getWeatherDataWithExpiry = (key, getWeatherDataUsingLocation) => {
     }
     // returns the weatherData from the last call
     return weatherData.value;
+  } else {
+    getWeatherDataUsingLocation();
   }
 };
 
@@ -165,4 +168,6 @@ export {
   getGeolocation,
   getWeatherDataWithExpiry,
   setWeatherDataWithExpiry,
+  WeatherApiKey,
+  fifteenMinutesInMilleseconds,
 };
