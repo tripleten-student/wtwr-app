@@ -82,14 +82,15 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit({
-      registerEmail: values['register-email'],
-      registerPassword: values['register-password'],
-      name: values['register-name'],
+      email: registerEmail,
+      password: registerPassword,
+      name,
       avatar,
-      clothingPreferences,
+      preferences: clothingPreferences,
     });
     onClose();
     resetForm({ ...initialValues }, { ...initialValues }, true);
+    setClothingPreferences([])
     setPreferencesOpen(false);
     setCredentialsOpen(true);
   };

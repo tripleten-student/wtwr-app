@@ -23,6 +23,7 @@ import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { register } from '../../utils/auth';
 
 /**
  * The main React **App** component.
@@ -193,6 +194,7 @@ const App = () => {
  
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
+    register(credentials)
     console.log(credentials);
   };
 
