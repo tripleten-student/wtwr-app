@@ -19,20 +19,18 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   const formRef = React.useRef();
   const [isFormValid, setIsFormValid] = React.useState(false);
 
-//the validation if user entered the correct old password  needs to be implemented
+  //the validation if user entered the correct old password  needs to be implemented
 
   React.useEffect(() => {
     setIsFormValid(
       values['new-login-password'] !== values['login-password'] &&
-        values['new-login-password'] === values['confirm-login-password'] &&
-        formRef.current.checkValidity()
+      values['new-login-password'] === values['confirm-login-password'] &&
+      formRef.current.checkValidity()
     );
   }, [
     isOpen,
     formRef,
-    values['new-login-password'],
-    values['new-login-password'],
-    values['confirm-login-password'],
+    values,
   ]);
 
   const handleFormChange = () => {
@@ -73,9 +71,8 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   };
 
   const passwordErrorClassName = ``;
-  const submitWideButtonClassName = `form__submit-button-wide form__submit-button-wide_rel_login ${
-    !isFormValid && 'form__submit-button-wide_disabled'
-  }`;
+  const submitWideButtonClassName = `form__submit-button-wide form__submit-button-wide_rel_login ${!isFormValid && 'form__submit-button-wide_disabled'
+    }`;
 
   return (
     <ModalWithForm
