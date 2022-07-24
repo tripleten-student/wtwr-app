@@ -207,7 +207,11 @@ const App = () => {
           {/* I left the userName state in for the purpose of seeing the different navigation css */}
           {/** rewrite `{userName}` to `{currentUser}` when ready */}
           {/** place login modal open state in Navigation*/}
-          <Header>
+          {/* replaced 'New York' with `userLocation`. When I did, the app crashed */}
+          <Header
+            // currentDate={}
+            currentLocation='New York' 
+            >
             <Navigation
               isLoggedIn={isLoggedIn}
               username={userName}
