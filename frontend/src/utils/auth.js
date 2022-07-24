@@ -30,7 +30,14 @@ const login = ({ email, password }) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password }),
-  }).then(checkServerResponse);
+  }).then(checkServerResponse)
+  .then((data) => {
+    if (data.token) {
+      localStorage.setItem('jwt', data.token);
+      return data;
+    }
+    return;
+  });
 };
 
 const checkToken = (token) => {
@@ -42,13 +49,8 @@ const checkToken = (token) => {
     },
   })
     .then(checkServerResponse)
-    .then((data) => {
-      if (data.token) {
-        localStorage.setItem('jwt', data.token);
-        return data;
-      }
-      return;
-    });
+    .then((data) => data);
+
 };
 
 // Put the registered URL here later
