@@ -32,6 +32,8 @@ const App = () => {
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
 
+  const [isShowClothingModalOpen, setIsShowClothingModalOpen] = React.useState(false);
+
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
@@ -124,6 +126,7 @@ const App = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
     setisRegisterOpen(false);
+    setIsShowClothingModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -210,7 +213,16 @@ const App = () => {
             onSubmit={handleRegisterSubmit}
           />
 
-          <ShowClothingModal />
+          <ShowClothingModal 
+            // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
+            // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
+            // tempDegree={} // function or something that says what temp in degree the clothes are for
+            tempUnit={'F' || setCurrentTemperatureUnit} 
+                // (above) will show which unit being used by user. 'F' is a placeholder for now.
+            isOpen={isShowClothingModalOpen}
+            onClose={closeAllPopups}
+            // handleClick={ replace with: set state of the edit modal open to true and this modal to close }
+          />
           <Footer />
         </CurrentTemperatureUnitContext.Provider>
       </div>
