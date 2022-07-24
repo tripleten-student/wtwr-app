@@ -10,6 +10,7 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
+import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
 import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 import {
   getGeolocation,
@@ -39,7 +40,8 @@ const App = () => {
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
-  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(true);
+  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(true)
 
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
@@ -105,7 +107,7 @@ const App = () => {
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
   const isAnyPopupOpen =
-    isLoginOpen || isEditProfileDataModalOpen || isRegisterOpen;
+    isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -136,6 +138,7 @@ const App = () => {
     setIsLoginOpen(false);
     setIsEditProfileDataModalOpen(false);
     setisRegisterOpen(false);
+    setIsEditPasswordModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -166,6 +169,10 @@ const App = () => {
     setCurrentUserEmail('');
   };
 
+ 
+  const handlelChangePasswordSubmit = (password) => {
+    console.log('new password set');
+  };
   const handleUpdateProfileData = (userData) => {
     console.log("api patch will be implemented" );
     console.log(userData);
@@ -226,6 +233,11 @@ const App = () => {
               isOpen={isEditProfileDataModalOpen}
               onClose={closeAllPopups}
               onUpdateUserProfile={handleUpdateProfileData}
+            />
+            <EditPasswordModal
+              isOpen={isEditPasswordModalOpen}
+              onClose={closeAllPopups}
+              onUpdatePassword={handlelChangePasswordSubmit}
             />
           <Register
             isOpen={isRegisterOpen}
