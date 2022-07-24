@@ -20,16 +20,25 @@
 }
 
 .clothing-modal__text {
-    margin: 0;
+    margin: 16px 0 18px; /** changed for tweaked design */
     padding: 0;
     font-weight: 700;
     font-size: 20px;
     line-height: 24px;
-    color: #000;
+    color: rgba(0, 0, 0, 50%); /** added for tweaked design. if original, switch to color #000 */
 }
 
-.clothing-modal__text:nth-of-type(2) {
+.clothing-modal__text:nth-of-type(4) { /** added for tweaked design */
+    margin: 16px 0 110%;
+} 
+
+/** .clothing-modal__text:nth-of-type(2) { /** original 
     margin: 8px 0 100%;
+} */
+
+.clothing-modal__text_type_heading { /** added for tweaked design */
+    margin: 0;
+    color: #000;
 }
 
 .clothing-modal__link {

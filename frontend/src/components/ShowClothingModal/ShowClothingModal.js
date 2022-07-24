@@ -24,8 +24,10 @@ function ShowClothingModal({ clothingType, tempType, tempDegree, tempUnit, path,
           className="clothing-modal__image"
         />
           <div className="clothing-modal__text-container">
-            <p className="clothing-modal__text">Type: {clothingType || 'Accessories'}</p>
-            <p className="clothing-modal__text">Temperature: {tempType || 'Hot'} ({tempDegree || 70}° {tempUnit || 'F+'})</p> {/** may need to adjust css on this later to fit a range(?) */}
+            <p className="clothing-modal__text clothing-modal__text_type_heading">Type:</p>
+            <p className="clothing-modal__text">{clothingType || 'Accessories'}</p>
+            <p className="clothing-modal__text clothing-modal__text_type_heading">Temperature:</p> {/** may need to adjust css on this later to fit a range(?) */}
+            <p className="clothing-modal__text">{tempType || 'Hot'} ({tempDegree || 70}° {tempUnit || 'F+'})</p>
             <a href='*' onClick={handleClick} className="clothing-modal__link">Edit</a> {/** may need to change tag? */}
           </div>
       </div>
