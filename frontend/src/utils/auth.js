@@ -12,8 +12,7 @@ const checkServerResponse = (res) => {
 };
 
 const register = ({ email, password, name, avatar, preferences }) => {
-  console.log(BASE_URL)
-  console.log(JSON.stringify({ email, password, name, avatar, preferences }))
+  
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {

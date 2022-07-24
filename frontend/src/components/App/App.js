@@ -195,7 +195,12 @@ const App = () => {
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
     register(credentials)
-    console.log(credentials);
+    .then((data) => {
+      console.log(data);
+      closeAllPopups();
+
+    })
+    .catch(console.log('Registration Failed'))
   };
 
   return (

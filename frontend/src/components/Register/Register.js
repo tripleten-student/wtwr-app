@@ -88,7 +88,6 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
       avatar,
       preferences: clothingPreferences,
     });
-    onClose();
     resetForm({ ...initialValues }, { ...initialValues }, true);
     setClothingPreferences([])
     setPreferencesOpen(false);
