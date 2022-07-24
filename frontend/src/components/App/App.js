@@ -217,7 +217,7 @@ const App = () => {
             // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
             // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
             // tempDegree={} // function or something that says what temp in degree the clothes are for
-            tempUnit={'F' || setCurrentTemperatureUnit} 
+            tempUnit={'F+' || setCurrentTemperatureUnit} 
                 // (above) will show which unit being used by user. 'F' is a placeholder for now.
             isOpen={isShowClothingModalOpen}
             onClose={closeAllPopups}

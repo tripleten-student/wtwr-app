@@ -14,15 +14,16 @@ import Modal from '../Modal/Modal';
  *
  */
 
-function ShowClothingModal({ clothingType, tempType, tempDegree, tempUnit, path, handleClick }) {
+function ShowClothingModal({ clothingType, tempType, tempDegree, tempUnit, handleClick, isOpen, onClose }) {
   return (
-    <Modal name="ShowClothingModal" position="middle" width="wide" isOpen="modal_opened">
+    <Modal name="ShowClothingModal" position="middle" width="wide" isOpen={isOpen} onClose={onClose}>
       <div className="clothing-modal__container">
+        {/** placeholder image */}
         <img
           src={require('../../images/Clothes/letter-embroidered-baseball-cap.png')}
           alt="clothing"
           className="clothing-modal__image"
-        />
+        /> 
           <div className="clothing-modal__text-container">
             <p className="clothing-modal__text clothing-modal__text_type_heading">Type:</p>
             <p className="clothing-modal__text">{clothingType || 'Accessories'}</p>
