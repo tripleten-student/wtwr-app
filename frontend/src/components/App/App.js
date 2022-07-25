@@ -179,6 +179,7 @@ const App = () => {
     //call the auth.login(loginEmail, loginPassword)
     //if login successful
     setCurrentUserEmail(loginEmail);
+    setIsLoginOpen(false)
     setLoginEmail('');
     setLoginPassword('');
     setIsLoggedIn(true);
