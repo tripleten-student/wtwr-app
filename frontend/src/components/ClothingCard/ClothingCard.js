@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 /**
  * The **ClothingCard** component is one of the four clothing cards displayed in the main section of the home page. This component displays clothing recommendation according to the type, temperature, and user preferences
  *
- * @author [Yuffie](https://github.com/yuff1006)
+ * @author [Yuffie](https://github.com/yuff1006) & @author [Santiago](https://github.com/Santiag0SR)
  */
 
-const ClothingCard = ({ cardData, onCardLike, apparelGroup, name }) => {
+const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
   const location = useLocation();
 
   function createTemplateItem(apparelGroup) {
@@ -23,7 +23,8 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, name }) => {
   const templateItem = createTemplateItem(apparelGroup);
 
   const handleLike = () => {
-    onCardLike(cardData);
+    // onCardLike(cardData);
+    console.log('card liked');
   };
 
   const cardHeartButtonClassName =
@@ -45,7 +46,7 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, name }) => {
       <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
           <p className="clothingcard__title">
-            {location.pathname === '/profile' && (!apparelGroup ? name : apparelGroup)}
+            {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
             {location.pathname === '/' &&
               (clothingItemPresent
                 ? cardData.name.charAt(0).toUpperCase() + cardData.name.slice(1)

@@ -1,7 +1,8 @@
+import React from 'react';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import './Main.css';
 import ClothingCard from '../ClothingCard/ClothingCard';
-
+import randomizeIcon from '../../images/randomizeIcon.svg';
 import { clothes } from '../../utils/testData';
 import { accessories, top, bottom, shoes } from '../../utils/templateApparel';
 
@@ -13,8 +14,22 @@ import { accessories, top, bottom, shoes } from '../../utils/templateApparel';
  */
 
 function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
-  //THIS FUNCTIONALLITY HAS BEEN ADDED FOR TESTING PURPOSES
+  // To get the weather in the actual moment
+  const [actualWeather, setActualWeather] = React.useState('');
+
+  React.useEffect(() => {
+    if (weatherData) {
+      const actualWeather = weatherData.find((element) => element.elongate === true);
+      setActualWeather(actualWeather);
+    }
+  }, [weatherData]);
+
+  /**THIS FUNCTIONALLITY HAS BEEN ADDED FOR TESTING PURPOSES**/
   const clothesTestData = isLoggedIn ? clothes : [{}];
+
+  function handleRandomClick() {
+    console.log('Randomize');
+  }
 
   function random_clothes(clothes) {
     return clothes[Math.floor(Math.random() * clothes.length)];
@@ -28,8 +43,11 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
       return random_clothes(likedClothes);
     }
   }
+  /**UNTIL HERE**/
 
-  //In the final project the main item should receive the clothesData
+  //In the final project the main item should receive the clothesData,
+  // using "clothesTestData" for testing purposes
+
   const accesoriesItem = getClothes(
     clothesTestData.filter((cloth) => cloth.type === 'Accessories')
   );
@@ -43,30 +61,39 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
     <main className="main">
       <WeatherCards weatherData={weatherData} />
       <div className="clothesSectionMain">
-        <ClothingCard
-          key={'accesories'}
-          apparelGroup={accessories}
-          cardData={accesoriesItem}
-          onCardLike={onCardLike}
-        />
-        <ClothingCard
-          key={'topsandoutwear'}
-          apparelGroup={top}
-          cardData={topsandoutwearItem}
-          onCardLike={onCardLike}
-        />
-        <ClothingCard
-          key={'bottoms'}
-          apparelGroup={bottom}
-          cardData={bottomsItem}
-          onCardLike={onCardLike}
-        />
-        <ClothingCard
-          key={'shoes'}
-          apparelGroup={shoes}
-          cardData={shoesItem}
-          onCardLike={onCardLike}
-        />
+        <div className="clothesSectionMain__info">
+          <p>{`Today is ${actualWeather.temperature} F and it is ${actualWeather.description}/ You may want to wear:`}</p>
+          <button className="randomize-button" type="button" onClick={handleRandomClick}>
+            <img className={'randomize-icon'} alt="randomize" src={randomizeIcon} />
+            Randomize
+          </button>
+        </div>
+        <div className="clothesSectionMain__items">
+          <ClothingCard
+            key={'accesories'}
+            apparelGroup={accessories}
+            cardData={accesoriesItem}
+            onCardLike={onCardLike}
+          />
+          <ClothingCard
+            key={'topsandoutwear'}
+            apparelGroup={top}
+            cardData={topsandoutwearItem}
+            onCardLike={onCardLike}
+          />
+          <ClothingCard
+            key={'bottoms'}
+            apparelGroup={bottom}
+            cardData={bottomsItem}
+            onCardLike={onCardLike}
+          />
+          <ClothingCard
+            key={'shoes'}
+            apparelGroup={shoes}
+            cardData={shoesItem}
+            onCardLike={onCardLike}
+          />
+        </div>
       </div>
     </main>
   );
