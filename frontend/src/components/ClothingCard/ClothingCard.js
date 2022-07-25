@@ -1,4 +1,5 @@
 import './ClothingCard.css';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /**
@@ -7,15 +8,29 @@ import PropTypes from 'prop-types';
  * @author [Yuffie](https://github.com/yuff1006)
  */
 
-const ClothingCard = ({ cardData, onCardLike }) => {
+const ClothingCard = ({ cardData, onCardLike, apparelGroup, name }) => {
+  const location = useLocation();
+
+  function createTemplateItem(apparelGroup) {
+    if (apparelGroup) {
+      return apparelGroup[Math.floor(Math.random() * apparelGroup.length)];
+    } else {
+      return 'profileTemplate';
+    }
+  }
+
   const clothingItemPresent = cardData;
+  const templateItem = createTemplateItem(apparelGroup);
+
   const handleLike = () => {
     onCardLike(cardData);
   };
 
-  const cardHeartButtonClassName = cardData.isLiked
-    ? 'clothingcard__like clothingcard__like_active'
-    : 'clothingcard__like';
+  const cardHeartButtonClassName =
+    cardData && cardData.isLiked
+      ? 'clothingcard__like clothingcard__like_active'
+      : 'clothingcard__like';
+
   return (
     <div className="clothingcard">
       <img
@@ -23,14 +38,18 @@ const ClothingCard = ({ cardData, onCardLike }) => {
         src={
           clothingItemPresent
             ? cardData.imageUrl
-            : require(`../../images/ClothingCard/${cardData.type.toLowerCase()}.svg`)
+            : require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`)
         }
-        alt={clothingItemPresent ? cardData.name : cardData.type}
+        alt={clothingItemPresent ? cardData.name : templateItem.type}
       />
       <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
           <p className="clothingcard__title">
-            {cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1)}
+            {location.pathname === '/profile' && (!apparelGroup ? name : apparelGroup)}
+            {location.pathname === '/' &&
+              (clothingItemPresent
+                ? cardData.name.charAt(0).toUpperCase() + cardData.name.slice(1)
+                : templateItem.type.charAt(0).toUpperCase() + templateItem.type.slice(1))}
           </p>
           <button
             className={cardHeartButtonClassName}
@@ -49,9 +68,9 @@ const ClothingCard = ({ cardData, onCardLike }) => {
   );
 };
 
-ClothingCard.propTypes = {
-  name: PropTypes.string,
-  imageUrl: PropTypes.string,
-  type: PropTypes.string,
-};
+// ClothingCard.propTypes = {
+//   // name: PropTypes.string,
+//   // imageUrl: PropTypes.string,
+//   // type: PropTypes.string,
+// };
 export default ClothingCard;

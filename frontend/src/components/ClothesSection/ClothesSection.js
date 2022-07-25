@@ -13,13 +13,12 @@ function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike })
       </div>
       <ul className="clothes-section__list">
         {sectionData.length === 0 ? (
-          <ClothingCard cardData={sectionData} onCardLike={onCardLike} />
+          <ClothingCard cardData={sectionData} apparelGroup={sectionName} onCardLike={onCardLike} />
         ) : (
           sectionData.map((card) => (
             <ClothingCard
               key={card.name}
               name={card.name}
-              // please test with empty string to see the default image show up on card with "add your photo" button
               cardData={card}
               onCardLike={onCardLike}
             />

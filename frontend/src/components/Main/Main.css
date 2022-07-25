@@ -1,3 +1,13 @@
 .main{
   flex-grow: 1;
 }
+
+.clothesSectionMain{
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, 325px);
+  grid-template-rows: auto;
+  grid-gap: 20px;
+  box-sizing: border-box;
+
+}
