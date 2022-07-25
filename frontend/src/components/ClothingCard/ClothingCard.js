@@ -58,7 +58,12 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, name }) => {
             onClick={handleLike}
           ></button>
         </div>
-        {!clothingItemPresent && (
+        {location.pathname === '/' && !clothingItemPresent && (
+          <button aria-label="Add Photo" className="clothingcard__add-photo" type="button">
+            + Add your photo
+          </button>
+        )}
+        {location.pathname === '/profile' && apparelGroup && (
           <button aria-label="Add Photo" className="clothingcard__add-photo" type="button">
             + Add your photo
           </button>
