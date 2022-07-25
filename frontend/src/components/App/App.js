@@ -23,6 +23,7 @@ import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import { register } from '../../utils/auth';
 
 /**
@@ -45,7 +46,8 @@ const App = () => {
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(false)
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(false);
+  const [isDeleteProfileOpen,setIsDeleteProfileOpen] = React.useState(false);
 
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
@@ -121,7 +123,7 @@ const App = () => {
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
   const isAnyPopupOpen =
-    isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen;
+    isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen || isDeleteProfileOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -153,6 +155,7 @@ const App = () => {
     setIsEditProfileDataModalOpen(false);
     setisRegisterOpen(false);
     setIsEditPasswordModalOpen(false);
+    setIsDeleteProfileOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -202,7 +205,9 @@ const App = () => {
     })
     .catch(err => console.log(err))
   };
-
+const handleDeleteProfileSubmit =() =>{
+  console.log("profile deleted");
+}
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -259,6 +264,10 @@ const App = () => {
               onClose={closeAllPopups}
               onUpdatePassword={handlelChangePasswordSubmit}
             />
+            <DeleteProfileModal
+            isOpen ={isDeleteProfileOpen}
+            onClose ={closeAllPopups}
+            onDeleteProfile = {handleDeleteProfileSubmit}/>
           <Register
             isOpen={isRegisterOpen}
             onClose={closeAllPopups}
