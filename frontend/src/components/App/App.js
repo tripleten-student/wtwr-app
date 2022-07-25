@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
@@ -24,41 +24,47 @@ import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
+import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
+import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
+import { register } from '../../utils/auth';
 
 /**
  * The main React **App** component.
  */
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({
+  const [currentUser, setCurrentUser] = useState({
     username: 'Practicum',
     avatar:
       'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
     email: 'practicum@email.com',
   });
-  const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
  
-  const [currentUserEmail, setCurrentUserEmail] = React.useState('');
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [loginEmail, setLoginEmail] = React.useState('');
-  const [loginPassword, setLoginPassword] = React.useState('');
-  const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
-  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(true)
-
-  const [isShowClothingModalOpen, setIsShowClothingModalOpen] = React.useState(false);
+  const [currentUserEmail, setCurrentUserEmail] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
 
   // logic with actual data needed in the future
-  const [userAvatar, setUserAvatar] = React.useState(true);
+  const [userAvatar, setUserAvatar] = useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = React.useState(false);
+  const [userName, setUserName] = useState(false);
 
   // userLocation is a state within a useEffect as the state should only be changed once after loading
-  const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
-  const [weatherData, setweatherData] = React.useState();
+  const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
+  const [weatherData, setweatherData] = useState();
   // to access the weatherAPI, please create an .env file in the rooter directly
   // then input REACT_APP_WEATHER_API_KEY=keyThatYouGeneratedFromTheWebsite with no quotes
+
+    //// Modals ////
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
+    const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
+    const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
+    const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
+    const [isRegisterOpen, setisRegisterOpen] = useState(false);
+    const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
+    const [isShowClothingModalOpen, setIsShowClothingModalOpen] = useState(false);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   React.useEffect(() => {
