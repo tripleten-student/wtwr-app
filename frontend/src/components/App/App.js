@@ -200,7 +200,7 @@ const App = () => {
       closeAllPopups();
 
     })
-    .catch(console.log('Registration Failed'))
+    .catch(err => console.log(err))
   };
 
   return (
