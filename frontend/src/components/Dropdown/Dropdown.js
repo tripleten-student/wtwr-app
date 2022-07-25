@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Dropdown.js';
+import './Dropdown.css';
 import arrow from '../../images/dropdown-arrow.svg';
 
 /**
