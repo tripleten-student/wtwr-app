@@ -23,6 +23,7 @@ import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { register } from '../../utils/auth';
 
 /**
  * The main React **App** component.
@@ -44,7 +45,7 @@ const App = () => {
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(true)
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(false)
 
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
@@ -193,7 +194,13 @@ const App = () => {
  
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
-    console.log(credentials);
+    register(credentials)
+    .then((data) => {
+      console.log(data);
+      closeAllPopups();
+
+    })
+    .catch(err => console.log(err))
   };
 
   return (
