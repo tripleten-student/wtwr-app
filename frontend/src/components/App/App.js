@@ -205,7 +205,7 @@ const App = () => {
       .then((data) => {
         console.log(data);
         closeAllPopups();
-        setIsCompleteRegistrationOpen(true)
+        setIsCompleteRegistrationOpen(true);
       })
       .catch((err) => console.log(err));
   };
@@ -233,7 +233,11 @@ const App = () => {
               />
             </Header>
             <Routes>
-              <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
+              <Route
+                exact
+                path="/"
+                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
+              ></Route>
               <Route
                 exact
                 path="/profile"
@@ -247,7 +251,6 @@ const App = () => {
                 }
               ></Route>
             </Routes>
-            Apps
             {/* Replace the ModalWithForm below with specific modals */}
             <Login
               isOpen={isLoginOpen}
