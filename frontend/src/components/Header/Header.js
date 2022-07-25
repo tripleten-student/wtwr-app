@@ -27,7 +27,7 @@ function Header({ currentLocation, children }) {
       <div className="header__container">
         <Logo />
         <p className="header__date">
-          {currentDate || 'June 15'}, {currentLocation || 'New York'}
+          {currentDate}, {currentLocation || 'New York'}
         </p>
       </div>
       <div className="header__navContainer">
