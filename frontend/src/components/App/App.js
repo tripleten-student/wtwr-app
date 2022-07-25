@@ -47,7 +47,7 @@ const App = () => {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(false);
-  const [isDeleteProfileOpen,setIsDeleteProfileOpen] = React.useState(true);
+  const [isDeleteProfileOpen,setIsDeleteProfileOpen] = React.useState(false);
 
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
