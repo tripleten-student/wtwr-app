@@ -125,12 +125,6 @@
   max-width: 124px;
   transition: all 0.2s ease;
 }
-
-.form__delete-button:hover {
-  cursor: pointer;
-  background-color: 
-  rgba(255, 77, 0, 1, 0.3);
-}
 .form__text{
   margin:8px 0 0 0;
 }

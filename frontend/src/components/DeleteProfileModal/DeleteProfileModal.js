@@ -27,13 +27,9 @@ const DeleteProfileModal = ({ isOpen, onClose, onDeleteProfile }) => {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleFormSubmit}
-      onChange={handleCancelClick} // this is no needed, but it is required accoeding to modal with form, ????
     >
       <div className="form">
-        <label htmlFor="profile-delete" className="form__title">
-          Are you sure you want to delete your profile?
-        </label>
-
+        <label className="form__title">Are you sure you want to delete your profile?</label>
         <p className="form__text">
           This action is irreversible: all your data will be lost and you will not be able to
           restore your profile later.
@@ -41,11 +37,7 @@ const DeleteProfileModal = ({ isOpen, onClose, onDeleteProfile }) => {
       </div>
 
       <div className="form__button-grp">
-        <button
-          type="submit"
-          className="form__submit-button form__delete-button"
-          aria-label="Delete"
-        >
+        <button type="submit" className="form__delete-button" aria-label="Delete">
           Delete profile
         </button>
 
