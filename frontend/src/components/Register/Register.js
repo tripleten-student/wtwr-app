@@ -1,5 +1,5 @@
 import './Register.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import ClothingSelectorButton from '../ClothingSelectorButton/ClothingSelectorButton';
@@ -32,11 +32,11 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     'register-name': name,
   } = values;
 
-  const credentialsRef = React.useRef(null);
-  const personalInfoRef = React.useRef(null);
-  const [isFormValid, setIsFormValid] = React.useState(false);
+  const credentialsRef = useRef(null);
+  const personalInfoRef = useRef(null);
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsFormValid(registerPassword === confirmPassword && credentialsRef.current.checkValidity());
   }, [isOpen, credentialsRef, registerPassword, confirmPassword]);
 
@@ -45,7 +45,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     personalInfoRef.current?.name && setIsFormValid(personalInfoRef.current.checkValidity());
   };
 
-  // Reset form values every time the popup opens
+  // Reset form values once form submits
 
   const initialValues = {
     'register-email': '',
@@ -92,6 +92,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     setClothingPreferences([])
     setPreferencesOpen(false);
     setCredentialsOpen(true);
+    setAvatar('')
   };
 
   const emailInputClassName = ``;
