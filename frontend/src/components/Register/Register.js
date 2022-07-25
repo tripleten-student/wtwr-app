@@ -45,7 +45,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     personalInfoRef.current?.name && setIsFormValid(personalInfoRef.current.checkValidity());
   };
 
-  // Reset form values every time the popup opens
+  // Reset form values once form submits
 
   const initialValues = {
     'register-email': '',
@@ -92,6 +92,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     setClothingPreferences([])
     setPreferencesOpen(false);
     setCredentialsOpen(true);
+    setAvatar('')
   };
 
   const emailInputClassName = ``;
