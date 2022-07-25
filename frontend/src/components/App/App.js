@@ -1,10 +1,9 @@
-import React from 'react';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
@@ -23,43 +22,48 @@ import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
+import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
+import { register } from '../../utils/auth';
 
 /**
  * The main React **App** component.
  */
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({
+  const [currentUser, setCurrentUser] = useState({
     username: 'Practicum',
     avatar:
       'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
     email: 'practicum@email.com',
   });
-  const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
- 
-  const [currentUserEmail, setCurrentUserEmail] = React.useState('');
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [loginEmail, setLoginEmail] = React.useState('');
-  const [loginPassword, setLoginPassword] = React.useState('');
-  const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
-  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(true)
 
+  const [currentUserEmail, setCurrentUserEmail] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
   // logic with actual data needed in the future
-  const [userAvatar, setUserAvatar] = React.useState(true);
+  const [userAvatar, setUserAvatar] = useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = React.useState(false);
-
+  const [userName, setUserName] = useState(false);
   // userLocation is a state within a useEffect as the state should only be changed once after loading
-  const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
-  const [weatherData, setweatherData] = React.useState();
-  const [userCity, setUserCity] = React.useState('New York')
+  const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
+  const [weatherData, setweatherData] = useState();
+  const [userCity, setUserCity] = useState('New York')
   // to access the weatherAPI, please create an .env file in the rooter directly
   // then input REACT_APP_WEATHER_API_KEY=keyThatYouGeneratedFromTheWebsite with no quotes
 
+  //// Modals ////
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
+  const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
+  const [isRegisterOpen, setisRegisterOpen] = useState(false);
+  const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
+
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
-  React.useEffect(() => {
+  useEffect(() => {
     getGeolocation()
       .then(({ coords }) => {
         setUserLocation({
@@ -90,7 +94,7 @@ const App = () => {
   }, []);
 
   /** the weather API gets called or pulled from local storage every time the location changes or gets read */
-  React.useEffect(() => {
+  useEffect(() => {
     const getWeatherDataUsingLocation = () => {
       if (userLocation.latitude && userLocation.longitude) {
         getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
@@ -122,7 +126,12 @@ const App = () => {
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
   const isAnyPopupOpen =
-    isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen;
+    isLoginOpen ||
+    isEditProfileDataModalOpen ||
+    isEditPasswordModalOpen ||
+    isRegisterOpen ||
+    isDeleteProfileOpen ||
+    isCompleteRegistrationOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -154,6 +163,8 @@ const App = () => {
     setIsEditProfileDataModalOpen(false);
     setisRegisterOpen(false);
     setIsEditPasswordModalOpen(false);
+    setIsDeleteProfileOpen(false);
+    setIsCompleteRegistrationOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -172,6 +183,7 @@ const App = () => {
     //call the auth.login(loginEmail, loginPassword)
     //if login successful
     setCurrentUserEmail(loginEmail);
+    setIsLoginOpen(false)
     setLoginEmail('');
     setLoginPassword('');
     setIsLoggedIn(true);
@@ -184,69 +196,79 @@ const App = () => {
     setCurrentUserEmail('');
   };
 
- 
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
   const handleUpdateProfileData = (userData) => {
-    console.log("api patch will be implemented" );
+    console.log('api patch will be implemented');
     console.log(userData);
   };
- 
+
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
-    console.log(credentials);
+    register(credentials)
+      .then((data) => {
+        console.log(data);
+        closeAllPopups();
+        setIsCompleteRegistrationOpen(true);
+      })
+      .catch((err) => console.log(err));
   };
-
+  const handleDeleteProfileSubmit = () => {
+    console.log('profile deleted');
+  };
   return (
     <div className="page">
       <div className="page__wrapper">
-      <CurrentUserContext.Provider value={currentUser}>
-        <CurrentTemperatureUnitContext.Provider
-          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-        >
-          {/* isLoggedIn will be determined by a future user context */}
-          {/* I left the userName state in for the purpose of seeing the different navigation css */}
-          {/** rewrite `{userName}` to `{currentUser}` when ready */}
-          {/* replaced 'New York' with `userLocation`. When I did, the app crashed */}
-          <Header
-            currentLocation={userCity}
+        <CurrentUserContext.Provider value={currentUser}>
+          <CurrentTemperatureUnitContext.Provider
+            value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+          >
+            {/* isLoggedIn will be determined by a future user context */}
+            {/* I left the userName state in for the purpose of seeing the different navigation css */}
+            {/** rewrite `{userName}` to `{currentUser}` when ready */}
+            {/** place login modal open state in Navigation*/}
+            <Header
+              currentLocation={userCity}
             >
-            <Navigation
-              isLoggedIn={isLoggedIn}
-              username={userName}
-              hasAvatar={userAvatar}
-              handleRegisterClick={() => setisRegisterOpen(true)}
-              handleLoginClick={() => setIsLoginOpen(true)}
+              <Navigation
+                isLoggedIn={isLoggedIn}
+                username={userName}
+                hasAvatar={userAvatar}
+                handleRegisterClick={() => setisRegisterOpen(true)}
+                handleLoginClick={() => setIsLoginOpen(true)}
+              />
+            </Header>
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
+              ></Route>
+              <Route
+                exact
+                path="/profile"
+                element={
+                  <ProtectedRoute
+                    handleLoginClick={() => setIsLoginOpen(true)}
+                    isLoggedIn={isLoggedIn}
+                  >
+                    <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
+                  </ProtectedRoute>
+                }
+              ></Route>
+            </Routes>
+            {/* Replace the ModalWithForm below with specific modals */}
+            <Login
+              isOpen={isLoginOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleLoginSubmit}
+              loginEmail={loginEmail}
+              setLoginEmail={setLoginEmail}
+              loginPassword={loginPassword}
+              setLoginPassword={setLoginPassword}
             />
-          </Header>
-          <Routes>
-            <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
-            <Route
-              exact
-              path="/profile"
-              element={
-                <ProtectedRoute
-                  handleLoginClick={() => setIsLoginOpen(true)}
-                  isLoggedIn={isLoggedIn}
-                >
-                  <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
-                </ProtectedRoute>
-              }
-            ></Route>
-          </Routes>
-          Apps
-          {/* Replace the ModalWithForm below with specific modals */}
-          <Login
-            isOpen={isLoginOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleLoginSubmit}
-            loginEmail={loginEmail}
-            setLoginEmail={setLoginEmail}
-            loginPassword={loginPassword}
-            setLoginPassword={setLoginPassword}
-          />
-           <EditProfileDataModal
+            <EditProfileDataModal
               isOpen={isEditProfileDataModalOpen}
               onClose={closeAllPopups}
               onUpdateUserProfile={handleUpdateProfileData}
@@ -256,13 +278,22 @@ const App = () => {
               onClose={closeAllPopups}
               onUpdatePassword={handlelChangePasswordSubmit}
             />
-          <Register
-            isOpen={isRegisterOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleRegisterSubmit}
-          />
-          <Footer />
-        </CurrentTemperatureUnitContext.Provider>
+            <DeleteProfileModal
+              isOpen={isDeleteProfileOpen}
+              onClose={closeAllPopups}
+              onDeleteProfile={handleDeleteProfileSubmit}
+            />
+            <Register
+              isOpen={isRegisterOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleRegisterSubmit}
+            />
+            <CompleteRegistrationModal
+              isOpen={isCompleteRegistrationOpen}
+              onClose={closeAllPopups}
+            />
+            <Footer />
+          </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>
     </div>
