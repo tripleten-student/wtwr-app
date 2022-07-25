@@ -24,6 +24,7 @@ import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
+import { register } from '../../utils/auth';
 
 /**
  * The main React **App** component.
@@ -122,7 +123,7 @@ const App = () => {
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
   const isAnyPopupOpen =
-    isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen;
+    isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen || isDeleteProfileOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -196,7 +197,13 @@ const App = () => {
  
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
-    console.log(credentials);
+    register(credentials)
+    .then((data) => {
+      console.log(data);
+      closeAllPopups();
+
+    })
+    .catch(err => console.log(err))
   };
 const handleDeleteProfileSubmit =() =>{
   console.log("profile deleted");

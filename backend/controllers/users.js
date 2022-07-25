@@ -38,7 +38,7 @@ const login = (req, res, next) => {
 // Sign up
 const createUser = (req, res, next) => {
   const {
-    email, password, name, avatar,
+    email, password, name, avatar, preferences,
   } = req.body;
   User.findOne({ email })
     .then((user) => {
@@ -55,6 +55,7 @@ const createUser = (req, res, next) => {
       password: hash,
       name,
       avatar,
+      preferences,
     }))
     .then((data) => res.status(201).send({ data }))
     .catch((err) => {
