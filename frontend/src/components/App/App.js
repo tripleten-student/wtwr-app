@@ -54,6 +54,7 @@ const App = () => {
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = React.useState();
+  const [userCity, setUserCity] = React.useState('New York')
   // to access the weatherAPI, please create an .env file in the rooter directly
   // then input REACT_APP_WEATHER_API_KEY=keyThatYouGeneratedFromTheWebsite with no quotes
 
@@ -95,6 +96,7 @@ const App = () => {
         getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
           .then((data) => {
             setweatherData(filterDataFromWeatherAPI(data));
+            setUserCity(data.location.name);
             setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
           })
           .catch((err) => {
@@ -208,7 +210,7 @@ const App = () => {
           {/** rewrite `{userName}` to `{currentUser}` when ready */}
           {/* replaced 'New York' with `userLocation`. When I did, the app crashed */}
           <Header
-            currentLocation='New York' 
+            currentLocation={userCity}
             >
             <Navigation
               isLoggedIn={isLoggedIn}
