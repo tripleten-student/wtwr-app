@@ -1,10 +1,9 @@
-import React from 'react';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
@@ -24,6 +23,7 @@ import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
+import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
 import { register } from '../../utils/auth';
 
 /**
@@ -31,37 +31,36 @@ import { register } from '../../utils/auth';
  */
 const App = () => {
   // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({
+  const [currentUser, setCurrentUser] = useState({
     username: 'Practicum',
     avatar:
       'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
     email: 'practicum@email.com',
   });
-  const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
 
-  const [currentUserEmail, setCurrentUserEmail] = React.useState('');
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [loginEmail, setLoginEmail] = React.useState('');
-  const [loginPassword, setLoginPassword] = React.useState('');
-  const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
-  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(false);
-  const [isDeleteProfileOpen, setIsDeleteProfileOpen] = React.useState(false);
-
+  const [currentUserEmail, setCurrentUserEmail] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
   // logic with actual data needed in the future
-  const [userAvatar, setUserAvatar] = React.useState(true);
+  const [userAvatar, setUserAvatar] = useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = React.useState(false);
-
+  const [userName, setUserName] = useState(false);
   // userLocation is a state within a useEffect as the state should only be changed once after loading
-  const [userLocation, setUserLocation] = React.useState({ latitude: '', longitude: '' });
-  const [weatherData, setweatherData] = React.useState();
-  // to access the weatherAPI, please create an .env file in the rooter directly
-  // then input REACT_APP_WEATHER_API_KEY=keyThatYouGeneratedFromTheWebsite with no quotes
+  const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
+  const [weatherData, setweatherData] = useState();
+
+  //// Modals ////
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
+  const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
+  const [isRegisterOpen, setisRegisterOpen] = useState(false);
+  const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
-  React.useEffect(() => {
+  useEffect(() => {
     getGeolocation()
       .then(({ coords }) => {
         setUserLocation({
@@ -92,7 +91,7 @@ const App = () => {
   }, []);
 
   /** the weather API gets called or pulled from local storage every time the location changes or gets read */
-  React.useEffect(() => {
+  useEffect(() => {
     const getWeatherDataUsingLocation = () => {
       if (userLocation.latitude && userLocation.longitude) {
         getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
@@ -127,7 +126,8 @@ const App = () => {
     isEditProfileDataModalOpen ||
     isEditPasswordModalOpen ||
     isRegisterOpen ||
-    isDeleteProfileOpen;
+    isDeleteProfileOpen ||
+    isCompleteRegistrationOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -160,6 +160,7 @@ const App = () => {
     setisRegisterOpen(false);
     setIsEditPasswordModalOpen(false);
     setIsDeleteProfileOpen(false);
+    setIsCompleteRegistrationOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -204,6 +205,7 @@ const App = () => {
       .then((data) => {
         console.log(data);
         closeAllPopups();
+        setIsCompleteRegistrationOpen(true);
       })
       .catch((err) => console.log(err));
   };
@@ -249,7 +251,6 @@ const App = () => {
                 }
               ></Route>
             </Routes>
-            Apps
             {/* Replace the ModalWithForm below with specific modals */}
             <Login
               isOpen={isLoginOpen}
@@ -279,6 +280,10 @@ const App = () => {
               isOpen={isRegisterOpen}
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
+            />
+            <CompleteRegistrationModal
+              isOpen={isCompleteRegistrationOpen}
+              onClose={closeAllPopups}
             />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
