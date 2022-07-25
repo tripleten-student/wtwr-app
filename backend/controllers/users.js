@@ -114,30 +114,42 @@ const updateUserProfile = (req, res, next) => {
     });
 };
 
+// Change password
 const updatePassword = (req, res, next) => {
   const currentUser = req.user._id;
   const { oldPassword, newPassword } = req.body;
 
   User.findById(currentUser)
+    .select('+password')
     .orFail(new NotFoundError('User ID not found'))
-    .then((user) => bcrypt.compare(oldPassword, user.password).then((match) => {
-      if (!match) {
+    .then((data) => bcrypt
+      .compare(oldPassword, data.password)
+      .then((match) => {
+        if (match) {
+          return bcrypt.hash(newPassword, 10);
+        }
         return next(new UnauthorizedError('Wrong Old Password'));
-      }
-      const thisUser = user;
-      thisUser.password = bcrypt.hash(newPassword, 10);
-      return user;
-    }))
-    .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Invalid password'));
-      } else if (err.name === 'CastError') {
-        next(new BadRequestError('Invalid User ID'));
-      } else {
-        next(err);
-      }
-    });
+      })
+      .then((hash) => {
+        User.findByIdAndUpdate(
+          currentUser,
+          { password: hash },
+          {
+            new: true,
+            runValidators: true,
+          },
+        )
+          .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
+          .catch((err) => {
+            if (err.name === 'ValidationError') {
+              next(new BadRequestError('Invalid password'));
+            } else if (err.name === 'CastError') {
+              next(new BadRequestError('Invalid User ID'));
+            } else {
+              next(err);
+            }
+          });
+      }));
 };
 
 const deleteUser = (req, res, next) => {
