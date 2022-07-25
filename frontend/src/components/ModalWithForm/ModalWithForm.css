@@ -124,6 +124,7 @@
   width: 100%;
   max-width: 124px;
   transition: all 0.2s ease;
+  cursor:pointer;
 }
 .form__text{
   margin:8px 0 0 0;
