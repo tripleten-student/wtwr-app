@@ -59,6 +59,9 @@ const currentHour = new Date().getHours();
 const timeOfTheDay = determineTimeOfTheDay(currentHour);
 
 const filterDataFromWeatherAPI = (data) => {
+  if (!data) {
+    return null;
+  }
   const forecastArr = [];
   const timeBreakPoints = [7, 13, 18, 22];
   const currentDataPath = data.current;
