@@ -11,6 +11,7 @@ import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
+import EditClothingModal from '../EditClothingModal/EditClothingModal';
 import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
 import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
@@ -57,8 +58,9 @@ const App = () => {
   const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
-  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = React.useState(true);
+  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = React.useState(false);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
+  const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(true);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -129,7 +131,8 @@ const App = () => {
     isEditProfileDataModalOpen ||
     isEditPasswordModalOpen ||
     isCreateClothingModalOpen ||
-    isDeleteProfileOpen;
+    isDeleteProfileOpen ||
+    isEditClothingModalOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -164,6 +167,7 @@ const App = () => {
     setIsEditPasswordModalOpen(false);
     setIsCreateClothingModalOpen(false);
     setIsDeleteProfileOpen(false);
+    setIsEditClothingModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -182,7 +186,7 @@ const App = () => {
     //call the auth.login(loginEmail, loginPassword)
     //if login successful
     setCurrentUserEmail(loginEmail);
-    setIsLoginOpen(false)
+    setIsLoginOpen(false);
     setLoginEmail('');
     setLoginPassword('');
     setIsLoggedIn(true);
@@ -198,7 +202,10 @@ const App = () => {
     console.log('Garment successfully added to your profile');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
   };
-
+const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) =>{
+  console.log('Garment successfully updated');
+    console.log({ garmentName, garmentType, weatherType, garmentUrl });
+}
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
@@ -300,6 +307,11 @@ const App = () => {
               isOpen={isCreateClothingModalOpen}
               onClose={closeAllPopups}
               onSubmitAddGarment={handleCreateClothing}
+            />
+            <EditClothingModal
+              isOpen={isEditClothingModalOpen}
+              onClose={closeAllPopups}
+              onSubmitEditGarment={handleEditClothing}
             />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
