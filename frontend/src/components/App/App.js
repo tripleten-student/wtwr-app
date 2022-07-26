@@ -25,6 +25,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
 import { register } from '../../utils/auth';
+import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
 
 /**
  * The main React **App** component.
@@ -50,6 +51,8 @@ const App = () => {
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
+  // set useClothingPreferences from API
+  const [userClothingPreferences, setUserClothingPreferences] = useState(['t-shirt', 'jeans', 'dress', 'boots']);
 
   //// Modals ////
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -58,6 +61,7 @@ const App = () => {
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
   const [isRegisterOpen, setisRegisterOpen] = useState(false);
   const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
+  const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] = useState(true);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -127,7 +131,8 @@ const App = () => {
     isEditPasswordModalOpen ||
     isRegisterOpen ||
     isDeleteProfileOpen ||
-    isCompleteRegistrationOpen;
+    isCompleteRegistrationOpen ||
+    isEditClothingPreferencesModalOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -161,6 +166,7 @@ const App = () => {
     setIsEditPasswordModalOpen(false);
     setIsDeleteProfileOpen(false);
     setIsCompleteRegistrationOpen(false);
+    setIsEditClothingPreferencesModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -210,9 +216,17 @@ const App = () => {
       })
       .catch((err) => console.log(err));
   };
+
   const handleDeleteProfileSubmit = () => {
     console.log('profile deleted');
   };
+
+  const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
+    //An APi call to update the clothing preferences
+    console.log("User's clothing preferences has been changed");
+    console.log(clothingPreferences);
+  }
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -286,6 +300,11 @@ const App = () => {
               isOpen={isCompleteRegistrationOpen}
               onClose={closeAllPopups}
             />
+            <EditClothingPreferences
+              isOpen={isEditClothingPreferencesModalOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleEditClothingPreferencesSubmit}
+              userClothingPreferences={userClothingPreferences} />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
