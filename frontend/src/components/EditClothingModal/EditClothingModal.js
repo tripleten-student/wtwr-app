@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef,useContext } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import Dropdown from '../Dropdown/Dropdown';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import { checkIfImageExists } from '../../utils/clothingModals';
 import { clothingItems, weatherTypes } from '../../utils/formConstants';
-
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
  * The **EditClothingModal** component will let users add new clothes to the database.
@@ -13,6 +13,7 @@ import { clothingItems, weatherTypes } from '../../utils/formConstants';
  *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
 const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
+  const currentUser = useContext(CurrentUserContext);
   // Component states & ref
   const formRef = useRef();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -35,15 +36,17 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
   useEffect(() => {
     const initialValues = {
       //current selection of the garment?
-      'new-garment-name': '',
-      'new-garment-image-url': '',
+      garmentName: '',
+      garmentType:'',
+      weatherType:'',
+      garmentUrl: '',
     };
     const initialErrorValues = {
       'new-garment-name': '',
       'new-garment-image-url': '',
     };
     resetForm({ ...initialValues }, { ...initialErrorValues }, true);
-  }, [isOpen, resetForm]);
+  }, [isOpen, resetForm,currentUser]);
 
   const handleCloseImagePreviewButtonClick = () => setShowImagePreview(false);
 
