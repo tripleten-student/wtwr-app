@@ -24,7 +24,7 @@ import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
-import { register } from '../../utils/auth';
+import { login, register, checkToken } from '../../utils/auth';
 
 /**
  * The main React **App** component.
@@ -39,15 +39,15 @@ const App = () => {
     email: 'practicum@email.com',
   });
   const [isRegisterOpen, setisRegisterOpen] = React.useState(false);
- 
+
   const [currentUserEmail, setCurrentUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [loginEmail, setLoginEmail] = React.useState('');
   const [loginPassword, setLoginPassword] = React.useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = React.useState('F');
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = React.useState(false);
-  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen]= React.useState(false);
-  const [isDeleteProfileOpen,setIsDeleteProfileOpen] = React.useState(false);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = React.useState(false);
+  const [isDeleteProfileOpen, setIsDeleteProfileOpen] = React.useState(false);
 
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = React.useState(true);
@@ -114,6 +114,22 @@ const App = () => {
       );
   }, [userLocation]);
 
+  React.useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setCurrentUser({ ...currentUser, username: res.username, email: res.email });
+            setIsLoggedIn(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
+
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
@@ -123,7 +139,11 @@ const App = () => {
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
   const isAnyPopupOpen =
-    isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen || isDeleteProfileOpen;
+    isLoginOpen ||
+    isEditProfileDataModalOpen ||
+    isEditPasswordModalOpen ||
+    isRegisterOpen ||
+    isDeleteProfileOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -170,13 +190,17 @@ const App = () => {
     setIsLoginOpen(false);
   }
 
-  const handleLoginSubmit = () => {
+  const handleLoginSubmit = ({ loginEmail, loginPassword }) => {
     //call the auth.login(loginEmail, loginPassword)
     //if login successful
-    setCurrentUserEmail(loginEmail);
-    setLoginEmail('');
-    setLoginPassword('');
-    setIsLoggedIn(true);
+    // login({ email: loginEmail, password: loginPassword });
+    login({ email: loginEmail, password: loginPassword }).then((data) => {
+      setCurrentUserEmail(loginEmail);
+      setLoginEmail('');
+      setLoginPassword('');
+      setIsLoggedIn(true);
+    });
+
     //else catch error
   };
 
@@ -186,75 +210,73 @@ const App = () => {
     setCurrentUserEmail('');
   };
 
- 
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
   const handleUpdateProfileData = (userData) => {
-    console.log("api patch will be implemented" );
+    console.log('api patch will be implemented');
     console.log(userData);
   };
- 
+
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
     register(credentials)
-    .then((data) => {
-      console.log(data);
-      closeAllPopups();
-
-    })
-    .catch(err => console.log(err))
+      .then((data) => {
+        console.log(data);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
   };
-const handleDeleteProfileSubmit =() =>{
-  console.log("profile deleted");
-}
+  const handleDeleteProfileSubmit = () => {
+    console.log('profile deleted');
+  };
   return (
     <div className="page">
       <div className="page__wrapper">
-      <CurrentUserContext.Provider value={currentUser}>
-        <CurrentTemperatureUnitContext.Provider
-          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-        >
-          {/* isLoggedIn will be determined by a future user context */}
-          {/* I left the userName state in for the purpose of seeing the different navigation css */}
-          {/** rewrite `{userName}` to `{currentUser}` when ready */}
-          {/** place login modal open state in Navigation*/}
-          <Header>
-            <Navigation
-              isLoggedIn={isLoggedIn}
-              username={userName}
-              hasAvatar={userAvatar}
-              handleRegisterClick={() => setisRegisterOpen(true)}
-              handleLoginClick={() => setIsLoginOpen(true)}
+        <CurrentUserContext.Provider value={currentUser}>
+          <CurrentTemperatureUnitContext.Provider
+            value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+          >
+            {/* isLoggedIn will be determined by a future user context */}
+            {/* I left the userName state in for the purpose of seeing the different navigation css */}
+            {/** rewrite `{userName}` to `{currentUser}` when ready */}
+            {/** place login modal open state in Navigation*/}
+            <Header>
+              <Navigation
+                isLoggedIn={isLoggedIn}
+                username={userName}
+                hasAvatar={userAvatar}
+                handleRegisterClick={() => setisRegisterOpen(true)}
+                handleLoginClick={() => setIsLoginOpen(true)}
+              />
+            </Header>
+            <Routes>
+              <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
+              <Route
+                exact
+                path="/profile"
+                element={
+                  <ProtectedRoute
+                    handleLoginClick={() => setIsLoginOpen(true)}
+                    isLoggedIn={isLoggedIn}
+                  >
+                    <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
+                  </ProtectedRoute>
+                }
+              ></Route>
+            </Routes>
+            Apps
+            {/* Replace the ModalWithForm below with specific modals */}
+            <Login
+              isOpen={isLoginOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleLoginSubmit}
+              loginEmail={loginEmail}
+              setLoginEmail={setLoginEmail}
+              loginPassword={loginPassword}
+              setLoginPassword={setLoginPassword}
             />
-          </Header>
-          <Routes>
-            <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
-            <Route
-              exact
-              path="/profile"
-              element={
-                <ProtectedRoute
-                  handleLoginClick={() => setIsLoginOpen(true)}
-                  isLoggedIn={isLoggedIn}
-                >
-                  <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
-                </ProtectedRoute>
-              }
-            ></Route>
-          </Routes>
-          Apps
-          {/* Replace the ModalWithForm below with specific modals */}
-          <Login
-            isOpen={isLoginOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleLoginSubmit}
-            loginEmail={loginEmail}
-            setLoginEmail={setLoginEmail}
-            loginPassword={loginPassword}
-            setLoginPassword={setLoginPassword}
-          />
-           <EditProfileDataModal
+            <EditProfileDataModal
               isOpen={isEditProfileDataModalOpen}
               onClose={closeAllPopups}
               onUpdateUserProfile={handleUpdateProfileData}
@@ -265,16 +287,17 @@ const handleDeleteProfileSubmit =() =>{
               onUpdatePassword={handlelChangePasswordSubmit}
             />
             <DeleteProfileModal
-            isOpen ={isDeleteProfileOpen}
-            onClose ={closeAllPopups}
-            onDeleteProfile = {handleDeleteProfileSubmit}/>
-          <Register
-            isOpen={isRegisterOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleRegisterSubmit}
-          />
-          <Footer />
-        </CurrentTemperatureUnitContext.Provider>
+              isOpen={isDeleteProfileOpen}
+              onClose={closeAllPopups}
+              onDeleteProfile={handleDeleteProfileSubmit}
+            />
+            <Register
+              isOpen={isRegisterOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleRegisterSubmit}
+            />
+            <Footer />
+          </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>
     </div>

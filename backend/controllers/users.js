@@ -26,7 +26,7 @@ const login = (req, res, next) => {
         NODE_ENV === 'production' ? WTWR_JWT_KEY : devkey,
         {
           expiresIn: '7d',
-        },
+        }
       );
       res.send({ data: user.toJSON(), token });
     })
@@ -37,26 +37,26 @@ const login = (req, res, next) => {
 
 // Sign up
 const createUser = (req, res, next) => {
-  const {
-    email, password, name, avatar, preferences,
-  } = req.body;
+  const { email, password, name, avatar, preferences } = req.body;
   User.findOne({ email })
     .then((user) => {
       if (user) {
         throw new ConflictError(
-          'The user with the provided email already exists',
+          'The user with the provided email already exists'
         );
       } else {
         return bcrypt.hash(password, 10);
       }
     })
-    .then((hash) => User.create({
-      email,
-      password: hash,
-      name,
-      avatar,
-      preferences,
-    }))
+    .then((hash) =>
+      User.create({
+        email,
+        password: hash,
+        name,
+        avatar,
+        preferences,
+      })
+    )
     .then((data) => res.status(201).send({ data }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -71,6 +71,19 @@ const getUsers = (req, res, next) => {
   User.find({})
     .orFail(new NotFoundError('Users are not found'))
     .then((users) => res.status(HTTP_SUCCESS_OK).send(users))
+    .catch(next);
+};
+
+const getCurrentUser = (req, res, next) => {
+  const currentUser = req.user_id;
+  User.findById(currentUser)
+    .orFail(new NotFoundError('User ID not found'))
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('User ID not found');
+      }
+      res.status(HTTP_SUCCESS_OK).send(user);
+    })
     .catch(next);
 };
 
@@ -99,7 +112,7 @@ const updateUserProfile = (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    },
+    }
   )
     .orFail(new NotFoundError('User ID not found'))
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
@@ -120,14 +133,16 @@ const updatePassword = (req, res, next) => {
 
   User.findById(currentUser)
     .orFail(new NotFoundError('User ID not found'))
-    .then((user) => bcrypt.compare(oldPassword, user.password).then((match) => {
-      if (!match) {
-        return next(new UnauthorizedError('Wrong Old Password'));
-      }
-      const thisUser = user;
-      thisUser.password = bcrypt.hash(newPassword, 10);
-      return user;
-    }))
+    .then((user) =>
+      bcrypt.compare(oldPassword, user.password).then((match) => {
+        if (!match) {
+          return next(new UnauthorizedError('Wrong Old Password'));
+        }
+        const thisUser = user;
+        thisUser.password = bcrypt.hash(newPassword, 10);
+        return user;
+      })
+    )
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -158,4 +173,5 @@ module.exports = {
   updateUserProfile,
   updatePassword,
   deleteUser,
+  getCurrentUser,
 };

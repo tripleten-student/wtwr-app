@@ -12,7 +12,6 @@ const checkServerResponse = (res) => {
 };
 
 const register = ({ email, password, name, avatar, preferences }) => {
-  
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
@@ -30,27 +29,27 @@ const login = ({ email, password }) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password }),
-  }).then(checkServerResponse)
-  .then((data) => {
-    if (data.token) {
-      localStorage.setItem('jwt', data.token);
-      return data;
-    }
-    return;
-  });
+  })
+    .then(checkServerResponse)
+    .then((data) => {
+      if (data.token) {
+        localStorage.setItem('jwt', data.token);
+        return data;
+      }
+      return;
+    });
 };
 
 const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
-      ...this._headers,
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
   })
     .then(checkServerResponse)
     .then((data) => data);
-
 };
 
 // Put the registered URL here later
