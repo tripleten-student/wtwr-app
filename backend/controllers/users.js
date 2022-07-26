@@ -75,7 +75,7 @@ const getUsers = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  const currentUser = req.user_id;
+  const currentUser = req.user._id;
   User.findById(currentUser)
     .orFail(new NotFoundError('User ID not found'))
     .then((user) => {
