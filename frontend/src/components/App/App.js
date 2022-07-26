@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import WeatherCards from '../WeatherCards/WeatherCards';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
@@ -23,11 +22,10 @@ import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
 import { register } from '../../utils/auth';
-
+import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 /**
  * The main React **App** component.
  */
@@ -39,7 +37,7 @@ const App = () => {
       'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
     email: 'practicum@email.com',
   });
- 
+
   const [currentUserEmail, setCurrentUserEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
@@ -57,14 +55,14 @@ const App = () => {
   // to access the weatherAPI, please create an .env file in the rooter directly
   // then input REACT_APP_WEATHER_API_KEY=keyThatYouGeneratedFromTheWebsite with no quotes
 
-    //// Modals ////
-    const [isLoginOpen, setIsLoginOpen] = useState(false);
-    const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
-    const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
-    const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
-    const [isRegisterOpen, setisRegisterOpen] = useState(false);
-    const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
-    const [isShowClothingModalOpen, setIsShowClothingModalOpen] = useState(false);
+  //// Modals ////
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
+  const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
+  const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
+  const [isRegisterOpen, setisRegisterOpen] = useState(false);
+  const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
+  const [isShowClothingModalOpen, setIsShowClothingModalOpen] = useState(false);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -192,67 +190,75 @@ const App = () => {
     setCurrentUserEmail('');
   };
 
- 
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
   const handleUpdateProfileData = (userData) => {
-    console.log("api patch will be implemented" );
+    console.log('api patch will be implemented');
     console.log(userData);
   };
- 
+
   const handleRegisterSubmit = (credentials) => {
     // credentials to be used in API call to backend
-    console.log(credentials);
+    register(credentials)
+      .then((data) => {
+        console.log(data);
+        closeAllPopups();
+        setIsCompleteRegistrationOpen(true);
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleDeleteProfileSubmit = () => {
+    console.log('profile deleted');
   };
 
   return (
     <div className="page">
       <div className="page__wrapper">
-      <CurrentUserContext.Provider value={currentUser}>
-        <CurrentTemperatureUnitContext.Provider
-          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-        >
-          {/* isLoggedIn will be determined by a future user context */}
-          {/* I left the userName state in for the purpose of seeing the different navigation css */}
-          {/** rewrite `{userName}` to `{currentUser}` when ready */}
-          {/** place login modal open state in Navigation*/}
-          <Header>
-            <Navigation
-              isLoggedIn={isLoggedIn}
-              username={userName}
-              hasAvatar={userAvatar}
-              handleRegisterClick={() => setisRegisterOpen(true)}
-              handleLoginClick={() => setIsLoginOpen(true)}
+        <CurrentUserContext.Provider value={currentUser}>
+          <CurrentTemperatureUnitContext.Provider
+            value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+          >
+            {/* isLoggedIn will be determined by a future user context */}
+            {/* I left the userName state in for the purpose of seeing the different navigation css */}
+            {/** rewrite `{userName}` to `{currentUser}` when ready */}
+            {/** place login modal open state in Navigation*/}
+            <Header>
+              <Navigation
+                isLoggedIn={isLoggedIn}
+                username={userName}
+                hasAvatar={userAvatar}
+                handleRegisterClick={() => setisRegisterOpen(true)}
+                handleLoginClick={() => setIsLoginOpen(true)}
+              />
+            </Header>
+            <Routes>
+              <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
+              <Route
+                exact
+                path="/profile"
+                element={
+                  <ProtectedRoute
+                    handleLoginClick={() => setIsLoginOpen(true)}
+                    isLoggedIn={isLoggedIn}
+                  >
+                    <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
+                  </ProtectedRoute>
+                }
+              ></Route>
+            </Routes>
+            Apps
+            {/* Replace the ModalWithForm below with specific modals */}
+            <Login
+              isOpen={isLoginOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleLoginSubmit}
+              loginEmail={loginEmail}
+              setLoginEmail={setLoginEmail}
+              loginPassword={loginPassword}
+              setLoginPassword={setLoginPassword}
             />
-          </Header>
-          <Routes>
-            <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
-            <Route
-              exact
-              path="/profile"
-              element={
-                <ProtectedRoute
-                  handleLoginClick={() => setIsLoginOpen(true)}
-                  isLoggedIn={isLoggedIn}
-                >
-                  <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
-                </ProtectedRoute>
-              }
-            ></Route>
-          </Routes>
-          Apps
-          {/* Replace the ModalWithForm below with specific modals */}
-          <Login
-            isOpen={isLoginOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleLoginSubmit}
-            loginEmail={loginEmail}
-            setLoginEmail={setLoginEmail}
-            loginPassword={loginPassword}
-            setLoginPassword={setLoginPassword}
-          />
-           <EditProfileDataModal
+            <EditProfileDataModal
               isOpen={isEditProfileDataModalOpen}
               onClose={closeAllPopups}
               onUpdateUserProfile={handleUpdateProfileData}
@@ -262,24 +268,32 @@ const App = () => {
               onClose={closeAllPopups}
               onUpdatePassword={handlelChangePasswordSubmit}
             />
-          <Register
-            isOpen={isRegisterOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleRegisterSubmit}
-          />
-
-          <ShowClothingModal 
-            // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
-            // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
-            // tempDegree={} // function or something that says what temp in degree the clothes are for
-            tempUnit={'F+' || setCurrentTemperatureUnit} 
-                // (above) will show which unit being used by user. 'F' is a placeholder for now.
-            isOpen={isShowClothingModalOpen}
-            onClose={closeAllPopups}
-            // handleClick={ replace with: set state of the edit modal open to true and this modal to close }
-          />
-          <Footer />
-        </CurrentTemperatureUnitContext.Provider>
+            <DeleteProfileModal
+              isOpen={isDeleteProfileOpen}
+              onClose={closeAllPopups}
+              onDeleteProfile={handleDeleteProfileSubmit}
+            />
+            <Register
+              isOpen={isRegisterOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleRegisterSubmit}
+            />
+            <CompleteRegistrationModal
+              isOpen={isCompleteRegistrationOpen}
+              onClose={closeAllPopups}
+            />
+            <ShowClothingModal
+              // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
+              // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
+              // tempDegree={} // function or something that says what temp in degree the clothes are for
+              tempUnit={'F+' || setCurrentTemperatureUnit}
+              // (above) will show which unit being used by user. 'F' is a placeholder for now.
+              isOpen={isShowClothingModalOpen}
+              onClose={closeAllPopups}
+              // handleClick={ replace with: set state of the edit modal open to true and this modal to close }
+            />
+            <Footer />
+          </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>
     </div>
