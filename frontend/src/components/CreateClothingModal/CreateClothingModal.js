@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import Dropdown from '../Dropdown/Dropdown';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
-import './CreateClothingModal.css';
 import { checkIfImageExists } from '../../utils/clothingModals';
 import { clothingItems, weatherTypes } from '../../utils/formConstants';
+import './CreateClothingModal.css';
 
 /**
  * The **CreateClothingModal** component will let users add new clothes to the database.
@@ -49,7 +49,11 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
   const handleInputChange = (event) => {
     if (event.target.name === 'new-garment-image-url') {
       checkIfImageExists(event.target.value, (exists) => {
-        (exists) ? setIsImageUrlExist(true) : setIsImageUrlExist(false);
+        if (exists) {
+          setIsImageUrlExist(true);
+        } else {
+          setIsImageUrlExist(false);
+        }
       });
     }
     handleChange(event);
@@ -161,7 +165,6 @@ CreateClothingModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmitAddGarment: PropTypes.func.isRequired,
-  clothes: PropTypes.object,
 };
 
 export default CreateClothingModal;
