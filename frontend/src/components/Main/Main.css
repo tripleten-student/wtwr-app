@@ -1,3 +1,53 @@
 .main{
   flex-grow: 1;
 }
+
+.clothesSectionMain{
+  display: flex;
+  flex-direction: column;
+}
+
+.clothesSectionMain__info{
+  display: flex;
+  justify-content: space-between;
+}
+
+.randomize-button{
+  width: 130px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  margin:0;
+  padding: 8px 16px 8px 16px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  background-color:#000000;
+  color:#FFFFFF;
+  box-sizing: border-box;
+  font-family: 'CabinetGrotesk-Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.randomize-button:hover{
+  opacity: 0.6;
+}
+
+.randomize-icon{
+  margin-right:8px;
+}
+
+
+
+.clothesSectionMain__items{
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, 325px);
+  grid-template-rows: auto;
+  grid-gap: 20px;
+  box-sizing: border-box;
+}

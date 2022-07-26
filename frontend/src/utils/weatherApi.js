@@ -12,10 +12,8 @@ const categorizeWeatherTypeForImage = (description) => {
     (description.includes('drizzle') && !description.includes('freezing'))
   ) {
     return 'rainy';
-  } else if (description.includes('sun')) {
+  } else if (description.includes('sun') || description.includes('clear')) {
     return 'sunny';
-  } else if (description.includes('clear')) {
-    return 'clear';
   } else if (description.includes('fog') || description.includes('mist')) {
     return 'foggy';
   } else if (
@@ -48,48 +46,47 @@ const determineTimeOfTheDay = (currentHour) => {
 };
 
 /** this function generates description based on weather condition, if it's rainy or snowy, chance of rain/snow will be displayed, otherwise, weather condition alone is displayed. On shorter cards, chance of snow/rain is shortened */
-const generateDescription = (categorizedWeather, elongateOrNot, weatherData) => {
-  if (elongateOrNot) {
-    if (categorizedWeather === 'snowy') {
-      return `Chance of snow: ${weatherData.chance_of_snow}%`;
-    } else if (categorizedWeather === 'rainy') {
-      return `Chance of rain: ${weatherData.chance_of_rain}%`;
-    } else {
-      return categorizedWeather.charAt(0).toUpperCase() + categorizedWeather.slice(1);
-    }
+const generateDescription = (categorizedWeather, weatherData) => {
+  if (categorizedWeather === 'snowy') {
+    return `${weatherData.chance_of_snow}%`;
+  } else if (categorizedWeather === 'rainy') {
+    return `${weatherData.chance_of_rain}%`;
   } else {
-    if (categorizedWeather === 'snowy') {
-      return `${weatherData.chance_of_snow}%`;
-    } else if (categorizedWeather === 'rainy') {
-      return `${weatherData.chance_of_rain}%`;
-    } else {
-      return categorizedWeather.charAt(0).toUpperCase() + categorizedWeather.slice(1);
-    }
+    return categorizedWeather.charAt(0).toUpperCase() + categorizedWeather.slice(1);
   }
 };
 const currentHour = new Date().getHours();
 const timeOfTheDay = determineTimeOfTheDay(currentHour);
 
 const filterDataFromWeatherAPI = (data) => {
+  if (!data) {
+    return null;
+  }
   const forecastArr = [];
   const timeBreakPoints = [7, 13, 18, 22];
   if (!data) {
     return null;
   }
-  const currentForecastDataPth = data.forecast.forecastday[0].hour[currentHour - 1];
 
+  const currentDataPath = data.current;
   timeBreakPoints.forEach((point) => {
     const elongateOrNot = determineTimeOfTheDay(point) === timeOfTheDay ? true : false;
     const dayOrNight = point > 13 ? 'night' : 'day';
     const forecastDataPath = data.forecast.forecastday[0].hour[point - 1];
-
-    const categorizedWeather = categorizeWeatherTypeForImage(forecastDataPath.condition.text);
+    const categorizedForecastWeatherCondition = categorizeWeatherTypeForImage(
+      forecastDataPath.condition.text
+    );
+    const categorizedCurrentWeatherCondition = categorizeWeatherTypeForImage(
+      currentDataPath.condition.text
+    );
     forecastArr.push({
       // lowercase afternoon, morning ... for CSS
       timeName: determineTimeOfTheDay(point),
-      condition: categorizedWeather,
+      condition: elongateOrNot
+        ? categorizeWeatherTypeForImage(currentDataPath.condition.text)
+        : categorizeWeatherTypeForImage(forecastDataPath.condition.text),
       temperature: elongateOrNot
-        ? `${Math.trunc(currentForecastDataPth.temp_f)}°`
+        ? `${Math.trunc(currentDataPath.temp_f)}°`
         : `${Math.trunc(forecastDataPath.temp_f)}°`,
       dayOrNight: dayOrNight,
       elongate: elongateOrNot,
@@ -97,7 +94,9 @@ const filterDataFromWeatherAPI = (data) => {
       displayedTime:
         determineTimeOfTheDay(point).charAt(0).toUpperCase() +
         determineTimeOfTheDay(point).slice(1),
-      description: generateDescription(categorizedWeather, elongateOrNot, forecastDataPath),
+      description: elongateOrNot
+        ? generateDescription(categorizedCurrentWeatherCondition, currentDataPath)
+        : generateDescription(categorizedForecastWeatherCondition, forecastDataPath),
     });
   });
   return forecastArr;
@@ -143,14 +142,12 @@ const setWeatherDataWithExpiry = (key, weatherAPIData, ttl) => {
 
 const getWeatherDataWithExpiry = (key, getWeatherDataUsingLocation) => {
   const weatherDataString = localStorage.getItem(key);
-  // if the item doesn't exist, return null
   if (weatherDataString) {
     const weatherData = JSON.parse(weatherDataString);
     const currentTime = new Date().getTime();
     // compare the expiry time of the item with the current time
     if (currentTime > weatherData.expiry) {
       // If the item is expired, delete the item from storage
-      // and return null
       localStorage.removeItem(key);
       //cal getForecastWeather
       getWeatherDataUsingLocation();
