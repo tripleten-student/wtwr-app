@@ -67,7 +67,7 @@ const App = () => {
     const [isShowClothingModalOpen, setIsShowClothingModalOpen] = useState(false);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
-  React.useEffect(() => {
+  useEffect(() => {
     getGeolocation()
       .then(({ coords }) => {
         setUserLocation({
@@ -98,7 +98,7 @@ const App = () => {
   }, []);
 
   /** the weather API gets called or pulled from local storage every time the location changes or gets read */
-  React.useEffect(() => {
+  useEffect(() => {
     const getWeatherDataUsingLocation = () => {
       if (userLocation.latitude && userLocation.longitude) {
         getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
@@ -131,7 +131,7 @@ const App = () => {
   const isAnyPopupOpen =
     isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
         closeAllPopups();
