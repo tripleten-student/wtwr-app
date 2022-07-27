@@ -118,9 +118,7 @@ const getForecastWeather = (location, APIkey) => {
    * the API takes the two combined(latitude first) seperated by a comma
    */
   const parsedLocation = `${location.latitude},${location.longitude}`;
-  return fetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=38fd31525c1d4ea284d42509221307&q=${parsedLocation}&days=1`
-  ).then((res) => {
+  return fetch(`${APIkey}&q=${parsedLocation}&days=1`).then((res) => {
     if (res.ok) {
       return res.json();
     } else {
