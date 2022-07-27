@@ -25,6 +25,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
 import { register } from '../../utils/auth';
+import MobileNavigation from '../MobileNavigation/MobileNavigation';
 
 /**
  * The main React **App** component.
@@ -287,6 +288,7 @@ const App = () => {
               onClose={closeAllPopups}
             />
             <Footer />
+            <MobileNavigation/>
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>

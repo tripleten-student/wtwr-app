@@ -72,34 +72,6 @@
 
 @media screen and (max-width: 768px) {
   .navigation {
-    height: 60px;
-  }
-
-  .navigation__button_hidden {
     display: none;
-  }
-
-  .navigation__addButton {
-    display: block;
-    border: none;
-    width: 36px;
-    height: 36px;
-  }
-
-  .navigation__addButton-plus {
-    display: block;
-    color: #fff;
-    padding: 8px;
-    width: 20px;
-    height: 20px;
-    background-color: #000;
-    border-radius: 30%;
-  }
-
-  .navigation__modalButton {
-    display: block;
-    width: 34px;
-    height: 25px;
-    opacity: 30%;
   }
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import './Navigation.css';
 import { NavLink } from 'react-router-dom';
-import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 
 /**
  * The Navigation component
@@ -45,37 +44,18 @@ function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
           <li>
             <button
               onClick={handleRegisterClick}
-              className="navigation__button navigation__button_hidden"
+              className="navigation__button"
             >
               Sign Up
             </button>
           </li>
           <li>
             <button
-              className="navigation__button navigation__button_hidden"
+              className="navigation__button"
               onClick={handleLoginClick}
             >
               Log In
             </button>
-          </li>
-          <li>
-            <ToggleSwitch/>
-          </li>
-          <li>
-            <button className="navigation__addButton">
-              <img
-                className="navigation__addButton-plus"
-                src={require('../../images/plus-sign.png')}
-                alt="+"
-              />
-            </button>
-          </li>
-          <li>
-            <img
-              className="navigation__modalButton"
-              src={require('../../images/modal-button.png')}
-              alt="signin/login"
-            />
           </li>
         </ul>
       )}
