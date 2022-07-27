@@ -1,0 +1,56 @@
+.clothing-modal__container {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.clothing-modal__image {
+    margin: 0;
+    padding: 0;
+    max-height: 328px;
+    width: 325px;
+    border-radius: 4%;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.clothing-modal__text-container {
+    margin: 12px 0 12px 28px;
+    padding: 0;
+}
+
+.clothing-modal__text {
+    margin: 16px 0 18px; /** changed for tweaked design */
+    padding: 0;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 50%); /** added for tweaked design. if original, switch to color #000 */
+}
+
+.clothing-modal__text:nth-of-type(4) { /** added for tweaked design */
+    margin: 16px 0 110%;
+} 
+
+/** .clothing-modal__text:nth-of-type(2) { /** original 
+    margin: 8px 0 100%;
+} */
+
+.clothing-modal__text_type_heading { /** added for tweaked design */
+    margin: 0;
+    color: #000;
+}
+
+.clothing-modal__link {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000;
+    text-decoration: none;
+}
+
+.clothing-modal__link:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}

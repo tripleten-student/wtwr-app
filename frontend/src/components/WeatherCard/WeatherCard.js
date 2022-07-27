@@ -25,7 +25,9 @@ const WeatherCard = ({ weatherData }) => {
       <div className="weathercard__info-container" aria-label={description}>
         <p className="weathercard__time">{displayedTime}</p>
         <p className="weathercard__temperature">{temperature}</p>
-        <p className="weathercard__description">{description}</p>
+        {!elongate && (condition === 'rainy' || condition === 'snowy') && (
+          <p className="weathercard__description">{description}</p>
+        )}
       </div>
     </div>
   );

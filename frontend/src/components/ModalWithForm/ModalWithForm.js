@@ -37,7 +37,7 @@ ModalWithForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   children: PropTypes.any,
 };
 
