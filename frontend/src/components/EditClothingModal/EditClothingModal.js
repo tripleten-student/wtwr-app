@@ -76,10 +76,10 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     // naming of the fields to be checked again when backend API is connected
-    if (isValid || values['new-garment-name']&&
+    if (isValid || (values['new-garment-name']&&
     garmentTypeChoice&&
     weatherTypeChoice&&
-    values['new-garment-image-url']) {
+    values['new-garment-image-url'])) {
       onSubmitEditGarment(
         values['new-garment-name'],
         garmentTypeChoice,
@@ -132,7 +132,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
           header="Type"
           options={clothingItems}
           onDropdownItemClick={setGarmentTypeChoice}
-          value={currentGarment.garmentType||''} 
+          userPreferenceValue={currentGarment.garmentType||''} 
           />
       </div>
       <div className="form__dropdown-container">
@@ -141,7 +141,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
           header="Weather"
           options={weatherTypes}
           onDropdownItemClick={setWeatherTypeChoice}
-          value ={currentGarment.weatherType || ''} 
+          userPreferenceValue ={currentGarment.weatherType || ''} 
           />
       </div>
       <div className="form__input-container">
@@ -161,12 +161,12 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
         />
       </div>
       {/* If Image URL actully exists & there is no validation error, then display preview */}
-      {/* {(showImagePreview && isImageUrlExist && !errors['new-garment-image-url']) && (
+      {(showImagePreview && isImageUrlExist && !errors['new-garment-image-url']) && (
         <div className="form__image-preview-container">
           <img src={values['new-garment-image-url']} alt="new garment" className="form__image-preview" />
           <button className="form__image-preview-close" type="button" aria-label="Close image preview" onClick={handleCloseImagePreviewButtonClick} />
         </div>
-      )} */}
+      )}
       <div className="form__button-grp">
         <button
           type="submit"

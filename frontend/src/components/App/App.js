@@ -27,6 +27,7 @@ import {
   setWeatherDataWithExpiry,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
+import { weatherTypes } from '../../utils/formConstants';
 
 /**
  * The main React **App** component.
@@ -40,8 +41,8 @@ const App = () => {
   });
 const [currentGarment, setCurrentGarment] = useState({
       garmentName: 'Shirt',
-      garmentType: 'Shirt',
-      weatherType:'Extreme (97F°)',
+      garmentType: 'shirt',
+      weatherType:'extreme',
       garmentUrl: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
 })
   const [currentUserEmail, setCurrentUserEmail] = useState('');
