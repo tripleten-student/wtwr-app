@@ -34,6 +34,10 @@
     height: 36px;
   }
 
+  .navigation-mobile__addButton:hover {
+    cursor: pointer;
+  }
+
   .navigation-mobile__addButton-plus {
     margin: 0;
     color: #fff;
@@ -51,6 +55,10 @@
     height: 25px;
     border: none;
     background-color: transparent;
+  }
+
+  .navigation-mobile__modalButton {
+    cursor: pointer;
   }
 
   .navigation-mobile__modalButton-image {
