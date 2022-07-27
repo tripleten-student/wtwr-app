@@ -1,4 +1,5 @@
 .loader {
+    position: absolute;
     border: 10px solid #dcdcdc;
     border-top: 10px solid #00A3FF; /* too bright? #286897? */
     border-radius: 50%;

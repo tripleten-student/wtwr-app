@@ -62,6 +62,8 @@ const App = () => {
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
 
+  const [isLoading, setIsLoading] = useState(false);
+
   //// Modals ////
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -303,6 +305,9 @@ const App = () => {
                 handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
               />
+            <LoadingSpinner
+              isLoading={isLoading}
+            />
             </Header>
             <Routes>
               <Route
