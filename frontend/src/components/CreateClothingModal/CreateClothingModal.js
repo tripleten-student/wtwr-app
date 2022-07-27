@@ -115,14 +115,16 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
           dropdownName="garment-types"
           header="Type"
           options={clothingItems}
-          onDropdownItemClick={setGarmentTypeChoice} />
+          onDropdownItemClick={setGarmentTypeChoice}
+          setIsFormValid={setIsFormValid} />
       </div>
       <div className="form__dropdown-container">
         <Dropdown
           dropdownName="weather-types"
           header="Weather"
           options={weatherTypes}
-          onDropdownItemClick={setWeatherTypeChoice} />
+          onDropdownItemClick={setWeatherTypeChoice}
+          setIsFormValid={setIsFormValid} />
       </div>
       <div className="form__input-container">
         <label htmlFor="garmentimage" className="form__input-label">
