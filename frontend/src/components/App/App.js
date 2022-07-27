@@ -6,7 +6,6 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
-
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
@@ -24,6 +23,8 @@ import Profile from '../Profile/Profile';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import { login, register, checkToken } from '../../utils/auth';
+import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
+import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
  * The main React **App** component.
@@ -40,6 +41,7 @@ const App = () => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
+
   // logic with actual data needed in the future
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
   // userLocation is a state within a useEffect as the state should only be changed once after loading
@@ -53,6 +55,7 @@ const App = () => {
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
   const [isRegisterOpen, setisRegisterOpen] = useState(false);
   const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
+  const [isShowClothingModalOpen, setIsShowClothingModalOpen] = useState(false);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -138,14 +141,9 @@ const App = () => {
   // Handle mouse click or Esc key down event
   //Check if all the other modals are open using || operator
   const isAnyPopupOpen =
-    isLoginOpen ||
-    isEditProfileDataModalOpen ||
-    isEditPasswordModalOpen ||
-    isRegisterOpen ||
-    isDeleteProfileOpen ||
-    isCompleteRegistrationOpen;
+    isLoginOpen || isEditProfileDataModalOpen || isEditPasswordModalOpen || isRegisterOpen;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
         closeAllPopups();
@@ -174,9 +172,8 @@ const App = () => {
     setIsLoginOpen(false);
     setIsEditProfileDataModalOpen(false);
     setisRegisterOpen(false);
+    setIsShowClothingModalOpen(false);
     setIsEditPasswordModalOpen(false);
-    setIsDeleteProfileOpen(false);
-    setIsCompleteRegistrationOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -197,7 +194,6 @@ const App = () => {
     // login({ email: loginEmail, password: loginPassword });
     login({ email: loginEmail, password: loginPassword }).then(({ data }) => {
       if (data) {
-        console.log(data);
         setCurrentUser({
           ...currentUser,
           email: data.email,
@@ -241,6 +237,7 @@ const App = () => {
   const handleDeleteProfileSubmit = () => {
     console.log('profile deleted');
   };
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -262,11 +259,7 @@ const App = () => {
               />
             </Header>
             <Routes>
-              <Route
-                exact
-                path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
-              ></Route>
+              <Route exact path="/" element={<Main weatherData={weatherData} />}></Route>
               <Route
                 exact
                 path="/profile"
@@ -284,6 +277,7 @@ const App = () => {
                 }
               ></Route>
             </Routes>
+            Apps
             {/* Replace the ModalWithForm below with specific modals */}
             <Login
               isOpen={isLoginOpen}
@@ -314,9 +308,19 @@ const App = () => {
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
             />
-            {/* <CompleteRegistrationModal
+            <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}
               onClose={closeAllPopups}
+            />
+            {/* <ShowClothingModal
+              // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
+              // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
+              // tempDegree={} // function or something that says what temp in degree the clothes are for
+              tempUnit={setCurrentTemperatureUnit || 'F+'}
+              // (above) will show which unit being used by user. 'F' is a placeholder for now.
+              isOpen={isShowClothingModalOpen}
+              onClose={closeAllPopups}
+              // handleClick={ replace with: set state of the edit modal open to true and this modal to close }
             /> */}
             <Footer />
           </CurrentTemperatureUnitContext.Provider>

@@ -68,7 +68,7 @@ const clothes = [
     weather: 'warm',
     imageUrl: womenCharcoalGrayCropTop,
     owner: '',
-    isLiked: true,
+    isLiked: false,
     createdAt: 'user#2',
   },
   {
@@ -77,7 +77,7 @@ const clothes = [
     weather: 'cold',
     imageUrl: womenAustinSweatshirt,
     owner: 'user#2',
-    isLiked: false,
+    isLiked: true,
     createdAt: '',
   },
   {
@@ -98,15 +98,15 @@ const clothes = [
     isLiked: false,
     createdAt: '',
   },
-  // {
-  //   name: 'Tie Front Crop Wide Leg Cotton & Linen Pants',
-  //   type: 'Bottoms',
-  //   weather: 'warm',
-  //   imageUrl: womenTieFrontCottonPants,
-  //   owner: 'user#2',
-  //   isLiked: true,
-  //   createdAt: '',
-  // },
+  {
+    name: 'Tie Front Crop Wide Leg Cotton & Linen Pants',
+    type: 'Bottoms',
+    weather: 'warm',
+    imageUrl: womenTieFrontCottonPants,
+    owner: 'user#2',
+    isLiked: true,
+    createdAt: '',
+  },
 ];
 
 const users = [

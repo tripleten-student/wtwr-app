@@ -64,10 +64,6 @@ const filterDataFromWeatherAPI = (data) => {
   }
   const forecastArr = [];
   const timeBreakPoints = [7, 13, 18, 22];
-  if (!data) {
-    return null;
-  }
-
   const currentDataPath = data.current;
   timeBreakPoints.forEach((point) => {
     const elongateOrNot = determineTimeOfTheDay(point) === timeOfTheDay ? true : false;
@@ -118,7 +114,9 @@ const getForecastWeather = (location, APIkey) => {
    * the API takes the two combined(latitude first) seperated by a comma
    */
   const parsedLocation = `${location.latitude},${location.longitude}`;
-  return fetch(`${APIkey}&q=${parsedLocation}&days=1`).then((res) => {
+  return fetch(
+    `http://api.weatherapi.com/v1/forecast.json?key=${APIkey}&q=${parsedLocation}&days=1`
+  ).then((res) => {
     if (res.ok) {
       return res.json();
     } else {
