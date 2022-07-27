@@ -36,7 +36,8 @@
   border: none;
   min-height: 36px;
   width: 100%;
-  max-width: 53px;
+  max-width: 55px;
+  text-transform: uppercase;
   transition: all 0.2s ease;
 }
 
