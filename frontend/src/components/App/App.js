@@ -25,6 +25,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
 import { register } from '../../utils/auth';
+import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
  * The main React **App** component.
@@ -58,6 +59,7 @@ const App = () => {
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
   const [isRegisterOpen, setisRegisterOpen] = useState(false);
   const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
+  const [isShowClothingModalOpen, setIsShowClothingModalOpen] = useState(false);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -179,7 +181,7 @@ const App = () => {
     //call the auth.login(loginEmail, loginPassword)
     //if login successful
     setCurrentUserEmail(loginEmail);
-    setIsLoginOpen(false)
+    setIsLoginOpen(false);
     setLoginEmail('');
     setLoginPassword('');
     setIsLoggedIn(true);
@@ -285,6 +287,16 @@ const App = () => {
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}
               onClose={closeAllPopups}
+            />
+            <ShowClothingModal
+              // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
+              // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
+              // tempDegree={} // function or something that says what temp in degree the clothes are for
+              tempUnit={setCurrentTemperatureUnit || 'F+'}
+              // (above) will show which unit being used by user. 'F' is a placeholder for now.
+              isOpen={isShowClothingModalOpen}
+              onClose={closeAllPopups}
+              // handleClick={ replace with: set state of the edit modal open to true and this modal to close }
             />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
