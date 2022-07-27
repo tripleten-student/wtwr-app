@@ -128,7 +128,7 @@ const updatePassword = (req, res, next) => {
         if (match) {
           return bcrypt.hash(newPassword, 10);
         }
-        return next(new UnauthorizedError('Wrong Old Password'));
+        throw new UnauthorizedError('Wrong Old Password');
       })
       .then((hash) => {
         User.findByIdAndUpdate(
@@ -149,7 +149,8 @@ const updatePassword = (req, res, next) => {
               next(err);
             }
           });
-      }));
+      }))
+    .catch(next);
 };
 
 const deleteUser = (req, res, next) => {
