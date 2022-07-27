@@ -39,12 +39,12 @@ const App = () => {
       'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
     email: 'practicum@email.com',
   });
-const [currentGarment, setCurrentGarment] = useState({
-      garmentName: 'Shirt',
-      garmentType: 'shirt',
-      weatherType:'extreme',
-      garmentUrl: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-})
+  const [currentGarment, setCurrentGarment] = useState({
+    garmentName: 'Shirt',
+    garmentType: 'shirt',
+    weatherType: 'extreme',
+    garmentUrl: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+  })
   const [currentUserEmail, setCurrentUserEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
@@ -208,11 +208,11 @@ const [currentGarment, setCurrentGarment] = useState({
     console.log('Garment successfully added to your profile');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
   };
-const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) =>{
-  console.log('Garment successfully updated');
+  const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
+    console.log('Garment successfully updated');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
     setCurrentGarment(garmentName, garmentType, weatherType, garmentUrl)
-}
+  }
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
@@ -241,88 +241,88 @@ const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) =
     <div className="page">
       <div className="page__wrapper">
         <CurrentUserContext.Provider value={currentUser}>
-          <CurrentGarmentContext.Provider value ={currentGarment}>
-          <CurrentTemperatureUnitContext.Provider
-            value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-          >
-            {/* isLoggedIn will be determined by a future user context */}
-            {/* I left the userName state in for the purpose of seeing the different navigation css */}
-            {/** rewrite `{userName}` to `{currentUser}` when ready */}
-            {/** place login modal open state in Navigation*/}
-            <Header>
-              <Navigation
-                isLoggedIn={isLoggedIn}
-                username={userName}
-                hasAvatar={userAvatar}
-                handleRegisterClick={() => setIsRegisterOpen(true)}
-                handleLoginClick={() => setIsLoginOpen(true)}
+          <CurrentGarmentContext.Provider value={currentGarment}>
+            <CurrentTemperatureUnitContext.Provider
+              value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+            >
+              {/* isLoggedIn will be determined by a future user context */}
+              {/* I left the userName state in for the purpose of seeing the different navigation css */}
+              {/** rewrite `{userName}` to `{currentUser}` when ready */}
+              {/** place login modal open state in Navigation*/}
+              <Header>
+                <Navigation
+                  isLoggedIn={isLoggedIn}
+                  username={userName}
+                  hasAvatar={userAvatar}
+                  handleRegisterClick={() => setIsRegisterOpen(true)}
+                  handleLoginClick={() => setIsLoginOpen(true)}
+                />
+              </Header>
+              <Routes>
+                <Route
+                  exact
+                  path="/"
+                  element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
+                ></Route>
+                <Route
+                  exact
+                  path="/profile"
+                  element={
+                    <ProtectedRoute
+                      handleLoginClick={() => setIsLoginOpen(true)}
+                      isLoggedIn={isLoggedIn}
+                    >
+                      <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
+                    </ProtectedRoute>
+                  }
+                ></Route>
+              </Routes>
+              {/* Replace the ModalWithForm below with specific modals */}
+              <Login
+                isOpen={isLoginOpen}
+                onClose={closeAllPopups}
+                onSubmit={handleLoginSubmit}
+                loginEmail={loginEmail}
+                setLoginEmail={setLoginEmail}
+                loginPassword={loginPassword}
+                setLoginPassword={setLoginPassword}
               />
-            </Header>
-            <Routes>
-              <Route
-                exact
-                path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
-              ></Route>
-              <Route
-                exact
-                path="/profile"
-                element={
-                  <ProtectedRoute
-                    handleLoginClick={() => setIsLoginOpen(true)}
-                    isLoggedIn={isLoggedIn}
-                  >
-                    <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
-                  </ProtectedRoute>
-                }
-              ></Route>
-            </Routes>
-            {/* Replace the ModalWithForm below with specific modals */}
-            <Login
-              isOpen={isLoginOpen}
-              onClose={closeAllPopups}
-              onSubmit={handleLoginSubmit}
-              loginEmail={loginEmail}
-              setLoginEmail={setLoginEmail}
-              loginPassword={loginPassword}
-              setLoginPassword={setLoginPassword}
-            />
-            <Register
-              isOpen={isRegisterOpen}
-              onClose={closeAllPopups}
-              onSubmit={handleRegisterSubmit}
-            />
-            <CompleteRegistrationModal
-              isOpen={isCompleteRegistrationOpen}
-              onClose={closeAllPopups}
-            />
-            <EditProfileDataModal
-              isOpen={isEditProfileDataModalOpen}
-              onClose={closeAllPopups}
-              onUpdateUserProfile={handleUpdateProfileData}
-            />
-            <EditPasswordModal
-              isOpen={isEditPasswordModalOpen}
-              onClose={closeAllPopups}
-              onUpdatePassword={handlelChangePasswordSubmit}
-            />
-            <DeleteProfileModal
-              isOpen={isDeleteProfileOpen}
-              onClose={closeAllPopups}
-              onDeleteProfile={handleDeleteProfileSubmit}
-            />
-            <CreateClothingModal
-              isOpen={isCreateClothingModalOpen}
-              onClose={closeAllPopups}
-              onSubmitAddGarment={handleCreateClothing}
-            />
-            <EditClothingModal
-              isOpen={isEditClothingModalOpen}
-              onClose={closeAllPopups}
-              onSubmitEditGarment={handleEditClothing}
-            />
-            <Footer />
-          </CurrentTemperatureUnitContext.Provider>
+              <Register
+                isOpen={isRegisterOpen}
+                onClose={closeAllPopups}
+                onSubmit={handleRegisterSubmit}
+              />
+              <CompleteRegistrationModal
+                isOpen={isCompleteRegistrationOpen}
+                onClose={closeAllPopups}
+              />
+              <EditProfileDataModal
+                isOpen={isEditProfileDataModalOpen}
+                onClose={closeAllPopups}
+                onUpdateUserProfile={handleUpdateProfileData}
+              />
+              <EditPasswordModal
+                isOpen={isEditPasswordModalOpen}
+                onClose={closeAllPopups}
+                onUpdatePassword={handlelChangePasswordSubmit}
+              />
+              <DeleteProfileModal
+                isOpen={isDeleteProfileOpen}
+                onClose={closeAllPopups}
+                onDeleteProfile={handleDeleteProfileSubmit}
+              />
+              <CreateClothingModal
+                isOpen={isCreateClothingModalOpen}
+                onClose={closeAllPopups}
+                onSubmitAddGarment={handleCreateClothing}
+              />
+              <EditClothingModal
+                isOpen={isEditClothingModalOpen}
+                onClose={closeAllPopups}
+                onSubmitEditGarment={handleEditClothing}
+              />
+              <Footer />
+            </CurrentTemperatureUnitContext.Provider>
           </CurrentGarmentContext.Provider>
         </CurrentUserContext.Provider>
       </div>
