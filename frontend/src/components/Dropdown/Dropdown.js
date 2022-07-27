@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './Dropdown.css';
 import arrow from '../../images/dropdown-arrow.svg';
@@ -8,13 +8,13 @@ import arrow from '../../images/dropdown-arrow.svg';
  *
  * @author [Shraddha](https://github.com/5hraddha)
  */
-const Dropdown = ({ dropdownName, header, options, onDropdownItemClick }) => {
-  const ref = React.useRef(null);
-  const [isDropdownMenuOpen, setIsDropdownMenuOpen] = React.useState(false);
-  const [selectedDropdownListItemLabel, setSelectedDropdownListItemLabel] = React.useState('Choose');
+const Dropdown = ({ dropdownName, header, options, userPreferenceValue = '', onDropdownItemClick }) => {
+  const ref = useRef(null);
+  const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
+  const [selectedDropdownListItemLabel, setSelectedDropdownListItemLabel] = useState('Choose');
 
   // Close dropdown menu if user clicks outside the dropdown
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
         setIsDropdownMenuOpen(false);
@@ -25,6 +25,15 @@ const Dropdown = ({ dropdownName, header, options, onDropdownItemClick }) => {
       document.removeEventListener('click', handleClickOutside, true);
     };
   }, [isDropdownMenuOpen]);
+
+  // Check if there is already an option that user has selected
+  useEffect(() => {
+    if (userPreferenceValue) {
+      const userSelectedOption = options.find((option) => option.value === userPreferenceValue);
+      setSelectedDropdownListItemLabel(userSelectedOption.name);
+      onDropdownItemClick(userSelectedOption.value);
+    }
+  }, [options, userPreferenceValue, onDropdownItemClick]);
 
   const handleDropdownSelectedItemClick = () => setIsDropdownMenuOpen(!isDropdownMenuOpen);
 
@@ -69,6 +78,7 @@ Dropdown.propTypes = {
   dropdownName: PropTypes.string.isRequired,
   header: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
+  userPreferenceValue: PropTypes.string,
   onDropdownItemClick: PropTypes.func.isRequired,
 }
 
