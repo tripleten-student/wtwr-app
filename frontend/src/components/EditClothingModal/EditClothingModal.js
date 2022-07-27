@@ -40,7 +40,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
       //how to be prefill with selected garment's data?
       'new-garment-name':currentGarment.garmentName || '',
       'garmentType':currentGarment.garmentType||'',
-      'weatherType': currentGarment.weatherType ||'',
+      'weatherType': currentGarment.weatherType||'',
       'new-garment-image-url': currentGarment.garmentUrl ||''
 
       
@@ -132,7 +132,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
           header="Type"
           options={clothingItems}
           onDropdownItemClick={setGarmentTypeChoice}
-          //value={currentGarment.garmentType||''} 
+          value={currentGarment.garmentType||''} 
           />
       </div>
       <div className="form__dropdown-container">
@@ -141,7 +141,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
           header="Weather"
           options={weatherTypes}
           onDropdownItemClick={setWeatherTypeChoice}
-          //value ={values.weatherType || ''} 
+          value ={currentGarment.weatherType || ''} 
           />
       </div>
       <div className="form__input-container">

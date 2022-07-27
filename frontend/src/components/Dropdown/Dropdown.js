@@ -8,10 +8,10 @@ import arrow from '../../images/dropdown-arrow.svg';
  *
  * @author [Shraddha](https://github.com/5hraddha)
  */
-const Dropdown = ({ dropdownName, header, options, userPreferenceValue = '', onDropdownItemClick }) => {
+const Dropdown = ({ dropdownName, header, options, userPreferenceValue = '', onDropdownItemClick,value }) => {
   const ref = useRef(null);
   const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
-  const [selectedDropdownListItemLabel, setSelectedDropdownListItemLabel] = useState('Choose');
+  const [selectedDropdownListItemLabel, setSelectedDropdownListItemLabel] = useState(value||'Choose');
 
   // Close dropdown menu if user clicks outside the dropdown
   useEffect(() => {
