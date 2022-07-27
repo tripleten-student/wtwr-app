@@ -2,6 +2,12 @@ import './ClothesSection.css';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import PropTypes from 'prop-types';
 
+/**
+ * The **ClothesSection** component for the Profile Page.
+ *
+ * @author [Santiago](https://github.com/Santiag0SR)
+ */
+
 function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike }) {
   return (
     <div className="clothes-section">
@@ -13,16 +19,10 @@ function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike })
       </div>
       <ul className="clothes-section__list">
         {sectionData.length === 0 ? (
-          <ClothingCard cardData={sectionData} onCardLike={onCardLike} />
+          <ClothingCard cardData={sectionData} apparelGroup={sectionName} onCardLike={onCardLike} />
         ) : (
           sectionData.map((card) => (
-            <ClothingCard
-              key={card.name}
-              name={card.name}
-              // please test with empty string to see the default image show up on card with "add your photo" button
-              cardData={card}
-              onCardLike={onCardLike}
-            />
+            <ClothingCard key={card.name} cardData={card} onCardLike={onCardLike} />
           ))
         )}
       </ul>
