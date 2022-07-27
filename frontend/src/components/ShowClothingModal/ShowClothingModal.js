@@ -48,9 +48,9 @@ function ShowClothingModal({
           <p className="clothing-modal__text">
             {tempType || 'Hot'} ({tempDegree || 70}° {tempUnit || 'F+'})
           </p>
-          <a href="*" onClick={handleClick} className="clothing-modal__link">
+          <button onClick={handleClick} className="clothing-modal__button">
             Edit
-          </a>{' '}
+          </button>{' '}
           {/** may need to change tag? */}
         </div>
       </div>

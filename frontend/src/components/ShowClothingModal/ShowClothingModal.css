@@ -41,16 +41,17 @@
     color: #000;
 }
 
-.clothing-modal__link {
+.clothing-modal__button {
     margin: 0;
     padding: 0;
     font-size: 20px;
     line-height: 24px;
     color: #000;
-    text-decoration: none;
+    border: none;
+    background-color: transparent;
 }
 
-.clothing-modal__link:hover {
+.clothing-modal__button:hover {
     cursor: pointer;
     opacity: 0.6;
 }

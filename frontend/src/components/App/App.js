@@ -129,7 +129,8 @@ const App = () => {
     isEditPasswordModalOpen ||
     isRegisterOpen ||
     isDeleteProfileOpen ||
-    isCompleteRegistrationOpen;
+    isCompleteRegistrationOpen ||
+    isShowClothingModalOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -163,6 +164,7 @@ const App = () => {
     setIsEditPasswordModalOpen(false);
     setIsDeleteProfileOpen(false);
     setIsCompleteRegistrationOpen(false);
+    setIsShowClothingModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
