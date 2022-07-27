@@ -1,0 +1,84 @@
+.dropdown {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: 'CabinetGrotesk-Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.25;
+  color: rgba(0, 0, 0, 1);
+}
+
+.dropdown__header {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.dropdown__options {
+  margin: 0;
+  position: relative;
+}
+
+.dropdown__selected-list-item {
+  margin: 0;
+  padding: 0 0 4px;
+  border: 0;
+  outline: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+  display: flex;
+  justify-content: space-between;
+  color: rgba(0, 0, 0, 1);
+}
+
+.dropdown__selected-list-item:hover {
+  cursor: pointer;
+}
+
+.dropdown__selected-list-item_no-value {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.dropdown__arrow {
+  margin: 0 9px 0 0;
+  padding: 0;
+  transition: all .3s ease-in;
+}
+
+.dropdown__arrow_rotated {
+  transform: rotate(90deg);
+}
+
+.dropdown__list-container {
+  margin: 0;
+  padding: 8px 0;
+  position: absolute;
+  width: 99.6%;
+  max-height: 150px;
+  overflow: auto;
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(0, 0, 0, 1);
+  border-top: 0;
+  z-index: 99;
+}
+
+.dropdown__list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.dropdown__list-item {
+  margin: 0;
+  padding: 6px 16px;
+  transition: all .3s ease-in;
+}
+
+.dropdown__list-item:hover {
+  cursor: pointer;
+  background-color: rgba(243, 243, 243, 1);
+}

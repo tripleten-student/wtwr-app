@@ -12,6 +12,8 @@
 
 .form__title {
   margin: 0;
+  font-weight: 700;
+  font-size: 16px;
 }
 
 .form__input-container {
@@ -86,6 +88,7 @@
   color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
+
 .form__submit-button-wide {
   padding: 0;
   box-sizing: border-box;
@@ -113,6 +116,54 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
+.form__dropdown-container {
+  margin: 24px 0 0;
+}
+
+.form__image-preview-container {
+  margin: 12px 0 0 0;
+  padding: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.form__image-preview {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.form__image-preview-close {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 100%;
+  outline: 0;
+  background: url('../../images/close-image-preview.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
+  transition: all .3s ease-in;
+}
+
+.form__image-preview-close:hover {
+  cursor: pointer;
+  opacity: .7;
+}
+
 .form__delete-button {
   background: #ff4d00;
   padding: 0;
@@ -126,6 +177,7 @@
   transition: all 0.2s ease;
   cursor:pointer;
 }
+
 .form__text{
   margin:8px 0 0 0;
 }
