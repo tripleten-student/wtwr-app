@@ -3,17 +3,22 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
-
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
+import Register from '../Register/Register';
+import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
+import Profile from '../Profile/Profile';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
 import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
+import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
-import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
+import EditClothingModal from '../EditClothingModal/EditClothingModal';
+import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import {
   getGeolocation,
   getForecastWeather,
@@ -22,12 +27,8 @@ import {
   setWeatherDataWithExpiry,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
-import Register from '../Register/Register';
-import Profile from '../Profile/Profile';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
+import { weatherTypes } from '../../utils/formConstants';
 import { login, register, checkToken } from '../../utils/auth';
-import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
 // import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
@@ -40,6 +41,14 @@ const App = () => {
       'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
     email: 'practicum@email.com',
   });
+  const [currentGarment, setCurrentGarment] = useState({
+    garmentName: 'Shirt',
+    garmentType: 'shirt',
+    weatherType: 'extreme',
+    garmentUrl: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+  })
+
+  const [currentUserEmail, setCurrentUserEmail] = useState('');
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
@@ -68,7 +77,8 @@ const App = () => {
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
-  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(true);
+  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(false);
+  const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(false);
   const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] =
     useState(false);
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
@@ -165,6 +175,7 @@ const App = () => {
     isEditPasswordModalOpen ||
     isDeleteProfileOpen ||
     isCreateClothingModalOpen ||
+    isEditClothingModalOpen ||
     isEditClothingPreferencesModalOpen ||
     isCreateClothingConfirmationModalOpen;
 
@@ -202,6 +213,7 @@ const App = () => {
     setIsDeleteProfileOpen(false);
     setIsCreateClothingModalOpen(false);
     setIsCreateClothingConfirmationModalOpen(false);
+    setIsEditClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
@@ -252,7 +264,11 @@ const App = () => {
     setNewClothingItemUrl(garmentUrl);
     setNewClothingItemType(garmentType);
   };
-
+  const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
+    console.log('Garment successfully updated');
+    console.log({ garmentName, garmentType, weatherType, garmentUrl });
+    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl })
+  }
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
@@ -371,6 +387,12 @@ const App = () => {
               createdClothingItemUrl={newClothingItemUrl}
               createdClothingItemType={newClothingItemType}
             />
+            <EditClothingModal
+              isOpen={isEditClothingModalOpen}
+              onClose={closeAllPopups}
+              onSubmitEditGarment={handleEditClothing}
+              currentGarment={currentGarment}
+            />
             {/* <ShowClothingModal
               // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
               // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
@@ -389,9 +411,9 @@ const App = () => {
             />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
-        </CurrentUserContext.Provider>
-      </div>
-    </div>
+        </CurrentUserContext.Provider >
+      </div >
+    </div >
   );
 };
 

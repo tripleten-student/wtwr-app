@@ -8,7 +8,7 @@ import arrow from '../../images/dropdown-arrow.svg';
  *
  * @author [Shraddha](https://github.com/5hraddha)
  */
-const Dropdown = ({ dropdownName, header, options, userPreferenceValue = '', onDropdownItemClick }) => {
+const Dropdown = ({ dropdownName, header, options, userPreferenceValue = '', onDropdownItemClick, setIsFormValid }) => {
   const ref = useRef(null);
   const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
   const [selectedDropdownListItemLabel, setSelectedDropdownListItemLabel] = useState('Choose');
@@ -40,6 +40,7 @@ const Dropdown = ({ dropdownName, header, options, userPreferenceValue = '', onD
   const handleDropdownListItemClick = (event) => {
     setSelectedDropdownListItemLabel(event.target.innerText);
     setIsDropdownMenuOpen(false);
+    setIsFormValid(true);
     onDropdownItemClick(event.target.dataset.value);
   }
 
@@ -80,6 +81,7 @@ Dropdown.propTypes = {
   options: PropTypes.array.isRequired,
   userPreferenceValue: PropTypes.string,
   onDropdownItemClick: PropTypes.func.isRequired,
+  setIsFormValid: PropTypes.func.isRequired,
 }
 
 export default Dropdown;
