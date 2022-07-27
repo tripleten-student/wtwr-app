@@ -1,21 +1,37 @@
 import './ClothingCard.css';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /**
  * The **ClothingCard** component is one of the four clothing cards displayed in the main section of the home page. This component displays clothing recommendation according to the type, temperature, and user preferences
  *
- * @author [Yuffie](https://github.com/yuff1006)
+ * @author [Yuffie](https://github.com/yuff1006) & @author [Santiago](https://github.com/Santiag0SR)
  */
 
-const ClothingCard = ({ cardData, onCardLike }) => {
+const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
+  const location = useLocation();
+
+  function createTemplateItem(apparelGroup) {
+    if (apparelGroup) {
+      return apparelGroup[Math.floor(Math.random() * apparelGroup.length)];
+    } else {
+      return 'profileTemplate';
+    }
+  }
+
   const clothingItemPresent = cardData;
+  const templateItem = createTemplateItem(apparelGroup);
+
   const handleLike = () => {
-    onCardLike(cardData);
+    // onCardLike(cardData);
+    console.log('card liked');
   };
 
-  const cardHeartButtonClassName = cardData.isLiked
-    ? 'clothingcard__like clothingcard__like_active'
-    : 'clothingcard__like';
+  const cardHeartButtonClassName =
+    cardData && cardData.isLiked
+      ? 'clothingcard__like clothingcard__like_active'
+      : 'clothingcard__like';
+
   return (
     <div className="clothingcard">
       <img
@@ -23,14 +39,18 @@ const ClothingCard = ({ cardData, onCardLike }) => {
         src={
           clothingItemPresent
             ? cardData.imageUrl
-            : require(`../../images/ClothingCard/${cardData.type.toLowerCase()}.svg`)
+            : require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`)
         }
-        alt={clothingItemPresent ? cardData.name : cardData.type}
+        alt={clothingItemPresent ? cardData.name : templateItem.type}
       />
       <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
           <p className="clothingcard__title">
-            {cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1)}
+            {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
+            {location.pathname === '/' &&
+              (clothingItemPresent
+                ? cardData.name.charAt(0).toUpperCase() + cardData.name.slice(1)
+                : templateItem.type.charAt(0).toUpperCase() + templateItem.type.slice(1))}
           </p>
           <button
             className={cardHeartButtonClassName}
@@ -39,7 +59,12 @@ const ClothingCard = ({ cardData, onCardLike }) => {
             onClick={handleLike}
           ></button>
         </div>
-        {!clothingItemPresent && (
+        {location.pathname === '/' && !clothingItemPresent && (
+          <button aria-label="Add Photo" className="clothingcard__add-photo" type="button">
+            + Add your photo
+          </button>
+        )}
+        {location.pathname === '/profile' && apparelGroup && (
           <button aria-label="Add Photo" className="clothingcard__add-photo" type="button">
             + Add your photo
           </button>
@@ -49,9 +74,9 @@ const ClothingCard = ({ cardData, onCardLike }) => {
   );
 };
 
-ClothingCard.propTypes = {
-  name: PropTypes.string,
-  imageUrl: PropTypes.string,
-  type: PropTypes.string,
-};
+// ClothingCard.propTypes = {
+//   // name: PropTypes.string,
+//   // imageUrl: PropTypes.string,
+//   // type: PropTypes.string,
+// };
 export default ClothingCard;
