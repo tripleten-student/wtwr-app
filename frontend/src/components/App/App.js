@@ -47,7 +47,7 @@ const App = () => {
   // logic with actual data needed in the future
   const [userAvatar, setUserAvatar] = useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = useState(false);
+  const [userName, setUserName] = useState('');
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
@@ -288,7 +288,13 @@ const App = () => {
               onClose={closeAllPopups}
             />
             <Footer />
-            <MobileNavigation/>
+            <MobileNavigation
+              isLoggedIn={isLoggedIn}
+              username={userName}
+              hasAvatar={userAvatar}
+              openLoginModal={() => setIsLoginOpen(true)}
+              // openNewGarmentModal={}
+            />
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>
