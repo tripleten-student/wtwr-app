@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
-
+import CurrentGarmentContext from '../../contexts/CurrentGarmentContext';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
@@ -38,7 +38,12 @@ const App = () => {
       'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
     email: 'practicum@email.com',
   });
-
+const [currentGarment, setCurrentGarment] = useState({
+      garmentName: 'Shirt',
+      garmentType: 'Shirt',
+      weatherType:'Extreme (97F°)',
+      garmentUrl: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+})
   const [currentUserEmail, setCurrentUserEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
@@ -205,6 +210,7 @@ const App = () => {
 const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) =>{
   console.log('Garment successfully updated');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
+    setCurrentGarment(garmentName, garmentType, weatherType, garmentUrl)
 }
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
@@ -234,6 +240,7 @@ const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) =
     <div className="page">
       <div className="page__wrapper">
         <CurrentUserContext.Provider value={currentUser}>
+          <CurrentGarmentContext.Provider value ={currentGarment}>
           <CurrentTemperatureUnitContext.Provider
             value={{ currentTemperatureUnit, handleToggleSwitchChange }}
           >
@@ -315,6 +322,7 @@ const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) =
             />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
+          </CurrentGarmentContext.Provider>
         </CurrentUserContext.Provider>
       </div>
     </div>

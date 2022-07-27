@@ -5,7 +5,7 @@ import Dropdown from '../Dropdown/Dropdown';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import { checkIfImageExists } from '../../utils/clothingModals';
 import { clothingItems, weatherTypes } from '../../utils/formConstants';
-import CurrentUserContext from '../../contexts/CurrentUserContext';
+import CurrentGarmentContext from '../../contexts/CurrentGarmentContext';
 
 /**
  * The **EditClothingModal** component will let users add new clothes to the database.
@@ -13,7 +13,8 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
  *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
 const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentGarment = useContext(CurrentGarmentContext);
+  
   // Component states & ref
   const formRef = useRef();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -35,18 +36,23 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
   // Reset form values every time the popup opens
   useEffect(() => {
     const initialValues = {
-      //current selection of the garment?
-      garmentName: '',
-      garmentType:'',
-      weatherType:'',
-      garmentUrl: '',
+      
+      //how to be prefill with selected garment's data?
+      'new-garment-name':currentGarment.garmentName || '',
+      'garmentType':currentGarment.garmentType||'',
+      'weatherType': currentGarment.weatherType ||'',
+      'new-garment-image-url': currentGarment.garmentUrl ||''
+
+      
     };
+    console.log(initialValues);
+    
     const initialErrorValues = {
       'new-garment-name': '',
       'new-garment-image-url': '',
     };
     resetForm({ ...initialValues }, { ...initialErrorValues }, true);
-  }, [isOpen, resetForm,currentUser]);
+  }, [isOpen, resetForm,currentGarment]);
 
   const handleCloseImagePreviewButtonClick = () => setShowImagePreview(false);
 
@@ -70,7 +76,10 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     // naming of the fields to be checked again when backend API is connected
-    if (isValid) {
+    if (isValid || values['new-garment-name']&&
+    garmentTypeChoice&&
+    weatherTypeChoice&&
+    values['new-garment-image-url']) {
       onSubmitEditGarment(
         values['new-garment-name'],
         garmentTypeChoice,
@@ -89,8 +98,8 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
 
   return (
     <ModalWithForm
-      formTitle="New garment"
-      name="add-clothes"
+      formTitle="Update garment"
+      name="update-clothes"
       position="middle"
       width="normal"
       isOpen={isOpen}
@@ -122,14 +131,18 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
           dropdownName="garment-types"
           header="Type"
           options={clothingItems}
-          onDropdownItemClick={setGarmentTypeChoice} />
+          onDropdownItemClick={setGarmentTypeChoice}
+          //value={currentGarment.garmentType||''} 
+          />
       </div>
       <div className="form__dropdown-container">
         <Dropdown
           dropdownName="weather-types"
           header="Weather"
           options={weatherTypes}
-          onDropdownItemClick={setWeatherTypeChoice} />
+          onDropdownItemClick={setWeatherTypeChoice}
+          //value ={values.weatherType || ''} 
+          />
       </div>
       <div className="form__input-container">
         <label htmlFor="garmentimage" className="form__input-label">
