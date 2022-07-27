@@ -72,6 +72,7 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
         weatherTypeChoice,
         values['new-garment-image-url']
       );
+      onClose();
     }
   };
 
