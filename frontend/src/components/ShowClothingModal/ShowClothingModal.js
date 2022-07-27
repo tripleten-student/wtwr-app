@@ -1,9 +1,9 @@
-import React from 'react';
 import './ShowClothingModal.css';
 import Modal from '../Modal/Modal';
 
 /**
  * The ShowClothingModal component
+ * ** This modal pops open to the specific clothing card the user clicks on.
  *
  * @author [Sam](https://github.com/Samm96)
  *
@@ -14,15 +14,16 @@ import Modal from '../Modal/Modal';
  *
  */
 
-function ShowClothingModal({
-  clothingType,
-  tempType,
+const ShowClothingModal = ({
+  garmentType,
+  garmentURL,
+  weatherType,
   tempDegree,
   tempUnit,
   handleClick,
   isOpen,
   onClose,
-}) {
+}) => {
   return (
     <Modal
       name="ShowClothingModal"
@@ -31,22 +32,22 @@ function ShowClothingModal({
       isOpen={isOpen}
       onClose={onClose}
     >
-      <div className="clothing-modal__container">
+      <div className="clothing-modal">
         {/** placeholder image */}
         <img
-          src={require('../../images/Clothes/letter-embroidered-baseball-cap.png')}
+          src={garmentURL || require('../../images/Clothes/letter-embroidered-baseball-cap.png')}
           alt="clothing"
           className="clothing-modal__image"
         />
         <div className="clothing-modal__text-container">
           <p className="clothing-modal__text clothing-modal__text_type_heading">Type:</p>
-          <p className="clothing-modal__text">{clothingType || 'Accessories'}</p>
+          <p className="clothing-modal__text">{garmentType || 'Accessories'}</p>
           <p className="clothing-modal__text clothing-modal__text_type_heading">
             Temperature:
           </p>{' '}
           {/** may need to adjust css on this later to fit a range(?) */}
           <p className="clothing-modal__text">
-            {tempType || 'Hot'} ({tempDegree || 70}° {tempUnit || 'F+'})
+            {weatherType || 'Hot'} ({tempDegree || 70}° {tempUnit || 'F+'})
           </p>
           <button onClick={handleClick} className="clothing-modal__button">
             Edit
@@ -56,6 +57,6 @@ function ShowClothingModal({
       </div>
     </Modal>
   );
-}
+};
 
 export default ShowClothingModal;

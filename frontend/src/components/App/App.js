@@ -74,6 +74,7 @@ const App = () => {
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
     useState(false);
   const [isShowClothingModalOpen, setShowClothingModalOpen] = useState(false);
+  const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(true);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -206,6 +207,7 @@ const App = () => {
     setIsCreateClothingConfirmationModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
     setShowClothingModalOpen(false);
+    setIsEditClothingModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -375,14 +377,15 @@ const App = () => {
               createdClothingItemType={newClothingItemType}
             />
             <ShowClothingModal
-              // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
-              // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
+              // garmentType={} if there is a function that returns the type of clothing is being shown in the modal
+              // weatherType={} //function where it returns the kind of weather condition (hot, cold, etc)
               // tempDegree={} // function or something that says what temp in degree the clothes are for
-              tempUnit={setCurrentTemperatureUnit || 'F+'}
+              // garmentURL={} // something that returns the corresponding url of the garment
+              tempUnit={currentTemperatureUnit || 'F+'}
               // (above) will show which unit being used by user. 'F' is a placeholder for now.
               isOpen={isShowClothingModalOpen}
               onClose={closeAllPopups}
-              handleClick={() => setIsEditClothingPreferencesModalOpen(true)}
+              handleClick={() => setIsEditClothingModalOpen(true)}
             />
             <EditClothingPreferences
               isOpen={isEditClothingPreferencesModalOpen}
