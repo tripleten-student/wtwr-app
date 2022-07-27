@@ -74,6 +74,19 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
+const getCurrentUser = (req, res, next) => {
+  const currentUser = req.user._id;
+  User.findById(currentUser)
+    .orFail(new NotFoundError('User ID not found'))
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('User ID not found');
+      }
+      res.status(HTTP_SUCCESS_OK).send(user);
+    })
+    .catch(next);
+};
+
 const getUser = (req, res, next) => {
   const { userId } = req.params;
 
@@ -158,4 +171,5 @@ module.exports = {
   updateUserProfile,
   updatePassword,
   deleteUser,
+  getCurrentUser,
 };

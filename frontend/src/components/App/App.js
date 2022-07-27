@@ -9,17 +9,11 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
-import Register from '../Register/Register';
-import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
-import Profile from '../Profile/Profile';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
 import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
-import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import { register } from '../../utils/auth';
 import {
   getGeolocation,
   getForecastWeather,
@@ -28,33 +22,41 @@ import {
   setWeatherDataWithExpiry,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
-
+import Register from '../Register/Register';
+import Profile from '../Profile/Profile';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
+import { login, register, checkToken } from '../../utils/auth';
+import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
+// import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
  * The main React **App** component.
  */
 const App = () => {
-  const [currentUser, setCurrentUser] = React.useState({
+  const [currentUser, setCurrentUser] = useState({
     username: 'Practicum',
     avatar:
       'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
     email: 'practicum@email.com',
   });
 
-  const [currentUserEmail, setCurrentUserEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
   // logic with actual data needed in the future
-  const [userAvatar, setUserAvatar] = useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = useState(false);
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
   // set useClothingPreferences from API
-  const [userClothingPreferences, setUserClothingPreferences] = useState(['t-shirt', 'jeans', 'dress', 'boots']);
+  const [userClothingPreferences, setUserClothingPreferences] = useState([
+    't-shirt',
+    'jeans',
+    'dress',
+    'boots',
+  ]);
   // set the url of newly created garment from handleCreateClothing() to pass on to the CreateClothingConfirmationModal
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
@@ -67,8 +69,10 @@ const App = () => {
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
   const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(true);
-  const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] = useState(false);
-  const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] = useState(false);
+  const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] =
+    useState(false);
+  const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
+    useState(false);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -123,6 +127,27 @@ const App = () => {
         )
       );
   }, [userLocation]);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setCurrentUser({
+              ...currentUser,
+              username: res.name,
+              email: res.email,
+              avatar: res.avatar,
+            });
+            setIsLoggedIn(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
@@ -192,21 +217,32 @@ const App = () => {
     setIsLoginOpen(false);
   }
 
-  const handleLoginSubmit = () => {
+  const handleLoginSubmit = ({ loginEmail, loginPassword }) => {
     //call the auth.login(loginEmail, loginPassword)
     //if login successful
-    setCurrentUserEmail(loginEmail);
-    setIsLoginOpen(false)
-    setLoginEmail('');
-    setLoginPassword('');
-    setIsLoggedIn(true);
+    // login({ email: loginEmail, password: loginPassword });
+    login({ email: loginEmail, password: loginPassword }).then(({ data }) => {
+      if (data) {
+        setCurrentUser({
+          ...currentUser,
+          email: data.email,
+          avatar: data.avatar,
+          username: data.name,
+        });
+        setLoginEmail('');
+        setLoginPassword('');
+        setIsLoggedIn(true);
+        setIsLoginOpen(false);
+      }
+    });
+
     //else catch error
   };
 
   const handleLogOut = () => {
     setIsLoggedIn(false);
     setCurrentUser({});
-    setCurrentUserEmail('');
+    localStorage.removeItem('jwt');
   };
   const handleCreateClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully added to your profile');
@@ -245,7 +281,7 @@ const App = () => {
     //An API call to update the clothing preferences
     console.log("User's clothing preferences has been changed");
     console.log(clothingPreferences);
-  }
+  };
 
   return (
     <div className="page">
@@ -261,8 +297,8 @@ const App = () => {
             <Header>
               <Navigation
                 isLoggedIn={isLoggedIn}
-                username={userName}
-                hasAvatar={userAvatar}
+                username={currentUser.username}
+                hasAvatar={currentUser.avatar}
                 handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
               />
@@ -281,7 +317,11 @@ const App = () => {
                     handleLoginClick={() => setIsLoginOpen(true)}
                     isLoggedIn={isLoggedIn}
                   >
-                    <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
+                    <Profile
+                      cardData={clothingCardData}
+                      onCardLike={handleLikeClick}
+                      onLogOutClick={handleLogOut}
+                    />
                   </ProtectedRoute>
                 }
               ></Route>
@@ -329,12 +369,24 @@ const App = () => {
               isOpen={isCreateClothingConfirmationModalOpen}
               onClose={closeAllPopups}
               createdClothingItemUrl={newClothingItemUrl}
-              createdClothingItemType={newClothingItemType} />
+              createdClothingItemType={newClothingItemType}
+            />
+            {/* <ShowClothingModal
+              // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
+              // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
+              // tempDegree={} // function or something that says what temp in degree the clothes are for
+              tempUnit={setCurrentTemperatureUnit || 'F+'}
+              // (above) will show which unit being used by user. 'F' is a placeholder for now.
+              isOpen={isShowClothingModalOpen}
+              onClose={closeAllPopups}
+              // handleClick={ replace with: set state of the edit modal open to true and this modal to close }
+            /> */}
             <EditClothingPreferences
               isOpen={isEditClothingPreferencesModalOpen}
               onClose={closeAllPopups}
               onSubmit={handleEditClothingPreferencesSubmit}
-              userClothingPreferences={userClothingPreferences} />
+              userClothingPreferences={userClothingPreferences}
+            />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
