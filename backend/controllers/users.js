@@ -38,7 +38,7 @@ const login = (req, res, next) => {
 // Sign up
 const createUser = (req, res, next) => {
   const {
-    email, password, name, avatar,
+    email, password, name, avatar, preferences,
   } = req.body;
   User.findOne({ email })
     .then((user) => {
@@ -55,6 +55,7 @@ const createUser = (req, res, next) => {
       password: hash,
       name,
       avatar,
+      preferences,
     }))
     .then((data) => res.status(201).send({ data }))
     .catch((err) => {
@@ -70,6 +71,19 @@ const getUsers = (req, res, next) => {
   User.find({})
     .orFail(new NotFoundError('Users are not found'))
     .then((users) => res.status(HTTP_SUCCESS_OK).send(users))
+    .catch(next);
+};
+
+const getCurrentUser = (req, res, next) => {
+  const currentUser = req.user._id;
+  User.findById(currentUser)
+    .orFail(new NotFoundError('User ID not found'))
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('User ID not found');
+      }
+      res.status(HTTP_SUCCESS_OK).send(user);
+    })
     .catch(next);
 };
 
@@ -157,4 +171,5 @@ module.exports = {
   updateUserProfile,
   updatePassword,
   deleteUser,
+  getCurrentUser,
 };
