@@ -10,12 +10,13 @@ import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
 import Register from '../Register/Register';
+import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
 import Profile from '../Profile/Profile';
-import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
 import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
-import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
+import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
+import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { register } from '../../utils/auth';
 import {
@@ -26,6 +27,7 @@ import {
   setWeatherDataWithExpiry,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
+
 
 /**
  * The main React **App** component.
@@ -50,6 +52,8 @@ const App = () => {
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
+  // set useClothingPreferences from API
+  const [userClothingPreferences, setUserClothingPreferences] = useState(['t-shirt', 'jeans', 'dress', 'boots']);
 
   //// Modals ////
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -57,8 +61,9 @@ const App = () => {
   const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
-  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = React.useState(true);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
+  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = React.useState(false);
+  const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] = useState(true);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -128,8 +133,9 @@ const App = () => {
     isCompleteRegistrationOpen ||
     isEditProfileDataModalOpen ||
     isEditPasswordModalOpen ||
+    isDeleteProfileOpen ||
     isCreateClothingModalOpen ||
-    isDeleteProfileOpen;
+    isEditClothingPreferencesModalOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -162,8 +168,9 @@ const App = () => {
     setIsCompleteRegistrationOpen(false);
     setIsEditProfileDataModalOpen(false);
     setIsEditPasswordModalOpen(false);
-    setIsCreateClothingModalOpen(false);
     setIsDeleteProfileOpen(false);
+    setIsCreateClothingModalOpen(false);
+    setIsEditClothingPreferencesModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -222,6 +229,12 @@ const App = () => {
   const handleDeleteProfileSubmit = () => {
     console.log('profile deleted');
   };
+
+  const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
+    //An API call to update the clothing preferences
+    console.log("User's clothing preferences has been changed");
+    console.log(clothingPreferences);
+  }
 
   return (
     <div className="page">
@@ -301,6 +314,11 @@ const App = () => {
               onClose={closeAllPopups}
               onSubmitAddGarment={handleCreateClothing}
             />
+            <EditClothingPreferences
+              isOpen={isEditClothingPreferencesModalOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleEditClothingPreferencesSubmit}
+              userClothingPreferences={userClothingPreferences} />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
