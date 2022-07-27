@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef,useContext } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import Dropdown from '../Dropdown/Dropdown';
@@ -15,7 +15,7 @@ import './EditClothingModal.css';
  */
 const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
   const currentGarment = useContext(CurrentGarmentContext);
-  
+
   // Component states & ref
   const formRef = useRef();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -29,31 +29,25 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
     'new-garment-image-url',
   ]);
 
-  // Set the validity of the form
   useEffect(() => {
-   // setIsFormValid(false);
-    setIsFormValid(formRef.current.checkValidity() && garmentTypeChoice !== '' && weatherTypeChoice !== '');
-  }, [isOpen, formRef, garmentTypeChoice, weatherTypeChoice]);
+    setIsFormValid(false);
+  }, [isOpen]);
 
   // Reset form values every time the popup opens
   useEffect(() => {
     const initialValues = {
-      
       //prefilled with clothing data selected for updating
-      'new-garment-name':currentGarment.garmentName || '',
-      'garmentType':currentGarment.garmentType||'',
-      'weatherType': currentGarment.weatherType||'',
-      'new-garment-image-url': currentGarment.garmentUrl ||''
-
-      
+      'new-garment-name': currentGarment.garmentName || '',
+      'garmentType': currentGarment.garmentType || '',
+      'weatherType': currentGarment.weatherType || '',
+      'new-garment-image-url': currentGarment.garmentUrl || ''
     };
-      
     const initialErrorValues = {
       'new-garment-name': '',
       'new-garment-image-url': '',
     };
     resetForm({ ...initialValues }, { ...initialErrorValues }, true);
-  }, [isOpen, resetForm,currentGarment]);
+  }, [isOpen, resetForm, currentGarment]);
 
   const handleCloseImagePreviewButtonClick = () => setShowImagePreview(false);
 
@@ -72,7 +66,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
 
   const handleFormChange = () => {
     setIsFormValid(formRef.current.checkValidity() && garmentTypeChoice !== '' && weatherTypeChoice !== '');
-  };
+  }
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -87,14 +81,12 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
       onClose();
     }
   };
-  const handleCancelClick = () => {
-    onClose();
-  };
+  const handleCancelClick = () => onClose();
+
   const garmentNameErrorClassName = ``;
   const garmentImageErrorClassName = ``;
   const submitWideButtonClassName = `form__submit-button-wide ${!isFormValid && 'form__submit-button-wide_disabled'
-}`;
- // const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
+    }`;
 
   return (
     <ModalWithForm
@@ -132,8 +124,9 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
           header="Type"
           options={clothingItems}
           onDropdownItemClick={setGarmentTypeChoice}
-          userPreferenceValue={currentGarment.garmentType||''} 
-          />
+          userPreferenceValue={currentGarment.garmentType || ''}
+          setIsFormValid={setIsFormValid}
+        />
       </div>
       <div className="form__dropdown-container">
         <Dropdown
@@ -141,8 +134,9 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
           header="Weather"
           options={weatherTypes}
           onDropdownItemClick={setWeatherTypeChoice}
-          userPreferenceValue ={currentGarment.weatherType || ''} 
-          />
+          userPreferenceValue={currentGarment.weatherType || ''}
+          setIsFormValid={setIsFormValid}
+        />
       </div>
       <div className="form__input-container">
         <label htmlFor="garmentimage" className="form__input-label">
@@ -170,7 +164,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
       <div className="form__button-grp">
         <button
           type="submit"
-          className={submitWideButtonClassName }
+          className={submitWideButtonClassName}
           disabled={!isFormValid}
           aria-label="Update garment"
         >
