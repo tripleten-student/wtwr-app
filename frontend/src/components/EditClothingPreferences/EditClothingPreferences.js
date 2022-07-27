@@ -20,7 +20,10 @@ const EditClothingPreferences = ({ isOpen, onClose, onSubmit, userClothingPrefer
       : clothingPreferences.push(selection);
   };
 
-  const handleFormSubmit = () => onSubmit(clothingPreferences);
+  const handleFormSubmit = () => {
+    onSubmit(clothingPreferences);
+    onClose();
+  };
 
   return (
     <ModalWithForm
