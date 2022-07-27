@@ -29,7 +29,6 @@ import { login, register, checkToken } from '../../utils/auth';
  * The main React **App** component.
  */
 const App = () => {
-  // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
   const [currentUser, setCurrentUser] = useState({
     username: 'Practicum',
     avatar:
@@ -37,15 +36,12 @@ const App = () => {
     email: 'practicum@email.com',
   });
 
-  const [currentUserEmail, setCurrentUserEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
   // logic with actual data needed in the future
-  const [userAvatar, setUserAvatar] = useState(true);
   // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  const [userName, setUserName] = useState(false);
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
@@ -112,13 +108,18 @@ const App = () => {
       );
   }, [userLocation]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       checkToken(jwt)
         .then((res) => {
           if (res) {
-            setCurrentUser({ ...currentUser, username: res.username, email: res.email });
+            setCurrentUser({
+              ...currentUser,
+              username: res.name,
+              email: res.email,
+              avatar: res.avatar,
+            });
             setIsLoggedIn(true);
           }
         })
@@ -194,11 +195,20 @@ const App = () => {
     //call the auth.login(loginEmail, loginPassword)
     //if login successful
     // login({ email: loginEmail, password: loginPassword });
-    login({ email: loginEmail, password: loginPassword }).then((data) => {
-      setCurrentUserEmail(loginEmail);
-      setLoginEmail('');
-      setLoginPassword('');
-      setIsLoggedIn(true);
+    login({ email: loginEmail, password: loginPassword }).then(({ data }) => {
+      if (data) {
+        console.log(data);
+        setCurrentUser({
+          ...currentUser,
+          email: data.email,
+          avatar: data.avatar,
+          username: data.name,
+        });
+        setLoginEmail('');
+        setLoginPassword('');
+        setIsLoggedIn(true);
+        setIsLoginOpen(false);
+      }
     });
 
     //else catch error
@@ -207,7 +217,7 @@ const App = () => {
   const handleLogOut = () => {
     setIsLoggedIn(false);
     setCurrentUser({});
-    setCurrentUserEmail('');
+    localStorage.removeItem('jwt');
   };
 
   const handlelChangePasswordSubmit = (password) => {
@@ -245,8 +255,8 @@ const App = () => {
             <Header>
               <Navigation
                 isLoggedIn={isLoggedIn}
-                username={userName}
-                hasAvatar={userAvatar}
+                username={currentUser.username}
+                hasAvatar={currentUser.avatar}
                 handleRegisterClick={() => setisRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
               />
@@ -265,7 +275,11 @@ const App = () => {
                     handleLoginClick={() => setIsLoginOpen(true)}
                     isLoggedIn={isLoggedIn}
                   >
-                    <Profile cardData={clothingCardData} onCardLike={handleLikeClick} />
+                    <Profile
+                      cardData={clothingCardData}
+                      onCardLike={handleLikeClick}
+                      onLogOutClick={handleLogOut}
+                    />
                   </ProtectedRoute>
                 }
               ></Route>
@@ -300,10 +314,10 @@ const App = () => {
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
             />
-            <CompleteRegistrationModal
+            {/* <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}
               onClose={closeAllPopups}
-            />
+            /> */}
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
