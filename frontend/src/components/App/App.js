@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import Main from '../Main/Main';
-import Footer from '../Footer/Footer';
-import Header from '../Header/Header';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
+import Main from '../Main/Main';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
 import Login from '../Login';
+import Register from '../Register/Register';
+import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
+import Profile from '../Profile/Profile';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
 import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
+import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
+import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
+import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { register } from '../../utils/auth';
 import {
   getGeolocation,
   getForecastWeather,
@@ -19,20 +27,13 @@ import {
   setWeatherDataWithExpiry,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
-import Register from '../Register/Register';
-import Profile from '../Profile/Profile';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
-import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
-import { register } from '../../utils/auth';
-import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
+
 
 /**
  * The main React **App** component.
  */
 const App = () => {
-  // Replace the below state with specific Modal e.g. isCreateClothingModalOpen, setIsCreateClothingModalOpen
-  const [currentUser, setCurrentUser] = useState({
+  const [currentUser, setCurrentUser] = React.useState({
     username: 'Practicum',
     avatar:
       'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
@@ -56,11 +57,12 @@ const App = () => {
 
   //// Modals ////
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
-  const [isRegisterOpen, setisRegisterOpen] = useState(false);
-  const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
+  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = React.useState(false);
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] = useState(true);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
@@ -127,11 +129,12 @@ const App = () => {
   //Check if all the other modals are open using || operator
   const isAnyPopupOpen =
     isLoginOpen ||
+    isRegisterOpen ||
+    isCompleteRegistrationOpen ||
     isEditProfileDataModalOpen ||
     isEditPasswordModalOpen ||
-    isRegisterOpen ||
     isDeleteProfileOpen ||
-    isCompleteRegistrationOpen ||
+    isCreateClothingModalOpen ||
     isEditClothingPreferencesModalOpen;
 
   React.useEffect(() => {
@@ -161,11 +164,12 @@ const App = () => {
   const closeAllPopups = () => {
     //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
+    setIsRegisterOpen(false);
+    setIsCompleteRegistrationOpen(false);
     setIsEditProfileDataModalOpen(false);
-    setisRegisterOpen(false);
     setIsEditPasswordModalOpen(false);
     setIsDeleteProfileOpen(false);
-    setIsCompleteRegistrationOpen(false);
+    setIsCreateClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
@@ -197,10 +201,15 @@ const App = () => {
     setCurrentUser({});
     setCurrentUserEmail('');
   };
+  const handleCreateClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
+    console.log('Garment successfully added to your profile');
+    console.log({ garmentName, garmentType, weatherType, garmentUrl });
+  };
 
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
+
   const handleUpdateProfileData = (userData) => {
     console.log('api patch will be implemented');
     console.log(userData);
@@ -222,7 +231,7 @@ const App = () => {
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
-    //An APi call to update the clothing preferences
+    //An API call to update the clothing preferences
     console.log("User's clothing preferences has been changed");
     console.log(clothingPreferences);
   }
@@ -243,7 +252,7 @@ const App = () => {
                 isLoggedIn={isLoggedIn}
                 username={userName}
                 hasAvatar={userAvatar}
-                handleRegisterClick={() => setisRegisterOpen(true)}
+                handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
               />
             </Header>
@@ -276,6 +285,15 @@ const App = () => {
               loginPassword={loginPassword}
               setLoginPassword={setLoginPassword}
             />
+            <Register
+              isOpen={isRegisterOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleRegisterSubmit}
+            />
+            <CompleteRegistrationModal
+              isOpen={isCompleteRegistrationOpen}
+              onClose={closeAllPopups}
+            />
             <EditProfileDataModal
               isOpen={isEditProfileDataModalOpen}
               onClose={closeAllPopups}
@@ -291,14 +309,10 @@ const App = () => {
               onClose={closeAllPopups}
               onDeleteProfile={handleDeleteProfileSubmit}
             />
-            <Register
-              isOpen={isRegisterOpen}
+            <CreateClothingModal
+              isOpen={isCreateClothingModalOpen}
               onClose={closeAllPopups}
-              onSubmit={handleRegisterSubmit}
-            />
-            <CompleteRegistrationModal
-              isOpen={isCompleteRegistrationOpen}
-              onClose={closeAllPopups}
+              onSubmitAddGarment={handleCreateClothing}
             />
             <EditClothingPreferences
               isOpen={isEditClothingPreferencesModalOpen}

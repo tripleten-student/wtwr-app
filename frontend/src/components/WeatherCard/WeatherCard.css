@@ -23,7 +23,7 @@
 .weathercard__info-container {
   padding: 12px 16px;
   display: grid;
-  column-gap: 8px;
+  column-gap: 13px;
   grid-template-columns: min-content auto;
   grid-template-rows: min-content auto;
   grid-template-areas:
@@ -103,10 +103,6 @@
   background-image: url('../../images/WeatherCard/day-sunny.svg');
   background-size: content-box;
 }
-.weathercard_weather_day-clear {
-  background-image: url('../../images/WeatherCard/day-sunny.svg');
-  background-size: content-box;
-}
 .weathercard_weather_night-cloudy {
   background-image: url('../../images/WeatherCard/night-cloudy.svg');
   background-size: content-box;
@@ -126,10 +122,6 @@
 .weathercard_weather_night-stormy {
   background-image: url('../../images/WeatherCard/night-stormy.svg');
   background-size: contain;
-}
-.weathercard_weather_night-clear {
-  background-image: url('../../images/WeatherCard/night-sunny.svg');
-  background-size: content-box;
 }
 .weathercard_weather_night-sunny {
   background-image: url('../../images/WeatherCard/night-sunny.svg');

@@ -14,4 +14,14 @@ const clothingItems = [
   { name: 'Down Jacket', value: 'down-jacket' },
 ];
 
-export { clothingItems };
+const weatherTypes = [
+  { name: 'Extremely Cold (-22F° to 32F°)', value: 'extremely-cold' },
+  { name: 'Cold (33F° to 53F°)', value: 'cold' },
+  { name: 'Cool (54F° to 65F°)', value: 'cool' },
+  { name: 'Optimal (66F° to 77F°)', value: 'optimal' },
+  { name: 'Warm (78F° to 85F°)', value: 'warm' },
+  { name: 'Hot (86F° to 96F°)', value: 'hot' },
+  { name: 'Extreme (97F°)', value: 'extreme' },
+];
+
+export { clothingItems, weatherTypes };
