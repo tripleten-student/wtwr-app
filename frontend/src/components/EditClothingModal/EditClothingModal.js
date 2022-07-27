@@ -5,7 +5,6 @@ import Dropdown from '../Dropdown/Dropdown';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import { checkIfImageExists } from '../../utils/clothingModals';
 import { clothingItems, weatherTypes } from '../../utils/formConstants';
-import CurrentGarmentContext from '../../contexts/CurrentGarmentContext';
 import './EditClothingModal.css';
 
 /**
@@ -13,9 +12,7 @@ import './EditClothingModal.css';
  *
  *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
-const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
-  const currentGarment = useContext(CurrentGarmentContext);
-
+const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarment }) => {
   // Component states & ref
   const formRef = useRef();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -182,6 +179,7 @@ EditClothingModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmitEditGarment: PropTypes.func.isRequired,
+  currentGarment: PropTypes.object.isRequired,
 };
 
 export default EditClothingModal;
