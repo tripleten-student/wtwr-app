@@ -37,7 +37,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
   useEffect(() => {
     const initialValues = {
       
-      //how to be prefill with selected garment's data?
+      //prefilled with clothing data selected for updating
       'new-garment-name':currentGarment.garmentName || '',
       'garmentType':currentGarment.garmentType||'',
       'weatherType': currentGarment.weatherType||'',
@@ -45,8 +45,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
 
       
     };
-    console.log(initialValues);
-    
+      
     const initialErrorValues = {
       'new-garment-name': '',
       'new-garment-image-url': '',
