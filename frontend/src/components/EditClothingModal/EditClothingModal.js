@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import Dropdown from '../Dropdown/Dropdown';
