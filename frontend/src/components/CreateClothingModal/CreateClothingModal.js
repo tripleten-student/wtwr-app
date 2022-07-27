@@ -18,8 +18,7 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [garmentTypeChoice, setGarmentTypeChoice] = useState('');
   const [weatherTypeChoice, setWeatherTypeChoice] = useState('');
-  const [isImageUrlExist, setIsImageUrlExist] = useState(false);
-  const [showImagePreview, setShowImagePreview] = useState(true);
+  const [showImagePreview, setShowImagePreview] = useState(false);
 
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'new-garment-name',
@@ -50,9 +49,9 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
     if (event.target.name === 'new-garment-image-url') {
       checkIfImageExists(event.target.value, (exists) => {
         if (exists) {
-          setIsImageUrlExist(true);
+          setShowImagePreview(true);
         } else {
-          setIsImageUrlExist(false);
+          setShowImagePreview(false);
         }
       });
     }
@@ -141,7 +140,7 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
         />
       </div>
       {/* If Image URL actully exists & there is no validation error, then display preview */}
-      {(showImagePreview && isImageUrlExist && !errors['new-garment-image-url']) && (
+      {(showImagePreview && !errors['new-garment-image-url']) && (
         <div className="form__image-preview-container">
           <img src={values['new-garment-image-url']} alt="new garment" className="form__image-preview" />
           <button className="form__image-preview-close" type="button" aria-label="Close image preview" onClick={handleCloseImagePreviewButtonClick} />
