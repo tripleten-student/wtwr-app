@@ -8,7 +8,7 @@ import { clothingItems, weatherTypes } from '../../utils/formConstants';
 import CurrentGarmentContext from '../../contexts/CurrentGarmentContext';
 
 /**
- * The **EditClothingModal** component will let users add new clothes to the database.
+ * The **EditClothingModal** component will let users edit clothes to the database.
  *
  *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
