@@ -6,6 +6,7 @@ import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import { checkIfImageExists } from '../../utils/clothingModals';
 import { clothingItems, weatherTypes } from '../../utils/formConstants';
 import CurrentGarmentContext from '../../contexts/CurrentGarmentContext';
+import './EditClothingModal.css';
 
 /**
  * The **EditClothingModal** component will let users edit clothes to the database.
@@ -30,6 +31,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
 
   // Set the validity of the form
   useEffect(() => {
+   // setIsFormValid(false);
     setIsFormValid(formRef.current.checkValidity() && garmentTypeChoice !== '' && weatherTypeChoice !== '');
   }, [isOpen, formRef, garmentTypeChoice, weatherTypeChoice]);
 
@@ -75,10 +77,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     // naming of the fields to be checked again when backend API is connected
-    if (isValid || (values['new-garment-name']&&
-    garmentTypeChoice&&
-    weatherTypeChoice&&
-    values['new-garment-image-url'])) {
+    if (isValid) {
       onSubmitEditGarment(
         values['new-garment-name'],
         garmentTypeChoice,
@@ -93,7 +92,9 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
   };
   const garmentNameErrorClassName = ``;
   const garmentImageErrorClassName = ``;
-  const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
+  const submitWideButtonClassName = `form__submit-button-wide ${!isFormValid && 'form__submit-button-wide_disabled'
+}`;
+ // const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
 
   return (
     <ModalWithForm
@@ -169,7 +170,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment }) => {
       <div className="form__button-grp">
         <button
           type="submit"
-          className={submitButtonClassName}
+          className={submitWideButtonClassName }
           disabled={!isFormValid}
           aria-label="Update garment"
         >
