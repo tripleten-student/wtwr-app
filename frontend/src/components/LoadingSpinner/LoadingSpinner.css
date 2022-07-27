@@ -1,0 +1,17 @@
+.loader {
+    border: 10px solid #dcdcdc;
+    border-top: 10px solid #00A3FF; /* too bright? #286897? */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader_hidden {  /* hides spinner */
+    display: none;
+}

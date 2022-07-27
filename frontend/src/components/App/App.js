@@ -28,6 +28,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import { login, register, checkToken } from '../../utils/auth';
 import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 // import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
