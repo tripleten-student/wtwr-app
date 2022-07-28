@@ -279,14 +279,16 @@ const App = () => {
   };
 
   const handleRegisterSubmit = (credentials) => {
-    // credentials to be used in API call to backend
+    closeAllPopups();
     register(credentials)
       .then((data) => {
-        console.log(data);
-        closeAllPopups();
         setIsCompleteRegistrationOpen(true);
+        setIsLoggedIn(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        // clarify behaviour for errors: invalid username/password
+        console.log(err)
+      });
   };
 
   const handleDeleteProfileSubmit = () => {
