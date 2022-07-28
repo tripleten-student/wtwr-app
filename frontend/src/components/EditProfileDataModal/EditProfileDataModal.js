@@ -51,8 +51,11 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
     }
   };
 
-  const userNameErrorClassName = ``;
-  const avatarUrlErrorClassName = ``;
+  // Set form elements classnames
+  const setInputLabelClassName = (name, isRequired) =>
+    `form__input-label ${isRequired && `form__input-label_required`} ${(!isValid && errors[name]) && `form__input-label_error`}`;
+  const setInputClassName = (name) => `form__input ${(!isValid && errors[name]) && `form__input_error`}`;
+  const setErrorClassName = (name) => `form__error ${(!isValid && errors[name]) && `form__error_visible`}`;
   const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
 
   return (
@@ -68,16 +71,20 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
       onChange={handleFormChange}
     >
       <div className="form__input-container">
-        <label htmlFor="username" className="form__input-label">
-          Name
-          <span id="username-error" className={userNameErrorClassName}></span>
-        </label>
+        <div className="form__input-label-container">
+          <label htmlFor="username" className={setInputLabelClassName('username', true)}>
+            Name
+          </label>
+          <p id="username-error" className={setErrorClassName('username')}>
+            {(errors['username']) && '(this is not a valid name)'}
+          </p>
+        </div>
         <input
           type="text"
           id="username"
           name="username"
           placeholder="Name"
-          className="form__input"
+          className={setInputClassName('username')}
           value={values.username}
           onChange={handleInputChange}
           minLength="2"
@@ -87,16 +94,20 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
       </div>
 
       <div className="form__input-container">
-        <label htmlFor="avatarurl" className="form__input-label">
-          Avatar
-          <span id="avatarurl-error" className={avatarUrlErrorClassName}></span>
-        </label>
+        <div className="form__input-label-container">
+          <label htmlFor="avatarurl" className={setInputLabelClassName('avatarurl')}>
+            Avatar
+          </label>
+          <p id="avatarurl-error" className={setErrorClassName('avatarurl')}>
+            {(errors['avatarurl']) && '(this is not a valid url)'}
+          </p>
+        </div>
         <input
           type="url"
           id="avatarurl"
           name="avatarurl"
           placeholder="Avatar"
-          className="form__input"
+          className={setInputClassName('avatarurl')}
           value={values.avatarurl}
           onChange={handleInputChange}
         />
