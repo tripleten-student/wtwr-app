@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
@@ -16,12 +16,12 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
     'confirm-login-password',
   ]);
 
-  const formRef = React.useRef();
-  const [isFormValid, setIsFormValid] = React.useState(false);
+  const formRef = useRef();
+  const [isFormValid, setIsFormValid] = useState(false);
 
   //the validation if user entered the correct old password  needs to be implemented
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsFormValid(
       values['new-login-password'] !== values['login-password'] &&
       values['new-login-password'] === values['confirm-login-password'] &&
@@ -38,7 +38,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   };
 
   // Reset form values every time the popup opens
-  React.useEffect(() => {
+  useEffect(() => {
     const initialValues = {
       'login-password': '',
       'new-login-password': '',
@@ -71,8 +71,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   };
 
   const passwordErrorClassName = ``;
-  const submitWideButtonClassName = `form__submit-button-wide form__submit-button-wide_rel_login ${!isFormValid && 'form__submit-button-wide_disabled'
-    }`;
+  const submitWideButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
 
   return (
     <ModalWithForm
