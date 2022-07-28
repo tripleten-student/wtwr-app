@@ -27,15 +27,9 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
       values['new-login-password'] === values['confirm-login-password'] &&
       formRef.current.checkValidity()
     );
-  }, [
-    isOpen,
-    formRef,
-    values,
-  ]);
+  }, [isOpen, formRef, values]);
 
-  const handleFormChange = () => {
-    setIsFormValid(formRef.current.checkValidity());
-  };
+  const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
 
   // Reset form values every time the popup opens
   useEffect(() => {
@@ -45,19 +39,12 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
       'confirm-login-password': '',
     };
 
-    const initialErrorValues = {
-      'login-password': '',
-      'new-login-password': '',
-      'confirm-login-password': '',
-    };
-
-    resetForm({ ...initialValues }, { ...initialErrorValues }, true);
+    resetForm({ ...initialValues }, { ...initialValues }, true);
   }, [isOpen, resetForm]);
 
   const handleInputChange = (event) => handleChange(event);
 
   const handleFormSubmit = (event) => {
-    console.log(values);
     event.preventDefault();
     // naming of the fields to be checked again when backend API is connected
     if (
@@ -71,7 +58,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   };
 
   const passwordErrorClassName = ``;
-  const submitWideButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
+  const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
 
   return (
     <ModalWithForm
@@ -140,7 +127,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
       <div className="form__button-grp">
         <button
           type="submit"
-          className={submitWideButtonClassName}
+          className={submitButtonClassName}
           disabled={!isFormValid}
           aria-label="Change password"
         >
