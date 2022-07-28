@@ -14,8 +14,8 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
   const currentUser = React.useContext(CurrentUserContext);
 
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
-    'username',
-    'avatarurl',
+    'name',
+    'avatar',
   ]);
 
   const formRef = React.useRef();
@@ -32,12 +32,12 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
   // Reset form values every time the popup opens
   React.useEffect(() => {
     const initialInputValues = {
-      username: currentUser.username || '',
-      avatarurl: currentUser.avatar || '',
+      name: currentUser.name || '',
+      avatar: currentUser.avatar || '',
     };
     const initialErrorValues = {
-      username: '',
-      avatarurl: '',
+      name: '',
+      avatar: '',
     };
     resetForm({ ...initialInputValues }, { ...initialErrorValues }, true);
   }, [isOpen, resetForm, currentUser]);
@@ -46,9 +46,9 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    const { username, avatar } = values;
+    const { name, avatar } = values;
 
-    if (isValid || (username && avatar)) {
+    if (isValid || (name && avatar)) {
       // naming of the fields to be checked again when backend API is connected
       onUpdateUserProfile(values);
       onClose();
@@ -81,10 +81,10 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
         <input
           type="text"
           id="username"
-          name="username"
+          name="name"
           placeholder="Name"
           className="form__input"
-          value={values.username}
+          value={values.name}
           onChange={handleInputChange}
           minLength="2"
           maxLength="40"
@@ -100,10 +100,10 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
         <input
           type="url"
           id="avatarurl"
-          name="avatarurl"
+          name="avatar"
           placeholder="Avatar"
           className="form__input"
-          value={values.avatarurl}
+          value={values.avatar}
           onChange={handleInputChange}
         />
       </div>
