@@ -19,7 +19,7 @@ more info here:
 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options> 
 */
 
-function Header({ currentLocation, children }) {
+const Header = ({ currentLocation, children }) => {
   const currentDate = new Date().toLocaleString('default', { month: 'long', day: 'numeric' });
 
   return (
