@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
  * NOTE: routes to respective modals need to be added
  */
 
-function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, handleLoginClick }) {
+const Navigation = ({ isLoggedIn, hasAvatar, username, handleRegisterClick, handleLoginClick }) => {
   const defaultUser = 'Terrence Tegegne';
 
   return (

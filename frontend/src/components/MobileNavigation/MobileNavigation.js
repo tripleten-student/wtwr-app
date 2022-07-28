@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom';
  *
  */
 
-function MobileNavigation({ isLoggedIn, openNewGarmentModal, openLoginModal, hasAvatar, username }) {
+const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal, hasAvatar, username }) => {
   return (
     <nav className="navigation-mobile">
       <ul className="navigation-mobile__container">
