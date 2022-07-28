@@ -28,7 +28,7 @@ const DeleteProfileModal = ({ isOpen, onClose, onDeleteProfile }) => {
       onSubmit={handleFormSubmit}
     >
       <div className="form">
-        <label className="form__title">Are you sure you want to delete your profile?</label>
+        <label className="form__text">Are you sure you want to delete your profile?</label>
         <p className="form__text">
           This action is irreversible: all your data will be lost and you will not be able to
           restore your profile later.
