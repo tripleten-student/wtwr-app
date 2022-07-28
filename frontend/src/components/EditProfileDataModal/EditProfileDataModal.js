@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
@@ -11,26 +11,21 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
  */
 
 const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
-  const currentUser = React.useContext(CurrentUserContext);
-
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'username',
     'avatarurl',
   ]);
 
-  const formRef = React.useRef();
-  const [isFormValid, setIsFormValid] = React.useState(false);
+  const currentUser = useContext(CurrentUserContext);
+  const formRef = useRef();
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsFormValid(formRef.current.checkValidity());
   }, [isOpen, formRef]);
 
-  const handleFormChange = () => {
-    setIsFormValid(formRef.current.checkValidity());
-  };
-
   // Reset form values every time the popup opens
-  React.useEffect(() => {
+  useEffect(() => {
     const initialInputValues = {
       username: currentUser.username || '',
       avatarurl: currentUser.avatar || '',
@@ -42,8 +37,9 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
     resetForm({ ...initialInputValues }, { ...initialErrorValues }, true);
   }, [isOpen, resetForm, currentUser]);
 
+  // Event Handlers
+  const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
   const handleInputChange = (event) => handleChange(event);
-
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const { username, avatar } = values;
@@ -57,9 +53,7 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
 
   const userNameErrorClassName = ``;
   const avatarUrlErrorClassName = ``;
-  const submitButtonClassName = `form__submit-button form__submit-button_rel_edit-profile ${
-    !isFormValid && 'form__submit-button_disabled'
-  }`;
+  const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
 
   return (
     <ModalWithForm
