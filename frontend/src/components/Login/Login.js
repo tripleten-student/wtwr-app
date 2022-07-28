@@ -57,7 +57,7 @@ const Login = ({
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (isValid || (loginEmail && loginPassword)) {
-      onSubmit({ loginEmail, loginPassword });
+      onSubmit({ email: loginEmail, password: loginPassword });
     }
   };
 
