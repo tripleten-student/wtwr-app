@@ -27,7 +27,7 @@ function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
                 <img
                   className="navigation__user"
                   /** Add user avatar prop and replace this with it */
-                  src={require('../../images/avatar-default.png')}
+                  src={hasAvatar}
                   alt="user avatar"
                 />
               ) : (
