@@ -7,7 +7,7 @@ import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
-import Login from '../Login';
+import Login from '../Login/Login';
 import Register from '../Register/Register';
 import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
 import Profile from '../Profile/Profile';
