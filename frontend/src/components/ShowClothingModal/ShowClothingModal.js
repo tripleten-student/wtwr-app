@@ -33,7 +33,6 @@ const ShowClothingModal = ({
       onClose={onClose}
     >
       <div className="clothing-modal">
-        {/** placeholder image */}
         <img
           src={garmentURL || require('../../images/Clothes/letter-embroidered-baseball-cap.png')}
           alt="clothing"
@@ -45,14 +44,12 @@ const ShowClothingModal = ({
           <p className="clothing-modal__text clothing-modal__text_type_heading">
             Temperature:
           </p>{' '}
-          {/** may need to adjust css on this later to fit a range(?) */}
           <p className="clothing-modal__text">
             {weatherType || 'Hot'} ({tempDegree || 70}° {tempUnit || 'F+'})
           </p>
           <button onClick={handleClick} className="clothing-modal__button">
             Edit
           </button>{' '}
-          {/** may need to change tag? */}
         </div>
       </div>
     </Modal>
