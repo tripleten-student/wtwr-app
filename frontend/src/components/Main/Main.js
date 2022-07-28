@@ -1,10 +1,11 @@
-import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import './Main.css';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import randomizeIcon from '../../images/randomizeIcon.svg';
 import { clothes } from '../../utils/testData';
 import { accessories, top, bottom, shoes } from '../../utils/templateApparel';
+import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 
 /**
  * The **Main** component puts toguether the components of the main page,
@@ -15,9 +16,10 @@ import { accessories, top, bottom, shoes } from '../../utils/templateApparel';
 
 function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
   // To get the weather in the actual moment
-  const [actualWeather, setActualWeather] = React.useState('');
+  const [actualWeather, setActualWeather] = useState('');
+  const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (weatherData) {
       const actualWeather = weatherData.find((element) => element.elongate === true);
       setActualWeather(actualWeather);
@@ -62,7 +64,7 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
       <WeatherCards weatherData={weatherData} />
       <div className="clothesSectionMain">
         <div className="clothesSectionMain__info">
-          <p>{`Today is ${actualWeather.temperature} F and it is ${actualWeather.description}/ You may want to wear:`}</p>
+          <p>{`Today is ${actualWeather.temperature[currentTemperatureUnit]} ${currentTemperatureUnit} and it is ${actualWeather.condition} / You may want to wear:`}</p>
           <button className="randomize-button" type="button" onClick={handleRandomClick}>
             <img className={'randomize-icon'} alt="randomize" src={randomizeIcon} />
             Randomize

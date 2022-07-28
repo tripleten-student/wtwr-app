@@ -45,10 +45,9 @@ const App = () => {
     garmentName: 'Shirt',
     garmentType: 'shirt',
     weatherType: 'extreme',
-    garmentUrl: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-  })
-
-  const [currentUserEmail, setCurrentUserEmail] = useState('');
+    garmentUrl:
+      'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+  });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
@@ -228,7 +227,6 @@ const App = () => {
     // insert logic to interact with WTWR API
     setIsLoginOpen(false);
   }
-
   const handleLoginSubmit = ({ loginEmail, loginPassword }) => {
     //call the auth.login(loginEmail, loginPassword)
     //if login successful
@@ -267,8 +265,8 @@ const App = () => {
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully updated');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
-    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl })
-  }
+    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl });
+  };
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
@@ -298,7 +296,7 @@ const App = () => {
     console.log("User's clothing preferences has been changed");
     console.log(clothingPreferences);
   };
-
+  console.log(weatherData);
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -411,9 +409,9 @@ const App = () => {
             />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
-        </CurrentUserContext.Provider >
-      </div >
-    </div >
+        </CurrentUserContext.Provider>
+      </div>
+    </div>
   );
 };
 
