@@ -15,7 +15,6 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   const [credentialsOpen, setCredentialsOpen] = useState(true);
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
-  const [avatar, setAvatar] = useState('');
   const [clothingPreferences, setClothingPreferences] = useState([]);
 
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
@@ -23,6 +22,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     'register-password',
     'confirm-password',
     'register-name',
+    'register-avatar',
   ]);
 
   const {
@@ -30,6 +30,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     'register-password': registerPassword,
     'confirm-password': confirmPassword,
     'register-name': name,
+    'register-avatar': avatar,
   } = values;
 
   const credentialsRef = useRef(null);
@@ -46,21 +47,18 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   };
 
   // Reset form values once form opens
-  const initialValues = {
-    'register-email': '',
-    'register-password': '',
-    'confirm-password': '',
-    'register-name': '',
-  };
-
   useEffect(() => {
+    const initialValues = {
+      'register-email': '',
+      'register-password': '',
+      'confirm-password': '',
+      'register-name': '',
+      'register-avatar': '',
+    };
     resetForm({ ...initialValues }, { ...initialValues }, true);
-  }, [isOpen]);
+  }, [isOpen, resetForm]);
 
-  const handleInputChange = (event) => {
-    handleChange(event);
-    event.target.name === 'register-avatar' && setAvatar(event.target.value);
-  };
+  const handleInputChange = (event) => handleChange(event);
 
   const handleNext = (event) => {
     event.preventDefault();
@@ -94,7 +92,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     setClothingPreferences([])
     setPreferencesOpen(false);
     setCredentialsOpen(true);
-    setAvatar('')
+    // setAvatar('')
   };
 
   // Set form elements classnames
@@ -103,8 +101,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   const setInputClassName = (name) => `form__input ${(!isValid && errors[name]) && `form__input_error`}`;
   const setErrorClassName = (name) => `form__error ${(!isValid && errors[name]) && `form__error_visible`}`;
 
-  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${!isFormValid && 'form__submit-button_disabled'
-    } `;
+  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${!isFormValid && 'form__submit-button_disabled'} `;
 
   return (
     <ModalWithForm
@@ -231,16 +228,20 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
           </div>
 
           <div className="form__input-container">
-            <label htmlFor="register-avatar" className="form__input-label">
-              Avatar
-              <span id="register-avatar-error" className=""></span>
-            </label>
+            <div className="form__input-label-container">
+              <label htmlFor="register-avatar" className={setInputLabelClassName('register-avatar', false)}>
+                Avatar
+              </label>
+              <p id="register-avatar-error" className={setErrorClassName('register-avatar')}>
+                {(errors['register-avatar']) && '(this is not a valid url)'}
+              </p>
+            </div>
             <input
               type="url"
               id="register-avatar"
               name="register-avatar"
               placeholder="https://unsplash.com/random"
-              className="form__input"
+              className={setInputClassName('register-avatar')}
               value={avatar}
               onChange={handleInputChange}
             />
