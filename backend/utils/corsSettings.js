@@ -5,7 +5,7 @@
  */
 
 // add all registered URLs of the project to 'allowedCors' later
-const allowedCors = ['localhost:3000'];
+const allowedCors = ['*'];
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
 module.exports = {
