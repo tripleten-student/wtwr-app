@@ -129,10 +129,10 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
       </div>
       <div className="form__input-container">
         <div className="form__input-label-container">
-          <label htmlFor="garment-image" className={setInputLabelClassName('new-garment-image-url')}>
+          <label htmlFor="new-garment-image-url" className={setInputLabelClassName('new-garment-image-url')}>
             Image
           </label>
-          <p id="garment-image-error" className={setErrorClassName('new-garment-image-url')}>
+          <p id="new-garment-image-url-error" className={setErrorClassName('new-garment-image-url')}>
             {(errors['new-garment-image-url']) && '(this is not a valid url)'}
           </p>
         </div>
