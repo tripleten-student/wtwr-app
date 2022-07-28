@@ -235,6 +235,7 @@ const App = () => {
     // login({ email: loginEmail, password: loginPassword });
     login({ email: loginEmail, password: loginPassword }).then(({ data }) => {
       if (data) {
+        console.log(data);
         setCurrentUser({
           ...currentUser,
           email: data.email,
@@ -349,9 +350,7 @@ const App = () => {
               isOpen={isLoginOpen}
               onClose={closeAllPopups}
               onSubmit={handleLoginSubmit}
-              loginEmail={loginEmail}
               setLoginEmail={setLoginEmail}
-              loginPassword={loginPassword}
               setLoginPassword={setLoginPassword}
             />
             <Register
