@@ -41,10 +41,10 @@ const Login = ({
   // Event Handlers
   const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
 
-  const handleInputChange = (e) => handleChange(e);
+  const handleInputChange = (event) => handleChange(event);
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
     if (isValid || (values['login-email'] && values['login-password'])) {
       setLoginEmail(values['login-email']);
       setLoginPassword(values['login-password']);
