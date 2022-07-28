@@ -32,17 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', allowedCors);
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept',
-  );
-  res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-  return next();
-});
-
-app.use(cors());
+app.use(cors({ origin: allowedCors, methods: DEFAULT_ALLOWED_METHODS }));
 app.options('*', cors());
 app.use(requestLogger);
 
