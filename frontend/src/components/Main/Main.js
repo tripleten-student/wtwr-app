@@ -16,15 +16,10 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
 
 function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
   // To get the weather in the actual moment
-  const [actualWeather, setActualWeather] = useState('');
-  const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
-  useEffect(() => {
-    if (weatherData) {
-      const actualWeather = weatherData.find((element) => element.elongate === true);
-      setActualWeather(actualWeather);
-    }
-  }, [weatherData]);
+  const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+  if (!weatherData) return null;
+  const actualWeather = weatherData.find((element) => element.elongate);
 
   /**THIS FUNCTIONALLITY HAS BEEN ADDED FOR TESTING PURPOSES**/
   const clothesTestData = isLoggedIn ? clothes : [{}];

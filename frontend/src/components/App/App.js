@@ -285,7 +285,7 @@ const App = () => {
       })
       .catch((err) => {
         // clarify behaviour for errors: invalid username/password
-        console.log(err)
+        console.log(err);
       });
   };
 
@@ -298,7 +298,6 @@ const App = () => {
     console.log("User's clothing preferences has been changed");
     console.log(clothingPreferences);
   };
-  console.log(weatherData);
   return (
     <div className="page">
       <div className="page__wrapper">
