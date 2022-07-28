@@ -108,21 +108,12 @@ const App = () => {
         }
       });
   }, []);
-
+  /** this gets called every time the user changes location: when user initially disallowed location sharing. and then later allowed it, upon page refresh, the location and the weather updates right away, evne within 15 minutes */
+  useEffect(() => {
+    getWeatherDataUsingLocation();
+  }, [userLocation]);
   /** the weather API gets called or pulled from local storage every time the location changes or gets read */
   useEffect(() => {
-    const getWeatherDataUsingLocation = () => {
-      if (userLocation.latitude && userLocation.longitude) {
-        getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
-          .then((data) => {
-            setweatherData(filterDataFromWeatherAPI(data));
-            setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    };
     /** does the local storage already have weather data? if so, setState with this data and pass it on to components, if not (written in the function itself that's imported from ../utils/weatherApi.js), make the api call detailed above */
     getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
       setweatherData(
@@ -130,7 +121,7 @@ const App = () => {
           getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation)
         )
       );
-  }, [userLocation]);
+  }, []);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -152,7 +143,18 @@ const App = () => {
         });
     }
   }, []);
-
+  const getWeatherDataUsingLocation = () => {
+    if (userLocation.latitude && userLocation.longitude) {
+      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
+        .then((data) => {
+          setweatherData(filterDataFromWeatherAPI(data));
+          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
