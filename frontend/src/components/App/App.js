@@ -35,18 +35,14 @@ import { login, register, checkToken } from '../../utils/auth';
  * The main React **App** component.
  */
 const App = () => {
-  const [currentUser, setCurrentUser] = useState({
-    username: 'Practicum',
-    avatar:
-      'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
-    email: 'practicum@email.com',
-  });
+  const [currentUser, setCurrentUser] = useState({});
   const [currentGarment, setCurrentGarment] = useState({
     garmentName: 'Shirt',
     garmentType: 'shirt',
     weatherType: 'extreme',
-    garmentUrl: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-  })
+    garmentUrl:
+      'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+  });
 
   const [currentUserEmail, setCurrentUserEmail] = useState('');
 
@@ -59,6 +55,7 @@ const App = () => {
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
+  const [userCity, setUserCity] = useState('New York');
   // set useClothingPreferences from API
   const [userClothingPreferences, setUserClothingPreferences] = useState([
     't-shirt',
@@ -122,6 +119,7 @@ const App = () => {
         getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
           .then((data) => {
             setweatherData(filterDataFromWeatherAPI(data));
+            setUserCity(data.location.name);
             setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
           })
           .catch((err) => {
@@ -229,11 +227,8 @@ const App = () => {
     setIsLoginOpen(false);
   }
 
-  const handleLoginSubmit = ({ loginEmail, loginPassword }) => {
-    //call the auth.login(loginEmail, loginPassword)
-    //if login successful
-    // login({ email: loginEmail, password: loginPassword });
-    login({ email: loginEmail, password: loginPassword }).then(({ data }) => {
+  const handleLoginSubmit = (loginCredentials) => {
+    login(loginCredentials).then(({ data }) => {
       if (data) {
         console.log(data);
         setCurrentUser({
@@ -257,6 +252,7 @@ const App = () => {
     setCurrentUser({});
     localStorage.removeItem('jwt');
   };
+
   const handleCreateClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully added to your profile');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
@@ -265,11 +261,12 @@ const App = () => {
     setNewClothingItemUrl(garmentUrl);
     setNewClothingItemType(garmentType);
   };
+
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully updated');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
-    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl })
-  }
+    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl });
+  };
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
@@ -279,16 +276,16 @@ const App = () => {
     console.log(userData);
   };
 
-  const handleRegisterSubmit = (credentials) => {
+  const handleRegisterSubmit = (registerCredentials) => {
     closeAllPopups();
-    register(credentials)
+    register(registerCredentials)
       .then((data) => {
         setIsCompleteRegistrationOpen(true);
-        setIsLoggedIn(true);
+        handleLoginSubmit(registerCredentials);
       })
       .catch((err) => {
         // clarify behaviour for errors: invalid username/password
-        console.log(err)
+        console.log(err);
       });
   };
 
@@ -313,7 +310,7 @@ const App = () => {
             {/* I left the userName state in for the purpose of seeing the different navigation css */}
             {/** rewrite `{userName}` to `{currentUser}` when ready */}
             {/** place login modal open state in Navigation*/}
-            <Header>
+            <Header currentLocation={userCity}>
               <Navigation
                 isLoggedIn={isLoggedIn}
                 username={currentUser.username}
@@ -340,6 +337,13 @@ const App = () => {
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
                       onLogOutClick={handleLogOut}
+                      onAddNewClick={() => setIsCreateClothingModalOpen(true)}
+                      onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
+                      onChangeProfileClick={() => setIsEditProfileDataModalOpen(true)}
+                      onChangeClothesPreferencesClick={() =>
+                        setIsEditClothingPreferencesModalOpen(true)
+                      }
+                      onDeleteProfileClick={() => setIsDeleteProfileOpen(true)}
                     />
                   </ProtectedRoute>
                 }
@@ -412,9 +416,9 @@ const App = () => {
             />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
-        </CurrentUserContext.Provider >
-      </div >
-    </div >
+        </CurrentUserContext.Provider>
+      </div>
+    </div>
   );
 };
 

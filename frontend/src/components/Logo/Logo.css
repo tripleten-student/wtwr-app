@@ -4,3 +4,9 @@
   width: 100%;
   max-width: 89px;
 }
+
+@media screen and (max-width: 768px) {
+  .logo {
+    margin: 0;
+  }
+}

@@ -35,7 +35,7 @@ const validateUser = celebrate({
       'string.max': 'The maximum length of the name field is 30 characters',
       'string.empty': 'The name field is empty',
     }),
-    avatar: Joi.string().custom(validateURL).required().allow(''),
+    avatar: Joi.string().custom(validateURL).allow(''),
     preferences: Joi.array().items(Joi.string().allow('')),
   }),
 });
