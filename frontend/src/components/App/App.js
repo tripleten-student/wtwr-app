@@ -29,6 +29,7 @@ import {
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import { weatherTypes } from '../../utils/formConstants';
 import { login, register, checkToken } from '../../utils/auth';
+import api from '../../utils/api';
 // import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
@@ -266,13 +267,33 @@ const App = () => {
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
     setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl });
   };
-  const handlelChangePasswordSubmit = (password) => {
-    console.log('new password set');
+  const handleUpdatePasswordSubmit = (oldPassword, newPassword) => {
+    api
+      .updatePassword({ oldPassword, newPassword }, localStorage.getItem('jwt'))
+      .then((newUserData) => {
+        setCurrentUser(newUserData.data);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
   };
 
-  const handleUpdateProfileData = (userData) => {
-    console.log('api patch will be implemented');
-    console.log(userData);
+  const handleUpdateProfileData = ({ name, avatar }) => {
+    api
+      .updateUserProfile({ name, avatar }, localStorage.getItem('jwt'))
+      .then((newUserData) => {
+        setCurrentUser(newUserData.data);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleDeleteProfileSubmit = () => {
+    api
+      .deleteUser(localStorage.getItem('jwt'))
+      .then(() => {
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleRegisterSubmit = (registerCredentials) => {
@@ -286,10 +307,6 @@ const App = () => {
         // clarify behaviour for errors: invalid username/password
         console.log(err);
       });
-  };
-
-  const handleDeleteProfileSubmit = () => {
-    console.log('profile deleted');
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
@@ -375,7 +392,7 @@ const App = () => {
             <EditPasswordModal
               isOpen={isEditPasswordModalOpen}
               onClose={closeAllPopups}
-              onUpdatePassword={handlelChangePasswordSubmit}
+              onUpdatePassword={handleUpdatePasswordSubmit}
             />
             <DeleteProfileModal
               isOpen={isDeleteProfileOpen}
