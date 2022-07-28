@@ -251,6 +251,7 @@ const App = () => {
     setCurrentUser({});
     localStorage.removeItem('jwt');
   };
+
   const handleCreateClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully added to your profile');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
@@ -259,6 +260,7 @@ const App = () => {
     setNewClothingItemUrl(garmentUrl);
     setNewClothingItemType(garmentType);
   };
+
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully updated');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
@@ -277,8 +279,8 @@ const App = () => {
     closeAllPopups();
     register(registerCredentials)
       .then((data) => {
-        setIsCompleteRegistrationOpen(true); 
-        handleLoginSubmit(registerCredentials)
+        setIsCompleteRegistrationOpen(true);
+        handleLoginSubmit(registerCredentials);
       })
       .catch((err) => {
         // clarify behaviour for errors: invalid username/password
@@ -307,9 +309,7 @@ const App = () => {
             {/* I left the userName state in for the purpose of seeing the different navigation css */}
             {/** rewrite `{userName}` to `{currentUser}` when ready */}
             {/** place login modal open state in Navigation*/}
-            <Header
-              currentLocation={userCity}
-            >
+            <Header currentLocation={userCity}>
               <Navigation
                 isLoggedIn={isLoggedIn}
                 username={currentUser.username}
@@ -336,6 +336,13 @@ const App = () => {
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
                       onLogOutClick={handleLogOut}
+                      onAddNewClick={() => setIsCreateClothingModalOpen(true)}
+                      onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
+                      onChangeProfileClick={() => setIsEditProfileDataModalOpen(true)}
+                      onChangeClothesPreferencesClick={() =>
+                        setIsEditClothingPreferencesModalOpen(true)
+                      }
+                      onDeleteProfileClick={() => setIsDeleteProfileOpen(true)}
                     />
                   </ProtectedRoute>
                 }
