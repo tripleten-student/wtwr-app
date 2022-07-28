@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 
@@ -9,14 +8,14 @@ import ModalWithForm from '../ModalWithForm/ModalWithForm';
  */
 
 const DeleteProfileModal = ({ isOpen, onClose, onDeleteProfile }) => {
+  // Event Handlers
   const handleFormSubmit = (event) => {
     event.preventDefault();
     onDeleteProfile();
     onClose();
   };
-  const handleCancelClick = () => {
-    onClose();
-  };
+
+  const handleCancelClick = () => onClose();
 
   return (
     <ModalWithForm
@@ -40,7 +39,6 @@ const DeleteProfileModal = ({ isOpen, onClose, onDeleteProfile }) => {
         <button type="submit" className="form__delete-button" aria-label="Delete">
           Delete profile
         </button>
-
         <button
           type="button"
           onClick={handleCancelClick}
