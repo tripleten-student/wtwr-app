@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom';
  *
  */
 
-const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal, hasAvatar, username, userAvatar }) => {
+const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal, hasAvatar, username }) => {
   return (
     <nav className="navigation-mobile">
       <ul className="navigation-mobile__container">
@@ -32,7 +32,7 @@ const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal, has
                 <img
                   className="navigation-mobile__user"
                   /** Add user avatar prop and replace this with it */
-                  src={userAvatar || require('../../images/avatar-default.png')}
+                  src={hasAvatar || require('../../images/avatar-default.png')}
                   alt="user avatar"
                 />
               ) : (
