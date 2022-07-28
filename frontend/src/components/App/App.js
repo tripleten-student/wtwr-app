@@ -230,8 +230,8 @@ const App = () => {
     setIsLoginOpen(false);
   }
 
-  const handleLoginSubmit = (credentials) => {
-    login(credentials).then(({ data }) => {
+  const handleLoginSubmit = (loginCredentials) => {
+    login(loginCredentials).then(({ data }) => {
       if (data) {
         setCurrentUser({
           ...currentUser,
@@ -276,12 +276,12 @@ const App = () => {
     console.log(userData);
   };
 
-  const handleRegisterSubmit = (credentials) => {
+  const handleRegisterSubmit = (registerCredentials) => {
     closeAllPopups();
-    register(credentials)
+    register(registerCredentials)
       .then((data) => {
         setIsCompleteRegistrationOpen(true); 
-        handleLoginSubmit(credentials)
+        handleLoginSubmit(registerCredentials)
       })
       .catch((err) => {
         // clarify behaviour for errors: invalid username/password
