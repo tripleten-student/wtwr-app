@@ -21,7 +21,8 @@ const ModalWithForm = React.forwardRef((props, ref) => {
         ref={ref}
         onSubmit={onSubmit}
         onChange={onChange}
-        noValidate>
+        noValidate
+      >
         <h2 className="form__title">{formTitle}</h2>
         {children}
       </form>
@@ -37,7 +38,7 @@ ModalWithForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  // onChange: PropTypes.func.isRequired,
   children: PropTypes.any,
 };
 

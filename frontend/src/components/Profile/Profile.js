@@ -50,12 +50,14 @@ function Profile({
           onAddNewclick={onAddNewClick}
           onCardLike={onCardLike}
         />
+
         <ClothesSection
           sectionName={'Bottoms'}
           sectionData={bottoms}
           onAddNewclick={onAddNewClick}
           onCardLike={onCardLike}
         />
+
         <ClothesSection
           sectionName={'Shoes'}
           sectionData={shoes}

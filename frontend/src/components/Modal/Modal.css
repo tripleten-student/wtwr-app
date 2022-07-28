@@ -58,10 +58,10 @@
   margin: 0;
   padding: 0;
   position: absolute;
-  top: 20px;
-  right: 28px;
-  width: 20px;
-  height: 20px;
+  top: 23px;
+  right: 31px;
+  width: 14px;
+  height: 14px;
   background-color: transparent;
   background-image: url(../../images/modal-close.svg);
   background-position: center;
@@ -76,5 +76,5 @@
 }
 
 .modal__close-btn_wide {
-  right: 20px;
+  right: 23px;
 }

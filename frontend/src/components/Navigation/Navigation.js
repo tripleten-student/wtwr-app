@@ -27,7 +27,11 @@ const Navigation = ({ isLoggedIn, hasAvatar, username, userAvatar, handleRegiste
                 <img
                   className="navigation__user"
                   /** Add user avatar prop and replace this with it */
+<<<<<<< HEAD
                   src={userAvatar || require('../../images/avatar-default.png')}
+=======
+                  src={hasAvatar}
+>>>>>>> development
                   alt="user avatar"
                 />
               ) : (

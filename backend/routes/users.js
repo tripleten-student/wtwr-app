@@ -12,6 +12,7 @@ const {
   updateUserProfile,
   updatePassword,
   deleteUser,
+  getCurrentUser,
 } = require('../controllers/users');
 const {
   validateRequestAuth,
@@ -19,6 +20,7 @@ const {
 } = require('../middleware/validation');
 
 router.get('/', validateRequestAuth, getUsers);
+router.get('/me', getCurrentUser);
 router.get('/:userId', validateRequestAuth, validateUserId, getUser);
 router.patch('/me/profile', validateRequestAuth, updateUserProfile);
 router.patch('/me/password', validateRequestAuth, updatePassword);
