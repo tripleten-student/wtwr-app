@@ -99,6 +99,7 @@ const filterDataFromWeatherAPI = (data) => {
       description: elongateOrNot
         ? generateDescription(categorizedCurrentWeatherCondition, currentDataPath)
         : generateDescription(categorizedForecastWeatherCondition, forecastDataPath),
+      city: data.location.name,
     });
   });
   return forecastArr;

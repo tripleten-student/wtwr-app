@@ -58,7 +58,6 @@ const App = () => {
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
-  const [userCity, setUserCity] = useState('New York');
   // set useClothingPreferences from API
   const [userClothingPreferences, setUserClothingPreferences] = useState([
     't-shirt',
@@ -122,7 +121,6 @@ const App = () => {
         getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
           .then((data) => {
             setweatherData(filterDataFromWeatherAPI(data));
-            setUserCity(data.location.name);
             setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
           })
           .catch((err) => {
@@ -300,6 +298,7 @@ const App = () => {
     console.log("User's clothing preferences has been changed");
     console.log(clothingPreferences);
   };
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -311,9 +310,7 @@ const App = () => {
             {/* I left the userName state in for the purpose of seeing the different navigation css */}
             {/** rewrite `{userName}` to `{currentUser}` when ready */}
             {/** place login modal open state in Navigation*/}
-            <Header
-              currentLocation={userCity}
-            >
+            <Header weatherData={weatherData}>
               <Navigation
                 isLoggedIn={isLoggedIn}
                 username={currentUser.username}
