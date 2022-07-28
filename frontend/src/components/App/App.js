@@ -63,7 +63,7 @@ const App = () => {
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
   const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = React.useState(false);
-  const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] = useState(true);
+  const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] = useState(false);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -216,14 +216,16 @@ const App = () => {
   };
 
   const handleRegisterSubmit = (credentials) => {
-    // credentials to be used in API call to backend
+    closeAllPopups();
     register(credentials)
       .then((data) => {
-        console.log(data);
-        closeAllPopups();
         setIsCompleteRegistrationOpen(true);
+        setIsLoggedIn(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        // clarify behaviour for errors: invalid username/password
+        console.log(err)
+      });
   };
 
   const handleDeleteProfileSubmit = () => {
