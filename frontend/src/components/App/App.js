@@ -45,8 +45,9 @@ const App = () => {
     garmentName: 'Shirt',
     garmentType: 'shirt',
     weatherType: 'extreme',
-    garmentUrl: 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-  })
+    garmentUrl:
+      'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
+  });
 
   const [currentUserEmail, setCurrentUserEmail] = useState('');
 
@@ -258,6 +259,7 @@ const App = () => {
     setCurrentUser({});
     localStorage.removeItem('jwt');
   };
+
   const handleCreateClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully added to your profile');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
@@ -266,11 +268,13 @@ const App = () => {
     setNewClothingItemUrl(garmentUrl);
     setNewClothingItemType(garmentType);
   };
+
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully updated');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
-    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl })
-  }
+    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl });
+  };
+
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
@@ -289,7 +293,7 @@ const App = () => {
       })
       .catch((err) => {
         // clarify behaviour for errors: invalid username/password
-        console.log(err)
+        console.log(err);
       });
   };
 
@@ -314,9 +318,7 @@ const App = () => {
             {/* I left the userName state in for the purpose of seeing the different navigation css */}
             {/** rewrite `{userName}` to `{currentUser}` when ready */}
             {/** place login modal open state in Navigation*/}
-            <Header
-              currentLocation={userCity}
-            >
+            <Header currentLocation={userCity}>
               <Navigation
                 isLoggedIn={isLoggedIn}
                 username={currentUser.username}
@@ -343,6 +345,13 @@ const App = () => {
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
                       onLogOutClick={handleLogOut}
+                      onAddNewClick={() => setIsCreateClothingModalOpen(true)}
+                      onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
+                      onChangeProfileClick={() => setIsEditProfileDataModalOpen(true)}
+                      onChangeClothesPreferencesClick={() =>
+                        setIsEditClothingPreferencesModalOpen(true)
+                      }
+                      onDeleteProfileClick={() => setIsDeleteProfileOpen(true)}
                     />
                   </ProtectedRoute>
                 }
@@ -417,9 +426,9 @@ const App = () => {
             />
             <Footer />
           </CurrentTemperatureUnitContext.Provider>
-        </CurrentUserContext.Provider >
-      </div >
-    </div >
+        </CurrentUserContext.Provider>
+      </div>
+    </div>
   );
 };
 
