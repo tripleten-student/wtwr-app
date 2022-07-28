@@ -106,7 +106,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   const setInputClassName = (name) => `form__input ${(!isValid && errors[name]) && `form__input_error`}`;
   const setErrorClassName = (name) => `form__error ${(!isValid && errors[name]) && `form__error_visible`}`;
 
-  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${!isFormValid && 'form__submit-button_disabled'} `;
+  const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'} `;
 
   return (
     <ModalWithForm
