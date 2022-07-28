@@ -5,7 +5,6 @@ import Dropdown from '../Dropdown/Dropdown';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import { checkIfImageExists } from '../../utils/clothingModals';
 import { clothingItems, weatherTypes } from '../../utils/formConstants';
-import './CreateClothingModal.css';
 
 /**
  * The **CreateClothingModal** component will let users add new clothes to the database.
@@ -36,13 +35,10 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
       'new-garment-name': '',
       'new-garment-image-url': '',
     };
-    const initialErrorValues = {
-      'new-garment-name': '',
-      'new-garment-image-url': '',
-    };
-    resetForm({ ...initialValues }, { ...initialErrorValues }, true);
+    resetForm({ ...initialValues }, { ...initialValues }, true);
   }, [isOpen, resetForm]);
 
+  // Event handlers
   const handleCloseImagePreviewButtonClick = () => setShowImagePreview(false);
 
   const handleInputChange = (event) => {
@@ -75,8 +71,10 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
     }
   };
 
-  const garmentNameErrorClassName = ``;
-  const garmentImageErrorClassName = ``;
+  // Set form elements classnames
+  const setInputLabelClassName = (name) => `form__input-label ${(!isValid && errors[name]) && `form__input-label_error`}`;
+  const setInputClassName = (name) => `form__input ${(!isValid && errors[name]) && `form__input_error`}`;
+  const setErrorClassName = (name) => `form__error ${(!isValid && errors[name]) && `form__error_visible`}`;
   const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
 
   return (
@@ -92,16 +90,20 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
       ref={formRef}
     >
       <div className="form__input-container">
-        <label htmlFor="new-garment-name" className="form__input-label">
-          Name
-          <span id="new-garment-name-error" className={garmentNameErrorClassName}></span>
-        </label>
+        <div className="form__input-label-container">
+          <label htmlFor="new-garment-name" className={setInputLabelClassName('new-garment-name')}>
+            Name
+          </label>
+          <p id="new-garment-name-error" className={setErrorClassName('new-garment-name')}>
+            {(errors['new-garment-name']) && '(this is not a valid name)'}
+          </p>
+        </div>
         <input
           type="text"
           id="new-garment-name"
           name="new-garment-name"
           placeholder="Name"
-          className="form__input"
+          className={setInputClassName('new-garment-name')}
           value={values['new-garment-name']}
           onChange={handleInputChange}
           minLength="2"
@@ -126,16 +128,20 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
           setIsFormValid={setIsFormValid} />
       </div>
       <div className="form__input-container">
-        <label htmlFor="garmentimage" className="form__input-label">
-          Image
-          <span id="garmentimage-error" className={garmentImageErrorClassName}></span>
-        </label>
+        <div className="form__input-label-container">
+          <label htmlFor="garment-image" className={setInputLabelClassName('new-garment-image-url')}>
+            Image
+          </label>
+          <p id="garment-image-error" className={setErrorClassName('new-garment-image-url')}>
+            {(errors['new-garment-image-url']) && '(this is not a valid url)'}
+          </p>
+        </div>
         <input
           type="url"
           id="new-garment-image-url"
           name="new-garment-image-url"
           placeholder="Image URL"
-          className="form__input"
+          className={setInputClassName('new-garment-image-url')}
           value={values['new-garment-image-url']}
           onChange={handleInputChange}
           required
