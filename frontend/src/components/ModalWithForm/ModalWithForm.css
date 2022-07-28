@@ -105,8 +105,6 @@
   border-radius: 4px;
   border: none;
   min-height: 36px;
-  /* width: 100%; */
-  /* max-width: 124px; */
   transition: all 0.2s ease;
 }
 
@@ -135,34 +133,6 @@
   background: transparent;
   color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
-}
-
-.form__submit-button-wide {
-  padding: 0;
-  box-sizing: border-box;
-  color: rgba(255, 255, 255, 1);
-  background-color: rgba(0, 0, 0, 1);
-  border-radius: 4px;
-  border: none;
-  min-height: 36px;
-  width: 100%;
-  max-width: 146px;
-  transition: all 0.2s ease;
-}
-.form__submit-button-wide:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-.form__submit-button-wide:hover.form__submit-button-wide_disabled,
-.form__submit-button-wide_disabled {
-  background-color: rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease;
-}
-
-.form__submit-button-wide:hover.form__submit-button-wide_disabled:hover,
-.form__submit-button-wide_disabled:hover {
-  cursor: not-allowed;
-  pointer-events: none;
 }
 
 .form__dropdown-container {
