@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
  * NOTE: routes to respective modals need to be added
  */
 
-const Navigation = ({ isLoggedIn, hasAvatar, username, handleRegisterClick, handleLoginClick }) => {
+const Navigation = ({ isLoggedIn, hasAvatar, username, userAvatar, handleRegisterClick, handleLoginClick }) => {
   const defaultUser = 'Terrence Tegegne';
 
   return (
@@ -27,7 +27,7 @@ const Navigation = ({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
                 <img
                   className="navigation__user"
                   /** Add user avatar prop and replace this with it */
-                  src={require('../../images/avatar-default.png')}
+                  src={userAvatar || require('../../images/avatar-default.png')}
                   alt="user avatar"
                 />
               ) : (
