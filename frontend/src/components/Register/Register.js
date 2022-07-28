@@ -201,7 +201,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
             </button>
             <p>or</p>
             <button type="button" className="form__secondary-button" aria-label="Login">
-              Login
+              Log in
             </button>
           </div>
         </>
