@@ -46,7 +46,7 @@ const Login = ({
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (isValid || (values['login-email'] && values['login-password'])) {
-      onSubmit({ loginEmail: values['login-email'], loginPassword: values['login-password'] });
+      onSubmit({ email: values['login-email'], password: values['login-password'] });
     }
   }
 
