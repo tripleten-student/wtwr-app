@@ -249,6 +249,7 @@ const App = () => {
     setCurrentUser({});
     localStorage.removeItem('jwt');
   };
+
   const handleCreateClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully added to your profile');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
@@ -257,6 +258,7 @@ const App = () => {
     setNewClothingItemUrl(garmentUrl);
     setNewClothingItemType(garmentType);
   };
+
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
     console.log('Garment successfully updated');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
@@ -332,6 +334,13 @@ const App = () => {
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
                       onLogOutClick={handleLogOut}
+                      onAddNewClick={() => setIsCreateClothingModalOpen(true)}
+                      onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
+                      onChangeProfileClick={() => setIsEditProfileDataModalOpen(true)}
+                      onChangeClothesPreferencesClick={() =>
+                        setIsEditClothingPreferencesModalOpen(true)
+                      }
+                      onDeleteProfileClick={() => setIsDeleteProfileOpen(true)}
                     />
                   </ProtectedRoute>
                 }
