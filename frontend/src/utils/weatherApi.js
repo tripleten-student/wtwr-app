@@ -82,8 +82,14 @@ const filterDataFromWeatherAPI = (data) => {
         ? categorizeWeatherTypeForImage(currentDataPath.condition.text)
         : categorizeWeatherTypeForImage(forecastDataPath.condition.text),
       temperature: elongateOrNot
-        ? `${Math.trunc(currentDataPath.temp_f)}°`
-        : `${Math.trunc(forecastDataPath.temp_f)}°`,
+        ? {
+            F: `${Math.trunc(currentDataPath.temp_f)}°`,
+            C: `${Math.trunc(currentDataPath.temp_c)}°`,
+          }
+        : {
+            F: `${Math.trunc(forecastDataPath.temp_f)}°`,
+            C: `${Math.trunc(forecastDataPath.temp_c)}°`,
+          },
       dayOrNight: dayOrNight,
       elongate: elongateOrNot,
       // first letter uppercase for displaying on the card
@@ -93,6 +99,7 @@ const filterDataFromWeatherAPI = (data) => {
       description: elongateOrNot
         ? generateDescription(categorizedCurrentWeatherCondition, currentDataPath)
         : generateDescription(categorizedForecastWeatherCondition, forecastDataPath),
+      city: data.location.name,
     });
   });
   return forecastArr;

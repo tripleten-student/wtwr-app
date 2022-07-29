@@ -44,8 +44,6 @@ const App = () => {
       'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
   });
 
-  const [currentUserEmail, setCurrentUserEmail] = useState('');
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -55,7 +53,6 @@ const App = () => {
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
-  const [userCity, setUserCity] = useState('New York');
   // set useClothingPreferences from API
   const [userClothingPreferences, setUserClothingPreferences] = useState([
     't-shirt',
@@ -111,22 +108,12 @@ const App = () => {
         }
       });
   }, []);
-
+  /** this gets called every time the user changes location: when user initially disallowed location sharing. and then later allowed it, upon page refresh, the location and the weather updates right away, evne within 15 minutes */
+  useEffect(() => {
+    getWeatherDataUsingLocation();
+  }, [userLocation]);
   /** the weather API gets called or pulled from local storage every time the location changes or gets read */
   useEffect(() => {
-    const getWeatherDataUsingLocation = () => {
-      if (userLocation.latitude && userLocation.longitude) {
-        getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
-          .then((data) => {
-            setweatherData(filterDataFromWeatherAPI(data));
-            setUserCity(data.location.name);
-            setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    };
     /** does the local storage already have weather data? if so, setState with this data and pass it on to components, if not (written in the function itself that's imported from ../utils/weatherApi.js), make the api call detailed above */
     getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
       setweatherData(
@@ -134,7 +121,7 @@ const App = () => {
           getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation)
         )
       );
-  }, [userLocation]);
+  }, []);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -156,7 +143,18 @@ const App = () => {
         });
     }
   }, []);
-
+  const getWeatherDataUsingLocation = () => {
+    if (userLocation.latitude && userLocation.longitude) {
+      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
+        .then((data) => {
+          setweatherData(filterDataFromWeatherAPI(data));
+          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
@@ -309,7 +307,7 @@ const App = () => {
             {/* I left the userName state in for the purpose of seeing the different navigation css */}
             {/** rewrite `{userName}` to `{currentUser}` when ready */}
             {/** place login modal open state in Navigation*/}
-            <Header currentLocation={userCity}>
+            <Header weatherData={weatherData}>
               <Navigation
                 isLoggedIn={isLoggedIn}
                 username={currentUser.username}

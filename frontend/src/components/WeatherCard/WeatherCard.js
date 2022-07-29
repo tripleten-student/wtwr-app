@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import './WeatherCard.css';
+import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 
 /**
  * WeatherCard component is individual weathercard that displays morning, afternoon, evening and overnight weather report
@@ -6,6 +8,7 @@ import './WeatherCard.css';
  */
 
 const WeatherCard = ({ weatherData }) => {
+  const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   if (!weatherData) return null;
 
   const { condition, temperature, dayOrNight, elongate, displayedTime, description } = weatherData;
@@ -24,7 +27,7 @@ const WeatherCard = ({ weatherData }) => {
     >
       <div className="weathercard__info-container" aria-label={description}>
         <p className="weathercard__time">{displayedTime}</p>
-        <p className="weathercard__temperature">{temperature}</p>
+        <p className="weathercard__temperature">{temperature[currentTemperatureUnit]}</p>
         {!elongate && (condition === 'rainy' || condition === 'snowy') && (
           <p className="weathercard__description">{description}</p>
         )}
