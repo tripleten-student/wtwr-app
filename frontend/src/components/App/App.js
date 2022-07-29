@@ -304,8 +304,10 @@ const App = () => {
   };
 
   const handleClothingClick = (cardData) => {
-    setSelectedClothingCard(cardData);
-    setShowClothingModalOpen(true);
+    if (isLoggedIn) {
+      setSelectedClothingCard(cardData);
+      setShowClothingModalOpen(true);
+    }
   }
 
   return (
@@ -332,7 +334,7 @@ const App = () => {
               <Route
                 exact
                 path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
+                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} onCardClick={handleClothingClick}/>}
               ></Route>
               <Route
                 exact
@@ -345,7 +347,6 @@ const App = () => {
                     <Profile
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
-                      onCardClick={handleClothingClick}
                       onLogOutClick={handleLogOut}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                       onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
