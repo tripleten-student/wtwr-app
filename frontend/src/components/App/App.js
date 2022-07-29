@@ -398,7 +398,6 @@ const App = () => {
               // tempDegree={} // function or something that says what temp in degree the clothes are for
               // garmentURL={} // something that returns the corresponding url of the garment
               tempUnit={currentTemperatureUnit || 'F+'}
-              // (above) will show which unit being used by user. 'F' is a placeholder for now.
               isOpen={isShowClothingModalOpen}
               onClose={closeAllPopups}
               handleClick={() => setIsEditClothingModalOpen(true)}
