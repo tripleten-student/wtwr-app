@@ -32,7 +32,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
-app.use(cors({ origin: allowedCors, methods: DEFAULT_ALLOWED_METHODS }));
+app.use(
+  cors({
+    origin: allowedCors,
+    methods: DEFAULT_ALLOWED_METHODS,
+  }),
+);
 app.options('*', cors());
 app.use(requestLogger);
 

@@ -28,7 +28,7 @@ router.patch(
   '/me/password',
   validateRequestAuth,
   validatePasswordChange,
-  updatePassword
+  updatePassword,
 );
 router.delete('/me/delete', validateRequestAuth, deleteUser);
 
