@@ -15,9 +15,7 @@ import Modal from '../Modal/Modal';
  */
 
 const ShowClothingModal = ({
-  garmentType,
-  garmentURL,
-  weatherType,
+  card,
   tempDegree,
   tempUnit,
   handleClick,
@@ -29,23 +27,23 @@ const ShowClothingModal = ({
       name="ShowClothingModal"
       position="middle"
       width="wide"
-      isOpen={isOpen}
+      isOpen={card && isOpen}
       onClose={onClose}
     >
       <div className="clothing-modal">
         <img
-          src={garmentURL || require('../../images/Clothes/letter-embroidered-baseball-cap.png')}
-          alt="clothing"
+          src={(card && card.imageUrl) || require('../../images/Clothes/letter-embroidered-baseball-cap.png')}
+          alt={(card && card.name) || "clothing"}
           className="clothing-modal__image"
         />
         <div className="clothing-modal__text-container">
           <p className="clothing-modal__text clothing-modal__text_type_heading">Type:</p>
-          <p className="clothing-modal__text">{garmentType || 'Accessories'}</p>
+          <p className="clothing-modal__text">{card.type || 'Accessories'}</p>
           <p className="clothing-modal__text clothing-modal__text_type_heading">
             Temperature:
           </p>{' '}
           <p className="clothing-modal__text">
-            {weatherType || 'Hot'} ({tempDegree || 70}° {tempUnit || 'F+'})
+            {card.weather || 'Hot'} ({tempDegree || 70}° {tempUnit || 'F'})
           </p>
           <button onClick={handleClick} className="clothing-modal__button">
             Edit

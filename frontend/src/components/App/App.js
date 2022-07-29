@@ -51,7 +51,7 @@ const App = () => {
 
   const [currentUserEmail, setCurrentUserEmail] = useState('');
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
@@ -70,6 +70,8 @@ const App = () => {
   // set the url of newly created garment from handleCreateClothing() to pass on to the CreateClothingConfirmationModal
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
+
+  const [selectedClothingCard, setSelectedClothingCard] = useState(null);
 
   //// Modals ////
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -304,6 +306,11 @@ const App = () => {
     console.log(clothingPreferences);
   };
 
+  const handleClothingClick = (cardData) => {
+    setSelectedClothingCard(cardData);
+    setShowClothingModalOpen(true);
+  }
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -341,6 +348,7 @@ const App = () => {
                     <Profile
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
+                      onCardClick={handleClothingClick}
                       onLogOutClick={handleLogOut}
                     />
                   </ProtectedRoute>
@@ -393,11 +401,9 @@ const App = () => {
               createdClothingItemType={newClothingItemType}
             />
             <ShowClothingModal
-              // garmentType={} if there is a function that returns the type of clothing is being shown in the modal
-              // weatherType={} //function where it returns the kind of weather condition (hot, cold, etc)
               // tempDegree={} // function or something that says what temp in degree the clothes are for
-              // garmentURL={} // something that returns the corresponding url of the garment
-              tempUnit={currentTemperatureUnit || 'F+'}
+              card={selectedClothingCard || clothingCardData}
+              tempUnit={currentTemperatureUnit || 'F'}
               isOpen={isShowClothingModalOpen}
               onClose={closeAllPopups}
               handleClick={() => setIsEditClothingModalOpen(true)}

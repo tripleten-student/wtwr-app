@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  * @author [Yuffie](https://github.com/yuff1006) & @author [Santiago](https://github.com/Santiag0SR)
  */
 
-const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
+const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick }) => {
   const location = useLocation();
 
   function createTemplateItem(apparelGroup) {
@@ -32,6 +32,13 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
       ? 'clothingcard__like clothingcard__like_active'
       : 'clothingcard__like';
 
+
+  const handleCardClick = () => {
+    // onCardClick(cardData);
+    console.log(cardData);
+    console.log('ShowClothingModal open')
+  }
+
   return (
     <div className="clothingcard">
       <img
@@ -43,7 +50,7 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
         }
         alt={clothingItemPresent ? cardData.name : templateItem.type}
       />
-      <div className="clothingcard__info-container">
+      <div className="clothingcard__info-container" onClick={handleCardClick}>
         <div className="clothingcard__title-and-like">
           <p className="clothingcard__title">
             {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
