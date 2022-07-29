@@ -31,12 +31,10 @@ const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal, has
               {hasAvatar ? (
                 <img
                   className="navigation-mobile__user"
-                  /** Add user avatar prop and replace this with it */
                   src={hasAvatar || require('../../images/avatar-default.png')}
                   alt="user avatar"
                 />
               ) : (
-                /** takes username, turns string to uppercase and takes first letter */
                 <span className="navigation-mobile__user navigation-mobile__user_type_none">
                   {username.toUpperCase().charAt(0) || 'T'}
                 </span>
