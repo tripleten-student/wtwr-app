@@ -5,15 +5,20 @@
 @media screen and (max-width: 768px) {
   .navigation-mobile {
     display: flex;
-    max-height: 60px;
     width: 100%;
     border-top: 1px solid #dbdbdb;
     margin: 7px 0 0;
+    background-color: #f3f3f3;
+
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
   }
 
   .navigation-mobile__container {
-    margin: 11px 0 0;
+    margin: 11px 0 16px;
     padding: 0;
+    max-height: 60px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -57,7 +62,7 @@
     background-color: transparent;
   }
 
-  .navigation-mobile__modalButton {
+  .navigation-mobile__modalButton:hover {
     cursor: pointer;
   }
 
