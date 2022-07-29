@@ -1,5 +1,5 @@
 import './Register.css';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import ClothingSelectorButton from '../ClothingSelectorButton/ClothingSelectorButton';
@@ -15,7 +15,6 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
   const [credentialsOpen, setCredentialsOpen] = useState(true);
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
-  const [avatar, setAvatar] = useState('');
   const [clothingPreferences, setClothingPreferences] = useState([]);
 
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
@@ -23,6 +22,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     'register-password',
     'confirm-password',
     'register-name',
+    'register-avatar',
   ]);
 
   const {
@@ -30,6 +30,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     'register-password': registerPassword,
     'confirm-password': confirmPassword,
     'register-name': name,
+    'register-avatar': avatar,
   } = values;
 
   const credentialsRef = useRef(null);
@@ -52,11 +53,11 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
     'register-password': '',
     'confirm-password': '',
     'register-name': '',
+    'register-avatar': ''
   };
 
   const handleInputChange = (event) => {
     handleChange(event);
-    event.target.name === 'register-avatar' && setAvatar(event.target.value);
   };
 
   const handleNext = (event) => {
@@ -88,12 +89,20 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
       avatar,
       preferences: clothingPreferences,
     });
-    resetForm({ ...initialValues }, { ...initialValues }, true);
-    setClothingPreferences([])
-    setPreferencesOpen(false);
-    setCredentialsOpen(true);
-    setAvatar('')
+    resetModal();
   };
+
+  const resetModal = useCallback(() => {
+    resetForm({ ...initialValues }, { ...initialValues }, true);
+    setClothingPreferences([]);
+    setPreferencesOpen(false);
+    setPersonalInfoOpen(false);
+    setCredentialsOpen(true);
+  }, []);
+
+  useEffect(() => {
+    resetModal();
+  }, [onClose, resetModal]);
 
   const emailInputClassName = ``;
   const emailErrorClassName = ``;

@@ -6,7 +6,12 @@ const helmet = require('helmet');
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const errorHandler = require('./middleware/errorHandler');
+const limiter = require('./middleware/limiter');
 const { localdb } = require('./utils/config');
+const {
+  allowedCors,
+  DEFAULT_ALLOWED_METHODS,
+} = require('./utils/corsSettings');
 const mainRouter = require('./routes/index');
 
 /**
@@ -22,13 +27,12 @@ const { PORT = 4000, NODE_ENV, MONGO_URI } = process.env;
 
 mongoose.connect(NODE_ENV === 'production' ? MONGO_URI : localdb);
 
+app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-
 app.use(helmet());
 
-app.use(cors());
+app.use(cors({ origin: allowedCors, methods: DEFAULT_ALLOWED_METHODS }));
 app.options('*', cors());
 app.use(requestLogger);
 

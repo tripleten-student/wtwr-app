@@ -1,8 +1,13 @@
-import React from 'react';
-import ModalWithForm from './ModalWithForm/ModalWithForm';
-import { useFormAndValidation } from '../hooks/useFormAndValidation';
+import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import ModalWithForm from '../ModalWithForm/ModalWithForm';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
-
+/**
+ * The **Login** component will let users signin to the web application.
+ *
+ *  @author [Shraddha](https://github.com/5hraddha)
+ */
 const Login = ({
   isOpen,
   onClose,
@@ -17,10 +22,10 @@ const Login = ({
     'login-pwd',
   ]);
 
-  const formRef = React.useRef(null);
-  const [isFormValid, setIsFormValid] = React.useState(false);
+  const formRef = useRef(null);
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsFormValid(formRef.current.checkValidity());
   }, [isOpen, formRef]);
 
@@ -29,7 +34,7 @@ const Login = ({
   };
 
   // Reset form values every time the popup opens
-  React.useEffect(() => {
+  useEffect(() => {
     const initialValues = {
       'login-email': '',
       'login-password': '',
@@ -52,7 +57,7 @@ const Login = ({
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (isValid || (loginEmail && loginPassword)) {
-      onSubmit({ loginEmail, loginPassword });
+      onSubmit({ email: loginEmail, password: loginPassword });
     }
   };
 
@@ -60,9 +65,8 @@ const Login = ({
   const emailErrorClassName = ``;
   const passwordInputClassName = ``;
   const passwordErrorClassName = ``;
-  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${
-    !isFormValid && 'form__submit-button_disabled'
-  }`;
+  const submitButtonClassName = `form__submit-button form__submit-button_rel_login ${!isFormValid && 'form__submit-button_disabled'
+    }`;
 
   return (
     <ModalWithForm
@@ -128,5 +132,15 @@ const Login = ({
     </ModalWithForm>
   );
 };
+
+Login.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  loginEmail: PropTypes.string.isRequired,
+  setLoginEmail: PropTypes.func.isRequired,
+  loginPassword: PropTypes.string.isRequired,
+  setLoginPassword: PropTypes.func.isRequired,
+}
 
 export default Login;
