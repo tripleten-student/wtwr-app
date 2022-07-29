@@ -17,13 +17,19 @@ const {
 const {
   validateRequestAuth,
   validateUserId,
+  validatePasswordChange,
 } = require('../middleware/validation');
 
 router.get('/', validateRequestAuth, getUsers);
-router.get('/me', getCurrentUser);
+router.get('/me', validateRequestAuth, getCurrentUser);
 router.get('/:userId', validateRequestAuth, validateUserId, getUser);
 router.patch('/me/profile', validateRequestAuth, updateUserProfile);
-router.patch('/me/password', validateRequestAuth, updatePassword);
+router.patch(
+  '/me/password',
+  validateRequestAuth,
+  validatePasswordChange,
+  updatePassword,
+);
 router.delete('/me/delete', validateRequestAuth, deleteUser);
 
 module.exports = router;
