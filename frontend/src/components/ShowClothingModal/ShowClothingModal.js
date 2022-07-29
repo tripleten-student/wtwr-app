@@ -7,8 +7,6 @@ import Modal from '../Modal/Modal';
  *
  * @author [Sam](https://github.com/Samm96)
  *
- * `clothingType` = What type of clothing is being shown on a clicked card
- * `tempType` = what kind of weather condition the clothing on a clicked card is for
  * `tempDegree` = at what temperature the clothing on the clicked card are set for
  * `tempUnit` = which unit the user is setting
  *

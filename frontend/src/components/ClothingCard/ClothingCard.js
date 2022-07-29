@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  * @author [Yuffie](https://github.com/yuff1006) & @author [Santiago](https://github.com/Santiag0SR)
  */
 
-const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick }) => {
+const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLoggedIn }) => {
   const location = useLocation();
 
   function createTemplateItem(apparelGroup) {
@@ -34,9 +34,7 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick }) => {
 
 
   const handleCardClick = () => {
-    // onCardClick(cardData);
-    console.log(cardData);
-    console.log('ShowClothingModal open')
+    onCardClick(cardData);
   }
 
   return (
