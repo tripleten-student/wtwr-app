@@ -9,12 +9,27 @@ import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
  *
  */
 
-function Header({ children }) {
+/* `currentDate` takes today's date from the built-in `Date` object and 
+** sends it through the `toLocaleString` method which returns a string
+** with a language-sensitive representation of the date.
+** The options of this method indicate the month should be the full word and date should return
+** the numeric version of the date.
+
+more info here: 
+<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options> 
+*/
+
+const Header = ({ weatherData, children }) => {
+  if (!weatherData) return null;
+  const currentDate = new Date().toLocaleString('default', { month: 'long', day: 'numeric' });
+
   return (
     <header className="header">
       <div className="header__container">
         <Logo />
-        <p className="header__date">June 15, New York</p>
+        <p className="header__date">
+          {currentDate}, {weatherData[0].city}
+        </p>
       </div>
       <div className="header__navContainer">
         <ToggleSwitch />
@@ -22,6 +37,6 @@ function Header({ children }) {
       </div>
     </header>
   );
-}
+};
 
 export default Header;

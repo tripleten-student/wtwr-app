@@ -35,8 +35,8 @@ const Dropdown = ({ dropdownName, header, options, userPreferenceValue = '', onD
     }
   }, [options, userPreferenceValue, onDropdownItemClick]);
 
+  // Event Handlers
   const handleDropdownSelectedItemClick = () => setIsDropdownMenuOpen(!isDropdownMenuOpen);
-
   const handleDropdownListItemClick = (event) => {
     setSelectedDropdownListItemLabel(event.target.innerText);
     setIsDropdownMenuOpen(false);
