@@ -29,6 +29,7 @@ import {
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import { weatherTypes } from '../../utils/formConstants';
 import { login, register, checkToken } from '../../utils/auth';
+import api from '../../utils/api';
 // import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
@@ -60,9 +61,11 @@ const App = () => {
     'dress',
     'boots',
   ]);
-  // set the url of newly created garment from handleCreateClothing() to pass on to the CreateClothingConfirmationModal
+  // Below states have been finalised
+  // set the url of newly created garment from handleCreateClothingItem() to pass on to the CreateClothingConfirmationModal
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
+  const [clothingItems, setClothingItems] = useState([]);
 
   //// Modals ////
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -251,13 +254,26 @@ const App = () => {
     localStorage.removeItem('jwt');
   };
 
-  const handleCreateClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
-    console.log('Garment successfully added to your profile');
-    console.log({ garmentName, garmentType, weatherType, garmentUrl });
-    closeAllPopups();
-    setIsCreateClothingConfirmationModalOpen(true);
-    setNewClothingItemUrl(garmentUrl);
-    setNewClothingItemType(garmentType);
+  const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
+    const newClothingItem = {
+      name: garmentName,
+      type: garmentType,
+      weather: weatherType,
+      imageUrl: garmentUrl,
+    };
+    api
+      .addNewClothingItem(newClothingItem)
+      .then(newClothingItem => {
+        closeAllPopups();
+        setClothingItems([newClothingItem, ...clothingItems]);
+        setNewClothingItemType(newClothingItem.type);
+        setNewClothingItemUrl(newClothingItem.imageUrl);
+        setIsCreateClothingConfirmationModalOpen(true);
+      })
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
+        console.log(err);
+      })
   };
 
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -382,7 +398,7 @@ const App = () => {
             <CreateClothingModal
               isOpen={isCreateClothingModalOpen}
               onClose={closeAllPopups}
-              onSubmitAddGarment={handleCreateClothing}
+              onSubmitAddGarment={handleCreateClothingItem}
             />
             <CreateClothingConfirmationModal
               isOpen={isCreateClothingConfirmationModalOpen}
