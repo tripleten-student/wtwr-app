@@ -2,6 +2,7 @@ import './LoadingSpinner.css';
 
 /**
  * The LoadingSpinner component
+ * runs when cards are rendering
  *
  * @author [Sam](https://github.com/Samm96)
  *
