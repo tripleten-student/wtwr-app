@@ -232,7 +232,6 @@ const App = () => {
   const handleLoginSubmit = (loginCredentials) => {
     login(loginCredentials).then(({ data, token }) => {
       if (data) {
-        console.log(data);
         api.updateAuthUserToken(token);
         setCurrentUser({
           ...currentUser,
