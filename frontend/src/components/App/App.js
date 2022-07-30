@@ -329,6 +329,7 @@ const App = () => {
                 isLoggedIn={isLoggedIn}
                 username={currentUser.username}
                 hasAvatar={currentUser.avatar}
+                handleAddClick={() => setIsCreateClothingModalOpen(true)}
                 handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
               />

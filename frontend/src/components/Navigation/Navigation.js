@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
  * NOTE: routes to respective modals need to be added
  */
 
-function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, handleLoginClick }) {
+function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, handleLoginClick, handleAddClick }) {
   const defaultUser = 'Terrence Tegegne';
 
   return (
@@ -18,7 +18,7 @@ function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
       {isLoggedIn ? (
         <ul className="navigation__container">
           <li>
-            <button className="navigation__button">+ Add clothes</button>
+            <button onClick={handleAddClick} className="navigation__button">+ Add clothes</button>
           </li>
           <li>
             <NavLink to="/profile" className="navigation__link">
