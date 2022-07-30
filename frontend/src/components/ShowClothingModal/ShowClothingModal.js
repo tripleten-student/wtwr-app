@@ -9,8 +9,6 @@ import { weatherTypes } from '../../utils/formConstants';
  *
  * @author [Sam](https://github.com/Samm96)
  *
- * `tempDegree` = at what temperature the clothing on the clicked card are set for
- * `tempUnit` = which unit the user is setting
  *
  */
 
@@ -21,8 +19,16 @@ const ShowClothingModal = ({
   onClose,
 }) => {
 
-  const weatherFiltered = weatherTypes.filter((weatherType) => weatherType.value === card.weather);
-  const temperature = weatherFiltered.find(range => { return range.name });
+  const [ tempCondition, setTempCondition ] = useState('');
+
+  useEffect(() => {
+    const weatherFiltered = weatherTypes.filter((weatherType) => weatherType.value === card.weather);
+    let weather = weatherFiltered.map((type) => { return type.name });
+    let weatherType = weather.toString();
+
+    setTempCondition(weatherType);
+  }, [card.weather]);
+  
 
   return (
     <Modal
@@ -45,7 +51,7 @@ const ShowClothingModal = ({
             Temperature:
           </p>{' '}
           <p className="clothing-modal__text">
-            {temperature.name}
+            {tempCondition || 'Hot (70°F)'}
           </p>
           <button onClick={handleClick} className="clothing-modal__button">
             Edit

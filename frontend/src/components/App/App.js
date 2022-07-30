@@ -44,7 +44,7 @@ const App = () => {
       'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
@@ -73,7 +73,7 @@ const App = () => {
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
-  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(true);
+  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(false);
   const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(false);
   const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] =
     useState(false);
@@ -404,7 +404,6 @@ const App = () => {
               createdClothingItemType={newClothingItemType}
             />
             <ShowClothingModal
-              // tempDegree={} // function or something that says what temp in degree the clothes are for
               card={selectedClothingCard || clothingCardData}
               tempUnit={currentTemperatureUnit || 'F'}
               isOpen={isShowClothingModalOpen}
