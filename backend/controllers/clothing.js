@@ -55,7 +55,7 @@ const deleteItem = (req, res, next) => {
         throw new UnauthorizedError(userNotAuthorised);
       }
       Item.findByIdAndRemove({ _id: itemId })
-        .orFail()
+        .orFail(() => new BadRequestError(cannotDelete))
         .then((itemData) => res.send({ data: itemData }))
         .catch(next);
     })
