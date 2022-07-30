@@ -22,9 +22,8 @@ router.get('/', getAllItems);
 
 router.post('/', validateItem, createItem);
 
-router.patch(
-  '/:ItemId', validateItem, editItem,
-);
+router.patch('/:ItemId', validateItem, editItem);
+
 router.delete(
   '/:ItemId',
   celebrate({

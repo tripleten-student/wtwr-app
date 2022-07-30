@@ -7,6 +7,7 @@ const { ObjectId } = require('mongoose').Types;
  *
  *@author [Devin Jaggernauth](https://github.com/mentalcaries)
  *@author [Hoang Le Chau](https://github.com/hoanglechau)
+ *@author [Yuffie Hu](https://github.com/yuff1006)
  */
 
 const validateURL = (value, helpers) => {
