@@ -3,6 +3,13 @@ import Modal from '../Modal/Modal';
 import './CompleteRegistrationModal.css'
 
 const CompleteRegistrationModal = ({ isOpen, onClose }) => {
+
+  /**
+ * This module notifies the user of successful registration
+ *
+ * @author [Devin Jaggernauth](https://github.com/mentalcaries)
+ */
+
   return (
     <Modal
       name="complete-registration-modal"
