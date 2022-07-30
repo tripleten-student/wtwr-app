@@ -23,11 +23,20 @@ const SideBar = ({
   return (
     <div className="sidebar">
       <div className="sidebar__user">
-        <img
-          src={avatar} // TO ADD LATER {currentUser.avatar}
-          className="sidebar__user-avatar"
-          alt={`${username}'s headshot`} // TO ADD LATER {currentUser.name}
-        />
+        {avatar ? (
+          <img
+            className="navigation__user navigation__user_location_profile"
+            /** Add user avatar prop and replace this with it */
+            src={avatar}
+            alt="user avatar"
+          />
+        ) : (
+          /** takes username, turns string to uppercase and takes first letter */
+          <span className="navigation__user navigation__user_location_profile navigation__user_type_none">
+            {username?.toUpperCase().charAt(0) || 'T'}
+          </span>
+        )}
+
         <p className="sidebar__user-name">
           {username}
           {/* // TO ADD LATER {currentUser.name} */}{' '}
