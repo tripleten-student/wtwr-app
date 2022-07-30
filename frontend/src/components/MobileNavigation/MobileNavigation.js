@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import './MobileNavigation.css';
 import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 import { NavLink } from 'react-router-dom';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
  * The Navigation - Mobile Version - component
@@ -9,7 +11,11 @@ import { NavLink } from 'react-router-dom';
  *
  */
 
-const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal, hasAvatar, username }) => {
+const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal }) => {
+  const currentUser = useContext(CurrentUserContext);
+  if (!currentUser) return null;
+  const { username, avatar } = currentUser;
+
   return (
     <nav className="navigation-mobile">
       <ul className="navigation-mobile__container">
@@ -28,10 +34,10 @@ const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal, has
         <li>
           {isLoggedIn ? (
             <NavLink to="/profile" className="navigation-mobile__link">
-              {hasAvatar ? (
+              {avatar ? (
                 <img
                   className="navigation-mobile__user"
-                  src={hasAvatar || require('../../images/avatar-default.png')}
+                  src={avatar || require('../../images/avatar-default.png')}
                   alt="user avatar"
                 />
               ) : (

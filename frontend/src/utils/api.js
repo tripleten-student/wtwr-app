@@ -16,6 +16,13 @@ class Api {
   }
 
   /**
+   * Update the user token in the request header when the user logs in or logs out.
+   */
+  updateAuthUserToken = (jwt) => {
+    this._headers = { ...this._headers, authorization: `Bearer ${jwt}` };
+  }
+
+  /**
   * Get the current user data from the server using a GET request.
   */
   getCurrentUserData = () => {
@@ -59,7 +66,7 @@ class Api {
   * Deletes the current user's profile from the server using a DELETE request.
   */
   deleteCurrentUser = () => {
-    return fetch(`${this._baseUrl}/users/me/delete`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: "DELETE",
       headers: this._headers
     })
@@ -100,7 +107,7 @@ class Api {
   /**
    * Deletes an existing clothing item from the server using a DELETE request.
    */
-  deleteCard = clothingItemId => {
+  deleteClothingItem = clothingItemId => {
     return fetch(`${this._baseUrl}/clothing/${clothingItemId}`, {
       method: "DELETE",
       headers: this._headers

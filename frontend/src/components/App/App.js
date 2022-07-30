@@ -230,9 +230,9 @@ const App = () => {
   }
 
   const handleLoginSubmit = (loginCredentials) => {
-    login(loginCredentials).then(({ data }) => {
+    login(loginCredentials).then(({ data, token }) => {
       if (data) {
-        console.log(data);
+        api.updateAuthUserToken(token);
         setCurrentUser({
           ...currentUser,
           email: data.email,
@@ -250,6 +250,7 @@ const App = () => {
   };
 
   const handleLogOut = () => {
+    api.updateAuthUserToken('');
     setIsLoggedIn(false);
     setCurrentUser({});
     localStorage.removeItem('jwt');
@@ -282,6 +283,7 @@ const App = () => {
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
     setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl });
   };
+
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
@@ -305,7 +307,18 @@ const App = () => {
   };
 
   const handleDeleteProfileSubmit = () => {
-    console.log('profile deleted');
+    api
+      .deleteCurrentUser()
+      .then(() => {
+        console.log("User is deleted");
+        closeAllPopups();
+        handleLogOut();
+      })
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while deleting the profile from the server.');
+        console.log(err);
+      })
+
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
@@ -328,8 +341,6 @@ const App = () => {
             <Header weatherData={weatherData}>
               <Navigation
                 isLoggedIn={isLoggedIn}
-                username={currentUser.username}
-                hasAvatar={currentUser.avatar}
                 handleAddClick={() => setIsCreateClothingModalOpen(true)}
                 handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
@@ -433,8 +444,6 @@ const App = () => {
             <Footer />
             <MobileNavigation
               isLoggedIn={isLoggedIn}
-              username={currentUser.name}
-              hasAvatar={currentUser.avatar}
               openLoginModal={() => setIsLoginOpen(true)}
               openNewGarmentModal={() => setIsCreateClothingModalOpen(true)}
             />
