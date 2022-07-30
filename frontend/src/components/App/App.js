@@ -18,6 +18,7 @@ import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
 import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
+import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import {
   getGeolocation,
@@ -27,9 +28,9 @@ import {
   setWeatherDataWithExpiry,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
-import { weatherTypes } from '../../utils/formConstants';
 import { login, register, checkToken } from '../../utils/auth';
 import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
+import api from '../../utils/api';
 
 /**
  * The main React **App** component.
@@ -60,9 +61,11 @@ const App = () => {
     'dress',
     'boots',
   ]);
-  // set the url of newly created garment from handleCreateClothing() to pass on to the CreateClothingConfirmationModal
+  // Below states have been finalised
+  // set the url of newly created garment from handleCreateClothingItem() to pass on to the CreateClothingConfirmationModal
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
+  const [clothingItems, setClothingItems] = useState([]);
 
   const [selectedClothingCard, setSelectedClothingCard] = useState(null);
 
@@ -232,9 +235,9 @@ const App = () => {
   }
 
   const handleLoginSubmit = (loginCredentials) => {
-    login(loginCredentials).then(({ data }) => {
+    login(loginCredentials).then(({ data, token }) => {
       if (data) {
-        console.log(data);
+        api.updateAuthUserToken(token);
         setCurrentUser({
           ...currentUser,
           email: data.email,
@@ -252,18 +255,32 @@ const App = () => {
   };
 
   const handleLogOut = () => {
+    api.updateAuthUserToken('');
     setIsLoggedIn(false);
     setCurrentUser({});
     localStorage.removeItem('jwt');
   };
 
-  const handleCreateClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
-    console.log('Garment successfully added to your profile');
-    console.log({ garmentName, garmentType, weatherType, garmentUrl });
-    closeAllPopups();
-    setIsCreateClothingConfirmationModalOpen(true);
-    setNewClothingItemUrl(garmentUrl);
-    setNewClothingItemType(garmentType);
+  const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
+    const newClothingItem = {
+      name: garmentName,
+      type: garmentType,
+      weather: weatherType,
+      imageUrl: garmentUrl,
+    };
+    api
+      .addNewClothingItem(newClothingItem)
+      .then(newClothingItem => {
+        closeAllPopups();
+        setClothingItems([newClothingItem, ...clothingItems]);
+        setNewClothingItemType(newClothingItem.type);
+        setNewClothingItemUrl(newClothingItem.imageUrl);
+        setIsCreateClothingConfirmationModalOpen(true);
+      })
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
+        console.log(err);
+      })
   };
 
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -271,6 +288,7 @@ const App = () => {
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
     setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl });
   };
+
   const handlelChangePasswordSubmit = (password) => {
     console.log('new password set');
   };
@@ -294,7 +312,18 @@ const App = () => {
   };
 
   const handleDeleteProfileSubmit = () => {
-    console.log('profile deleted');
+    api
+      .deleteCurrentUser()
+      .then(() => {
+        console.log("User is deleted");
+        closeAllPopups();
+        handleLogOut();
+      })
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while deleting the profile from the server.');
+        console.log(err);
+      })
+
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
@@ -324,8 +353,7 @@ const App = () => {
             <Header weatherData={weatherData}>
               <Navigation
                 isLoggedIn={isLoggedIn}
-                username={currentUser.username}
-                hasAvatar={currentUser.avatar}
+                handleAddClick={() => setIsCreateClothingModalOpen(true)}
                 handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
               />
@@ -395,7 +423,7 @@ const App = () => {
             <CreateClothingModal
               isOpen={isCreateClothingModalOpen}
               onClose={closeAllPopups}
-              onSubmitAddGarment={handleCreateClothing}
+              onSubmitAddGarment={handleCreateClothingItem}
             />
             <CreateClothingConfirmationModal
               isOpen={isCreateClothingConfirmationModalOpen}
@@ -423,6 +451,11 @@ const App = () => {
               userClothingPreferences={userClothingPreferences}
             />
             <Footer />
+            <MobileNavigation
+              isLoggedIn={isLoggedIn}
+              openLoginModal={() => setIsLoginOpen(true)}
+              openNewGarmentModal={() => setIsCreateClothingModalOpen(true)}
+            />
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>
