@@ -23,8 +23,7 @@ const ShowClothingModal = ({
 
   useEffect(() => {
     const weatherFiltered = weatherTypes.filter((weatherType) => weatherType.value === card.weather);
-    let weather = weatherFiltered.map((type) => { return type.name });
-    let weatherType = weather.toString();
+    let weatherType = weatherFiltered.map((type) => { return type.name }).toString();
 
     setTempCondition(weatherType);
   }, [card.weather]);
