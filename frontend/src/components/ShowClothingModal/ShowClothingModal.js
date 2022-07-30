@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ShowClothingModal.css';
 import Modal from '../Modal/Modal';
 import { weatherTypes } from '../../utils/formConstants';
+import capImage from '../../images/Clothes/letter-embroidered-baseball-cap.png';
 
 /**
  * The ShowClothingModal component
@@ -39,7 +40,7 @@ const ShowClothingModal = ({
     >
       <div className="clothing-modal">
         <img
-          src={(card && card.imageUrl) || require('../../images/Clothes/letter-embroidered-baseball-cap.png')}
+          src={(card && card.imageUrl) || capImage}
           alt={(card && card.name) || "clothing"}
           className="clothing-modal__image"
         />
