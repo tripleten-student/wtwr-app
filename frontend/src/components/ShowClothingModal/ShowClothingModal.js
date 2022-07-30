@@ -1,5 +1,7 @@
+import React, { useState, useEffect } from 'react';
 import './ShowClothingModal.css';
 import Modal from '../Modal/Modal';
+import { weatherTypes } from '../../utils/formConstants';
 
 /**
  * The ShowClothingModal component
@@ -14,12 +16,17 @@ import Modal from '../Modal/Modal';
 
 const ShowClothingModal = ({
   card,
-  tempDegree,
   tempUnit,
   handleClick,
   isOpen,
   onClose,
 }) => {
+  
+  const [temperatureRange, setTemperatureRange] = useState('');
+
+  let obj = weatherTypes.find((weatherType) => weatherType.value === card.weather);
+  console.log(obj);
+
   return (
     <Modal
       name="ShowClothingModal"
@@ -41,7 +48,7 @@ const ShowClothingModal = ({
             Temperature:
           </p>{' '}
           <p className="clothing-modal__text">
-            {card.weather || 'Hot'} ({tempDegree || 70}° {tempUnit || 'F'})
+            {card.weather || 'Hot'} ({temperatureRange || 70}° {tempUnit || 'F'})
           </p>
           <button onClick={handleClick} className="clothing-modal__button">
             Edit

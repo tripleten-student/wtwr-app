@@ -73,7 +73,7 @@ const App = () => {
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
-  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(false);
+  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(true);
   const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(false);
   const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] =
     useState(false);
