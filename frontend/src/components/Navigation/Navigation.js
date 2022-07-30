@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import './Navigation.css';
 import { NavLink } from 'react-router-dom';
+import avatarDefault from '../../images/avatar-default.png';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
@@ -32,7 +33,7 @@ const Navigation = ({ isLoggedIn, handleRegisterClick, handleLoginClick, handleA
                 <img
                   className="navigation__user"
                   /** Add user avatar prop and replace this with it */
-                  src={avatar || require('../../images/avatar-default.png')}
+                  src={avatar || avatarDefault}
                   alt="user avatar"
                 />
               ) : (
