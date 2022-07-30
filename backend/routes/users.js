@@ -30,6 +30,6 @@ router.patch(
   validatePasswordChange,
   updatePassword,
 );
-router.delete('/me/delete', validateRequestAuth, deleteUser);
+router.delete('/me', validateRequestAuth, deleteUser);
 
 module.exports = router;
