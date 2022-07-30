@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
@@ -11,58 +11,44 @@ import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
 const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
-    'login-password',
+    'current-login-password',
     'new-login-password',
     'confirm-login-password',
   ]);
 
-  const formRef = React.useRef();
-  const [isFormValid, setIsFormValid] = React.useState(false);
+  const formRef = useRef();
+  const [isFormValid, setIsFormValid] = useState(false);
 
   //the validation if user entered the correct old password  needs to be implemented
-
-  React.useEffect(() => {
+  useEffect(() => {
     setIsFormValid(
-      values['new-login-password'] !== values['login-password'] &&
+      values['new-login-password'] !== values['current-login-password'] &&
       values['new-login-password'] === values['confirm-login-password'] &&
       formRef.current.checkValidity()
     );
-  }, [
-    isOpen,
-    formRef,
-    values,
-  ]);
-
-  const handleFormChange = () => {
-    setIsFormValid(formRef.current.checkValidity());
-  };
+  }, [isOpen, formRef, values]);
 
   // Reset form values every time the popup opens
-  React.useEffect(() => {
+  useEffect(() => {
     const initialValues = {
-      'login-password': '',
+      'current-login-password': '',
       'new-login-password': '',
       'confirm-login-password': '',
     };
 
-    const initialErrorValues = {
-      'login-password': '',
-      'new-login-password': '',
-      'confirm-login-password': '',
-    };
-
-    resetForm({ ...initialValues }, { ...initialErrorValues }, true);
+    resetForm({ ...initialValues }, { ...initialValues }, true);
   }, [isOpen, resetForm]);
 
+  // Event handlers
+  const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
   const handleInputChange = (event) => handleChange(event);
 
   const handleFormSubmit = (event) => {
-    console.log(values);
     event.preventDefault();
     // naming of the fields to be checked again when backend API is connected
     if (
       isValid &&
-      values['new-login-password'] !== values['login-password'] &&
+      values['new-login-password'] !== values['current-login-password'] &&
       values['new-login-password'] === values['confirm-login-password']
     ) {
       onUpdatePassword(values['confirm-login-password']);
@@ -70,9 +56,11 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
     }
   };
 
-  const passwordErrorClassName = ``;
-  const submitWideButtonClassName = `form__submit-button-wide form__submit-button-wide_rel_login ${!isFormValid && 'form__submit-button-wide_disabled'
-    }`;
+  // Set form elements classnames
+  const setInputLabelClassName = (name) => `form__input-label ${(!isValid && errors[name]) && `form__input-label_error`}`;
+  const setInputClassName = (name) => `form__input ${(!isValid && errors[name]) && `form__input_error`}`;
+  const setErrorClassName = (name) => `form__error ${(!isValid && errors[name]) && `form__error_visible`}`;
+  const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
 
   return (
     <ModalWithForm
@@ -87,34 +75,42 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
       onChange={handleFormChange}
     >
       <div className="form__input-container">
-        <label htmlFor="login-password" className="form__input-label">
-          Old Password
-          <span id="login-password-error" className={passwordErrorClassName}></span>
-        </label>
+        <div className="form__input-label-container">
+          <label htmlFor="current-login-password" className={setInputLabelClassName('current-login-password')}>
+            Old Password
+          </label>
+          <p id="login-password-error" className={setErrorClassName('current-login-password')}>
+            {(errors['current-login-password']) && '(this is not a valid password)'}
+          </p>
+        </div>
         <input
           type="password"
-          id="login-password"
-          name="login-password"
+          id="current-login-password"
+          name="current-login-password"
           placeholder="Old password"
-          className="form__input"
+          className={setInputClassName('current-login-password')}
           minLength="8"
-          value={values['login-password']}
+          value={values['current-login-password']}
           onChange={handleInputChange}
           required
         />
       </div>
 
       <div className="form__input-container">
-        <label htmlFor="login-password" className="form__input-label">
-          New Password
-          <span id="login-password-error" className={passwordErrorClassName}></span>
-        </label>
+        <div className="form__input-label-container">
+          <label htmlFor="new-login-password" className={setInputLabelClassName('new-login-password')}>
+            New Password
+          </label>
+          <p id="login-password-error" className={setErrorClassName('new-login-password')}>
+            {(errors['new-login-password']) && '(this is not a valid password)'}
+          </p>
+        </div>
         <input
           type="password"
           id="new-login-password"
           name="new-login-password"
           placeholder="Password"
-          className="form__input"
+          className={setInputClassName('new-login-password')}
           value={values['new-login-password']}
           minLength="8"
           onChange={handleInputChange}
@@ -122,16 +118,20 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
         />
       </div>
       <div className="form__input-container">
-        <label htmlFor="login-password" className="form__input-label">
-          Repeat new password
-          <span id="login-password-error" className={passwordErrorClassName}></span>
-        </label>
+        <div className="form__input-label-container">
+          <label htmlFor="confirm-login-password" className={setInputLabelClassName('confirm-login-password')}>
+            Repeat new password
+          </label>
+          <p id="login-password-error" className={setErrorClassName('confirm-login-password')}>
+            {(errors['confirm-login-password']) && '(this is not a valid password)'}
+          </p>
+        </div>
         <input
           type="password"
           id="confirm-login-password"
           name="confirm-login-password"
           placeholder="Password"
-          className="form__input"
+          className={setInputClassName('confirm-login-password')}
           value={values['confirm-login-password']}
           minLength="8"
           onChange={handleInputChange}
@@ -141,7 +141,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
       <div className="form__button-grp">
         <button
           type="submit"
-          className={submitWideButtonClassName}
+          className={submitButtonClassName}
           disabled={!isFormValid}
           aria-label="Change password"
         >

@@ -3,17 +3,23 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
-
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
-import Login from '../Login';
+import Login from '../Login/Login';
+import Register from '../Register/Register';
+import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
+import Profile from '../Profile/Profile';
 import EditPasswordModal from '../EditPasswordModal/EditPasswordModal';
 import EditProfileDataModal from '../EditProfileDataModal/EditProfileDataModal';
+import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
-import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
+import EditClothingModal from '../EditClothingModal/EditClothingModal';
+import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
+import MobileNavigation from '../MobileNavigation/MobileNavigation';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import {
   getGeolocation,
   getForecastWeather,
@@ -22,24 +28,21 @@ import {
   setWeatherDataWithExpiry,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
-import Register from '../Register/Register';
-import Profile from '../Profile/Profile';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import { login, register, checkToken } from '../../utils/auth';
-import CompleteRegistrationModal from '../CompleteRegistrationModal/CompleteRegistrationModal';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import api from '../../utils/api';
 // import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
  * The main React **App** component.
  */
 const App = () => {
-  const [currentUser, setCurrentUser] = useState({
-    username: 'Practicum',
-    avatar:
-      'https://images.unsplash.com/photo-1619650277752-9b853abf815b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=60',
-    email: 'practicum@email.com',
+  const [currentUser, setCurrentUser] = useState({});
+  const [currentGarment, setCurrentGarment] = useState({
+    garmentName: 'Shirt',
+    garmentType: 'shirt',
+    weatherType: 'extreme',
+    garmentUrl:
+      'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,11 +61,11 @@ const App = () => {
     'dress',
     'boots',
   ]);
-  // set the url of newly created garment from handleCreateClothing() to pass on to the CreateClothingConfirmationModal
+  // Below states have been finalised
+  // set the url of newly created garment from handleCreateClothingItem() to pass on to the CreateClothingConfirmationModal
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
-
-  const [isLoading, setIsLoading] = useState(false);
+  const [clothingItems, setClothingItems] = useState([]);
 
   //// Modals ////
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -71,7 +74,8 @@ const App = () => {
   const [isEditProfileDataModalOpen, setIsEditProfileDataModalOpen] = useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
-  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(true);
+  const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(false);
+  const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(false);
   const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] =
     useState(false);
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
@@ -107,21 +111,12 @@ const App = () => {
         }
       });
   }, []);
-
+  /** this gets called every time the user changes location: when user initially disallowed location sharing. and then later allowed it, upon page refresh, the location and the weather updates right away, evne within 15 minutes */
+  useEffect(() => {
+    getWeatherDataUsingLocation();
+  }, [userLocation]);
   /** the weather API gets called or pulled from local storage every time the location changes or gets read */
   useEffect(() => {
-    const getWeatherDataUsingLocation = () => {
-      if (userLocation.latitude && userLocation.longitude) {
-        getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
-          .then((data) => {
-            setweatherData(filterDataFromWeatherAPI(data));
-            setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    };
     /** does the local storage already have weather data? if so, setState with this data and pass it on to components, if not (written in the function itself that's imported from ../utils/weatherApi.js), make the api call detailed above */
     getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
       setweatherData(
@@ -129,7 +124,7 @@ const App = () => {
           getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation)
         )
       );
-  }, [userLocation]);
+  }, []);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -151,7 +146,18 @@ const App = () => {
         });
     }
   }, []);
-
+  const getWeatherDataUsingLocation = () => {
+    if (userLocation.latitude && userLocation.longitude) {
+      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
+        .then((data) => {
+          setweatherData(filterDataFromWeatherAPI(data));
+          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
@@ -168,6 +174,7 @@ const App = () => {
     isEditPasswordModalOpen ||
     isDeleteProfileOpen ||
     isCreateClothingModalOpen ||
+    isEditClothingModalOpen ||
     isEditClothingPreferencesModalOpen ||
     isCreateClothingConfirmationModalOpen;
 
@@ -205,6 +212,7 @@ const App = () => {
     setIsDeleteProfileOpen(false);
     setIsCreateClothingModalOpen(false);
     setIsCreateClothingConfirmationModalOpen(false);
+    setIsEditClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
@@ -220,12 +228,10 @@ const App = () => {
     setIsLoginOpen(false);
   }
 
-  const handleLoginSubmit = ({ loginEmail, loginPassword }) => {
-    //call the auth.login(loginEmail, loginPassword)
-    //if login successful
-    // login({ email: loginEmail, password: loginPassword });
-    login({ email: loginEmail, password: loginPassword }).then(({ data }) => {
+  const handleLoginSubmit = (loginCredentials) => {
+    login(loginCredentials).then(({ data, token }) => {
       if (data) {
+        api.updateAuthUserToken(token);
         setCurrentUser({
           ...currentUser,
           email: data.email,
@@ -243,17 +249,38 @@ const App = () => {
   };
 
   const handleLogOut = () => {
+    api.updateAuthUserToken('');
     setIsLoggedIn(false);
     setCurrentUser({});
     localStorage.removeItem('jwt');
   };
-  const handleCreateClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
-    console.log('Garment successfully added to your profile');
+
+  const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
+    const newClothingItem = {
+      name: garmentName,
+      type: garmentType,
+      weather: weatherType,
+      imageUrl: garmentUrl,
+    };
+    api
+      .addNewClothingItem(newClothingItem)
+      .then(newClothingItem => {
+        closeAllPopups();
+        setClothingItems([newClothingItem, ...clothingItems]);
+        setNewClothingItemType(newClothingItem.type);
+        setNewClothingItemUrl(newClothingItem.imageUrl);
+        setIsCreateClothingConfirmationModalOpen(true);
+      })
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
+        console.log(err);
+      })
+  };
+
+  const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
+    console.log('Garment successfully updated');
     console.log({ garmentName, garmentType, weatherType, garmentUrl });
-    closeAllPopups();
-    setIsCreateClothingConfirmationModalOpen(true);
-    setNewClothingItemUrl(garmentUrl);
-    setNewClothingItemType(garmentType);
+    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl });
   };
 
   const handlelChangePasswordSubmit = (password) => {
@@ -265,19 +292,32 @@ const App = () => {
     console.log(userData);
   };
 
-  const handleRegisterSubmit = (credentials) => {
-    // credentials to be used in API call to backend
-    register(credentials)
+  const handleRegisterSubmit = (registerCredentials) => {
+    closeAllPopups();
+    register(registerCredentials)
       .then((data) => {
-        console.log(data);
-        closeAllPopups();
         setIsCompleteRegistrationOpen(true);
+        handleLoginSubmit(registerCredentials);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        // clarify behaviour for errors: invalid username/password
+        console.log(err);
+      });
   };
 
   const handleDeleteProfileSubmit = () => {
-    console.log('profile deleted');
+    api
+      .deleteCurrentUser()
+      .then(() => {
+        console.log("User is deleted");
+        closeAllPopups();
+        handleLogOut();
+      })
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while deleting the profile from the server.');
+        console.log(err);
+      })
+
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
@@ -297,17 +337,13 @@ const App = () => {
             {/* I left the userName state in for the purpose of seeing the different navigation css */}
             {/** rewrite `{userName}` to `{currentUser}` when ready */}
             {/** place login modal open state in Navigation*/}
-            <Header>
+            <Header weatherData={weatherData}>
               <Navigation
                 isLoggedIn={isLoggedIn}
-                username={currentUser.username}
-                hasAvatar={currentUser.avatar}
+                handleAddClick={() => setIsCreateClothingModalOpen(true)}
                 handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
               />
-            <LoadingSpinner
-              isLoading={isLoading}
-            />
             </Header>
             <Routes>
               <Route
@@ -327,6 +363,13 @@ const App = () => {
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
                       onLogOutClick={handleLogOut}
+                      onAddNewClick={() => setIsCreateClothingModalOpen(true)}
+                      onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
+                      onChangeProfileClick={() => setIsEditProfileDataModalOpen(true)}
+                      onChangeClothesPreferencesClick={() =>
+                        setIsEditClothingPreferencesModalOpen(true)
+                      }
+                      onDeleteProfileClick={() => setIsDeleteProfileOpen(true)}
                     />
                   </ProtectedRoute>
                 }
@@ -337,9 +380,7 @@ const App = () => {
               isOpen={isLoginOpen}
               onClose={closeAllPopups}
               onSubmit={handleLoginSubmit}
-              loginEmail={loginEmail}
               setLoginEmail={setLoginEmail}
-              loginPassword={loginPassword}
               setLoginPassword={setLoginPassword}
             />
             <Register
@@ -369,13 +410,19 @@ const App = () => {
             <CreateClothingModal
               isOpen={isCreateClothingModalOpen}
               onClose={closeAllPopups}
-              onSubmitAddGarment={handleCreateClothing}
+              onSubmitAddGarment={handleCreateClothingItem}
             />
             <CreateClothingConfirmationModal
               isOpen={isCreateClothingConfirmationModalOpen}
               onClose={closeAllPopups}
               createdClothingItemUrl={newClothingItemUrl}
               createdClothingItemType={newClothingItemType}
+            />
+            <EditClothingModal
+              isOpen={isEditClothingModalOpen}
+              onClose={closeAllPopups}
+              onSubmitEditGarment={handleEditClothing}
+              currentGarment={currentGarment}
             />
             {/* <ShowClothingModal
               // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
@@ -394,6 +441,11 @@ const App = () => {
               userClothingPreferences={userClothingPreferences}
             />
             <Footer />
+            <MobileNavigation
+              isLoggedIn={isLoggedIn}
+              openLoginModal={() => setIsLoginOpen(true)}
+              openNewGarmentModal={() => setIsCreateClothingModalOpen(true)}
+            />
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>

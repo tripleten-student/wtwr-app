@@ -1,6 +1,8 @@
-import React from 'react';
+import { useContext } from 'react';
 import './Navigation.css';
 import { NavLink } from 'react-router-dom';
+import avatarDefault from '../../images/avatar-default.png';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
  * The Navigation component
@@ -10,24 +12,28 @@ import { NavLink } from 'react-router-dom';
  * NOTE: routes to respective modals need to be added
  */
 
-function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, handleLoginClick }) {
-  const defaultUser = 'Terrence Tegegne';
+const Navigation = ({ isLoggedIn, handleRegisterClick, handleLoginClick, handleAddClick }) => {
+  const currentUser = useContext(CurrentUserContext);
+  if (!currentUser) return null;
+  const { username, avatar } = currentUser;
 
   return (
     <nav className="navigation">
       {isLoggedIn ? (
         <ul className="navigation__container">
           <li>
-            <button className="navigation__button">+ Add clothes</button>
+            <button onClick={handleAddClick} className="navigation__button">
+              + Add clothes
+            </button>
           </li>
           <li>
             <NavLink to="/profile" className="navigation__link">
-              {username || defaultUser}
-              {hasAvatar ? (
+              {username}
+              {avatar ? (
                 <img
                   className="navigation__user"
                   /** Add user avatar prop and replace this with it */
-                  src={hasAvatar}
+                  src={avatar || avatarDefault}
                   alt="user avatar"
                 />
               ) : (
@@ -55,6 +61,6 @@ function Navigation({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
       )}
     </nav>
   );
-}
+};
 
 export default Navigation;

@@ -35,7 +35,7 @@ const validateUser = celebrate({
       'string.max': 'The maximum length of the name field is 30 characters',
       'string.empty': 'The name field is empty',
     }),
-    avatar: Joi.string().custom(validateURL).required().allow(''),
+    avatar: Joi.string().custom(validateURL).allow(''),
     preferences: Joi.array().items(Joi.string().allow('')),
   }),
 });
@@ -50,6 +50,18 @@ const validateLogin = celebrate({
   }),
 });
 
+const validatePasswordChange = celebrate({
+  body: Joi.object().keys({
+    oldPassword: Joi.string().min(8).required().messages({
+      'string.min': 'The password field needs at least 8 characters',
+      'string.empty': 'The password field is empty',
+    }),
+    newPassword: Joi.string().min(8).required().messages({
+      'string.min': 'The password field needs at least 8 characters',
+      'string.empty': 'The password field is empty',
+    }),
+  }),
+});
 const validateUserId = celebrate({
   params: Joi.object().keys({
     userId: Joi.string()
@@ -78,4 +90,5 @@ module.exports = {
   validateUser,
   validateRequestAuth,
   validateUserId,
+  validatePasswordChange,
 };
