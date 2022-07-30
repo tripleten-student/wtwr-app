@@ -76,7 +76,7 @@ const editItem = (req, res, next) => {
         .catch(next);
     })
     .catch(next);
-}
+};
 
 const deleteItem = (req, res, next) => {
   const itemId = req.params.ItemId;
