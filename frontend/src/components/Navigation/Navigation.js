@@ -18,7 +18,9 @@ const Navigation = ({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
       {isLoggedIn ? (
         <ul className="navigation__container">
           <li>
-            <button className="navigation__button">+ Add clothes</button>
+            <button onClick={handleAddClick} className="navigation__button">
+              + Add clothes
+            </button>
           </li>
           <li>
             <NavLink to="/profile" className="navigation__link">
@@ -42,18 +44,12 @@ const Navigation = ({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
       ) : (
         <ul className="navigation__container">
           <li>
-            <button
-              onClick={handleRegisterClick}
-              className="navigation__button"
-            >
+            <button onClick={handleRegisterClick} className="navigation__button">
               Sign Up
             </button>
           </li>
           <li>
-            <button
-              className="navigation__button"
-              onClick={handleLoginClick}
-            >
+            <button className="navigation__button" onClick={handleLoginClick}>
               Log In
             </button>
           </li>
@@ -61,6 +57,6 @@ const Navigation = ({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
       )}
     </nav>
   );
-}
+};
 
 export default Navigation;

@@ -19,7 +19,8 @@ more info here:
 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options> 
 */
 
-const Header = ({ currentLocation, children }) => {
+const Header = ({ weatherData, children }) => {
+  if (!weatherData) return null;
   const currentDate = new Date().toLocaleString('default', { month: 'long', day: 'numeric' });
 
   return (
@@ -27,7 +28,7 @@ const Header = ({ currentLocation, children }) => {
       <div className="header__container">
         <Logo />
         <p className="header__date">
-          {currentDate}, {currentLocation || 'New York'}
+          {currentDate}, {weatherData[0].city}
         </p>
       </div>
       <div className="header__navContainer">
@@ -36,6 +37,6 @@ const Header = ({ currentLocation, children }) => {
       </div>
     </header>
   );
-}
+};
 
 export default Header;
