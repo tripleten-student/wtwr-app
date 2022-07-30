@@ -1,10 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import Dropdown from '../Dropdown/Dropdown';
+import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import { checkIfImageExists } from '../../utils/clothingModals';
-import { clothingItems, weatherTypes } from '../../utils/formConstants';
+import {
+  clothingItems,
+  weatherTypesInFahrenheit,
+  weatherTypesInCelcius,
+} from '../../utils/formConstants';
 import './EditClothingModal.css';
 
 /**
@@ -19,6 +24,9 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
   const [garmentTypeChoice, setGarmentTypeChoice] = useState('');
   const [weatherTypeChoice, setWeatherTypeChoice] = useState('');
   const [showImagePreview, setShowImagePreview] = useState(true);
+
+  //Get the current choice of the temperature unit by the user
+  const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'user-garment-name',
@@ -137,7 +145,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
         <Dropdown
           dropdownName="weather-types"
           header="Weather"
-          options={weatherTypes}
+          options={(currentTemperatureUnit === 'F') ? weatherTypesInFahrenheit : weatherTypesInCelcius}
           onDropdownItemClick={setWeatherTypeChoice}
           userPreferenceValue={currentGarment.weatherType || ''}
           setIsFormValid={setIsFormValid}

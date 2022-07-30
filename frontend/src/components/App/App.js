@@ -27,7 +27,6 @@ import {
   setWeatherDataWithExpiry,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
-import { weatherTypes } from '../../utils/formConstants';
 import { login, register, checkToken } from '../../utils/auth';
 // import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
@@ -72,7 +71,7 @@ const App = () => {
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
   const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(false);
-  const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(false);
+  const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(true);
   const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] =
     useState(false);
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
