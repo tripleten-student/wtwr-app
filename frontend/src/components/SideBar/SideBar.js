@@ -1,8 +1,7 @@
 import React from 'react';
 import './SideBar.css';
 import PropTypes from 'prop-types';
-
-import avatar from '../../images/Avatars/elise.png';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
  * The **SideBar** component displays all the
@@ -18,20 +17,29 @@ const SideBar = ({
   onLogOutClick,
   onDeleteProfileClick,
 }) => {
-  // we will add the  context and use it to retrive the avatar and name of the user
-  //  ADD LATER const currentUser = React.useContext(CurrentUserContext);
-  //   asd
-
+  const currentUser = React.useContext(CurrentUserContext);
+  if (!currentUser) return null;
+  const { username, avatar } = currentUser;
   return (
     <div className="sidebar">
       <div className="sidebar__user">
-        <img
-          src={avatar} // TO ADD LATER {currentUser.avatar}
-          className="sidebar__user-avatar"
-          alt="name of user" // TO ADD LATER {currentUser.name}
-        />
+        {avatar ? (
+          <img
+            className="navigation__user navigation__user_location_profile"
+            /** Add user avatar prop and replace this with it */
+            src={avatar}
+            alt="user avatar"
+          />
+        ) : (
+          /** takes username, turns string to uppercase and takes first letter */
+          <span className="navigation__user navigation__user_location_profile navigation__user_type_none">
+            {username?.toUpperCase().charAt(0) || 'T'}
+          </span>
+        )}
+
         <p className="sidebar__user-name">
-          Terrence Tegegne{/* // TO ADD LATER {currentUser.name} */}{' '}
+          {username}
+          {/* // TO ADD LATER {currentUser.name} */}{' '}
         </p>
       </div>
       <ul className="sidebar__links">

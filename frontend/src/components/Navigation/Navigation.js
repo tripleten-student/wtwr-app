@@ -1,6 +1,7 @@
 import React from 'react';
 import './Navigation.css';
 import { NavLink } from 'react-router-dom';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
  * The Navigation component
@@ -10,8 +11,10 @@ import { NavLink } from 'react-router-dom';
  * NOTE: routes to respective modals need to be added
  */
 
-const Navigation = ({ isLoggedIn, hasAvatar, username, handleRegisterClick, handleLoginClick }) => {
-  const defaultUser = 'Terrence Tegegne';
+const Navigation = ({ isLoggedIn, handleRegisterClick, handleLoginClick, handleAddClick }) => {
+  const currentUser = React.useContext(CurrentUserContext);
+  if (!currentUser) return null;
+  const { username, avatar } = currentUser;
 
   return (
     <nav className="navigation">
@@ -24,18 +27,18 @@ const Navigation = ({ isLoggedIn, hasAvatar, username, handleRegisterClick, hand
           </li>
           <li>
             <NavLink to="/profile" className="navigation__link">
-              {username || defaultUser}
-              {hasAvatar ? (
+              {username}
+              {avatar ? (
                 <img
                   className="navigation__user"
                   /** Add user avatar prop and replace this with it */
-                  src={hasAvatar || require('../../images/avatar-default.png')}
+                  src={avatar || require('../../images/avatar-default.png')}
                   alt="user avatar"
                 />
               ) : (
                 /** takes username, turns string to uppercase and takes first letter */
                 <span className="navigation__user navigation__user_type_none">
-                  {username?.toUpperCase().charAt(0) || 'T'}
+                  {username.toUpperCase().charAt(0) || 'T'}
                 </span>
               )}
             </NavLink>
