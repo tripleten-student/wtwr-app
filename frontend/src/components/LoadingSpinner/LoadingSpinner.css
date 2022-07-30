@@ -1,7 +1,7 @@
 .loader {
     position: absolute;
     border: 10px solid #dcdcdc;
-    border-top: 10px solid #00A3FF; /* too bright? #286897? */
+    border-top: 10px solid #00A3FF;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -13,6 +13,6 @@
     100% { transform: rotate(360deg); }
 }
 
-.loader_hidden {  /* hides spinner */
+.loader_hidden { 
     display: none;
 }
