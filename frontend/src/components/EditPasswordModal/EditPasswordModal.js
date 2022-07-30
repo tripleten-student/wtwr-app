@@ -11,7 +11,7 @@ import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
 const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
-    'login-password',
+    'current-login-password',
     'new-login-password',
     'confirm-login-password',
   ]);
@@ -22,7 +22,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   //the validation if user entered the correct old password  needs to be implemented
   useEffect(() => {
     setIsFormValid(
-      values['new-login-password'] !== values['login-password'] &&
+      values['new-login-password'] !== values['current-login-password'] &&
       values['new-login-password'] === values['confirm-login-password'] &&
       formRef.current.checkValidity()
     );
@@ -31,7 +31,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
   // Reset form values every time the popup opens
   useEffect(() => {
     const initialValues = {
-      'login-password': '',
+      'current-login-password': '',
       'new-login-password': '',
       'confirm-login-password': '',
     };
@@ -48,7 +48,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
     // naming of the fields to be checked again when backend API is connected
     if (
       isValid &&
-      values['new-login-password'] !== values['login-password'] &&
+      values['new-login-password'] !== values['current-login-password'] &&
       values['new-login-password'] === values['confirm-login-password']
     ) {
       onUpdatePassword(values['confirm-login-password']);
@@ -76,21 +76,21 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
     >
       <div className="form__input-container">
         <div className="form__input-label-container">
-          <label htmlFor="login-password" className={setInputLabelClassName('login-password')}>
+          <label htmlFor="current-login-password" className={setInputLabelClassName('current-login-password')}>
             Old Password
           </label>
-          <p id="login-password-error" className={setErrorClassName('login-password')}>
-            {(errors['login-password']) && '(this is not a valid password)'}
+          <p id="login-password-error" className={setErrorClassName('current-login-password')}>
+            {(errors['current-login-password']) && '(this is not a valid password)'}
           </p>
         </div>
         <input
           type="password"
-          id="login-password"
-          name="login-password"
+          id="current-login-password"
+          name="current-login-password"
           placeholder="Old password"
-          className={setInputClassName('login-password')}
+          className={setInputClassName('current-login-password')}
           minLength="8"
-          value={values['login-password']}
+          value={values['current-login-password']}
           onChange={handleInputChange}
           required
         />
@@ -98,7 +98,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
 
       <div className="form__input-container">
         <div className="form__input-label-container">
-          <label htmlFor="login-password" className={setInputLabelClassName('new-login-password')}>
+          <label htmlFor="new-login-password" className={setInputLabelClassName('new-login-password')}>
             New Password
           </label>
           <p id="login-password-error" className={setErrorClassName('new-login-password')}>
@@ -119,7 +119,7 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
       </div>
       <div className="form__input-container">
         <div className="form__input-label-container">
-          <label htmlFor="login-password" className={setInputLabelClassName('confirm-login-password')}>
+          <label htmlFor="confirm-login-password" className={setInputLabelClassName('confirm-login-password')}>
             Repeat new password
           </label>
           <p id="login-password-error" className={setErrorClassName('confirm-login-password')}>
