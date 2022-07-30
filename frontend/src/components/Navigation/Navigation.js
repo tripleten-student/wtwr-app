@@ -1,4 +1,4 @@
-import React from 'react';
+import { useContext } from 'react';
 import './Navigation.css';
 import { NavLink } from 'react-router-dom';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
@@ -12,7 +12,7 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
  */
 
 const Navigation = ({ isLoggedIn, handleRegisterClick, handleLoginClick, handleAddClick }) => {
-  const currentUser = React.useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
   if (!currentUser) return null;
   const { username, avatar } = currentUser;
 

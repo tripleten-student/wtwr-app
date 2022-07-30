@@ -342,8 +342,6 @@ const App = () => {
             <Header weatherData={weatherData}>
               <Navigation
                 isLoggedIn={isLoggedIn}
-                username={currentUser.username}
-                hasAvatar={currentUser.avatar}
                 handleAddClick={() => setIsCreateClothingModalOpen(true)}
                 handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
@@ -447,8 +445,6 @@ const App = () => {
             <Footer />
             <MobileNavigation
               isLoggedIn={isLoggedIn}
-              username={currentUser.name}
-              hasAvatar={currentUser.avatar}
               openLoginModal={() => setIsLoginOpen(true)}
               openNewGarmentModal={() => setIsCreateClothingModalOpen(true)}
             />
