@@ -45,6 +45,39 @@ const createItem = (req, res, next) => {
     .catch(next);
 };
 
+const editItem = (req, res, next) => {
+  const currentUser = req.user._id;
+  const itemId = req.params.ItemId;
+  const {
+    name,
+    type,
+    weather,
+    imageUrl,
+  } = req.body;
+
+  Item.findById(itemId)
+    .orFail()
+    .then((itemData) => {
+      if (itemData.owner.toString() !== currentUser) {
+        throw new UnauthorizedError(userNotAuthorised);
+      }
+      Item.findByIdAndUpdate(
+        itemId,
+        {
+          name,
+          type,
+          weather,
+          imageUrl,
+        },
+        { new: true },
+      )
+        .orFail()
+        .then((updatedData) => res.send(updatedData))
+        .catch(next);
+    })
+    .catch(next);
+}
+
 const deleteItem = (req, res, next) => {
   const itemId = req.params.ItemId;
   const currentUser = req.user._id;
@@ -86,6 +119,7 @@ const toggleLikeStatus = (req, res, next) => {
 module.exports = {
   getAllItems,
   createItem,
+  editItem,
   deleteItem,
   toggleLikeStatus,
 };

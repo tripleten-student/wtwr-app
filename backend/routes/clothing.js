@@ -10,6 +10,7 @@ const { celebrate, Joi } = require('celebrate');
 const {
   getAllItems,
   createItem,
+  editItem,
   deleteItem,
   toggleLikeStatus,
 } = require('../controllers/clothing');
@@ -20,6 +21,15 @@ router.get('/', getAllItems);
 
 router.post('/', createItem);
 
+router.patch(
+  '/:ItemId',
+  // celebrate({
+  //   body: Joi.object().keys({
+  //     _id: Joi.string().hex().length(24),
+  //   }),
+  // }),
+  editItem,
+);
 router.delete(
   '/:ItemId',
   celebrate({
