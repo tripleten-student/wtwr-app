@@ -16,16 +16,13 @@ import { weatherTypes } from '../../utils/formConstants';
 
 const ShowClothingModal = ({
   card,
-  tempUnit,
   handleClick,
   isOpen,
   onClose,
 }) => {
-  
-  const [temperatureRange, setTemperatureRange] = useState('');
 
-  let obj = weatherTypes.find((weatherType) => weatherType.value === card.weather);
-  console.log(obj);
+  const weatherFiltered = weatherTypes.filter((weatherType) => weatherType.value === card.weather);
+  const temperature = weatherFiltered.find(range => { return range.name });
 
   return (
     <Modal
@@ -48,7 +45,7 @@ const ShowClothingModal = ({
             Temperature:
           </p>{' '}
           <p className="clothing-modal__text">
-            {card.weather || 'Hot'} ({temperatureRange || 70}° {tempUnit || 'F'})
+            {temperature.name}
           </p>
           <button onClick={handleClick} className="clothing-modal__button">
             Edit
