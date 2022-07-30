@@ -18,6 +18,7 @@ import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
 import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
+import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import {
   getGeolocation,
@@ -430,6 +431,13 @@ const App = () => {
               userClothingPreferences={userClothingPreferences}
             />
             <Footer />
+            <MobileNavigation
+              isLoggedIn={isLoggedIn}
+              username={currentUser.name}
+              hasAvatar={currentUser.avatar}
+              openLoginModal={() => setIsLoginOpen(true)}
+              openNewGarmentModal={() => setIsCreateClothingModalOpen(true)}
+            />
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>
