@@ -14,6 +14,7 @@ const Login = ({
   onSubmit,
   setLoginEmail,
   setLoginPassword,
+  openRegisterModal
 }) => {
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'login-email',
@@ -124,7 +125,7 @@ const Login = ({
           Log in
         </button>
         <p>or</p>
-        <button type="button" className="form__secondary-button" aria-label="Register">
+        <button onClick={openRegisterModal} type="button" className="form__secondary-button" aria-label="Register">
           Register
         </button>
       </div>
