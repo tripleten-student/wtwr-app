@@ -388,6 +388,7 @@ const App = () => {
               isOpen={isRegisterOpen}
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
+              openLoginModal={() => {setIsLoginOpen(true); setIsRegisterOpen(false) }}
             />
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}

@@ -11,7 +11,7 @@ import { clothingItems } from '../../utils/formConstants';
  * @author [Devin](https://github.com/mentalcaries)
  */
 
-const Register = ({ isOpen, onClose, onSubmit }) => {
+const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
   const [credentialsOpen, setCredentialsOpen] = useState(true);
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
@@ -200,7 +200,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
               Next
             </button>
             <p>or</p>
-            <button type="button" className="form__secondary-button" aria-label="Login">
+            <button onClick={openLoginModal} type="button" className="form__secondary-button" aria-label="Login">
               Log in
             </button>
           </div>
@@ -262,7 +262,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
               Next
             </button>
             <p>or</p>
-            <button type="button" className="form__secondary-button" aria-label="Register">
+            <button onClick={openLoginModal} type="button" className="form__secondary-button" aria-label="Register">
               Login
             </button>
           </div>
@@ -296,7 +296,7 @@ const Register = ({ isOpen, onClose, onSubmit }) => {
               Register
             </button>
             <p>or</p>
-            <button type="button" className="form__secondary-button" aria-label="Register">
+            <button onClick={openLoginModal} type="button" className="form__secondary-button" aria-label="Register">
               Login
             </button>
           </div>
