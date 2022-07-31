@@ -67,8 +67,6 @@ const App = () => {
   const [newClothingItemType, setNewClothingItemType] = useState('');
   const [clothingItems, setClothingItems] = useState([]);
 
-  const [ isLiked, setIsLiked ] = useState(false);
-
   //// Modals ////
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -225,16 +223,22 @@ const App = () => {
     isLiked: true,
     type: 't-shirt',
   };
+  
 
   // SAM COME BACK TO THIS
-  function handleLikeClick(cardData) {
+const [ isLiked, setIsLiked ] = useState(false);
+
+  const handleLikeClick = (cardData) => {
     console.log(cardData);
-    // insert logic to interact with WTWR API
+    const itemLike = cardData.isLiked === isLiked;
+
     api
+    // will probably return an id
         .toggleClothingItemLikeStatus(cardData._id)
-        .then((data) => {
-          console.log(data);
-          data.isLiked === isLiked ? setIsLiked(false) : setIsLiked(true);
+        // set the like status of the card
+        .then(() => {
+          console.log(itemLike);
+          itemLike ? setIsLiked(true) : setIsLiked(false);
         })
         .catch((err) => console.log(err));
   }
