@@ -223,7 +223,7 @@ const App = () => {
     isLiked: true,
     type: 't-shirt',
   };
-  
+
   function handleLikeClick(cardData) {
     // insert logic to interact with WTWR API
     const token = localStorage.getItem('jwt');
@@ -360,7 +360,7 @@ const App = () => {
               <Route
                 exact
                 path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
+                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} onCardLike={handleLikeClick} />}
               ></Route>
               <Route
                 exact
@@ -372,7 +372,6 @@ const App = () => {
                   >
                     <Profile
                       cardData={clothingCardData}
-                      onCardLike={handleLikeClick}
                       onLogOutClick={handleLogOut}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                       onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}

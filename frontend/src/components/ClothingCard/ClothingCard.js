@@ -23,7 +23,7 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
   const templateItem = createTemplateItem(apparelGroup);
 
   const handleLike = () => {
-    // onCardLike(cardData);
+    onCardLike(cardData);
     console.log('card liked');
   };
 

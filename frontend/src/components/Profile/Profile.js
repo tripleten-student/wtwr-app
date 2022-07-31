@@ -12,7 +12,6 @@ import { clothes } from '../../utils/testData';
 
 function Profile({
   cardData,
-  onCardLike,
   onAddNewClick,
   onChangePasswordClick,
   onChangeProfileClick,
@@ -42,27 +41,23 @@ function Profile({
           sectionName={'Accessories'}
           sectionData={accessories}
           onAddNewclick={onAddNewClick}
-          onCardLike={onCardLike}
         />
         <ClothesSection
           sectionName={'Tops & outerwear'}
           sectionData={topsandoutwear}
           onAddNewclick={onAddNewClick}
-          onCardLike={onCardLike}
         />
 
         <ClothesSection
           sectionName={'Bottoms'}
           sectionData={bottoms}
           onAddNewclick={onAddNewClick}
-          onCardLike={onCardLike}
         />
 
         <ClothesSection
           sectionName={'Shoes'}
           sectionData={shoes}
           onAddNewclick={onAddNewClick}
-          onCardLike={onCardLike}
         />
       </section>
     </div>
