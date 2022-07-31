@@ -223,9 +223,21 @@ const App = () => {
     isLiked: true,
     type: 't-shirt',
   };
+  
   function handleLikeClick(cardData) {
     // insert logic to interact with WTWR API
-    setIsLoginOpen(false);
+    const token = localStorage.getItem('jwt');
+    const isLiked = cardData.likes.some((user) => user === currentUser._id);
+    api
+        .toggleClothingItemLikeStatus(cardData._id, !isLiked, token)
+        .then((newData) => {
+          setClothingItems((likeState) => 
+            likeState.map((currentItem) => 
+                currentItem._id === cardData._id ? newData : currentItem
+            )
+          );
+        })
+        .catch((err) => console.log(err));
   }
 
   const handleLoginSubmit = (loginCredentials) => {
@@ -264,17 +276,17 @@ const App = () => {
     };
     api
       .addNewClothingItem(newClothingItem)
-      .then(newClothingItem => {
+      .then((newClothingItem) => {
         closeAllPopups();
         setClothingItems([newClothingItem, ...clothingItems]);
         setNewClothingItemType(newClothingItem.type);
         setNewClothingItemUrl(newClothingItem.imageUrl);
         setIsCreateClothingConfirmationModalOpen(true);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
         console.log(err);
-      })
+      });
   };
 
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -309,15 +321,14 @@ const App = () => {
     api
       .deleteCurrentUser()
       .then(() => {
-        console.log("User is deleted");
+        console.log('User is deleted');
         closeAllPopups();
         handleLogOut();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Uh-oh! Error occurred while deleting the profile from the server.');
         console.log(err);
-      })
-
+      });
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
