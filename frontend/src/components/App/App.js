@@ -382,6 +382,7 @@ const App = () => {
               onSubmit={handleLoginSubmit}
               setLoginEmail={setLoginEmail}
               setLoginPassword={setLoginPassword}
+              openRegisterModal={() => {setIsRegisterOpen(true); setIsLoginOpen(false)}}
             />
             <Register
               isOpen={isRegisterOpen}
