@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import './ClothingSelectorButton.css';
 
+
+/**
+ * The  module represents the buttons that are used for user preferences
+ *
+ * @author [Devin Jaggernauth](https://github.com/mentalcaries)
+ */
+
 const ClothingSelectorButton = ({ onItemSelect, item, clothingPreferences }) => {
   const { name, value } = item;
   const [isSelected, setIsSelected] = useState(clothingPreferences.includes(value));

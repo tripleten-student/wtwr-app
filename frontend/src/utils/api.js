@@ -2,6 +2,8 @@
  * This module takes care of all the requests made to the wtwr API
  * @module Api
  * @author [Shraddha](https://github.com/5hraddha)
+ * @author [Hoang Le Chau](https://github.com/hoanglechau)
+ * 
  */
 class Api {
   constructor(options) {
