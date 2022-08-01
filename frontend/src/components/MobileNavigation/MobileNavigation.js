@@ -2,6 +2,9 @@ import { useContext } from 'react';
 import './MobileNavigation.css';
 import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 import { NavLink } from 'react-router-dom';
+import mobileAddButton from '../../images/plus-sign.png';
+import avatarDefault from '../../images/avatar-default.png';
+import mobileModalButton from '../../images/modal-button.png';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
@@ -26,7 +29,7 @@ const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal }) =
           <button className="navigation-mobile__addButton" onClick={openNewGarmentModal}>
             <img
               className="navigation-mobile__addButton-plus"
-              src={require('../../images/plus-sign.png')}
+              src={mobileAddButton}
               alt="+"
             />
           </button>
@@ -37,7 +40,7 @@ const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal }) =
               {avatar ? (
                 <img
                   className="navigation-mobile__user"
-                  src={avatar || require('../../images/avatar-default.png')}
+                  src={avatar || avatarDefault}
                   alt="user avatar"
                 />
               ) : (
@@ -50,7 +53,7 @@ const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal }) =
             <button className="navigation-mobile__modalButton" onClick={openLoginModal}>
               <img
                 className="navigation-mobile__modalButton-image"
-                src={require('../../images/modal-button.png')}
+                src={mobileModalButton}
                 alt="signin/login"
               />
             </button>
