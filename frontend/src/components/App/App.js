@@ -308,7 +308,7 @@ const App = () => {
         avatar: response.avatar,
       })
     })
-    .catch((err)=> console.error(`${err}: Could not update`))
+    .catch((error)=> console.error(`${error}: Could not update`))
 
 
   };
