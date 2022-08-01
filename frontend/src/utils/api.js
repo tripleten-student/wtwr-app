@@ -35,13 +35,13 @@ class Api {
   /**
   * Updates the current user data from the server using a PATCH request.
   */
-  updateCurrentUserData = ({ username, avatarurl }) => {
+  updateCurrentUserData = ({ name, avatar }) => {
     return fetch(`${this._baseUrl}/users/me/profile`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        name: username,
-        avatar: avatarurl,
+        name: name,
+        avatar: avatar,
       })
     })
       .then(this._checkResponseStatus);

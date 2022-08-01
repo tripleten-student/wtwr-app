@@ -105,7 +105,6 @@ const getUser = (req, res, next) => {
 const updateUserProfile = (req, res, next) => {
   const currentUser = req.user._id;
   const { name, avatar } = req.body;
-
   User.findByIdAndUpdate(
     currentUser,
     { name, avatar },
@@ -115,7 +114,7 @@ const updateUserProfile = (req, res, next) => {
     },
   )
     .orFail(new NotFoundError('User ID not found'))
-    .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
+    .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Invalid name or avatar URL'));
