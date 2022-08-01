@@ -82,3 +82,9 @@
   cursor: pointer;
   background-color: rgba(243, 243, 243, 1);
 }
+
+@media screen and (max-width: 425px) {
+  .dropdown__list-container {
+    max-height: 120px;
+  }
+}
