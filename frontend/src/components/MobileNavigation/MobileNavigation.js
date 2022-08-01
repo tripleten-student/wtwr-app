@@ -45,7 +45,7 @@ const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal }) =
                 />
               ) : (
                 <span className="navigation-mobile__user navigation-mobile__user_type_none">
-                  {username.toUpperCase().charAt(0) || 'T'}
+                  {username?.toUpperCase().charAt(0) || 'T'}
                 </span>
               )}
             </NavLink>

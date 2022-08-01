@@ -288,8 +288,9 @@ const App = () => {
   };
 
   const handleUpdateProfileData = (userData) => {
-    console.log('api patch will be implemented');
-    console.log(userData);
+    // console.log(userData);
+    api.updateCurrentUserData(userData)
+
   };
 
   const handleRegisterSubmit = (registerCredentials) => {
