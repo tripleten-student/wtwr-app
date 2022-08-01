@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './ShowClothingModal.css';
 import Modal from '../Modal/Modal';
-import { weatherTypes } from '../../utils/formConstants';
+import { weatherTypesInFahrenheit, weatherTypesInCelcius } from '../../utils/formConstants';
 import capImage from '../../images/Clothes/letter-embroidered-baseball-cap.png';
+import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 
 /**
  * The ShowClothingModal component
@@ -20,14 +21,30 @@ const ShowClothingModal = ({
   onClose,
 }) => {
 
+  const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const [ tempCondition, setTempCondition ] = useState('');
 
   useEffect(() => {
-    const weatherFiltered = weatherTypes.filter((weatherType) => weatherType.value === card.weather);
-    let weatherType = weatherFiltered.map((type) => { return type.name }).toString();
 
-    setTempCondition(weatherType);
-  }, [card.weather]);
+    const handleFahrenheit = () => {
+      const weatherFahFiltered = weatherTypesInFahrenheit.filter((weatherType) => weatherType.value === card.weather);
+      let weatherType = weatherFahFiltered.map((type) => { return type.name }).toString();
+      return weatherType;
+    }
+    
+    const handleCelcius = () => {
+      const weatherCelFiltered = weatherTypesInCelcius.filter((weatherType) => weatherType.value === card.weather);
+      let weatherType = weatherCelFiltered.map((type) => { return type.name }).toString();
+      return weatherType;
+    }
+    
+    if (currentTemperatureUnit === 'F') {
+      setTempCondition(handleFahrenheit);
+    } else {
+      setTempCondition(handleCelcius);
+    }
+
+  }, [card.weather, currentTemperatureUnit]);
   
 
   return (
