@@ -227,7 +227,7 @@ const App = () => {
     name: 'T-shirt',
     imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
     isLiked: true,
-    type: 't-shirt',
+    type: 'Top & Outerwear',
   };
   function handleLikeClick(cardData) {
     // insert logic to interact with WTWR API
@@ -333,10 +333,8 @@ const App = () => {
   };
 
   const handleClothingClick = (cardData) => {
-    if (isLoggedIn) {
       setSelectedClothingCard(cardData);
       setShowClothingModalOpen(true);
-    }
   }
 
   return (
@@ -375,6 +373,7 @@ const App = () => {
                     <Profile
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
+                      onCardClick={handleClothingClick}
                       onLogOutClick={handleLogOut}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                       onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
