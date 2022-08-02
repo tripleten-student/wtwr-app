@@ -162,10 +162,38 @@ const getWeatherDataWithExpiry = (key, getWeatherDataUsingLocation) => {
   }
 };
 
+const generateWeatherDataWhenAPIFails = () => {
+  const forecastArr = [];
+  const timeBreakPoints = [7, 13, 18, 22];
+  timeBreakPoints.forEach((point) => {
+    const elongateOrNot = determineTimeOfTheDay(point) === timeOfTheDay ? true : false;
+    const dayOrNight = point > 13 ? 'night' : 'day';
+    forecastArr.push({
+      // lowercase afternoon, morning ... for CSS
+      timeName: determineTimeOfTheDay(point),
+      condition: 'sunny',
+      temperature: {
+        F: `70°`,
+        C: `21°`,
+      },
+      dayOrNight: dayOrNight,
+      elongate: elongateOrNot,
+      // first letter uppercase for displaying on the card
+      displayedTime:
+        determineTimeOfTheDay(point).charAt(0).toUpperCase() +
+        determineTimeOfTheDay(point).slice(1),
+      description: 'sunny',
+      city: 'Neverland',
+    });
+  });
+  return forecastArr;
+};
+
 export {
   filterDataFromWeatherAPI,
   getForecastWeather,
   getGeolocation,
   getWeatherDataWithExpiry,
   setWeatherDataWithExpiry,
+  generateWeatherDataWhenAPIFails,
 };

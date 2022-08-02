@@ -26,6 +26,7 @@ import {
   filterDataFromWeatherAPI,
   getWeatherDataWithExpiry,
   setWeatherDataWithExpiry,
+  generateWeatherDataWhenAPIFails,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import { login, register, checkToken } from '../../utils/auth';
@@ -81,34 +82,38 @@ const App = () => {
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
     useState(false);
 
-    useEffect(()=>{
-      isLoggedIn && api.getCurrentUserData()
-      .then((data)=> setCurrentUser({
-        email: data.email,
-        avatar: data.avatar,
-        username: data.name,
-      }))
-      .catch(err => console.log(err))
-    },[isLoggedIn])
-
-    const verifyToken = useCallback(()=>{
-      const jwt = localStorage.getItem('jwt');
-      if (jwt) {
-        checkToken(jwt)
-          .then((res) => {
-            if (res) {
-              setIsLoggedIn(true);
-            }
+  useEffect(() => {
+    isLoggedIn &&
+      api
+        .getCurrentUserData()
+        .then((data) =>
+          setCurrentUser({
+            email: data.email,
+            avatar: data.avatar,
+            username: data.name,
           })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    },[])
-  
-    useEffect(() => {
-      verifyToken()
-    }, [verifyToken]);
+        )
+        .catch((err) => console.log(err));
+  }, [isLoggedIn]);
+
+  const verifyToken = useCallback(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    verifyToken();
+  }, [verifyToken]);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -155,18 +160,15 @@ const App = () => {
       );
   }, []);
 
-
-
-
   const getWeatherDataUsingLocation = () => {
     if (userLocation.latitude && userLocation.longitude) {
-      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
+      getForecastWeather(userLocation, undefined)
         .then((data) => {
           setweatherData(filterDataFromWeatherAPI(data));
           setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          setweatherData(generateWeatherDataWhenAPIFails());
         });
     }
   };
@@ -276,17 +278,17 @@ const App = () => {
     };
     api
       .addNewClothingItem(newClothingItem)
-      .then(newClothingItem => {
+      .then((newClothingItem) => {
         closeAllPopups();
         setClothingItems([newClothingItem, ...clothingItems]);
         setNewClothingItemType(newClothingItem.type);
         setNewClothingItemUrl(newClothingItem.imageUrl);
         setIsCreateClothingConfirmationModalOpen(true);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
         console.log(err);
-      })
+      });
   };
 
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -300,17 +302,16 @@ const App = () => {
   };
 
   const handleUpdateProfileData = (userData) => {
-    api.updateCurrentUserData(userData)
-    .then(response => {
-      setCurrentUser({
-        ...currentUser,
-        username: response.name,
-        avatar: response.avatar,
+    api
+      .updateCurrentUserData(userData)
+      .then((response) => {
+        setCurrentUser({
+          ...currentUser,
+          username: response.name,
+          avatar: response.avatar,
+        });
       })
-    })
-    .catch((error)=> console.error(`${error}: Could not update`))
-
-
+      .catch((error) => console.error(`${error}: Could not update`));
   };
 
   const handleRegisterSubmit = (registerCredentials) => {
@@ -330,15 +331,14 @@ const App = () => {
     api
       .deleteCurrentUser()
       .then(() => {
-        console.log("User is deleted");
+        console.log('User is deleted');
         closeAllPopups();
         handleLogOut();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Uh-oh! Error occurred while deleting the profile from the server.');
         console.log(err);
-      })
-
+      });
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
@@ -403,13 +403,19 @@ const App = () => {
               onSubmit={handleLoginSubmit}
               setLoginEmail={setLoginEmail}
               setLoginPassword={setLoginPassword}
-              openRegisterModal={() => { setIsRegisterOpen(true); setIsLoginOpen(false) }}
+              openRegisterModal={() => {
+                setIsRegisterOpen(true);
+                setIsLoginOpen(false);
+              }}
             />
             <Register
               isOpen={isRegisterOpen}
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
-              openLoginModal={() => { setIsLoginOpen(true); setIsRegisterOpen(false) }}
+              openLoginModal={() => {
+                setIsLoginOpen(true);
+                setIsRegisterOpen(false);
+              }}
             />
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}
