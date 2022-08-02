@@ -48,7 +48,8 @@
     align-items: center;
     width: 100%;
   }
-
+}
+@media screen and (max-width: 768px) {
   .clothes-section__info {
     width: 100%;
     justify-content: space-between;
