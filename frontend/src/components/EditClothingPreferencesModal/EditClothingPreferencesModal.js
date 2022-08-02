@@ -1,9 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import ClothingSelectorButton from '../ClothingSelectorButton/ClothingSelectorButton';
 import { clothingItems } from '../../utils/formConstants';
-import './EditClothingPreferences.css';
+import './EditClothingPreferencesModal.css';
 
 /**
  * The **EditClothingPreferences** component enables a logged in user to edit choices for clothing items.
@@ -12,7 +12,11 @@ import './EditClothingPreferences.css';
  */
 const EditClothingPreferences = ({ isOpen, onClose, onSubmit, userClothingPreferences }) => {
   const ref = useRef();
-  const [clothingPreferences, setClothingPreferences] = useState(userClothingPreferences);
+  const [clothingPreferences, setClothingPreferences] = useState([]);
+
+  useEffect(() => {
+    setClothingPreferences(userClothingPreferences);
+  }, [userClothingPreferences]);
 
   const handleClothingItemSelect = (selection) => {
     clothingPreferences.includes(selection)
