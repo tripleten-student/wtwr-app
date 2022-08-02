@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   margin: 0;
-  padding: 8px 16px 8px 16px;
+  padding: 8px 16px;
   border-radius: 4px;
   border: none;
   outline: none;
@@ -57,6 +57,37 @@
 .clothesSectionMain__description {
   font-size: 20px;
   margin: 0;
+  display: inline;
+}
+.clothesSectionMain__description_slash {
+  display: inline;
+  font-size: 20px;
+}
+.randomize-button_location_bottom {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .randomize-button {
+    display: none;
+  }
+  .clothesSectionMain__info {
+    margin: 0 0 20px 0;
+  }
+  .clothesSectionMain__description {
+    display: block;
+  }
+  .clothesSectionMain__description_slash {
+    display: none;
+  }
+  .randomize-button_location_bottom {
+    display: flex;
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 @media screen and (max-width: 750px) {
