@@ -33,12 +33,14 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
       : 'clothingcard__like';
 
 
-  const handleCardClick = () => {
-    onCardClick(cardData);
-  }
+  const handleCardClick = (event) => {
+    if (!event.target.className.includes('clothingcard__like')) {
+      onCardClick(cardData);
+    }
+  };
 
   return (
-    <div className="clothingcard">
+    <div className="clothingcard" onClick={handleCardClick}>
       <img
         className={`clothingcard__image ${!clothingItemPresent && 'clothingcard__image_default'}`}
         src={
@@ -47,7 +49,6 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
             : require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`)
         }
         alt={clothingItemPresent ? cardData.name : templateItem.type}
-        onClick={handleCardClick}
       />
       <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
@@ -62,7 +63,6 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
             className={cardHeartButtonClassName}
             type="button"
             aria-label="Like"
-            onClick={handleLike}
           ></button>
         </div>
         {location.pathname === '/' && !clothingItemPresent && (
