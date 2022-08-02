@@ -264,17 +264,17 @@ const App = () => {
     };
     api
       .addNewClothingItem(newClothingItem)
-      .then(newClothingItem => {
+      .then((newClothingItem) => {
         closeAllPopups();
         setClothingItems([newClothingItem, ...clothingItems]);
         setNewClothingItemType(newClothingItem.type);
         setNewClothingItemUrl(newClothingItem.imageUrl);
         setIsCreateClothingConfirmationModalOpen(true);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
         console.log(err);
-      })
+      });
   };
 
   const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -309,15 +309,14 @@ const App = () => {
     api
       .deleteCurrentUser()
       .then(() => {
-        console.log("User is deleted");
+        console.log('User is deleted');
         closeAllPopups();
         handleLogOut();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Uh-oh! Error occurred while deleting the profile from the server.');
         console.log(err);
-      })
-
+      });
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
@@ -325,6 +324,8 @@ const App = () => {
     console.log("User's clothing preferences has been changed");
     console.log(clothingPreferences);
   };
+
+  if (!weatherData) return null;
 
   return (
     <div className="page">
@@ -382,13 +383,19 @@ const App = () => {
               onSubmit={handleLoginSubmit}
               setLoginEmail={setLoginEmail}
               setLoginPassword={setLoginPassword}
-              openRegisterModal={() => {setIsRegisterOpen(true); setIsLoginOpen(false)}}
+              openRegisterModal={() => {
+                setIsRegisterOpen(true);
+                setIsLoginOpen(false);
+              }}
             />
             <Register
               isOpen={isRegisterOpen}
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
-              openLoginModal={() => {setIsLoginOpen(true); setIsRegisterOpen(false) }}
+              openLoginModal={() => {
+                setIsLoginOpen(true);
+                setIsRegisterOpen(false);
+              }}
             />
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}

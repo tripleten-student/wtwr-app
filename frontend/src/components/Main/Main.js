@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import './Main.css';
 import ClothingCard from '../ClothingCard/ClothingCard';
+import Clothes from '../Clothes';
 import randomizeIcon from '../../images/randomizeIcon.svg';
 import { clothes } from '../../utils/testData';
 import { accessories, top, bottom, shoes } from '../../utils/templateApparel';
@@ -15,44 +16,97 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  */
 
 function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
-  // To get the weather in the actual moment
+  const [accesoriesItem, setAccesoriesItem] = useState({});
+  const [topsandoutwearItem, setTopsandoutwearItem] = useState({});
+  const [bottomsItem, setBottomsItem] = useState({});
+  const [shoesItem, setShoesItem] = useState({});
 
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  if (!weatherData) return null;
+
+  /**DISPLAY TEMPERATURE TEXT**/
+  // To get the weather in the actual moment
   const actualWeather = weatherData.find((element) => element.elongate);
 
+  /**DISPLAY CARDS**/
+  // 1. Weather intervals for type of clothes in relation with the temperature.
+  // Weather: string, enum:['hot', 'warm', 'moderate', 'cold', 'freezing']
+  const weatherType = () => {
+    const newWeather = parseInt(actualWeather.temperature.C);
+    if (newWeather > 25) {
+      return 'hot';
+    } else if (newWeather > 13 && newWeather <= 24) {
+      return 'warm';
+    } else if (newWeather >= 9 && newWeather <= 13) {
+      return 'moderate';
+    } else if (newWeather > 0 && newWeather < 8) {
+      return 'cold';
+    } else if (newWeather < 0) {
+      return 'freezing';
+    }
+  };
+
+  /** 2. To get the random item of clothes based in the favorited feature**/
+  function getRandomItemByProbability(data) {
+    // Declare new array
+    let out = [];
+    // Loop through the data.
+    for (let i = 0; i < data.length; ++i) {
+      // Push the value over and over again according to its
+      // probability.
+      for (let j = 0; j < data[i].prob; ++j) {
+        out.push(data[i]);
+      }
+    }
+    // return the random choosen item, the item favorited will have more chances to appear
+    // as it will have more repetitions.
+    return out[Math.floor(Math.random() * out.length)];
+  }
+
+  /** 3. Display cards only if LoggedIn.**/
+
+  const clothesItems = isLoggedIn ? clothes : [{}];
+
+  /** 3. Increase probability to items liked.**/
+  const ItemsProbability = clothesItems.map((item) => {
+    if (item.isLiked === true) {
+      item['prob'] = 3;
+      return item;
+    } else {
+      item['prob'] = 1;
+      return item;
+    }
+  });
+
+  /** 4. Get each item and set state for each type.**/
+  useEffect(() => {
+    // Filter throught the item to get the correct cloth by it's type and weather range or temperature.
+    const accesoriesFilter = ItemsProbability.filter(
+      (cloth) => cloth.type === 'Accessories' && cloth.weather === weatherType()
+    );
+    const topsandoutwearFilter = ItemsProbability.filter(
+      (cloth) => cloth.type === 'Tops & outerwear' && cloth.weather === weatherType()
+    );
+    const bottomsFilter = ItemsProbability.filter(
+      (cloth) => cloth.type === 'Bottoms' && cloth.weather === weatherType()
+    );
+    const shoesFilter = ItemsProbability.filter(
+      (cloth) => cloth.type === 'Shoes' && cloth.weather === weatherType()
+    );
+
+    setAccesoriesItem(getRandomItemByProbability(accesoriesFilter));
+    setTopsandoutwearItem(getRandomItemByProbability(topsandoutwearFilter));
+    setBottomsItem(getRandomItemByProbability(bottomsFilter));
+    setShoesItem(getRandomItemByProbability(shoesFilter));
+  }, [weatherData]);
+
   /**THIS FUNCTIONALLITY HAS BEEN ADDED FOR TESTING PURPOSES**/
-  const clothesTestData = isLoggedIn ? clothes : [{}];
+  // const clothesTestData = isLoggedIn ? clothes : [{}];
+
+  const clothesTestData = clothes;
 
   function handleRandomClick() {
     console.log('Randomize');
   }
-
-  function random_clothes(clothes) {
-    return clothes[Math.floor(Math.random() * clothes.length)];
-  }
-
-  function getClothes(clothes) {
-    const likedClothes = clothes.filter((cloth) => cloth.isLiked === true);
-    if (likedClothes.length === 0) {
-      return random_clothes(clothes);
-    } else {
-      return random_clothes(likedClothes);
-    }
-  }
-  /**UNTIL HERE**/
-
-  //In the final project the main item should receive the clothesData,
-  // using "clothesTestData" for testing purposes
-
-  const accesoriesItem = getClothes(
-    clothesTestData.filter((cloth) => cloth.type === 'Accessories')
-  );
-  const topsandoutwearItem = getClothes(
-    clothesTestData.filter((cloth) => cloth.type === 'Tops & outerwear')
-  );
-  const bottomsItem = getClothes(clothesTestData.filter((cloth) => cloth.type === 'Bottoms'));
-  const shoesItem = getClothes(clothesTestData.filter((cloth) => cloth.type === 'Shoes'));
 
   return (
     <main className="main">

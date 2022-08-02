@@ -1,3 +1,4 @@
+import React from 'react';
 import './ClothingCard.css';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -8,7 +9,11 @@ import PropTypes from 'prop-types';
  * @author [Yuffie](https://github.com/yuff1006) & @author [Santiago](https://github.com/Santiag0SR)
  */
 
-const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
+//1. Clean up code so only one type of data is received for every location.
+//2. Remove the like button for template cards.
+//3. Add ... when
+
+const ClothingCard = ({ weatherData, cardData, onCardLike, apparelGroup }) => {
   const location = useLocation();
 
   function createTemplateItem(apparelGroup) {
@@ -45,13 +50,15 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
       />
       <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
-          <p className="clothingcard__title">
-            {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
-            {location.pathname === '/' &&
-              (clothingItemPresent
-                ? cardData.name.charAt(0).toUpperCase() + cardData.name.slice(1)
-                : templateItem.type.charAt(0).toUpperCase() + templateItem.type.slice(1))}
-          </p>
+          {cardData === null && (
+            <p className="clothingcard__title">
+              {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
+              {location.pathname === '/' &&
+                (clothingItemPresent
+                  ? cardData.name.charAt(0).toUpperCase() + cardData.name.slice(1)
+                  : templateItem.type.charAt(0).toUpperCase() + templateItem.type.slice(1))}
+            </p>
+          )}
           <button
             className={cardHeartButtonClassName}
             type="button"
