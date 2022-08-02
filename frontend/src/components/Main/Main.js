@@ -23,11 +23,15 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, userClothingPr
 
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
-  /**DISPLAY CARDS**/
-  const actualWeather = weatherData.find((element) => element.elongate);
+  /**DISPLAY WEATHER TEXT**/
 
+  /**DISPLAY CARDS**/
   // 1. Weather intervals for type of clothes in relation with the temperature.
   // Weather: string, enum:['hot', 'warm', 'moderate', 'cold', 'freezing']
+
+  // Use this in the weather text too.
+  const actualWeather = weatherData.find((element) => element.elongate);
+
   const weatherType = () => {
     const newWeather = parseInt(actualWeather.temperature.F);
     if (newWeather >= 97) {
