@@ -333,8 +333,10 @@ const App = () => {
   };
 
   const handleClothingClick = (cardData) => {
+    if (isLoggedIn) {
       setSelectedClothingCard(cardData);
       setShowClothingModalOpen(true);
+    }
   }
 
   return (
