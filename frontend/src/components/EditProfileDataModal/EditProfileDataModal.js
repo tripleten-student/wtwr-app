@@ -39,14 +39,18 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
 
   // Event Handlers
   const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
+
   const handleInputChange = (event) => handleChange(event);
+  
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    const { username, avatar } = values;
-
-    if (isValid || (username && avatar)) {
+    const { username, avatarurl } = values;
+    if (isValid || (username && avatarurl)) {
       // naming of the fields to be checked again when backend API is connected
-      onUpdateUserProfile(values);
+      onUpdateUserProfile({
+        name: username,
+        avatar: avatarurl
+      });
       onClose();
     }
   };
