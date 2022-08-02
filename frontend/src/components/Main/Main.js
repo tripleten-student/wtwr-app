@@ -59,7 +59,7 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
       <WeatherCards weatherData={weatherData} />
       <div className="clothesSectionMain">
         <div className="clothesSectionMain__info">
-          <p>{`Today is ${actualWeather.temperature[currentTemperatureUnit]} ${currentTemperatureUnit} and it is ${actualWeather.condition} / You may want to wear:`}</p>
+          <p className="clothesSectionMain__description">{`Today is ${actualWeather.temperature[currentTemperatureUnit]} ${currentTemperatureUnit} and it is ${actualWeather.condition} / You may want to wear:`}</p>
           <button className="randomize-button" type="button" onClick={handleRandomClick}>
             <img className={'randomize-icon'} alt="randomize" src={randomizeIcon} />
             Randomize
