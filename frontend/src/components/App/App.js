@@ -327,30 +327,6 @@ const App = () => {
 
   if (!weatherData) return null;
 
-  const actualWeather = weatherData.find((element) => element.elongate);
-
-  // 1. Weather intervals for type of clothes in relation with the temperature.
-  // Weather: string, enum:['hot', 'warm', 'moderate', 'cold', 'freezing']
-  const weatherType = () => {
-    const newWeather = parseInt(actualWeather.temperature.F);
-    console.log(newWeather);
-    if (newWeather >= 97) {
-      return 'extreme';
-    } else if (newWeather >= 86 && newWeather <= 96) {
-      return 'hot';
-    } else if (newWeather >= 78 && newWeather <= 85) {
-      return 'warm';
-    } else if (newWeather >= 66 && newWeather <= 77) {
-      return 'optimal';
-    } else if (newWeather >= 54 && newWeather <= 65) {
-      return 'cool';
-    } else if (newWeather >= 33 && newWeather <= 53) {
-      return 'cold';
-    } else if (newWeather >= -22 && newWeather <= 32) {
-      return 'extremely cold';
-    }
-  };
-
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -374,14 +350,7 @@ const App = () => {
               <Route
                 exact
                 path="/"
-                element={
-                  <Main
-                    weatherData={weatherData}
-                    isLoggedIn={isLoggedIn}
-                    weatherType={weatherType}
-                    actualWeather={actualWeather}
-                  />
-                }
+                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
               ></Route>
               <Route
                 exact
