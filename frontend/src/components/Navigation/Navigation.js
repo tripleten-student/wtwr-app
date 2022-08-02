@@ -39,7 +39,7 @@ const Navigation = ({ isLoggedIn, handleRegisterClick, handleLoginClick, handleA
               ) : (
                 /** takes username, turns string to uppercase and takes first letter */
                 <span className="navigation__user navigation__user_type_none">
-                  {username.toUpperCase().charAt(0) || 'T'}
+                  {username?.toUpperCase().charAt(0) || ''}
                 </span>
               )}
             </NavLink>

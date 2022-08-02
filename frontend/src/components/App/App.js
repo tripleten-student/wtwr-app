@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
@@ -81,6 +81,35 @@ const App = () => {
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
     useState(false);
 
+    useEffect(()=>{
+      isLoggedIn && api.getCurrentUserData()
+      .then((data)=> setCurrentUser({
+        email: data.email,
+        avatar: data.avatar,
+        username: data.name,
+      }))
+      .catch(err => console.log(err))
+    },[isLoggedIn])
+
+    const verifyToken = useCallback(()=>{
+      const jwt = localStorage.getItem('jwt');
+      if (jwt) {
+        checkToken(jwt)
+          .then((res) => {
+            if (res) {
+              setIsLoggedIn(true);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },[])
+  
+    useEffect(() => {
+      verifyToken()
+    }, [verifyToken]);
+
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
     getGeolocation()
@@ -126,26 +155,9 @@ const App = () => {
       );
   }, []);
 
-  useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      checkToken(jwt)
-        .then((res) => {
-          if (res) {
-            setCurrentUser({
-              ...currentUser,
-              username: res.name,
-              email: res.email,
-              avatar: res.avatar,
-            });
-            setIsLoggedIn(true);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, []);
+
+
+
   const getWeatherDataUsingLocation = () => {
     if (userLocation.latitude && userLocation.longitude) {
       getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
@@ -314,8 +326,17 @@ const [ isLiked, setIsLiked ] = useState(false);
   };
 
   const handleUpdateProfileData = (userData) => {
-    console.log('api patch will be implemented');
-    console.log(userData);
+    api.updateCurrentUserData(userData)
+    .then(response => {
+      setCurrentUser({
+        ...currentUser,
+        username: response.name,
+        avatar: response.avatar,
+      })
+    })
+    .catch((error)=> console.error(`${error}: Could not update`))
+
+
   };
 
   const handleRegisterSubmit = (registerCredentials) => {
@@ -406,13 +427,13 @@ const [ isLiked, setIsLiked ] = useState(false);
               onSubmit={handleLoginSubmit}
               setLoginEmail={setLoginEmail}
               setLoginPassword={setLoginPassword}
-              openRegisterModal={() => {setIsRegisterOpen(true); setIsLoginOpen(false)}}
+              openRegisterModal={() => { setIsRegisterOpen(true); setIsLoginOpen(false) }}
             />
             <Register
               isOpen={isRegisterOpen}
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
-              openLoginModal={() => {setIsLoginOpen(true); setIsRegisterOpen(false) }}
+              openLoginModal={() => { setIsLoginOpen(true); setIsRegisterOpen(false) }}
             />
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}

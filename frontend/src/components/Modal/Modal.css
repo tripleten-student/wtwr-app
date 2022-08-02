@@ -78,3 +78,40 @@
 .modal__close-btn_wide {
   right: 23px;
 }
+
+@media screen and (max-width: 425px) {
+  .modal {
+    padding: 16px;
+  }
+
+  .modal_position_middle,
+  .modal_position_top-right {
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .modal__container {
+    padding: 16px 16px 20px;
+    width: 100%;
+    border-radius: 12px;
+  }
+
+  .modal__container_width_normal {
+    max-width: 390px;
+  }
+
+  .modal__container_width_wide {
+    max-width: 390px;
+  }
+
+  .modal__close-btn {
+    top: 19px;
+    right: 19px;
+    width: 10px;
+    height: 10px;
+  }
+
+  .modal__close-btn_wide {
+    right: 19px;
+  }
+}

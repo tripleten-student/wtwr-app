@@ -10,15 +10,19 @@ const { celebrate, Joi } = require('celebrate');
 const {
   getAllItems,
   createItem,
+  editItem,
   deleteItem,
   toggleLikeStatus,
 } = require('../controllers/clothing');
+const { validateItem } = require('../middleware/validation');
 
 const router = express.Router();
 
 router.get('/', getAllItems);
 
-router.post('/', createItem);
+router.post('/', validateItem, createItem);
+
+router.patch('/:ItemId', validateItem, editItem);
 
 router.delete(
   '/:ItemId',
