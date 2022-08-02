@@ -84,20 +84,25 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, userClothingPr
     }
   });
 
+  console.log(weatherType());
+
+  console.log(ItemsProbability);
+
   /** 4. Get each item and set state for each type.**/
   useEffect(() => {
     // Filter throught the item to get the correct cloth by it's type and weather range or temperature.
     const accesoriesFilter = ItemsProbability.filter(
-      (cloth) => cloth.type === 'Accessories' && cloth.weather === weatherType()
+      (cloth) => cloth.apparelGroup === 'Accessories' && cloth.weather === weatherType()
     );
+    console.log(accesoriesFilter);
     const topsandoutwearFilter = ItemsProbability.filter(
-      (cloth) => cloth.type === 'Tops & outerwear' && cloth.weather === weatherType()
+      (cloth) => cloth.apparelGroup === 'Tops & outerwear' && cloth.weather === weatherType()
     );
     const bottomsFilter = ItemsProbability.filter(
-      (cloth) => cloth.type === 'Bottoms' && cloth.weather === weatherType()
+      (cloth) => cloth.apparelGroup === 'Bottoms' && cloth.weather === weatherType()
     );
     const shoesFilter = ItemsProbability.filter(
-      (cloth) => cloth.type === 'Shoes' && cloth.weather === weatherType()
+      (cloth) => cloth.apparelGroup === 'Shoes' && cloth.weather === weatherType()
     );
 
     setAccesoriesItem(getRandomItemByProbability(accesoriesFilter));
