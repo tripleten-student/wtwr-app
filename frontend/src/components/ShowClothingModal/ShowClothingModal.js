@@ -14,43 +14,48 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  *
  */
 
-const ShowClothingModal = ({
-  card,
-  handleClick,
-  onCardLike,
-  isOpen,
-  onClose,
-}) => {
-
+const ShowClothingModal = ({ card, handleClick, onCardLike, isOpen, onClose }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  const [ tempCondition, setTempCondition ] = useState('');
-  const [ isLiked, setIsLiked ] = useState('clothing-modal__like');
+  const [tempCondition, setTempCondition] = useState('');
+  const [isLiked, setIsLiked] = useState('clothing-modal__like');
 
   useEffect(() => {
-    card.isLiked === true ? setIsLiked('clothing-modal__like clothing-modal__like_active') : setIsLiked('clothing-modal__like');
-  }, [card.isLiked])
+    card.isLiked === true
+      ? setIsLiked('clothing-modal__like clothing-modal__like_active')
+      : setIsLiked('clothing-modal__like');
+  }, [card.isLiked]);
 
   useEffect(() => {
     const handleFahrenheit = () => {
-      const weatherFahFiltered = weatherTypesInFahrenheit.filter((weatherType) => weatherType.value === card.weather);
-      let weatherType = weatherFahFiltered.map((type) => { return type.name }).toString();
+      const weatherFahFiltered = weatherTypesInFahrenheit.filter(
+        (weatherType) => weatherType.value === card.weather
+      );
+      let weatherType = weatherFahFiltered
+        .map((type) => {
+          return type.name;
+        })
+        .toString();
       return weatherType;
-    }
-    
+    };
+
     const handleCelcius = () => {
-      const weatherCelFiltered = weatherTypesInCelcius.filter((weatherType) => weatherType.value === card.weather);
-      let weatherType = weatherCelFiltered.map((type) => { return type.name }).toString();
+      const weatherCelFiltered = weatherTypesInCelcius.filter(
+        (weatherType) => weatherType.value === card.weather
+      );
+      let weatherType = weatherCelFiltered
+        .map((type) => {
+          return type.name;
+        })
+        .toString();
       return weatherType;
-    }
-    
+    };
+
     if (currentTemperatureUnit === 'F') {
       setTempCondition(handleFahrenheit);
     } else {
       setTempCondition(handleCelcius);
     }
-
   }, [card.weather, currentTemperatureUnit]);
-  
 
   return (
     <Modal
@@ -67,7 +72,7 @@ const ShowClothingModal = ({
         </div>
         <img
           src={(card && card.imageUrl) || capImage}
-          alt={(card && card.name) || "clothing"}
+          alt={(card && card.name) || ''}
           className="clothing-modal__image"
         />
         <div className="clothing-modal__text-container">
@@ -76,9 +81,7 @@ const ShowClothingModal = ({
           <p className="clothing-modal__text clothing-modal__text_type_heading">
             Temperature:
           </p>{' '}
-          <p className="clothing-modal__text">
-            {tempCondition || 'Hot (70°F)'}
-          </p>
+          <p className="clothing-modal__text">{tempCondition || ''}</p>
           <button onClick={handleClick} className="clothing-modal__button">
             Edit
           </button>{' '}
