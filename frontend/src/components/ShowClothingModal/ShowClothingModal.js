@@ -56,6 +56,10 @@ const ShowClothingModal = ({
       onClose={onClose}
     >
       <div className="clothing-modal">
+        <div className="clothing-modal__name-container">
+          <p className="clothing-modal__name">{card.name}</p>
+          <button className="clothing-modal__like" alt="like-button"></button>
+        </div>
         <img
           src={(card && card.imageUrl) || capImage}
           alt={(card && card.name) || "clothing"}
