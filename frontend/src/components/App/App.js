@@ -403,13 +403,13 @@ const App = () => {
               onSubmit={handleLoginSubmit}
               setLoginEmail={setLoginEmail}
               setLoginPassword={setLoginPassword}
-              openRegisterModal={() => {setIsRegisterOpen(true); setIsLoginOpen(false)}}
+              openRegisterModal={() => { setIsRegisterOpen(true); setIsLoginOpen(false) }}
             />
             <Register
               isOpen={isRegisterOpen}
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
-              openLoginModal={() => {setIsLoginOpen(true); setIsRegisterOpen(false) }}
+              openLoginModal={() => { setIsLoginOpen(true); setIsRegisterOpen(false) }}
             />
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}
