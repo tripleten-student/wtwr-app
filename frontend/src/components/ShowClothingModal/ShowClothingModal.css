@@ -48,7 +48,7 @@
     border: none;
 }
 
-.clothing-modal__like:active {
+.clothing-modal__like_active {
     background-image: url(../../images/heart-liked.png);
 }
 

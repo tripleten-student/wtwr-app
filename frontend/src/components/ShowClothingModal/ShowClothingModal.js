@@ -23,9 +23,13 @@ const ShowClothingModal = ({
 
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const [ tempCondition, setTempCondition ] = useState('');
+  const [ isLiked, setIsLiked ] = useState('clothing-modal__like');
 
   useEffect(() => {
+    card.isLiked === true ? setIsLiked('clothing-modal__like clothing-modal__like_active') : setIsLiked('clothing-modal__like');
+  }, [card.isLiked])
 
+  useEffect(() => {
     const handleFahrenheit = () => {
       const weatherFahFiltered = weatherTypesInFahrenheit.filter((weatherType) => weatherType.value === card.weather);
       let weatherType = weatherFahFiltered.map((type) => { return type.name }).toString();
@@ -58,7 +62,7 @@ const ShowClothingModal = ({
       <div className="clothing-modal">
         <div className="clothing-modal__name-container">
           <p className="clothing-modal__name">{card.name}</p>
-          <button className="clothing-modal__like" alt="like-button"></button>
+          <button className={isLiked} alt="like-button"></button>
         </div>
         <img
           src={(card && card.imageUrl) || capImage}
