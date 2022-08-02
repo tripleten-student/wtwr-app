@@ -47,8 +47,9 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
             : require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`)
         }
         alt={clothingItemPresent ? cardData.name : templateItem.type}
+        onClick={handleCardClick}
       />
-      <div className="clothingcard__info-container" onClick={handleCardClick}>
+      <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
           <p className="clothingcard__title">
             {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
