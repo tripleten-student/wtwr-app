@@ -92,8 +92,8 @@ const validateRequestAuth = celebrate({
 const validatePreferences = celebrate({
   headers: Joi.object()
     .keys({
-      authorization: Joi.string().required().messages({
-        'string.empty': 'Authorization required',
+      _id: Joi.string().hex().length(24).messages({
+        'string.empty': 'ID required',
       }),
       preferences: Joi.array().items(Joi.string()),
     })
