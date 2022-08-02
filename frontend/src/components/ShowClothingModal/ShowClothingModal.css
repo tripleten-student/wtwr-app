@@ -46,6 +46,7 @@
     width: 18px;
     height: 15px;
     border: none;
+    transition: 0.3s ease-out opacity;
 }
 
 .clothing-modal__like_active {

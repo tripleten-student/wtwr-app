@@ -17,6 +17,7 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
 const ShowClothingModal = ({
   card,
   handleClick,
+  onCardLike,
   isOpen,
   onClose,
 }) => {
@@ -62,7 +63,7 @@ const ShowClothingModal = ({
       <div className="clothing-modal">
         <div className="clothing-modal__name-container">
           <p className="clothing-modal__name">{card.name}</p>
-          <button className={isLiked} alt="like-button"></button>
+          <button className={isLiked} alt="like-button" onClick={onCardLike}></button>
         </div>
         <img
           src={(card && card.imageUrl) || capImage}
