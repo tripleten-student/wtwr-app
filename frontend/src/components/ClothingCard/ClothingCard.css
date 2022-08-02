@@ -5,10 +5,9 @@
   display: flex;
   justify-content: center;
   background-color: #e9e9e9;
-  /* width: 325px;
-  height: 328px; */
   width: 100%;
   height: 100%;
+  align-items: center;
 }
 .clothingcard__image {
   height: 100%;
@@ -74,108 +73,25 @@
   color: rgba(0, 0, 0, 0.6);
   background-color: white;
   border-radius: 4px;
-  margin: 0 10px 0 0;
+  margin: 0;
   border: none;
 }
 
 .clothingcard__image_default {
-  width: 250px;
-  height: 180px;
-  margin-top: 74px;
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+  object-position: baseline;
 }
-/* @media screen and (max-width: 1439px) {
-  .clothingcard {
-    width: 283px;
-    height: 283px;
-  }
+
+@media screen and (max-width: 750px) {
   .clothingcard__title {
-    max-width: 180px;
+    max-width: 100px;
   }
 }
 
-@media screen and (max-width: 1279px) {
-  .clothingcard {
-    width: 325px;
-    height: 325px;
-  }
-}
-
-@media screen and (max-width: 1099px) {
-  .clothingcard {
-    width: 291px;
-    height: 291px;
-  }
-  .clothingcard__title {
-    max-width: 180px;
-  }
-}
-@media screen and (max-width: 990px) {
-  .clothingcard {
-    width: 260px;
-    height: 260px;
-  }
-  .clothingcard__title {
-    max-width: 180px;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  .clothingcard {
-    width: 220px;
-    height: 220px;
-  }
-  .clothingcard__title {
-    max-width: 120px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .clothingcard {
-    width: 325px;
-    height: 325px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .clothingcard {
-    width: 291px;
-    height: 291px;
-  }
-}
-
-@media screen and (max-width: 671px) {
-  .clothingcard {
-    width: 260px;
-    height: 260px;
-  }
-  .clothingcard__title {
-    max-width: 120px;
-  }
-}
-@media screen and (max-width: 605px) {
-  .clothingcard {
-    width: 220px;
-    height: 220px;
-  }
-  .clothingcard__title {
-    max-width: 90px;
-  }
-}
-@media screen and (max-width: 532px) {
-  .clothingcard {
-    width: 190px;
-    height: 190px;
-  }
-  .clothingcard__title {
-    max-width: 90px;
-  }
-}
-@media screen and (max-width: 477px) {
-  .clothingcard {
-    width: 164px;
-    height: 164px;
-  }
+@media screen and (max-width: 425px) {
   .clothingcard__title {
     max-width: 72px;
   }
-} */
+}

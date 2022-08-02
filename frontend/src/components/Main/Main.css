@@ -59,19 +59,15 @@
   margin: 0;
 }
 
-/* @media screen and (max-width: 1279px) {
+@media screen and (max-width: 750px) {
   .clothesSectionMain__items {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    grid-gap: 16px;
+    grid-auto-rows: 194px;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .clothesSectionMain__items {
-    grid-template-columns: repeat(2, 1fr);
-  }
-} */
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 425px) {
   .clothesSectionMain__items {
     grid-template-columns: repeat(auto-fill, minmax(162px, 1fr));
     grid-gap: 16px;
