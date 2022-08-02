@@ -45,7 +45,7 @@ const App = () => {
       'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
@@ -327,6 +327,30 @@ const App = () => {
 
   if (!weatherData) return null;
 
+  const actualWeather = weatherData.find((element) => element.elongate);
+
+  // 1. Weather intervals for type of clothes in relation with the temperature.
+  // Weather: string, enum:['hot', 'warm', 'moderate', 'cold', 'freezing']
+  const weatherType = () => {
+    const newWeather = parseInt(actualWeather.temperature.F);
+    console.log(newWeather);
+    if (newWeather >= 97) {
+      return 'extreme';
+    } else if (newWeather >= 86 && newWeather <= 96) {
+      return 'hot';
+    } else if (newWeather >= 78 && newWeather <= 85) {
+      return 'warm';
+    } else if (newWeather >= 66 && newWeather <= 77) {
+      return 'optimal';
+    } else if (newWeather >= 54 && newWeather <= 65) {
+      return 'cool';
+    } else if (newWeather >= 33 && newWeather <= 53) {
+      return 'cold';
+    } else if (newWeather >= -22 && newWeather <= 32) {
+      return 'extremely cold';
+    }
+  };
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -340,7 +364,7 @@ const App = () => {
             {/** place login modal open state in Navigation*/}
             <Header weatherData={weatherData}>
               <Navigation
-                isLoggedIn={isLoggedIn}
+                // isLoggedIn={isLoggedIn}
                 handleAddClick={() => setIsCreateClothingModalOpen(true)}
                 handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}
@@ -350,7 +374,14 @@ const App = () => {
               <Route
                 exact
                 path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
+                element={
+                  <Main
+                    weatherData={weatherData}
+                    isLoggedIn={isLoggedIn}
+                    weatherType={weatherType}
+                    actualWeather={actualWeather}
+                  />
+                }
               ></Route>
               <Route
                 exact
@@ -450,11 +481,11 @@ const App = () => {
               userClothingPreferences={userClothingPreferences}
             />
             <Footer />
-            <MobileNavigation
+            {/* <MobileNavigation
               isLoggedIn={isLoggedIn}
               openLoginModal={() => setIsLoginOpen(true)}
               openNewGarmentModal={() => setIsCreateClothingModalOpen(true)}
-            />
+            /> */}
           </CurrentTemperatureUnitContext.Provider>
         </CurrentUserContext.Provider>
       </div>

@@ -15,7 +15,7 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
-function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
+function Main({ weatherData, weatherType, actualWeather, clothesData, onCardLike, isLoggedIn }) {
   const [accesoriesItem, setAccesoriesItem] = useState({});
   const [topsandoutwearItem, setTopsandoutwearItem] = useState({});
   const [bottomsItem, setBottomsItem] = useState({});
@@ -23,28 +23,8 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
 
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
-  /**DISPLAY TEMPERATURE TEXT**/
-  // To get the weather in the actual moment
-  const actualWeather = weatherData.find((element) => element.elongate);
-
   /**DISPLAY CARDS**/
-  // 1. Weather intervals for type of clothes in relation with the temperature.
-  // Weather: string, enum:['hot', 'warm', 'moderate', 'cold', 'freezing']
-  const weatherType = () => {
-    const newWeather = parseInt(actualWeather.temperature.C);
-    if (newWeather > 25) {
-      return 'hot';
-    } else if (newWeather > 13 && newWeather <= 24) {
-      return 'warm';
-    } else if (newWeather >= 9 && newWeather <= 13) {
-      return 'moderate';
-    } else if (newWeather > 0 && newWeather < 8) {
-      return 'cold';
-    } else if (newWeather < 0) {
-      return 'freezing';
-    }
-  };
-
+  console.log(weatherType());
   /** 2. To get the random item of clothes based in the favorited feature**/
   function getRandomItemByProbability(data) {
     // Declare new array
@@ -123,25 +103,25 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
           <ClothingCard
             key={'accesories'}
             apparelGroup={accessories}
-            cardData={accesoriesItem}
+            cardData={!accesoriesItem ? false : accesoriesItem}
             onCardLike={onCardLike}
           />
           <ClothingCard
             key={'topsandoutwear'}
             apparelGroup={top}
-            cardData={topsandoutwearItem}
+            cardData={!topsandoutwearItem ? false : topsandoutwearItem}
             onCardLike={onCardLike}
           />
           <ClothingCard
             key={'bottoms'}
             apparelGroup={bottom}
-            cardData={bottomsItem}
+            cardData={!bottomsItem ? false : bottomsItem}
             onCardLike={onCardLike}
           />
           <ClothingCard
             key={'shoes'}
             apparelGroup={shoes}
-            cardData={shoesItem}
+            cardData={!shoesItem ? false : shoesItem}
             onCardLike={onCardLike}
           />
         </div>

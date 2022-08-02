@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './ClothingCard.css';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -15,6 +15,8 @@ import PropTypes from 'prop-types';
 
 const ClothingCard = ({ weatherData, cardData, onCardLike, apparelGroup }) => {
   const location = useLocation();
+  const [templateItem, setTemplateItem] = useState({});
+  const clothingItemPresent = cardData;
 
   function createTemplateItem(apparelGroup) {
     if (apparelGroup) {
@@ -24,8 +26,9 @@ const ClothingCard = ({ weatherData, cardData, onCardLike, apparelGroup }) => {
     }
   }
 
-  const clothingItemPresent = cardData;
-  const templateItem = createTemplateItem(apparelGroup);
+  useEffect(() => {
+    setTemplateItem(createTemplateItem(apparelGroup));
+  }, [weatherData]);
 
   const handleLike = () => {
     // onCardLike(cardData);
@@ -46,25 +49,32 @@ const ClothingCard = ({ weatherData, cardData, onCardLike, apparelGroup }) => {
             ? cardData.imageUrl
             : require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`)
         }
-        alt={clothingItemPresent ? cardData.name : templateItem.type}
+        alt={clothingItemPresent ? cardData.name : templateItem.name}
       />
       <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
-          {cardData === null && (
-            <p className="clothingcard__title">
-              {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
-              {location.pathname === '/' &&
-                (clothingItemPresent
-                  ? cardData.name.charAt(0).toUpperCase() + cardData.name.slice(1)
-                  : templateItem.type.charAt(0).toUpperCase() + templateItem.type.slice(1))}
-            </p>
+          <p className="clothingcard__title">
+            {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
+            {location.pathname === '/' &&
+              (!clothingItemPresent ? templateItem.name : cardData.name)}
+          </p>
+
+          {location.pathname === '/profile' && !apparelGroup && (
+            <button
+              className={cardHeartButtonClassName}
+              type="button"
+              aria-label="Like"
+              onClick={handleLike}
+            ></button>
           )}
-          <button
-            className={cardHeartButtonClassName}
-            type="button"
-            aria-label="Like"
-            onClick={handleLike}
-          ></button>
+          {location.pathname === '/' && clothingItemPresent && (
+            <button
+              className={cardHeartButtonClassName}
+              type="button"
+              aria-label="Like"
+              onClick={handleLike}
+            ></button>
+          )}
         </div>
         {location.pathname === '/' && !clothingItemPresent && (
           <button aria-label="Add Photo" className="clothingcard__add-photo" type="button">

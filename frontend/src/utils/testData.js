@@ -98,15 +98,15 @@ const clothes = [
     isLiked: false,
     createdAt: '',
   },
-  {
-    name: 'Tie Front Crop Wide Leg Cotton & Linen Pants',
-    type: 'Bottoms',
-    weather: 'warm',
-    imageUrl: womenTieFrontCottonPants,
-    owner: 'user#2',
-    isLiked: true,
-    createdAt: '',
-  },
+  // {
+  //   name: 'Tie Front Crop Wide Leg Cotton & Linen Pants',
+  //   type: 'Bottoms',
+  //   weather: 'warm',
+  //   imageUrl: womenTieFrontCottonPants,
+  //   owner: 'user#2',
+  //   isLiked: true,
+  //   createdAt: '',
+  // },
 ];
 
 const users = [
