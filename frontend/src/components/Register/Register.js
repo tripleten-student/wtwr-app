@@ -222,7 +222,7 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
               type="text"
               id="register-name"
               name="register-name"
-              placeholder="Terry"
+              placeholder="Name"
               className={setInputClassName('register-name')}
               value={name}
               minLength="2"
