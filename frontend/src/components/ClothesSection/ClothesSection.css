@@ -39,7 +39,7 @@
     box-sizing: border-box;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 768px) {
 
     .clothes-section{
         align-items: center;

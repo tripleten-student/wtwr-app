@@ -61,6 +61,7 @@
   justify-content: center;
   font-size: 20px;
 }
+
 .navigation__user_location_profile {
   margin: 0 16px 0 0;
   height: 56px;
@@ -79,5 +80,9 @@
 @media screen and (max-width: 768px) {
   .navigation {
     display: none;
+  }
+
+  .navigation__user_location_profile {
+    margin: 0;
   }
 }
