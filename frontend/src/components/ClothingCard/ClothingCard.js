@@ -31,7 +31,6 @@ const ClothingCard = ({ weatherData, cardData, onCardLike, apparelGroup }) => {
   }, [weatherData]);
 
   const handleLike = () => {
-    // onCardLike(cardData);
     console.log('card liked');
   };
 
