@@ -41,7 +41,7 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
   const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
 
   const handleInputChange = (event) => handleChange(event);
-  
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const { username, avatarurl } = values;

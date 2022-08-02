@@ -1,29 +1,31 @@
-.main{
+.main {
   flex-grow: 1;
 }
 
-.clothesSectionMain{
+.clothesSectionMain {
   display: flex;
   flex-direction: column;
 }
 
-.clothesSectionMain__info{
+.clothesSectionMain__info {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin: 34px 0;
 }
 
-.randomize-button{
+.randomize-button {
   width: 130px;
   height: 36px;
   display: flex;
   align-items: center;
-  margin:0;
-  padding: 8px 16px 8px 16px;
+  margin: 0;
+  padding: 8px 16px;
   border-radius: 4px;
   border: none;
   outline: none;
-  background-color:#000000;
-  color:#FFFFFF;
+  background-color: #000000;
+  color: #ffffff;
   box-sizing: border-box;
   font-family: 'CabinetGrotesk-Bold';
   font-style: normal;
@@ -33,21 +35,73 @@
   cursor: pointer;
 }
 
-.randomize-button:hover{
+.randomize-button:hover {
   opacity: 0.6;
 }
 
-.randomize-icon{
-  margin-right:8px;
+.randomize-icon {
+  margin-right: 8px;
 }
 
-
-
-.clothesSectionMain__items{
+.clothesSectionMain__items {
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(auto-fit, 325px);
-  grid-template-rows: auto;
+  grid-template-columns: repeat(auto-fill, minmax(325px, 1fr));
+  grid-auto-rows: 328px;
   grid-gap: 20px;
   box-sizing: border-box;
+  justify-items: center;
+  width: 100%;
+}
+
+.clothesSectionMain__description {
+  font-size: 20px;
+  margin: 0;
+  display: inline;
+}
+.clothesSectionMain__description_slash {
+  display: inline;
+  font-size: 20px;
+}
+.randomize-button_location_bottom {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .randomize-button {
+    display: none;
+  }
+  .clothesSectionMain__info {
+    margin: 0 0 20px 0;
+  }
+  .clothesSectionMain__description {
+    display: block;
+  }
+  .clothesSectionMain__description_slash {
+    display: none;
+  }
+  .randomize-button_location_bottom {
+    display: flex;
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .clothesSectionMain__items {
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    grid-gap: 16px;
+    grid-auto-rows: 194px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .clothesSectionMain__items {
+    grid-template-columns: repeat(auto-fill, minmax(162px, 1fr));
+    grid-gap: 16px;
+    grid-auto-rows: 164px;
+  }
 }
