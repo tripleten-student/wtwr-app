@@ -126,6 +126,30 @@ const updateUserProfile = (req, res, next) => {
     });
 };
 
+const updateUserPreferences = (req, res, next) => {
+  const currentUser = req.user._id;
+  const { preferences } = req.body;
+  User.findByIdAndUpdate(
+    currentUser,
+    { preferences },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .orFail(new NotFoundError('User ID not found'))
+    .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Invalid items'));
+      } else if (err.name === 'CastError') {
+        next(new BadRequestError('Invalid User ID'));
+      } else {
+        next(err);
+      }
+    });
+};
+
 // Change password
 const updatePassword = (req, res, next) => {
   const currentUser = req.user._id;
@@ -181,6 +205,7 @@ module.exports = {
   getUsers,
   getUser,
   updateUserProfile,
+  updateUserPreferences,
   updatePassword,
   deleteUser,
   getCurrentUser,
