@@ -65,6 +65,20 @@ class Api {
   }
 
   /**
+   * Updates the current user preferences from the server using a PATCH request.
+   */
+  updateCurrentUserPreferences = (preferences) => {
+    return fetch(`${this._baseUrl}/users/me/preferences`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        preferences
+      })
+    })
+      .then(this._checkResponseStatus);
+  }
+
+  /**
   * Deletes the current user's profile from the server using a DELETE request.
   */
   deleteCurrentUser = () => {

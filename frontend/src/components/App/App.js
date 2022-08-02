@@ -54,7 +54,6 @@ const App = () => {
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
-  const [userClothingPreferences, setUserClothingPreferences] = useState([]);
   // Below states have been finalised
   // set the url of newly created garment from handleCreateClothingItem() to pass on to the CreateClothingConfirmationModal
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
@@ -83,8 +82,8 @@ const App = () => {
           email: data.email,
           avatar: data.avatar,
           username: data.name,
+          preferences: data.preferences,
         });
-        setUserClothingPreferences(data.preferences);
       })
       .catch(err => console.log(err))
   }, [isLoggedIn])
@@ -226,8 +225,8 @@ const App = () => {
           email: data.email,
           avatar: data.avatar,
           username: data.name,
+          preferences: data.preferences,
         });
-        setUserClothingPreferences(data.preferences);
         setLoginEmail('');
         setLoginPassword('');
         setIsLoggedIn(true);
@@ -255,7 +254,6 @@ const App = () => {
     api.updateAuthUserToken('');
     setIsLoggedIn(false);
     setCurrentUser({});
-    setUserClothingPreferences([]);
     localStorage.removeItem('jwt');
   };
 
@@ -312,7 +310,8 @@ const App = () => {
   }
 
   const handleUpdateProfileData = (userData) => {
-    api.updateCurrentUserData(userData)
+    api
+      .updateCurrentUserData(userData)
       .then(response => {
         setCurrentUser({
           ...currentUser,
@@ -320,13 +319,22 @@ const App = () => {
           avatar: response.avatar,
         })
       })
-      .catch((error) => console.error(`${error}: Could not update`))
+      .catch((error) => console.error(`${error}: Could not update`));
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
-    //An API call to update the clothing preferences
-    console.log("User's clothing preferences has been changed");
-    console.log(clothingPreferences);
+    api
+      .updateCurrentUserPreferences(clothingPreferences)
+      .then(({ preferences }) => {
+        setCurrentUser({
+          ...currentUser,
+          preferences,
+        });
+      })
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while updating current user clothing preference to the server.');
+        console.log(err);
+      })
   };
 
   const handleDeleteProfileSubmit = () => {
@@ -426,7 +434,6 @@ const App = () => {
               isOpen={isEditClothingPreferencesModalOpen}
               onClose={closeAllPopups}
               onSubmit={handleEditClothingPreferencesSubmit}
-              userClothingPreferences={userClothingPreferences}
             />
             <DeleteProfileModal
               isOpen={isDeleteProfileOpen}

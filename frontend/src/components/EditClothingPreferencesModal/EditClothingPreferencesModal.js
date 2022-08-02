@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext, } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import ClothingSelectorButton from '../ClothingSelectorButton/ClothingSelectorButton';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 import { clothingItems } from '../../utils/formConstants';
 import './EditClothingPreferencesModal.css';
 
@@ -10,21 +11,23 @@ import './EditClothingPreferencesModal.css';
  *
  * @author [Shraddha](https://github.com/5hraddha)
  */
-const EditClothingPreferences = ({ isOpen, onClose, onSubmit, userClothingPreferences }) => {
+const EditClothingPreferences = ({ isOpen, onClose, onSubmit }) => {
   const ref = useRef();
+  const { preferences } = useContext(CurrentUserContext);
   const [clothingPreferences, setClothingPreferences] = useState([]);
 
   useEffect(() => {
-    setClothingPreferences(userClothingPreferences);
-  }, [userClothingPreferences]);
+    setClothingPreferences(preferences);
+  }, [preferences]);
 
   const handleClothingItemSelect = (selection) => {
     clothingPreferences.includes(selection)
       ? setClothingPreferences(clothingPreferences.filter((item) => item !== selection))
-      : clothingPreferences.push(selection);
+      : setClothingPreferences([...clothingPreferences, selection]);
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
     onSubmit(clothingPreferences);
     onClose();
   };
@@ -46,7 +49,7 @@ const EditClothingPreferences = ({ isOpen, onClose, onSubmit, userClothingPrefer
             item={item}
             key={item.value}
             onItemSelect={handleClothingItemSelect}
-            clothingPreferences={clothingPreferences}
+            clothingPreferences={clothingPreferences || []}
           />
         ))}
       </div>
@@ -68,7 +71,6 @@ EditClothingPreferences.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  userClothingPreferences: PropTypes.array.isRequired,
 }
 
 export default EditClothingPreferences;
