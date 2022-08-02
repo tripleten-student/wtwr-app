@@ -20,6 +20,7 @@ import EditClothingModal from '../EditClothingModal/EditClothingModal';
 import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { clothes } from '../../utils/testData';
 import {
   getGeolocation,
   getForecastWeather,
@@ -215,14 +216,7 @@ const App = () => {
     setIsEditClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
   };
-  // mock clothingCardData for testing ClothingCard component, please test the like button
-  // by changing favorited from true to false
-  const clothingCardData = {
-    name: 'T-shirt',
-    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
-    isLiked: true,
-    type: 't-shirt',
-  };
+
   function handleLikeClick(cardData) {
     // insert logic to interact with WTWR API
     setIsLoginOpen(false);
@@ -350,7 +344,14 @@ const App = () => {
               <Route
                 exact
                 path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
+                element={
+                  <Main
+                    weatherData={weatherData}
+                    isLoggedIn={isLoggedIn}
+                    clothesData={clothingItems}
+                    userClothingPreferences={userClothingPreferences}
+                  />
+                }
               ></Route>
               <Route
                 exact
@@ -361,7 +362,7 @@ const App = () => {
                     isLoggedIn={isLoggedIn}
                   >
                     <Profile
-                      cardData={clothingCardData}
+                      clothesData={clothingItems}
                       onCardLike={handleLikeClick}
                       onLogOutClick={handleLogOut}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}

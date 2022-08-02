@@ -15,7 +15,7 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
-function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
+function Main({ weatherData, clothesData, onCardLike, isLoggedIn, userClothingPreferences }) {
   const [accesoriesItem, setAccesoriesItem] = useState({});
   const [topsandoutwearItem, setTopsandoutwearItem] = useState({});
   const [bottomsItem, setBottomsItem] = useState({});
@@ -30,7 +30,6 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
   // Weather: string, enum:['hot', 'warm', 'moderate', 'cold', 'freezing']
   const weatherType = () => {
     const newWeather = parseInt(actualWeather.temperature.F);
-    console.log(newWeather);
     if (newWeather >= 97) {
       return 'extreme';
     } else if (newWeather >= 86 && newWeather <= 96) {
@@ -66,13 +65,18 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
   }
 
   /** 3. Display cards only if LoggedIn.**/
-
   const clothesItems = isLoggedIn ? clothes : [{}];
 
-  /** 3. Increase probability to items liked.**/
+  /** 3. Increase probability to items liked and in the preferences.**/
   const ItemsProbability = clothesItems.map((item) => {
-    if (item.isLiked === true) {
+    if (item.isLiked === true && userClothingPreferences.includes(item.type) === true) {
+      item['prob'] = 4;
+      return item;
+    } else if (item.isLiked === true && userClothingPreferences.includes(item.type) === false) {
       item['prob'] = 3;
+      return item;
+    } else if (item.isLiked === false && userClothingPreferences.includes(item.type) === true) {
+      item['prob'] = 2;
       return item;
     } else {
       item['prob'] = 1;
@@ -101,11 +105,6 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
     setBottomsItem(getRandomItemByProbability(bottomsFilter));
     setShoesItem(getRandomItemByProbability(shoesFilter));
   }, [weatherData]);
-
-  /**THIS FUNCTIONALLITY HAS BEEN ADDED FOR TESTING PURPOSES**/
-  // const clothesTestData = isLoggedIn ? clothes : [{}];
-
-  const clothesTestData = clothes;
 
   function handleRandomClick() {
     console.log('Randomize');

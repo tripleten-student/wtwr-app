@@ -16,10 +16,10 @@ import eliseAvatar from '../images/Avatars/elise.png';
 const clothes = [
   // Clothing types: Tops & outerwear, Bottoms, Accessories, Shoes
   // Weather: string, enum:['hot', 'warm', 'moderate', 'cold', 'freezing']
-
   {
     name: 'Blue Jacket',
-    type: 'Tops & outerwear',
+    type: 'jacket',
+    apparelGroup: 'Tops & outerwear',
     weather: 'cold',
     imageUrl: blueJacket,
     owner: 'user#1',
@@ -28,7 +28,8 @@ const clothes = [
   },
   {
     name: 'Men Zip Up Bomber Jacket',
-    type: 'Tops & outerwear',
+    type: 'jacket',
+    apparelGroup: 'Tops & outerwear',
     weather: 'freezing',
     imageUrl: menZipUpBomberJacket,
     owner: 'user#1',
@@ -37,7 +38,8 @@ const clothes = [
   },
   {
     name: 'Men Solid Baby Pink Polo Shirt',
-    type: 'Tops & outerwear',
+    type: 'shirt',
+    apparelGroup: 'Tops & outerwear',
     weather: 'hot',
     imageUrl: menSolidBabyPinkPoloShirt,
     owner: 'user#1',
@@ -46,7 +48,8 @@ const clothes = [
   },
   {
     name: 'Men Black Footbed Sandals',
-    type: 'Shoes',
+    type: 'snikers',
+    apparelGroup: 'Shoes',
     weather: 'hot',
     imageUrl: menBlackFootedSandals,
     owner: 'user#1',
@@ -55,7 +58,8 @@ const clothes = [
   },
   {
     name: 'Faux Leather Open Toe Slip On Block Heels',
-    type: 'Shoes',
+    type: 'snikers',
+    apparelGroup: 'Shoes',
     weather: 'moderate',
     imageUrl: womenFauxLeatherBlockHeels,
     owner: 'user#2',
@@ -64,7 +68,8 @@ const clothes = [
   },
   {
     name: 'Women Charcoal Gray Crop Top',
-    type: 'Tops & outerwear',
+    type: 't-shirt',
+    apparelGroup: 'Tops & outerwear',
     weather: 'warm',
     imageUrl: womenCharcoalGrayCropTop,
     owner: '',
@@ -73,7 +78,8 @@ const clothes = [
   },
   {
     name: 'Women Printed Sweatshirt Austin',
-    type: 'Tops & outerwear',
+    type: 'sweatshirt',
+    apparelGroup: 'Tops & outerwear',
     weather: 'cold',
     imageUrl: womenAustinSweatshirt,
     owner: 'user#2',
@@ -82,7 +88,8 @@ const clothes = [
   },
   {
     name: 'Letter Embroidered Baseball Cap',
-    type: 'Accessories',
+    type: 'cap',
+    apparelGroup: 'Accessories',
     weather: 'hot',
     imageUrl: letterBaseballCap,
     owner: 'user#2',
@@ -91,7 +98,8 @@ const clothes = [
   },
   {
     name: 'Women Beanies & Gloves',
-    type: 'Accessories',
+    type: 'gloves',
+    apparelGroup: 'Accessories',
     weather: 'cold',
     imageUrl: womenBeaniesAndGloves,
     owner: 'user#2',
@@ -101,6 +109,7 @@ const clothes = [
   // {
   //   name: 'Tie Front Crop Wide Leg Cotton & Linen Pants',
   //   type: 'Bottoms',
+  //   apparelGroup: 'Bottoms',
   //   weather: 'warm',
   //   imageUrl: womenTieFrontCottonPants,
   //   owner: 'user#2',

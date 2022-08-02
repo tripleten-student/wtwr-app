@@ -11,7 +11,7 @@ import { clothes } from '../../utils/testData';
  */
 
 function Profile({
-  cardData,
+  clothesData,
   onCardLike,
   onAddNewClick,
   onChangePasswordClick,
@@ -20,11 +20,10 @@ function Profile({
   onLogOutClick,
   onDeleteProfileClick,
 }) {
-  // Once ready we will change "clothes" for "cardData".
-  const accessories = clothes.filter((cloth) => cloth.type === 'Accessories');
-  const topsandoutwear = clothes.filter((cloth) => cloth.type === 'Tops & outerwear');
-  const bottoms = clothes.filter((cloth) => cloth.type === 'Bottoms');
-  const shoes = clothes.filter((cloth) => cloth.type === 'Shoes');
+  const accessories = clothes.filter((cloth) => cloth.apparelGroup === 'Accessories');
+  const topsandoutwear = clothes.filter((cloth) => cloth.apparelGroup === 'Tops & outerwear');
+  const bottoms = clothes.filter((cloth) => cloth.apparelGroup === 'Bottoms');
+  const shoes = clothes.filter((cloth) => cloth.apparelGroup === 'Shoes');
 
   return (
     <div className="profile">
