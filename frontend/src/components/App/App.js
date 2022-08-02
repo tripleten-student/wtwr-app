@@ -243,6 +243,17 @@ const [ isLiked, setIsLiked ] = useState(false);
         .catch((err) => console.log(err));
   }
 
+
+  const handleItemDelete = (cardData) => {
+    api
+      .deleteClothingItem(cardData._id)
+      .then(() => {
+        setClothingItems(clothingItems.filter((deletedItem) => deletedItem._id !== cardData._id));
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
+
   const handleLoginSubmit = (loginCredentials) => {
     login(loginCredentials).then(({ data, token }) => {
       if (data) {
