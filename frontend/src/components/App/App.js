@@ -60,6 +60,8 @@ const App = () => {
   const [newClothingItemType, setNewClothingItemType] = useState('');
   const [clothingItems, setClothingItems] = useState([]);
 
+  const [ isLiked, setIsLiked ] = useState(false);
+
   //// Modals ////
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -304,11 +306,6 @@ const App = () => {
     type: 't-shirt',
   };
 
-  function handleLikeClick(cardData) {
-    // insert logic to interact with WTWR API
-    setIsLoginOpen(false);
-  }
-
   const handleUpdateProfileData = (userData) => {
     api
       .updateCurrentUserData(userData)
@@ -351,6 +348,32 @@ const App = () => {
       });
   };
 
+  const handleLikeClick = (cardData) => {
+    console.log(cardData);
+    const itemLike = cardData.isLiked === isLiked;
+
+    api
+    // will probably return an id
+        .toggleClothingItemLikeStatus(cardData._id)
+        // set the like status of the card
+        .then(() => {
+          console.log(itemLike);
+          itemLike ? setIsLiked(true) : setIsLiked(false);
+          setIsLoginOpen(false);
+        })
+        .catch((err) => console.log(err));
+  }
+
+  const handleItemDelete = (cardData) => {
+    api
+      .deleteClothingItem(cardData._id)
+      .then(() => {
+        setClothingItems(clothingItems.filter((deletedItem) => deletedItem._id !== cardData._id));
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -387,6 +410,7 @@ const App = () => {
                     <Profile
                       cardData={clothingCardData}
                       onLogOutClick={handleLogOut}
+                      onCardLike={handleLikeClick}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                       onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
                       onChangeProfileClick={() => setIsEditProfileDataModalOpen(true)}
