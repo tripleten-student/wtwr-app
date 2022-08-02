@@ -4,18 +4,29 @@
   "description": "Node backend for WTWR",
   "main": "index.js",
   "scripts": {
-    "start" : "node index.js",
-    "dev" : "nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "Practicum Apiary",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^15.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "mongoose": "^6.4.4"
+    "express-rate-limit": "^6.3.0",
+    "express-winston": "^4.2.0",
+    "helmet": "^5.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.4.4",
+    "validator": "^13.7.0",
+    "winston": "^3.8.1"
   },
   "devDependencies": {
+    "eslint": "^8.19.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.19"
   }
 }

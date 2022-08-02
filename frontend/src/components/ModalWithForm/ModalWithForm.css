@@ -1,0 +1,212 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  font-family: 'CabinetGrotesk-Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.25;
+  color: rgba(0, 0, 0, 1);
+  margin-bottom: 8px;
+}
+
+.form__title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.form__input-container {
+  margin: 24px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form__input-label-container {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.form__input-label {
+  margin: 0;
+  padding-right: 4px;
+  color: rgba(0, 0, 0, 1);
+  position: relative;
+  transition: all .3s linear;
+}
+
+.form__input-label_required {
+  margin: 0;
+}
+
+.form__input-label_required::before {
+  content: '*';
+  position: absolute;
+  top: 0;
+  right: -2px;
+}
+
+.form__input-label_error {
+  color: rgba(255, 77, 0, 1);
+}
+
+.form__input {
+  margin: 0;
+  padding: 0 0 4px;
+  border: 0;
+  outline: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+  transition: all .3s linear;
+}
+
+.form__input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.form__input_error {
+  color: rgba(255, 77, 0, 1);
+  border-bottom: 1px solid rgba(255, 77, 0, 1);
+}
+
+.form__error {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  color: rgba(255, 77, 0, 1);
+  opacity: 0;
+  transition: all .3s linear;
+}
+
+.form__error_visible {
+  opacity: 1;
+}
+
+.form__button-grp {
+  margin: 0;
+  padding-top: 32px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.form__submit-button {
+  padding: 8px 16px;
+  box-sizing: border-box;
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 4px;
+  border: none;
+  min-height: 36px;
+  transition: all 0.2s ease;
+}
+
+.form__submit-button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.form__submit-button:hover.form__submit-button_disabled,
+.form__submit-button_disabled {
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.form__submit-button:hover.form__submit-button_disabled:hover,
+.form__submit-button_disabled:hover {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form__secondary-button {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.form__delete-button {
+  background: rgba(255, 77, 0, 1);
+  padding: 0;
+  box-sizing: border-box;
+  color: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  border: none;
+  min-height: 36px;
+  width: 100%;
+  max-width: 124px;
+  transition: all 0.2s ease;
+}
+
+.form__delete-button:hover {
+  cursor: pointer;
+  background-color: rgba(255, 77, 0, .8);
+}
+
+.form__dropdown-container {
+  margin: 24px 0 0;
+}
+
+.form__image-preview-container {
+  margin: 12px 0 0 0;
+  padding: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.form__image-preview {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.form__image-preview-close {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 100%;
+  outline: 0;
+  background: url('../../images/close-image-preview.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
+  transition: all .3s ease-in;
+}
+
+.form__image-preview-close:hover {
+  cursor: pointer;
+  opacity: .7;
+}
+
+.form__text{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 430px;
+}
+
+.form__text + .form__text {
+  margin-top: 8px;
+}
