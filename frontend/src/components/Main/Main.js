@@ -14,7 +14,7 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
-function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
+function Main({ weatherData, clothesData, onCardLike, isLoggedIn, onCardClick }) {
   // To get the weather in the actual moment
 
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
@@ -75,24 +75,28 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
             apparelGroup={accessories}
             cardData={accesoriesItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'topsandoutwear'}
             apparelGroup={top}
             cardData={topsandoutwearItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'bottoms'}
             apparelGroup={bottom}
             cardData={bottomsItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'shoes'}
             apparelGroup={shoes}
             cardData={shoesItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
         </div>
         <button
