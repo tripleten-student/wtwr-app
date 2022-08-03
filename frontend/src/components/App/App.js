@@ -37,30 +37,17 @@ import api from '../../utils/api';
  */
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
-  const [currentGarment, setCurrentGarment] = useState({
-    garmentName: 'Shirt',
-    garmentType: 'shirt',
-    weatherType: 'extreme',
-    garmentUrl:
-      'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-  });
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
-  // logic with actual data needed in the future
-  // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
-  // Below states have been finalised
-  // set the url of newly created garment from handleCreateClothingItem() to pass on to the CreateClothingConfirmationModal
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
   const [clothingItems, setClothingItems] = useState([]);
 
-  //// Modals ////
+  // States related to Modals
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
@@ -69,11 +56,12 @@ const App = () => {
   const [isDeleteProfileOpen, setIsDeleteProfileOpen] = useState(false);
   const [isCreateClothingModalOpen, setIsCreateClothingModalOpen] = useState(false);
   const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(false);
-  const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] =
-    useState(false);
-  const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
-    useState(false);
+  const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] = useState(false);
+  const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] = useState(false);
 
+  // ********************************************************************************************* //
+  //                   Fetch initial clothing items & user data on page load                       //
+  // ********************************************************************************************* //
   // Get the current user info if the user is logged in
   useEffect(() => {
     isLoggedIn && api.getCurrentUserData()
@@ -107,7 +95,34 @@ const App = () => {
     verifyToken()
   }, [verifyToken]);
 
-  /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
+  //Get all the clothing items for the user on page load
+  useEffect(() => {
+    isLoggedIn && api
+      .getAllClothingItems()
+      .then(setClothingItems)
+      .catch(err => {
+        console.log("Uh-oh! Error occurred while fetching the existing clothing items from the server.");
+        console.log(err);
+      });
+  }, [isLoggedIn]);
+
+  // ********************************************************************************************* //
+  //           Fetch weather data from the weather API or local storage on page                    //
+  // ********************************************************************************************* //
+  const getWeatherDataUsingLocation = () => {
+    if (userLocation.latitude && userLocation.longitude) {
+      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
+        .then((data) => {
+          setweatherData(filterDataFromWeatherAPI(data));
+          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  // Location gets read only once every time upon page refresh, this is not dependent upon weather api call
   useEffect(() => {
     getGeolocation()
       .then(({ coords }) => {
@@ -137,13 +152,15 @@ const App = () => {
         }
       });
   }, []);
-  /** this gets called every time the user changes location: when user initially disallowed location sharing. and then later allowed it, upon page refresh, the location and the weather updates right away, evne within 15 minutes */
+
+  // Gets called every time the user changes location: when user initially disallowed location sharing.
+  // And then later allowed it, upon page refresh, the location and the weather updates right away, evne within 15 minutes */
   useEffect(() => {
     getWeatherDataUsingLocation();
   }, [userLocation]);
-  /** the weather API gets called or pulled from local storage every time the location changes or gets read */
+
+  // The weather API gets called or pulled from local storage every time the location changes or gets read
   useEffect(() => {
-    /** does the local storage already have weather data? if so, setState with this data and pass it on to components, if not (written in the function itself that's imported from ../utils/weatherApi.js), make the api call detailed above */
     getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
       setweatherData(
         filterDataFromWeatherAPI(
@@ -152,7 +169,9 @@ const App = () => {
       );
   }, []);
 
-  // Handle mouse click or Esc key down event
+  // ********************************************************************************************* //
+  //                        Handle mouse click or Esc key down event                               //
+  // ********************************************************************************************* //
   const isAnyPopupOpen =
     isLoginOpen ||
     isRegisterOpen ||
@@ -202,20 +221,9 @@ const App = () => {
     setIsEditClothingPreferencesModalOpen(false);
   };
 
-  const getWeatherDataUsingLocation = () => {
-    if (userLocation.latitude && userLocation.longitude) {
-      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
-        .then((data) => {
-          setweatherData(filterDataFromWeatherAPI(data));
-          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
-  // Event Handlers
+  // ********************************************************************************************* //
+  //                         Handle all the events on the web page                                 //
+  // ********************************************************************************************* //
   const handleLoginSubmit = (loginCredentials) => {
     login(loginCredentials).then(({ data, token }) => {
       if (data) {
@@ -285,10 +293,18 @@ const App = () => {
       })
   };
 
-  const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
-    console.log('Garment successfully updated');
-    console.log({ garmentName, garmentType, weatherType, garmentUrl });
-    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl });
+  // Need to work on this event handler when rendering the Clothing Cards logic has been sorted
+  const handleEditClothing = (updatedClothingItemData) => {
+    api
+      .updateClothingItem(updatedClothingItemData)
+      .then(updatedClothingItem => {
+        console.log("The clothing item has been updated");
+        console.log(updatedClothingItem);
+      })
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
+        console.log(err);
+      })
   };
 
   const handlelChangePasswordSubmit = (password) => {
@@ -455,7 +471,7 @@ const App = () => {
               isOpen={isEditClothingModalOpen}
               onClose={closeAllPopups}
               onSubmitEditGarment={handleEditClothing}
-              currentGarment={currentGarment}
+              currentGarment={clothingItems[0] || {}}
             />
             {/* <ShowClothingModal
               // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
