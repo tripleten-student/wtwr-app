@@ -5,7 +5,10 @@ import './Footer.css';
  * @author [Nuriya](https://github.com/NuriyaAkh)
  */
 
-const Footer = () => {
+const Footer = ({ weatherData }) => {
+  if (!weatherData) {
+    return null;
+  }
   return (
     <footer className="footer">
       <p className="footer__copyright">© Developed by Practicum Students</p>

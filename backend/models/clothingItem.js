@@ -17,8 +17,8 @@ const clothingItemSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
+    enum: ['t-shirt', 'shirt', 'jeans', 'skirt', 'dress', 'sneakers', 'boots', 'jacket', 'coat', 'sunglasses', 'shorts', 'sport-pants', 'down-jacket', 'headwear'],
   },
-  // weather set as array assuming multiple types may be possible //
   weather: {
     type: String,
     required: true,

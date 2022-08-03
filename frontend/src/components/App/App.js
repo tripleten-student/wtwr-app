@@ -23,6 +23,7 @@ import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { clothes } from '../../utils/testData';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import {
   getGeolocation,
   getForecastWeather,
@@ -50,6 +51,7 @@ const App = () => {
   const [newClothingItemType, setNewClothingItemType] = useState('');
   const [clothingItems, setClothingItems] = useState([]);
   const [selectedClothingCard, setSelectedClothingCard] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // States related to Modals
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -70,6 +72,14 @@ const App = () => {
   // ********************************************************************************************* //
   //                   Fetch initial clothing items & user data on page load                       //
   // ********************************************************************************************* //
+
+  useEffect(() => {
+    if (!weatherData) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [weatherData]);
   // Get the current user info if the user is logged in
   useEffect(() => {
     isLoggedIn &&
@@ -132,6 +142,9 @@ const App = () => {
         .catch(() => {
           setWeatherData(generateWeatherDataWhenAPIFails());
           setIsWeatherApiFailModalOpen(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   };
@@ -191,7 +204,7 @@ const App = () => {
     isCreateClothingConfirmationModalOpen ||
     isShowClothingModalOpen;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
         closeAllPopups();
@@ -520,7 +533,8 @@ const App = () => {
               currentGarment={clothingItems[0] || {}}
             />
             <WeatherApiFailModal isOpen={isWeatherApiFailModalOpen} onClose={closeAllPopups} />
-            <Footer />
+            <LoadingSpinner isLoading={isLoading} />
+            <Footer weatherData={weatherData} />
             <MobileNavigation
               isLoggedIn={isLoggedIn}
               openLoginModal={() => setIsLoginOpen(true)}
