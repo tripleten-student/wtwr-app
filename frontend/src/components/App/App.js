@@ -406,7 +406,7 @@ const App = () => {
           >
             <Header weatherData={weatherData}>
               <Navigation
-                // isLoggedIn={isLoggedIn}
+                isLoggedIn={isLoggedIn}
                 handleAddClick={() => setIsCreateClothingModalOpen(true)}
                 handleRegisterClick={() => setIsRegisterOpen(true)}
                 handleLoginClick={() => setIsLoginOpen(true)}

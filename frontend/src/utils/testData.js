@@ -48,7 +48,7 @@ const clothes = [
   },
   {
     name: 'Men Black Footbed Sandals',
-    type: 'snikers',
+    type: 'sneakers',
     apparelGroup: 'Shoes',
     weather: 'hot',
     imageUrl: menBlackFootedSandals,
@@ -58,7 +58,7 @@ const clothes = [
   },
   {
     name: 'Faux Leather Open Toe Slip On Block Heels',
-    type: 'snikers',
+    type: 'sneakers',
     apparelGroup: 'Shoes',
     weather: 'optimal',
     imageUrl: womenFauxLeatherBlockHeels,

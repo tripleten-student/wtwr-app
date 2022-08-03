@@ -32,9 +32,10 @@ function Main({
   // To get the weather in the actual moment
 
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  const currentUser = React.useContext(CurrentUserContext);
 
-  console.log(currentUser.preferences);
+  // To get the Userpreferences
+  const currentUser = React.useContext(CurrentUserContext);
+  const CurrentUserPreferences = !currentUser.preferences ? [{}] : currentUser.preferences;
 
   /**DISPLAY WEATHER TEXT**/
 
@@ -84,16 +85,15 @@ function Main({
   /** 3. Display cards only if LoggedIn.**/
   const clothesItems = isLoggedIn ? clothes : [{}];
 
-  // && currentUser.preferences.includes(item.type) === true
   /** 3. Increase probability to items liked and in the preferences.**/
   const ItemsProbability = clothesItems.map((item) => {
-    if (item.isLiked === true) {
+    if (item.isLiked === true && CurrentUserPreferences.includes(item.type) === true) {
       item['prob'] = 4;
       return item;
-    } else if (item.isLiked === true) {
+    } else if (item.isLiked === true && CurrentUserPreferences.includes(item.type) === false) {
       item['prob'] = 3;
       return item;
-    } else if (item.isLiked === false) {
+    } else if (item.isLiked === false && CurrentUserPreferences.includes(item.type) === true) {
       item['prob'] = 2;
       return item;
     } else {
@@ -122,7 +122,7 @@ function Main({
     setTopsandoutwearItem(getRandomItemByProbability(topsandoutwearFilter));
     setBottomsItem(getRandomItemByProbability(bottomsFilter));
     setShoesItem(getRandomItemByProbability(shoesFilter));
-  }, [weatherData]);
+  }, [weatherData, isLoggedIn, CurrentUserPreferences]);
 
   function handleRandomClick() {
     console.log('Randomize');
