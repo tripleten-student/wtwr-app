@@ -30,7 +30,7 @@ import {
   setWeatherDataWithExpiry,
   generateWeatherDataWhenAPIFails,
 } from '../../utils/weatherApi';
-import { fifteenMinutesInMilleseconds } from '../../utils/constants';
+import { fifteenMinutesInMilliseconds } from '../../utils/constants';
 import { login, register, checkToken } from '../../utils/auth';
 import api from '../../utils/api';
 
@@ -44,7 +44,7 @@ const App = () => {
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
-  const [weatherData, setweatherData] = useState();
+  const [weatherData, setWeatherData] = useState();
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
   const [clothingItems, setClothingItems] = useState([]);
@@ -125,11 +125,11 @@ const App = () => {
     if (userLocation.latitude && userLocation.longitude) {
       getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
         .then((data) => {
-          setweatherData(filterDataFromWeatherAPI(data));
-          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+          setWeatherData(filterDataFromWeatherAPI(data));
+          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilliseconds);
         })
         .catch(() => {
-          setweatherData(generateWeatherDataWhenAPIFails());
+          setWeatherData(generateWeatherDataWhenAPIFails());
           setIsWeatherApiFailModalOpen(true);
         });
     }
@@ -167,7 +167,7 @@ const App = () => {
 
   useEffect(() => {
     getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
-      setweatherData(
+      setWeatherData(
         filterDataFromWeatherAPI(
           getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation)
         )
@@ -317,7 +317,7 @@ const App = () => {
       });
   };
 
-  const handlelChangePasswordSubmit = ({ oldPassword, newPassword }) => {
+  const handleChangePasswordSubmit = ({ oldPassword, newPassword }) => {
     api
       .updateCurrentUserPassword({ oldPassword, newPassword })
       .then(() => console.log('Password changed successfully'))
@@ -477,7 +477,7 @@ const App = () => {
             <EditPasswordModal
               isOpen={isEditPasswordModalOpen}
               onClose={closeAllPopups}
-              onUpdatePassword={handlelChangePasswordSubmit}
+              onUpdatePassword={handleChangePasswordSubmit}
             />
             <EditClothingPreferencesModal
               isOpen={isEditClothingPreferencesModalOpen}

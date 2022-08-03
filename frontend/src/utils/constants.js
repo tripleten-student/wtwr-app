@@ -1,3 +1,3 @@
-const fifteenMinutesInMilleseconds = 900000;
+const fifteenMinutesInMilliseconds = 900000;
 
-export { fifteenMinutesInMilleseconds };
+export { fifteenMinutesInMilliseconds };
