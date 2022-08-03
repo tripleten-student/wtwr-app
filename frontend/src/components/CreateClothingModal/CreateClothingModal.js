@@ -44,6 +44,7 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
       'new-garment-image-url': '',
     };
     resetForm({ ...initialValues }, { ...initialValues }, true);
+    setShowImagePreview(false);
   }, [isOpen, resetForm]);
 
   // Event handlers
@@ -125,7 +126,8 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
           header="Type"
           options={clothingItems}
           onDropdownItemClick={setGarmentTypeChoice}
-          setIsFormValid={setIsFormValid} />
+          setIsFormValid={setIsFormValid}
+          isModalOpen={isOpen} />
       </div>
       <div className="form__dropdown-container">
         <Dropdown
@@ -133,7 +135,8 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
           header="Weather"
           options={(currentTemperatureUnit === 'F') ? weatherTypesInFahrenheit : weatherTypesInCelcius}
           onDropdownItemClick={setWeatherTypeChoice}
-          setIsFormValid={setIsFormValid} />
+          setIsFormValid={setIsFormValid}
+          isModalOpen={isOpen} />
       </div>
       <div className="form__input-container">
         <div className="form__input-label-container">

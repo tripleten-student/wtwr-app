@@ -3,7 +3,6 @@
  * @module Api
  * @author [Shraddha](https://github.com/5hraddha)
  * @author [Hoang Le Chau](https://github.com/hoanglechau)
- * 
  */
 class Api {
   constructor(options) {
@@ -65,6 +64,20 @@ class Api {
   }
 
   /**
+   * Updates the current user preferences from the server using a PATCH request.
+   */
+  updateCurrentUserPreferences = (preferences) => {
+    return fetch(`${this._baseUrl}/users/me/preferences`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        preferences
+      })
+    })
+      .then(this._checkResponseStatus);
+  }
+
+  /**
   * Deletes the current user's profile from the server using a DELETE request.
   */
   deleteCurrentUser = () => {
@@ -105,6 +118,19 @@ class Api {
   /**
    * Updates the info of the given clothing item to the server using a PATCH request.
    */
+  updateClothingItem = ({ itemId, name, type, weather, imageUrl }) => {
+    return fetch(`${this._baseUrl}/clothing/${itemId}`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        type,
+        weather,
+        imageUrl,
+      })
+    })
+      .then(this._checkResponseStatus);
+  }
 
   /**
    * Deletes an existing clothing item from the server using a DELETE request.
