@@ -3,8 +3,7 @@ import ClothingCard from '../ClothingCard/ClothingCard';
 import PropTypes from 'prop-types';
 
 /**
- * The **ClothesSection** component for the Profile Page.
- *
+ * The **ClothesSection** component dispalys each section for the Profile Page.
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
@@ -22,7 +21,7 @@ function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike, o
           <ClothingCard cardData={sectionData} apparelGroup={sectionName} onCardLike={onCardLike} onCardClick={onCardClick} />
         ) : (
           sectionData.map((card) => (
-            <ClothingCard key={card.name} cardData={card} onCardLike={onCardLike} onCardClick={onCardClick}/>
+            <ClothingCard key={card.name} cardData={card} onCardLike={onCardLike} onCardClick={onCardClick} />
           ))
         )}
       </ul>

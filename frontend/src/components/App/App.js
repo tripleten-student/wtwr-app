@@ -316,20 +316,6 @@ const App = () => {
     console.log('new password set');
   };
 
-  // mock clothingCardData for testing ClothingCard component, please test the like button
-  // by changing favorited from true to false
-  const clothingCardData = {
-    name: 'T-shirt',
-    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
-    isLiked: true,
-    type: 't-shirt',
-  };
-
-  function handleLikeClick(cardData) {
-    // insert logic to interact with WTWR API
-    setIsLoginOpen(false);
-  }
-
   const handleUpdateProfileData = (userData) => {
     api
       .updateCurrentUserData(userData)
@@ -373,11 +359,25 @@ const App = () => {
 
   };
 
-  const handleClothingClick = (cardData) => {
+  const handleClothingItemCardClick = (cardData) => {
     if (isLoggedIn) {
       setSelectedClothingCard(cardData);
       setShowClothingModalOpen(true);
     }
+  }
+
+  // mock clothingCardData for testing ClothingCard component, please test the like button
+  // by changing favorited from true to false
+  const clothingCardData = {
+    name: 'T-shirt',
+    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
+    isLiked: true,
+    type: 't-shirt',
+  };
+
+  const handleClothingItemLikeClick = (cardData) => {
+    // insert logic to interact with WTWR API
+    setIsLoginOpen(false);
   }
 
   return (
@@ -399,7 +399,7 @@ const App = () => {
               <Route
                 exact
                 path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} onCardClick={handleClothingClick}/>}
+                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} onCardClick={handleClothingItemCardClick} />}
               ></Route>
               <Route
                 exact
@@ -410,9 +410,9 @@ const App = () => {
                     isLoggedIn={isLoggedIn}
                   >
                     <Profile
-                      cardData={clothingCardData}
-                      onCardLike={handleLikeClick}
-                      onCardClick={handleClothingClick}
+                      clothingItems={clothingItems}
+                      onCardLike={handleClothingItemLikeClick}
+                      onCardClick={handleClothingItemCardClick}
                       onLogOutClick={handleLogOut}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                       onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
@@ -479,7 +479,7 @@ const App = () => {
             <ShowClothingModal
               card={selectedClothingCard || clothingCardData}
               /** uncomment when like logic is added 
-              onCardLike={handleLikeClick}
+              onCardLike={handleClothingItemLikeClick}
               */
               isOpen={isShowClothingModalOpen}
               onClose={closeAllPopups}
