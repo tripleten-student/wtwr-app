@@ -8,7 +8,7 @@ import { checkIfImageExists } from '../../utils/clothingModals';
 import {
   clothingItems,
   weatherTypesInFahrenheit,
-  weatherTypesInCelcius,
+  weatherTypesInCelsius,
 } from '../../utils/formConstants';
 import './EditClothingModal.css';
 
@@ -146,7 +146,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
         <Dropdown
           dropdownName="weather-types"
           header="Weather"
-          options={(currentTemperatureUnit === 'F') ? weatherTypesInFahrenheit : weatherTypesInCelcius}
+          options={(currentTemperatureUnit === 'F') ? weatherTypesInFahrenheit : weatherTypesInCelsius}
           onDropdownItemClick={setWeatherTypeChoice}
           userPreferenceValue={currentGarment.weather || ''}
           setIsFormValid={setIsFormValid}
