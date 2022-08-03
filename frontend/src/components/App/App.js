@@ -303,8 +303,8 @@ const App = () => {
     api
       .updateClothingItem(updatedClothingItemData)
       .then(updatedClothingItem => {
-        console.log("The clothing item has been updated");
-        console.log(updatedClothingItem);
+        const tempClothingItems = clothingItems.filter(item => item._id !== updatedClothingItem._id);
+        setClothingItems([...tempClothingItems, updatedClothingItem]);
         setSelectedClothingCard(updatedClothingItem);
       })
       .catch(err => {
