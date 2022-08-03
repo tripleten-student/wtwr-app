@@ -390,6 +390,10 @@ const App = () => {
       setSelectedClothingCard(cardData);
       setShowClothingModalOpen(true);
     }
+
+    if (!cardData.imageUrl) {
+      setShowClothingModalOpen(false);
+    }
   };
 
   const handleShowClothingModalEditClick = () => {
