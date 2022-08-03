@@ -17,6 +17,7 @@ import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
+import WeatherApiFailModal from '../WeatherApiFailModal/WeatherApiFailModal';
 import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
@@ -81,6 +82,7 @@ const App = () => {
     useState(false);
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
     useState(false);
+  const [isWeatherApiFailModalOpen, setIsWeatherApiFailModalOpen] = useState(false);
 
   useEffect(() => {
     isLoggedIn &&
@@ -162,13 +164,14 @@ const App = () => {
 
   const getWeatherDataUsingLocation = () => {
     if (userLocation.latitude && userLocation.longitude) {
-      getForecastWeather(userLocation, undefined)
+      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
         .then((data) => {
           setweatherData(filterDataFromWeatherAPI(data));
           setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
         })
         .catch(() => {
           setweatherData(generateWeatherDataWhenAPIFails());
+          setIsWeatherApiFailModalOpen(true);
         });
     }
   };
@@ -228,6 +231,7 @@ const App = () => {
     setIsCreateClothingConfirmationModalOpen(false);
     setIsEditClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
+    setIsWeatherApiFailModalOpen(false);
   };
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -453,6 +457,7 @@ const App = () => {
               onSubmitEditGarment={handleEditClothing}
               currentGarment={currentGarment}
             />
+            <WeatherApiFailModal isOpen={isWeatherApiFailModalOpen} onClose={closeAllPopups} />
             {/* <ShowClothingModal
               // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
               // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
