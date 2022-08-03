@@ -22,6 +22,6 @@ router.post('/signup', validateUser, createUser);
 router.use(auth);
 
 router.use('/users', validateRequestAuth, userRouter);
-router.use('/clothing', clothingRouter);
+router.use('/clothing', validateRequestAuth, clothingRouter);
 
 module.exports = router;
