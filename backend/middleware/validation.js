@@ -89,6 +89,17 @@ const validateRequestAuth = celebrate({
     .unknown(true),
 });
 
+const validatePreferences = celebrate({
+  headers: Joi.object()
+    .keys({
+      _id: Joi.string().hex().length(24).messages({
+        'string.empty': 'ID required',
+      }),
+      preferences: Joi.array().items(Joi.string()),
+    })
+    .unknown(true),
+});
+
 const validateItem = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30)
@@ -117,6 +128,7 @@ module.exports = {
   validateUser,
   validateRequestAuth,
   validateUserId,
+  validatePreferences,
   validatePasswordChange,
   validateItem,
 };

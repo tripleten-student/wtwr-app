@@ -14,7 +14,7 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
-function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
+function Main({ weatherData, clothesData, onCardLike, isLoggedIn, onCardClick }) {
   // To get the weather in the actual moment
 
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
@@ -59,7 +59,11 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
       <WeatherCards weatherData={weatherData} />
       <div className="clothesSectionMain">
         <div className="clothesSectionMain__info">
-          <p>{`Today is ${actualWeather.temperature[currentTemperatureUnit]} ${currentTemperatureUnit} and it is ${actualWeather.condition} / You may want to wear:`}</p>
+          <div className="clothesSectionMain__description-container">
+            <p className="clothesSectionMain__description">{`Today is ${actualWeather.temperature[currentTemperatureUnit]} ${currentTemperatureUnit} and it is ${actualWeather.condition}`}</p>
+            <p className="clothesSectionMain__description_slash"> / </p>
+            <p className="clothesSectionMain__description">You may want to wear:</p>
+          </div>
           <button className="randomize-button" type="button" onClick={handleRandomClick}>
             <img className={'randomize-icon'} alt="randomize" src={randomizeIcon} />
             Randomize
@@ -71,26 +75,38 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
             apparelGroup={accessories}
             cardData={accesoriesItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'topsandoutwear'}
             apparelGroup={top}
             cardData={topsandoutwearItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'bottoms'}
             apparelGroup={bottom}
             cardData={bottomsItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'shoes'}
             apparelGroup={shoes}
             cardData={shoesItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
         </div>
+        <button
+          className="randomize-button randomize-button_location_bottom"
+          type="button"
+          onClick={handleRandomClick}
+        >
+          <img className={'randomize-icon'} alt="randomize" src={randomizeIcon} />
+          Randomize
+        </button>
       </div>
     </main>
   );

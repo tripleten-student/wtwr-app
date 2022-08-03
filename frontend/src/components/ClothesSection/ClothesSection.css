@@ -1,61 +1,80 @@
-.clothes-section{
-    display: flex;
-    flex-direction: column;
-    margin: 0 ;
-    padding: 0;
+.clothes-section {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
 }
 
-.clothes-section__info{
-    display: flex;
-    padding: 0 0 17px 0;
+.clothes-section__info {
+  display: flex;
+  padding: 0 0 17px 0;
 }
 
-.clothes-section__title{
-    margin:0;
-    padding: 0 20px 0 0;
+.clothes-section__title {
+  margin: 0;
+  padding: 0 20px 0 0;
+  font-size: 20px;
+  line-height: 1.2;
 }
 
-.clothes-section__button{
-    margin:0;
-    padding: 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-    opacity: 0.6;
+.clothes-section__button {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
 }
 
-.clothes-section__button:hover{
-    opacity: 1;
+.clothes-section__button:hover {
+  opacity: 1;
 }
 
-
-.clothes-section__list{
-    margin:0;
-    padding: 0 0 41px 0 ;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 325px);
-    grid-template-rows: auto;
-    grid-gap: 22px;
-    box-sizing: border-box;
+.clothes-section__list {
+  margin: 0;
+  padding: 0 0 41px 0;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(325px, 1fr));
+  grid-auto-rows: 328px;
+  grid-gap: 22px;
+  box-sizing: border-box;
+  justify-items: center;
+  width: 100%;
 }
 
 @media screen and (max-width: 800px) {
-
-    .clothes-section{
-        align-items: center;
-        width: 100%;
-    }
-
-    .clothes-section__info{
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .clothes-section__list{
-        grid-gap: 15px;
-    }
+  .clothes-section {
+    align-items: center;
+    width: 100%;
   }
-  
-  @media screen and (max-width: 500px) {
-  
+}
+@media screen and (max-width: 768px) {
+  .clothes-section__info {
+    width: 100%;
+    justify-content: space-between;
   }
+
+  .clothes-section__list {
+    grid-gap: 15px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+}
+
+@media screen and (max-width: 750px) {
+  .clothes-section__list {
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    grid-gap: 16px;
+    grid-auto-rows: 194px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .clothes-section__list {
+    grid-template-columns: repeat(auto-fill, minmax(162px, 1fr));
+    grid-gap: 16px;
+    grid-auto-rows: 164px;
+  }
+}

@@ -17,7 +17,9 @@ import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
-import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
+import WeatherApiFailModal from '../WeatherApiFailModal/WeatherApiFailModal';
+import EditClothingPreferencesModal from '../EditClothingPreferencesModal/EditClothingPreferencesModal';
+import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import {
@@ -26,48 +28,29 @@ import {
   filterDataFromWeatherAPI,
   getWeatherDataWithExpiry,
   setWeatherDataWithExpiry,
+  generateWeatherDataWhenAPIFails,
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import { login, register, checkToken } from '../../utils/auth';
 import api from '../../utils/api';
-// import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
  * The main React **App** component.
  */
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
-  const [currentGarment, setCurrentGarment] = useState({
-    garmentName: 'Shirt',
-    garmentType: 'shirt',
-    weatherType: 'extreme',
-    garmentUrl:
-      'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXJ0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=1000&q=60',
-  });
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
-  // logic with actual data needed in the future
-  // set "true" to simulate `isLoggedIn = true` look of the Navigation bar
-  // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
-  // set useClothingPreferences from API
-  const [userClothingPreferences, setUserClothingPreferences] = useState([
-    't-shirt',
-    'jeans',
-    'dress',
-    'boots',
-  ]);
-  // Below states have been finalised
-  // set the url of newly created garment from handleCreateClothingItem() to pass on to the CreateClothingConfirmationModal
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
   const [clothingItems, setClothingItems] = useState([]);
+  const [selectedClothingCard, setSelectedClothingCard] = useState(null);
 
-  //// Modals ////
+  // States related to Modals
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isCompleteRegistrationOpen, setIsCompleteRegistrationOpen] = useState(false);
@@ -80,37 +63,78 @@ const App = () => {
     useState(false);
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
     useState(false);
+  const [isShowClothingModalOpen, setShowClothingModalOpen] = useState(false);
+  const [isWeatherApiFailModalOpen, setIsWeatherApiFailModalOpen] = useState(false);
 
-    useEffect(()=>{
-      isLoggedIn && api.getCurrentUserData()
-      .then((data)=> setCurrentUser({
-        email: data.email,
-        avatar: data.avatar,
-        username: data.name,
-      }))
-      .catch(err => console.log(err))
-    },[isLoggedIn])
-
-    const verifyToken = useCallback(()=>{
-      const jwt = localStorage.getItem('jwt');
-      if (jwt) {
-        checkToken(jwt)
-          .then((res) => {
-            if (res) {
-              setIsLoggedIn(true);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
+  // ********************************************************************************************* //
+  //                   Fetch initial clothing items & user data on page load                       //
+  // ********************************************************************************************* //
+  // Get the current user info if the user is logged in
+  useEffect(() => {
+    isLoggedIn &&
+      api
+        .getCurrentUserData()
+        .then((data) => {
+          setCurrentUser({
+            email: data.email,
+            avatar: data.avatar,
+            username: data.name,
+            preferences: data.preferences,
           });
-      }
-    },[])
-  
-    useEffect(() => {
-      verifyToken()
-    }, [verifyToken]);
+        })
+        .catch((err) => console.log(err));
+  }, [isLoggedIn]);
 
-  /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
+  const verifyToken = useCallback(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    verifyToken();
+  }, [verifyToken]);
+
+  //Get all the clothing items for the user on page load
+  useEffect(() => {
+    isLoggedIn &&
+      api
+        .getAllClothingItems()
+        .then(setClothingItems)
+        .catch((err) => {
+          console.log(
+            'Uh-oh! Error occurred while fetching the existing clothing items from the server.'
+          );
+          console.log(err);
+        });
+  }, [isLoggedIn]);
+
+  // ********************************************************************************************* //
+  //           Fetch weather data from the weather API or local storage on page                    //
+  // ********************************************************************************************* //
+  const getWeatherDataUsingLocation = () => {
+    if (userLocation.latitude && userLocation.longitude) {
+      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
+        .then((data) => {
+          setweatherData(filterDataFromWeatherAPI(data));
+          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+        })
+        .catch(() => {
+          setweatherData(generateWeatherDataWhenAPIFails());
+          setIsWeatherApiFailModalOpen(true);
+        });
+    }
+  };
+
   useEffect(() => {
     getGeolocation()
       .then(({ coords }) => {
@@ -140,44 +164,19 @@ const App = () => {
         }
       });
   }, []);
-  /** this gets called every time the user changes location: when user initially disallowed location sharing. and then later allowed it, upon page refresh, the location and the weather updates right away, evne within 15 minutes */
+
   useEffect(() => {
-    getWeatherDataUsingLocation();
-  }, [userLocation]);
-  /** the weather API gets called or pulled from local storage every time the location changes or gets read */
-  useEffect(() => {
-    /** does the local storage already have weather data? if so, setState with this data and pass it on to components, if not (written in the function itself that's imported from ../utils/weatherApi.js), make the api call detailed above */
     getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
       setweatherData(
         filterDataFromWeatherAPI(
           getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation)
         )
       );
-  }, []);
+  }, [userLocation]);
 
-
-
-
-  const getWeatherDataUsingLocation = () => {
-    if (userLocation.latitude && userLocation.longitude) {
-      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
-        .then((data) => {
-          setweatherData(filterDataFromWeatherAPI(data));
-          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-  const handleToggleSwitchChange = () => {
-    currentTemperatureUnit === 'F'
-      ? setCurrentTemperatureUnit('C')
-      : setCurrentTemperatureUnit('F');
-  };
-
-  // Handle mouse click or Esc key down event
-  //Check if all the other modals are open using || operator
+  // ********************************************************************************************* //
+  //                        Handle mouse click or Esc key down event                               //
+  // ********************************************************************************************* //
   const isAnyPopupOpen =
     isLoginOpen ||
     isRegisterOpen ||
@@ -188,7 +187,8 @@ const App = () => {
     isCreateClothingModalOpen ||
     isEditClothingModalOpen ||
     isEditClothingPreferencesModalOpen ||
-    isCreateClothingConfirmationModalOpen;
+    isCreateClothingConfirmationModalOpen ||
+    isShowClothingModalOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -215,7 +215,6 @@ const App = () => {
   }, [isAnyPopupOpen]);
 
   const closeAllPopups = () => {
-    //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
     setIsRegisterOpen(false);
     setIsCompleteRegistrationOpen(false);
@@ -226,20 +225,15 @@ const App = () => {
     setIsCreateClothingConfirmationModalOpen(false);
     setIsEditClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
+    setIsWeatherApiFailModalOpen(false);
+    setShowClothingModalOpen(false);
+    setIsEditClothingModalOpen(false);
+    setIsWeatherApiFailModalOpen(false);
   };
-  // mock clothingCardData for testing ClothingCard component, please test the like button
-  // by changing favorited from true to false
-  const clothingCardData = {
-    name: 'T-shirt',
-    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
-    isLiked: true,
-    type: 't-shirt',
-  };
-  function handleLikeClick(cardData) {
-    // insert logic to interact with WTWR API
-    setIsLoginOpen(false);
-  }
 
+  // ********************************************************************************************* //
+  //                         Handle all the events on the web page                                 //
+  // ********************************************************************************************* //
   const handleLoginSubmit = (loginCredentials) => {
     login(loginCredentials).then(({ data, token }) => {
       if (data) {
@@ -249,6 +243,7 @@ const App = () => {
           email: data.email,
           avatar: data.avatar,
           username: data.name,
+          preferences: data.preferences,
         });
         setLoginEmail('');
         setLoginPassword('');
@@ -258,59 +253,6 @@ const App = () => {
     });
 
     //else catch error
-  };
-
-  const handleLogOut = () => {
-    api.updateAuthUserToken('');
-    setIsLoggedIn(false);
-    setCurrentUser({});
-    localStorage.removeItem('jwt');
-  };
-
-  const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
-    const newClothingItem = {
-      name: garmentName,
-      type: garmentType,
-      weather: weatherType,
-      imageUrl: garmentUrl,
-    };
-    api
-      .addNewClothingItem(newClothingItem)
-      .then(newClothingItem => {
-        closeAllPopups();
-        setClothingItems([newClothingItem, ...clothingItems]);
-        setNewClothingItemType(newClothingItem.type);
-        setNewClothingItemUrl(newClothingItem.imageUrl);
-        setIsCreateClothingConfirmationModalOpen(true);
-      })
-      .catch(err => {
-        console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
-        console.log(err);
-      })
-  };
-
-  const handleEditClothing = (garmentName, garmentType, weatherType, garmentUrl) => {
-    console.log('Garment successfully updated');
-    console.log({ garmentName, garmentType, weatherType, garmentUrl });
-    setCurrentGarment({ garmentName, garmentType, weatherType, garmentUrl });
-  };
-
-  const handlelChangePasswordSubmit = (password) => {
-    console.log('new password set');
-  };
-
-  const handleUpdateProfileData = (userData) => {
-    api.updateCurrentUserData(userData)
-    .then(response => {
-      setCurrentUser({
-        ...currentUser,
-        username: response.name,
-        avatar: response.avatar,
-      })
-    })
-    .catch((error)=> console.error(`${error}: Could not update`))
-
-
   };
 
   const handleRegisterSubmit = (registerCredentials) => {
@@ -326,25 +268,128 @@ const App = () => {
       });
   };
 
+  const handleLogOut = () => {
+    api.updateAuthUserToken('');
+    setIsLoggedIn(false);
+    setCurrentUser({});
+    localStorage.removeItem('jwt');
+  };
+
+  const handleToggleSwitchChange = () => {
+    currentTemperatureUnit === 'F'
+      ? setCurrentTemperatureUnit('C')
+      : setCurrentTemperatureUnit('F');
+  };
+
+  const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
+    const newClothingItem = {
+      name: garmentName,
+      type: garmentType,
+      weather: weatherType,
+      imageUrl: garmentUrl,
+    };
+    api
+      .addNewClothingItem(newClothingItem)
+      .then((newClothingItem) => {
+        closeAllPopups();
+        setClothingItems([newClothingItem, ...clothingItems]);
+        setNewClothingItemType(newClothingItem.type);
+        setNewClothingItemUrl(newClothingItem.imageUrl);
+        setIsCreateClothingConfirmationModalOpen(true);
+      })
+      .catch((err) => {
+        console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
+        console.log(err);
+      });
+  };
+
+  // Need to work on this event handler when rendering the Clothing Cards logic has been sorted
+  const handleEditClothing = (updatedClothingItemData) => {
+    api
+      .updateClothingItem(updatedClothingItemData)
+      .then((updatedClothingItem) => {
+        console.log('The clothing item has been updated');
+        console.log(updatedClothingItem);
+      })
+      .catch((err) => {
+        console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
+        console.log(err);
+      });
+  };
+
+  const handlelChangePasswordSubmit = ({ oldPassword, newPassword }) => {
+    api
+      .updateCurrentUserPassword({ oldPassword, newPassword })
+      .then(() => console.log('Password changed successfully'))
+      .catch((err) => {
+        console.log('Uh-oh! Error occurred while changing password to the server.');
+        console.log(err);
+      });
+  };
+
+  // mock clothingCardData for testing ClothingCard component, please test the like button
+  // by changing favorited from true to false
+  const clothingCardData = {
+    name: 'T-shirt',
+    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
+    isLiked: true,
+    type: 't-shirt',
+  };
+
+  function handleLikeClick(cardData) {
+    // insert logic to interact with WTWR API
+    setIsLoginOpen(false);
+  }
+
+  const handleUpdateProfileData = (userData) => {
+    api
+      .updateCurrentUserData(userData)
+      .then((response) => {
+        setCurrentUser({
+          ...currentUser,
+          username: response.name,
+          avatar: response.avatar,
+        });
+      })
+      .catch((error) => console.error(`${error}: Could not update`));
+  };
+
+  const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
+    api
+      .updateCurrentUserPreferences(clothingPreferences)
+      .then(({ preferences }) => {
+        setCurrentUser({
+          ...currentUser,
+          preferences,
+        });
+      })
+      .catch((err) => {
+        console.log(
+          'Uh-oh! Error occurred while updating current user clothing preference to the server.'
+        );
+        console.log(err);
+      });
+  };
+
   const handleDeleteProfileSubmit = () => {
     api
       .deleteCurrentUser()
       .then(() => {
-        console.log("User is deleted");
+        console.log('User is deleted');
         closeAllPopups();
         handleLogOut();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Uh-oh! Error occurred while deleting the profile from the server.');
         console.log(err);
-      })
-
+      });
   };
 
-  const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
-    //An API call to update the clothing preferences
-    console.log("User's clothing preferences has been changed");
-    console.log(clothingPreferences);
+  const handleClothingClick = (cardData) => {
+    if (isLoggedIn) {
+      setSelectedClothingCard(cardData);
+      setShowClothingModalOpen(true);
+    }
   };
 
   return (
@@ -354,10 +399,6 @@ const App = () => {
           <CurrentTemperatureUnitContext.Provider
             value={{ currentTemperatureUnit, handleToggleSwitchChange }}
           >
-            {/* isLoggedIn will be determined by a future user context */}
-            {/* I left the userName state in for the purpose of seeing the different navigation css */}
-            {/** rewrite `{userName}` to `{currentUser}` when ready */}
-            {/** place login modal open state in Navigation*/}
             <Header weatherData={weatherData}>
               <Navigation
                 isLoggedIn={isLoggedIn}
@@ -370,7 +411,13 @@ const App = () => {
               <Route
                 exact
                 path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
+                element={
+                  <Main
+                    weatherData={weatherData}
+                    isLoggedIn={isLoggedIn}
+                    onCardClick={handleClothingClick}
+                  />
+                }
               ></Route>
               <Route
                 exact
@@ -383,6 +430,7 @@ const App = () => {
                     <Profile
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
+                      onCardClick={handleClothingClick}
                       onLogOutClick={handleLogOut}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                       onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
@@ -403,13 +451,19 @@ const App = () => {
               onSubmit={handleLoginSubmit}
               setLoginEmail={setLoginEmail}
               setLoginPassword={setLoginPassword}
-              openRegisterModal={() => {setIsRegisterOpen(true); setIsLoginOpen(false)}}
+              openRegisterModal={() => {
+                setIsRegisterOpen(true);
+                setIsLoginOpen(false);
+              }}
             />
             <Register
               isOpen={isRegisterOpen}
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
-              openLoginModal={() => {setIsLoginOpen(true); setIsRegisterOpen(false) }}
+              openLoginModal={() => {
+                setIsLoginOpen(true);
+                setIsRegisterOpen(false);
+              }}
             />
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}
@@ -424,6 +478,11 @@ const App = () => {
               isOpen={isEditPasswordModalOpen}
               onClose={closeAllPopups}
               onUpdatePassword={handlelChangePasswordSubmit}
+            />
+            <EditClothingPreferencesModal
+              isOpen={isEditClothingPreferencesModalOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleEditClothingPreferencesSubmit}
             />
             <DeleteProfileModal
               isOpen={isDeleteProfileOpen}
@@ -441,28 +500,22 @@ const App = () => {
               createdClothingItemUrl={newClothingItemUrl}
               createdClothingItemType={newClothingItemType}
             />
+            <ShowClothingModal
+              card={selectedClothingCard || clothingCardData}
+              /** uncomment when like logic is added 
+              onCardLike={handleLikeClick}
+              */
+              isOpen={isShowClothingModalOpen}
+              onClose={closeAllPopups}
+              handleClick={() => setIsEditClothingModalOpen(true)}
+            />
             <EditClothingModal
               isOpen={isEditClothingModalOpen}
               onClose={closeAllPopups}
               onSubmitEditGarment={handleEditClothing}
-              currentGarment={currentGarment}
+              currentGarment={clothingItems[0] || {}}
             />
-            {/* <ShowClothingModal
-              // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
-              // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
-              // tempDegree={} // function or something that says what temp in degree the clothes are for
-              tempUnit={setCurrentTemperatureUnit || 'F+'}
-              // (above) will show which unit being used by user. 'F' is a placeholder for now.
-              isOpen={isShowClothingModalOpen}
-              onClose={closeAllPopups}
-              // handleClick={ replace with: set state of the edit modal open to true and this modal to close }
-            /> */}
-            <EditClothingPreferences
-              isOpen={isEditClothingPreferencesModalOpen}
-              onClose={closeAllPopups}
-              onSubmit={handleEditClothingPreferencesSubmit}
-              userClothingPreferences={userClothingPreferences}
-            />
+            <WeatherApiFailModal isOpen={isWeatherApiFailModalOpen} onClose={closeAllPopups} />
             <Footer />
             <MobileNavigation
               isLoggedIn={isLoggedIn}
