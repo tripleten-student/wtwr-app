@@ -10,7 +10,6 @@ import './LoadingSpinner.css';
  */
 
 function LoadingSpinner({ isLoading }) {
-  console.log({ isLoading });
   return <span className={isLoading ? 'loader' : 'loader loader_hidden'}></span>;
 }
 
