@@ -1,17 +1,21 @@
+import { useState, useEffect } from 'react';
 import './Profile.css';
 import SideBar from '../SideBar/SideBar';
 import ClothesSection from '../ClothesSection/ClothesSection';
-import { clothes } from '../../utils/testData';
+import {
+  accessoriesCategory,
+  topsAndOuterwearCategory,
+  bottomsCategory,
+  shoesCategory,
+} from '../../utils/formConstants';
 
 /**
- * The **Profile** component displays all the data saved by the user using the "ClothesSection" component
- * the SideBar with the links to change the user data.
- *
+ * The **Profile** component displays all the data saved by the user when he is logged in
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
 function Profile({
-  cardData,
+  clothingItems,
   onCardLike,
   onCardClick,
   onAddNewClick,
@@ -21,11 +25,19 @@ function Profile({
   onLogOutClick,
   onDeleteProfileClick,
 }) {
-  // Once ready we will change "clothes" for "cardData".
-  const accessories = clothes.filter((cloth) => cloth.type === 'Accessories');
-  const topsAndOuterwear = clothes.filter((cloth) => cloth.type === 'Tops & outerwear');
-  const bottoms = clothes.filter((cloth) => cloth.type === 'Bottoms');
-  const shoes = clothes.filter((cloth) => cloth.type === 'Shoes');
+
+  const [accessories, setAccessories] = useState([]);
+  const [topsandoutwear, setTopsandoutwear] = useState([]);
+  const [bottoms, setBottoms] = useState([]);
+  const [shoes, setShoes] = useState([]);
+
+  // Divide all the clothing items into broader categories on page load
+  useEffect(() => {
+    setAccessories(clothingItems.filter(clothingItem => accessoriesCategory.includes(clothingItem.type)));
+    setTopsandoutwear(clothingItems.filter(clothingItem => topsAndOuterwearCategory.includes(clothingItem.type)));
+    setBottoms(clothingItems.filter(clothingItem => bottomsCategory.includes(clothingItem.type)));
+    setShoes(clothingItems.filter(clothingItem => shoesCategory.includes(clothingItem.type)));
+  }, [clothingItems]);
 
   return (
     <div className="profile">
@@ -40,22 +52,22 @@ function Profile({
       </section>
       <section className="profile-clothes">
         <ClothesSection
-          sectionName={'Accessories'}
+          sectionName="Accessories"
           sectionData={accessories}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
           onCardClick={onCardClick}
         />
         <ClothesSection
-          sectionName={'Tops & outerwear'}
-          sectionData={topsAndOuterwear}
+          sectionName="Tops & outerwear"
+          sectionData={topsandoutwear}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
           onCardClick={onCardClick}
         />
 
         <ClothesSection
-          sectionName={'Bottoms'}
+          sectionName="Bottoms"
           sectionData={bottoms}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
@@ -63,7 +75,7 @@ function Profile({
         />
 
         <ClothesSection
-          sectionName={'Shoes'}
+          sectionName="Shoes"
           sectionData={shoes}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
@@ -73,4 +85,5 @@ function Profile({
     </div>
   );
 }
+
 export default Profile;
