@@ -9,13 +9,13 @@
 const accessories = [
   {
     name: 'Cap',
-    apparelGroup: 'accesories',
+    apparelGroup: 'accessories',
     type: 'cap',
     weather: 'warm',
   },
   {
     name: 'Sunglasses',
-    apparelGroup: 'accesories',
+    apparelGroup: 'accessories',
     type: 'cap',
     weather: 'warm',
   },

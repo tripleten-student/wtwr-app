@@ -40,8 +40,7 @@ const userSchema = new mongoose.Schema({
   preferences: [
     {
       type: String,
-      minlength: 2,
-      maxlength: 30,
+      enum: ['t-shirt', 'shirt', 'jeans', 'skirt', 'dress', 'sneakers', 'boots', 'jacket', 'coat', 'sunglasses', 'shorts', 'sport-pants', 'down-jacket', 'headwear'],
     },
   ],
 });

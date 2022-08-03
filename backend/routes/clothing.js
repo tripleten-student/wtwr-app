@@ -1,6 +1,4 @@
 const express = require('express');
-const { celebrate, Joi } = require('celebrate');
-
 /**
  * The **clothing** module contains the routes for clothing items
  *
@@ -14,7 +12,7 @@ const {
   deleteItem,
   toggleLikeStatus,
 } = require('../controllers/clothing');
-const { validateItem } = require('../middleware/validation');
+const { validateItem, validateUserId } = require('../middleware/validation');
 
 const router = express.Router();
 
@@ -24,15 +22,7 @@ router.post('/', validateItem, createItem);
 
 router.patch('/:ItemId', validateItem, editItem);
 
-router.delete(
-  '/:ItemId',
-  celebrate({
-    body: Joi.object().keys({
-      _id: Joi.string().hex().length(24),
-    }),
-  }),
-  deleteItem,
-);
+router.delete('/:ItemId', validateUserId, deleteItem);
 
 router.patch('/:ItemId/likes', toggleLikeStatus);
 

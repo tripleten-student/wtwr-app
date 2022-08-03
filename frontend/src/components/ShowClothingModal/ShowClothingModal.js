@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './ShowClothingModal.css';
 import Modal from '../Modal/Modal';
-import { weatherTypesInFahrenheit, weatherTypesInCelcius } from '../../utils/formConstants';
+import { weatherTypesInFahrenheit, weatherTypesInCelsius } from '../../utils/formConstants';
 import capImage from '../../images/Clothes/letter-embroidered-baseball-cap.png';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 
@@ -38,8 +38,8 @@ const ShowClothingModal = ({ card, handleClick, onCardLike, isOpen, onClose }) =
       return weatherType;
     };
 
-    const handleCelcius = () => {
-      const weatherCelFiltered = weatherTypesInCelcius.filter(
+    const handleCelsius = () => {
+      const weatherCelFiltered = weatherTypesInCelsius.filter(
         (weatherType) => weatherType.value === card.weather
       );
       let weatherType = weatherCelFiltered
@@ -53,7 +53,7 @@ const ShowClothingModal = ({ card, handleClick, onCardLike, isOpen, onClose }) =
     if (currentTemperatureUnit === 'F') {
       setTempCondition(handleFahrenheit);
     } else {
-      setTempCondition(handleCelcius);
+      setTempCondition(handleCelsius);
     }
   }, [card.weather, currentTemperatureUnit]);
 
