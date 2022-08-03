@@ -8,10 +8,21 @@ import arrow from '../../images/dropdown-arrow.svg';
  *
  * @author [Shraddha](https://github.com/5hraddha)
  */
-const Dropdown = ({ dropdownName, header, options, userPreferenceValue = '', onDropdownItemClick, setIsFormValid }) => {
+const Dropdown = ({
+  dropdownName,
+  header,
+  options,
+  userPreferenceValue = '',
+  onDropdownItemClick,
+  setIsFormValid,
+  isModalOpen
+}) => {
   const ref = useRef(null);
   const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
   const [selectedDropdownListItemLabel, setSelectedDropdownListItemLabel] = useState('Choose');
+
+  //Resets dropdown everytime the modal opens
+  useEffect(() => setSelectedDropdownListItemLabel('Choose'), [isModalOpen]);
 
   // Close dropdown menu if user clicks outside the dropdown
   useEffect(() => {
