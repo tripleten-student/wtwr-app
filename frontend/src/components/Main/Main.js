@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import './Main.css';
 import ClothingCard from '../ClothingCard/ClothingCard';
@@ -7,6 +7,7 @@ import randomizeIcon from '../../images/randomizeIcon.svg';
 import { clothes } from '../../utils/testData';
 import { accessories, top, bottom, shoes } from '../../utils/templateApparel';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
  * The **Main** component puts toguether the components of the main page,
@@ -15,13 +16,25 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
-function Main({ weatherData, clothesData, onCardLike, isLoggedIn, userClothingPreferences }) {
+function Main({
+  weatherData,
+  clothesData,
+  onCardLike,
+  isLoggedIn,
+  userClothingPreferences,
+  onCardClick,
+}) {
   const [accesoriesItem, setAccesoriesItem] = useState({});
   const [topsandoutwearItem, setTopsandoutwearItem] = useState({});
   const [bottomsItem, setBottomsItem] = useState({});
   const [shoesItem, setShoesItem] = useState({});
 
+  // To get the weather in the actual moment
+
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+  const currentUser = React.useContext(CurrentUserContext);
+
+  console.log(currentUser.preferences);
 
   /**DISPLAY WEATHER TEXT**/
 
@@ -71,15 +84,16 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, userClothingPr
   /** 3. Display cards only if LoggedIn.**/
   const clothesItems = isLoggedIn ? clothes : [{}];
 
+  // && currentUser.preferences.includes(item.type) === true
   /** 3. Increase probability to items liked and in the preferences.**/
   const ItemsProbability = clothesItems.map((item) => {
-    if (item.isLiked === true && userClothingPreferences.includes(item.type) === true) {
+    if (item.isLiked === true) {
       item['prob'] = 4;
       return item;
-    } else if (item.isLiked === true && userClothingPreferences.includes(item.type) === false) {
+    } else if (item.isLiked === true) {
       item['prob'] = 3;
       return item;
-    } else if (item.isLiked === false && userClothingPreferences.includes(item.type) === true) {
+    } else if (item.isLiked === false) {
       item['prob'] = 2;
       return item;
     } else {
@@ -119,7 +133,11 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, userClothingPr
       <WeatherCards weatherData={weatherData} />
       <div className="clothesSectionMain">
         <div className="clothesSectionMain__info">
-          <p>{`Today is ${actualWeather.temperature[currentTemperatureUnit]} ${currentTemperatureUnit} and it is ${actualWeather.condition} / You may want to wear:`}</p>
+          <div className="clothesSectionMain__description-container">
+            <p className="clothesSectionMain__description">{`Today is ${actualWeather.temperature[currentTemperatureUnit]} ${currentTemperatureUnit} and it is ${actualWeather.condition}`}</p>
+            <p className="clothesSectionMain__description_slash"> / </p>
+            <p className="clothesSectionMain__description">You may want to wear:</p>
+          </div>
           <button className="randomize-button" type="button" onClick={handleRandomClick}>
             <img className={'randomize-icon'} alt="randomize" src={randomizeIcon} />
             Randomize
@@ -131,26 +149,38 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, userClothingPr
             apparelGroup={accessories}
             cardData={!accesoriesItem ? false : accesoriesItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'topsandoutwear'}
             apparelGroup={top}
             cardData={!topsandoutwearItem ? false : topsandoutwearItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'bottoms'}
             apparelGroup={bottom}
             cardData={!bottomsItem ? false : bottomsItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'shoes'}
             apparelGroup={shoes}
             cardData={!shoesItem ? false : shoesItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
         </div>
+        <button
+          className="randomize-button randomize-button_location_bottom"
+          type="button"
+          onClick={handleRandomClick}
+        >
+          <img className={'randomize-icon'} alt="randomize" src={randomizeIcon} />
+          Randomize
+        </button>
       </div>
     </main>
   );

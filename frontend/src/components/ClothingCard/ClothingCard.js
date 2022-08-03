@@ -9,11 +9,14 @@ import PropTypes from 'prop-types';
  * @author [Yuffie](https://github.com/yuff1006) & @author [Santiago](https://github.com/Santiag0SR)
  */
 
-//1. Clean up code so only one type of data is received for every location.
-//2. Remove the like button for template cards.
-//3. Add ... when
-
-const ClothingCard = ({ weatherData, cardData, onCardLike, apparelGroup }) => {
+const ClothingCard = ({
+  weatherData,
+  cardData,
+  onCardLike,
+  apparelGroup,
+  onCardClick,
+  isLoggedIn,
+}) => {
   const location = useLocation();
   const [templateItem, setTemplateItem] = useState({});
   const clothingItemPresent = cardData;
@@ -39,8 +42,14 @@ const ClothingCard = ({ weatherData, cardData, onCardLike, apparelGroup }) => {
       ? 'clothingcard__like clothingcard__like_active'
       : 'clothingcard__like';
 
+  const handleCardClick = (event) => {
+    if (!event.target.className.includes('clothingcard__like')) {
+      onCardClick(cardData);
+    }
+  };
+
   return (
-    <div className="clothingcard">
+    <div className="clothingcard" onClick={handleCardClick}>
       <img
         className={`clothingcard__image ${!clothingItemPresent && 'clothingcard__image_default'}`}
         src={
