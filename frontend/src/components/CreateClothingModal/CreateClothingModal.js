@@ -8,7 +8,7 @@ import { checkIfImageExists } from '../../utils/clothingModals';
 import {
   clothingItems,
   weatherTypesInFahrenheit,
-  weatherTypesInCelcius,
+  weatherTypesInCelsius,
 } from '../../utils/formConstants';
 
 /**
@@ -44,6 +44,7 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
       'new-garment-image-url': '',
     };
     resetForm({ ...initialValues }, { ...initialValues }, true);
+    setShowImagePreview(false);
   }, [isOpen, resetForm]);
 
   // Event handlers
@@ -125,15 +126,17 @@ const CreateClothingModal = ({ isOpen, onClose, onSubmitAddGarment }) => {
           header="Type"
           options={clothingItems}
           onDropdownItemClick={setGarmentTypeChoice}
-          setIsFormValid={setIsFormValid} />
+          setIsFormValid={setIsFormValid}
+          isModalOpen={isOpen} />
       </div>
       <div className="form__dropdown-container">
         <Dropdown
           dropdownName="weather-types"
           header="Weather"
-          options={(currentTemperatureUnit === 'F') ? weatherTypesInFahrenheit : weatherTypesInCelcius}
+          options={(currentTemperatureUnit === 'F') ? weatherTypesInFahrenheit : weatherTypesInCelsius}
           onDropdownItemClick={setWeatherTypeChoice}
-          setIsFormValid={setIsFormValid} />
+          setIsFormValid={setIsFormValid}
+          isModalOpen={isOpen} />
       </div>
       <div className="form__input-container">
         <div className="form__input-label-container">

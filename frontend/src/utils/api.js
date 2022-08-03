@@ -3,7 +3,6 @@
  * @module Api
  * @author [Shraddha](https://github.com/5hraddha)
  * @author [Hoang Le Chau](https://github.com/hoanglechau)
- * 
  */
 class Api {
   constructor(options) {
@@ -119,6 +118,19 @@ class Api {
   /**
    * Updates the info of the given clothing item to the server using a PATCH request.
    */
+  updateClothingItem = ({ itemId, name, type, weather, imageUrl }) => {
+    return fetch(`${this._baseUrl}/clothing/${itemId}`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        type,
+        weather,
+        imageUrl,
+      })
+    })
+      .then(this._checkResponseStatus);
+  }
 
   /**
    * Deletes an existing clothing item from the server using a DELETE request.

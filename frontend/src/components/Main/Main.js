@@ -14,7 +14,7 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
-function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
+function Main({ weatherData, clothesData, onCardLike, isLoggedIn, onCardClick }) {
   // To get the weather in the actual moment
 
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
@@ -45,10 +45,10 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
   //In the final project the main item should receive the clothesData,
   // using "clothesTestData" for testing purposes
 
-  const accesoriesItem = getClothes(
+  const accessoriesItem = getClothes(
     clothesTestData.filter((cloth) => cloth.type === 'Accessories')
   );
-  const topsandoutwearItem = getClothes(
+  const topsAndOuterwearItem = getClothes(
     clothesTestData.filter((cloth) => cloth.type === 'Tops & outerwear')
   );
   const bottomsItem = getClothes(clothesTestData.filter((cloth) => cloth.type === 'Bottoms'));
@@ -71,28 +71,32 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn }) {
         </div>
         <div className="clothesSectionMain__items">
           <ClothingCard
-            key={'accesories'}
+            key={'accessories'}
             apparelGroup={accessories}
-            cardData={accesoriesItem}
+            cardData={accessoriesItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
-            key={'topsandoutwear'}
+            key={'topsAndOuterwear'}
             apparelGroup={top}
-            cardData={topsandoutwearItem}
+            cardData={topsAndOuterwearItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'bottoms'}
             apparelGroup={bottom}
             cardData={bottomsItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
           <ClothingCard
             key={'shoes'}
             apparelGroup={shoes}
             cardData={shoesItem}
             onCardLike={onCardLike}
+            onCardClick={onCardClick}
           />
         </div>
         <button

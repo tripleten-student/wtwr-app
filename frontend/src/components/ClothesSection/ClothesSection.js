@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  * @author [Santiago](https://github.com/Santiag0SR)
  */
 
-function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike }) {
+function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike, onCardClick }) {
   return (
     <div className="clothes-section">
       <div className="clothes-section__info">
@@ -19,10 +19,10 @@ function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike })
       </div>
       <ul className="clothes-section__list">
         {sectionData.length === 0 ? (
-          <ClothingCard cardData={sectionData} apparelGroup={sectionName} onCardLike={onCardLike} />
+          <ClothingCard cardData={sectionData} apparelGroup={sectionName} onCardLike={onCardLike} onCardClick={onCardClick} />
         ) : (
           sectionData.map((card) => (
-            <ClothingCard key={card.name} cardData={card} onCardLike={onCardLike} />
+            <ClothingCard key={card.name} cardData={card} onCardLike={onCardLike} onCardClick={onCardClick}/>
           ))
         )}
       </ul>

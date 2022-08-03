@@ -13,6 +13,7 @@ import { clothes } from '../../utils/testData';
 function Profile({
   cardData,
   onCardLike,
+  onCardClick,
   onAddNewClick,
   onChangePasswordClick,
   onChangeProfileClick,
@@ -22,7 +23,7 @@ function Profile({
 }) {
   // Once ready we will change "clothes" for "cardData".
   const accessories = clothes.filter((cloth) => cloth.type === 'Accessories');
-  const topsandoutwear = clothes.filter((cloth) => cloth.type === 'Tops & outerwear');
+  const topsAndOuterwear = clothes.filter((cloth) => cloth.type === 'Tops & outerwear');
   const bottoms = clothes.filter((cloth) => cloth.type === 'Bottoms');
   const shoes = clothes.filter((cloth) => cloth.type === 'Shoes');
 
@@ -43,12 +44,14 @@ function Profile({
           sectionData={accessories}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
+          onCardClick={onCardClick}
         />
         <ClothesSection
           sectionName={'Tops & outerwear'}
-          sectionData={topsandoutwear}
+          sectionData={topsAndOuterwear}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
+          onCardClick={onCardClick}
         />
 
         <ClothesSection
@@ -56,6 +59,7 @@ function Profile({
           sectionData={bottoms}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
+          onCardClick={onCardClick}
         />
 
         <ClothesSection
@@ -63,6 +67,7 @@ function Profile({
           sectionData={shoes}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
+          onCardClick={onCardClick}
         />
       </section>
     </div>

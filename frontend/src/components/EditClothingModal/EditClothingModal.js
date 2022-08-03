@@ -8,7 +8,7 @@ import { checkIfImageExists } from '../../utils/clothingModals';
 import {
   clothingItems,
   weatherTypesInFahrenheit,
-  weatherTypesInCelcius,
+  weatherTypesInCelsius,
 } from '../../utils/formConstants';
 import './EditClothingModal.css';
 
@@ -40,11 +40,10 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
   // Reset form values every time the popup opens
   useEffect(() => {
     const initialValues = {
-      //prefilled with clothing data selected for updating
-      'user-garment-name': currentGarment.garmentName || '',
-      garmentType: currentGarment.garmentType || '',
-      weatherType: currentGarment.weatherType || '',
-      'user-garment-image-url': currentGarment.garmentUrl || '',
+      'user-garment-name': currentGarment.name || '',
+      garmentType: currentGarment.type || '',
+      weatherType: currentGarment.weather || '',
+      'user-garment-image-url': currentGarment.imageUrl || '',
     };
     const initialErrorValues = {
       'user-garment-name': '',
@@ -77,13 +76,15 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    // naming of the fields to be checked again when backend API is connected
     if (isValid) {
       onSubmitEditGarment(
-        values['user-garment-name'],
-        garmentTypeChoice,
-        weatherTypeChoice,
-        values['user-garment-image-url']
+        {
+          itemId: currentGarment._id,
+          name: values['user-garment-name'],
+          type: garmentTypeChoice,
+          weather: weatherTypeChoice,
+          imageUrl: values['user-garment-image-url'],
+        }
       );
       onClose();
     }
@@ -137,7 +138,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
           header="Type"
           options={clothingItems}
           onDropdownItemClick={setGarmentTypeChoice}
-          userPreferenceValue={currentGarment.garmentType || ''}
+          userPreferenceValue={currentGarment.type || ''}
           setIsFormValid={setIsFormValid}
         />
       </div>
@@ -145,9 +146,9 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
         <Dropdown
           dropdownName="weather-types"
           header="Weather"
-          options={(currentTemperatureUnit === 'F') ? weatherTypesInFahrenheit : weatherTypesInCelcius}
+          options={(currentTemperatureUnit === 'F') ? weatherTypesInFahrenheit : weatherTypesInCelsius}
           onDropdownItemClick={setWeatherTypeChoice}
-          userPreferenceValue={currentGarment.weatherType || ''}
+          userPreferenceValue={currentGarment.weather || ''}
           setIsFormValid={setIsFormValid}
         />
       </div>

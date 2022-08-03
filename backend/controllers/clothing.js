@@ -17,7 +17,7 @@ const Item = require('../models/clothingItem');
  */
 
 const getAllItems = (req, res, next) => {
-  Item.find({ owner: req.owner._id })
+  Item.find({ owner: req.user._id })
     .orFail(() => {
       throw new NotFoundError(itemsNotFound);
     })
