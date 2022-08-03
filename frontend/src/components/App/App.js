@@ -18,7 +18,6 @@ import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
 import WeatherApiFailModal from '../WeatherApiFailModal/WeatherApiFailModal';
-import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
 import EditClothingPreferencesModal from '../EditClothingPreferencesModal/EditClothingPreferencesModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
@@ -130,6 +129,7 @@ const App = () => {
           setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
         })
         .catch((err) => {
+          console.log('haha');
           setweatherData(generateWeatherDataWhenAPIFails());
           setIsWeatherApiFailModalOpen(true);
         });
@@ -167,17 +167,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    getWeatherDataUsingLocation();
-  }, [userLocation]);
-
-  useEffect(() => {
     getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
       setweatherData(
         filterDataFromWeatherAPI(
           getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation)
         )
       );
-  }, []);
+  }, [userLocation]);
 
   // ********************************************************************************************* //
   //                        Handle mouse click or Esc key down event                               //

@@ -121,6 +121,7 @@ const getForecastWeather = (location, APIkey) => {
    * the API takes the two combined(latitude first) seperated by a comma
    */
   const parsedLocation = `${location.latitude},${location.longitude}`;
+  console.log('getting data');
   return fetch(
     `http://api.weatherapi.com/v1/forecast.json?key=${APIkey}&q=${parsedLocation}&days=1`
   ).then((res) => {
@@ -183,7 +184,7 @@ const generateWeatherDataWhenAPIFails = () => {
         determineTimeOfTheDay(point).charAt(0).toUpperCase() +
         determineTimeOfTheDay(point).slice(1),
       description: 'sunny',
-      city: 'Neverland',
+      city: 'Hogwarts',
     });
   });
   return forecastArr;

@@ -18,7 +18,6 @@
   font-weight: 700;
   line-height: 24px;
   color: #000;
-  text-align: end;
 }
 
 .header__navContainer {
@@ -41,6 +40,7 @@
 
   .header__date {
     margin: 5px 0 5px 0;
+    text-align: end;
   }
 
   .header__navContainer {
