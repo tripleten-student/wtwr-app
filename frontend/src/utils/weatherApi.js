@@ -83,13 +83,13 @@ const filterDataFromWeatherAPI = (data) => {
         : categorizeWeatherTypeForImage(forecastDataPath.condition.text),
       temperature: elongateOrNot
         ? {
-            F: `${Math.trunc(currentDataPath.temp_f)}°`,
-            C: `${Math.trunc(currentDataPath.temp_c)}°`,
-          }
+          F: `${Math.trunc(currentDataPath.temp_f)}°`,
+          C: `${Math.trunc(currentDataPath.temp_c)}°`,
+        }
         : {
-            F: `${Math.trunc(forecastDataPath.temp_f)}°`,
-            C: `${Math.trunc(forecastDataPath.temp_c)}°`,
-          },
+          F: `${Math.trunc(forecastDataPath.temp_f)}°`,
+          C: `${Math.trunc(forecastDataPath.temp_c)}°`,
+        },
       dayOrNight: dayOrNight,
       elongate: elongateOrNot,
       // first letter uppercase for displaying on the card
@@ -121,7 +121,6 @@ const getForecastWeather = (location, APIkey) => {
    * the API takes the two combined(latitude first) seperated by a comma
    */
   const parsedLocation = `${location.latitude},${location.longitude}`;
-  console.log('getting data');
   return fetch(
     `http://api.weatherapi.com/v1/forecast.json?key=${APIkey}&q=${parsedLocation}&days=1`
   ).then((res) => {
