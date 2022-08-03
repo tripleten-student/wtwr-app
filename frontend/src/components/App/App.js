@@ -463,7 +463,6 @@ const App = () => {
             />
             <ShowClothingModal
               card={selectedClothingCard || clothingCardData}
-              tempUnit={currentTemperatureUnit || 'F'}
               /** uncomment when like logic is added 
               onCardLike={handleLikeClick}
               */
