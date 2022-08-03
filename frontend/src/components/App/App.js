@@ -19,6 +19,7 @@ import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
 import WeatherApiFailModal from '../WeatherApiFailModal/WeatherApiFailModal';
 import EditClothingPreferencesModal from '../EditClothingPreferencesModal/EditClothingPreferencesModal';
+import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import {
@@ -31,7 +32,6 @@ import {
 } from '../../utils/weatherApi';
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import { login, register, checkToken } from '../../utils/auth';
-import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import api from '../../utils/api';
 
 /**
@@ -318,8 +318,14 @@ const App = () => {
       });
   };
 
-  const handlelChangePasswordSubmit = (password) => {
-    console.log('new password set');
+  const handlelChangePasswordSubmit = ({ oldPassword, newPassword }) => {
+    api
+      .updateCurrentUserPassword({ oldPassword, newPassword })
+      .then(() => console.log('Password changed successfully'))
+      .catch((err) => {
+        console.log('Uh-oh! Error occurred while changing password to the server.');
+        console.log(err);
+      });
   };
 
   // mock clothingCardData for testing ClothingCard component, please test the like button
