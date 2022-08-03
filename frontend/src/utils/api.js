@@ -2,6 +2,8 @@
  * This module takes care of all the requests made to the wtwr API
  * @module Api
  * @author [Shraddha](https://github.com/5hraddha)
+ * @author [Hoang Le Chau](https://github.com/hoanglechau)
+ * 
  */
 class Api {
   constructor(options) {
@@ -40,8 +42,8 @@ class Api {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        name,
-        avatar,
+        name: name,
+        avatar: avatar,
       })
     })
       .then(this._checkResponseStatus);
@@ -57,6 +59,20 @@ class Api {
       body: JSON.stringify({
         oldPassword,
         newPassword,
+      })
+    })
+      .then(this._checkResponseStatus);
+  }
+
+  /**
+   * Updates the current user preferences from the server using a PATCH request.
+   */
+  updateCurrentUserPreferences = (preferences) => {
+    return fetch(`${this._baseUrl}/users/me/preferences`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        preferences
       })
     })
       .then(this._checkResponseStatus);

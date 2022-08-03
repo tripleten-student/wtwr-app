@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
@@ -17,7 +17,7 @@ import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
-import EditClothingPreferences from '../EditClothingPreferences/EditClothingPreferences';
+import EditClothingPreferencesModal from '../EditClothingPreferencesModal/EditClothingPreferencesModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import {
@@ -54,13 +54,6 @@ const App = () => {
   // userLocation is a state within a useEffect as the state should only be changed once after loading
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setweatherData] = useState();
-  // set useClothingPreferences from API
-  const [userClothingPreferences, setUserClothingPreferences] = useState([
-    't-shirt',
-    'jeans',
-    'dress',
-    'boots',
-  ]);
   // Below states have been finalised
   // set the url of newly created garment from handleCreateClothingItem() to pass on to the CreateClothingConfirmationModal
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
@@ -80,6 +73,39 @@ const App = () => {
     useState(false);
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
     useState(false);
+
+  // Get the current user info if the user is logged in
+  useEffect(() => {
+    isLoggedIn && api.getCurrentUserData()
+      .then((data) => {
+        setCurrentUser({
+          email: data.email,
+          avatar: data.avatar,
+          username: data.name,
+          preferences: data.preferences,
+        });
+      })
+      .catch(err => console.log(err))
+  }, [isLoggedIn])
+
+  const verifyToken = useCallback(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [])
+
+  useEffect(() => {
+    verifyToken()
+  }, [verifyToken]);
 
   /** Location gets read only once every time upon page refresh, this is not dependent upon weather api call */
   useEffect(() => {
@@ -126,46 +152,7 @@ const App = () => {
       );
   }, []);
 
-  useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      checkToken(jwt)
-        .then((res) => {
-          if (res) {
-            setCurrentUser({
-              ...currentUser,
-              username: res.name,
-              email: res.email,
-              avatar: res.avatar,
-            });
-            setIsLoggedIn(true);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, []);
-  const getWeatherDataUsingLocation = () => {
-    if (userLocation.latitude && userLocation.longitude) {
-      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
-        .then((data) => {
-          setweatherData(filterDataFromWeatherAPI(data));
-          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-  const handleToggleSwitchChange = () => {
-    currentTemperatureUnit === 'F'
-      ? setCurrentTemperatureUnit('C')
-      : setCurrentTemperatureUnit('F');
-  };
-
   // Handle mouse click or Esc key down event
-  //Check if all the other modals are open using || operator
   const isAnyPopupOpen =
     isLoginOpen ||
     isRegisterOpen ||
@@ -203,7 +190,6 @@ const App = () => {
   }, [isAnyPopupOpen]);
 
   const closeAllPopups = () => {
-    //Remove the code below & set modal's specific setState function to false
     setIsLoginOpen(false);
     setIsRegisterOpen(false);
     setIsCompleteRegistrationOpen(false);
@@ -215,19 +201,21 @@ const App = () => {
     setIsEditClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
   };
-  // mock clothingCardData for testing ClothingCard component, please test the like button
-  // by changing favorited from true to false
-  const clothingCardData = {
-    name: 'T-shirt',
-    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
-    isLiked: true,
-    type: 't-shirt',
-  };
-  function handleLikeClick(cardData) {
-    // insert logic to interact with WTWR API
-    setIsLoginOpen(false);
-  }
 
+  const getWeatherDataUsingLocation = () => {
+    if (userLocation.latitude && userLocation.longitude) {
+      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
+        .then((data) => {
+          setweatherData(filterDataFromWeatherAPI(data));
+          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  // Event Handlers
   const handleLoginSubmit = (loginCredentials) => {
     login(loginCredentials).then(({ data, token }) => {
       if (data) {
@@ -237,6 +225,7 @@ const App = () => {
           email: data.email,
           avatar: data.avatar,
           username: data.name,
+          preferences: data.preferences,
         });
         setLoginEmail('');
         setLoginPassword('');
@@ -248,11 +237,30 @@ const App = () => {
     //else catch error
   };
 
+  const handleRegisterSubmit = (registerCredentials) => {
+    closeAllPopups();
+    register(registerCredentials)
+      .then((data) => {
+        setIsCompleteRegistrationOpen(true);
+        handleLoginSubmit(registerCredentials);
+      })
+      .catch((err) => {
+        // clarify behaviour for errors: invalid username/password
+        console.log(err);
+      });
+  };
+
   const handleLogOut = () => {
     api.updateAuthUserToken('');
     setIsLoggedIn(false);
     setCurrentUser({});
     localStorage.removeItem('jwt');
+  };
+
+  const handleToggleSwitchChange = () => {
+    currentTemperatureUnit === 'F'
+      ? setCurrentTemperatureUnit('C')
+      : setCurrentTemperatureUnit('F');
   };
 
   const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -287,22 +295,46 @@ const App = () => {
     console.log('new password set');
   };
 
-  const handleUpdateProfileData = (userData) => {
-    console.log('api patch will be implemented');
-    console.log(userData);
+  // mock clothingCardData for testing ClothingCard component, please test the like button
+  // by changing favorited from true to false
+  const clothingCardData = {
+    name: 'T-shirt',
+    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
+    isLiked: true,
+    type: 't-shirt',
   };
 
-  const handleRegisterSubmit = (registerCredentials) => {
-    closeAllPopups();
-    register(registerCredentials)
-      .then((data) => {
-        setIsCompleteRegistrationOpen(true);
-        handleLoginSubmit(registerCredentials);
+  function handleLikeClick(cardData) {
+    // insert logic to interact with WTWR API
+    setIsLoginOpen(false);
+  }
+
+  const handleUpdateProfileData = (userData) => {
+    api
+      .updateCurrentUserData(userData)
+      .then(response => {
+        setCurrentUser({
+          ...currentUser,
+          username: response.name,
+          avatar: response.avatar,
+        })
       })
-      .catch((err) => {
-        // clarify behaviour for errors: invalid username/password
+      .catch((error) => console.error(`${error}: Could not update`));
+  };
+
+  const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
+    api
+      .updateCurrentUserPreferences(clothingPreferences)
+      .then(({ preferences }) => {
+        setCurrentUser({
+          ...currentUser,
+          preferences,
+        });
+      })
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while updating current user clothing preference to the server.');
         console.log(err);
-      });
+      })
   };
 
   const handleDeleteProfileSubmit = () => {
@@ -318,12 +350,6 @@ const App = () => {
         console.log(err);
       })
 
-  };
-
-  const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
-    //An API call to update the clothing preferences
-    console.log("User's clothing preferences has been changed");
-    console.log(clothingPreferences);
   };
 
   return (
@@ -382,11 +408,13 @@ const App = () => {
               onSubmit={handleLoginSubmit}
               setLoginEmail={setLoginEmail}
               setLoginPassword={setLoginPassword}
+              openRegisterModal={() => { setIsRegisterOpen(true); setIsLoginOpen(false) }}
             />
             <Register
               isOpen={isRegisterOpen}
               onClose={closeAllPopups}
               onSubmit={handleRegisterSubmit}
+              openLoginModal={() => { setIsLoginOpen(true); setIsRegisterOpen(false) }}
             />
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}
@@ -401,6 +429,11 @@ const App = () => {
               isOpen={isEditPasswordModalOpen}
               onClose={closeAllPopups}
               onUpdatePassword={handlelChangePasswordSubmit}
+            />
+            <EditClothingPreferencesModal
+              isOpen={isEditClothingPreferencesModalOpen}
+              onClose={closeAllPopups}
+              onSubmit={handleEditClothingPreferencesSubmit}
             />
             <DeleteProfileModal
               isOpen={isDeleteProfileOpen}
@@ -434,12 +467,6 @@ const App = () => {
               onClose={closeAllPopups}
               // handleClick={ replace with: set state of the edit modal open to true and this modal to close }
             /> */}
-            <EditClothingPreferences
-              isOpen={isEditClothingPreferencesModalOpen}
-              onClose={closeAllPopups}
-              onSubmit={handleEditClothingPreferencesSubmit}
-              userClothingPreferences={userClothingPreferences}
-            />
             <Footer />
             <MobileNavigation
               isLoggedIn={isLoggedIn}

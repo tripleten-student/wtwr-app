@@ -1,4 +1,4 @@
-.preferences__button{
+.preferences__button {
   padding: 2px 12px;
   box-sizing: border-box;
   color: rgba(0, 0, 0, 0.6);
@@ -12,19 +12,25 @@
   cursor: pointer;
 }
 
-.preferences__button:hover{
+.preferences__button:hover {
   transition: all 0.2s ease;
   color: rgba(0, 0, 0 ,1);
   border-color: rgba(0, 0, 0 ,1);
 }
 
-.preferences__button_selected{
+.preferences__button_selected {
   background: rgba(0, 0, 0, 1);
   color: rgba(255, 255, 255, 1);
 
 }
-.preferences__button_selected:hover{
+.preferences__button_selected:hover {
   background: rgba(0, 0, 0, 0.6);
   color: rgba(255, 255, 255, 1);
 
+}
+
+@media screen and (max-width: 425px) {
+  .preferences__button {
+    padding: 2px 10px;
+  }
 }
