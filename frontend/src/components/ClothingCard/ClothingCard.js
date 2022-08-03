@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  * @author [Yuffie](https://github.com/yuff1006) & @author [Santiago](https://github.com/Santiag0SR)
  */
 
-const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
+const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLoggedIn }) => {
   const location = useLocation();
 
   function createTemplateItem(apparelGroup) {
@@ -32,8 +32,15 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
       ? 'clothingcard__like clothingcard__like_active'
       : 'clothingcard__like';
 
+
+  const handleCardClick = (event) => {
+    if (!event.target.className.includes('clothingcard__like')) {
+      onCardClick(cardData);
+    }
+  };
+
   return (
-    <div className="clothingcard">
+    <div className="clothingcard" onClick={handleCardClick}>
       <img
         className={`clothingcard__image ${!clothingItemPresent && 'clothingcard__image_default'}`}
         src={
@@ -56,7 +63,6 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup }) => {
             className={cardHeartButtonClassName}
             type="button"
             aria-label="Like"
-            onClick={handleLike}
           ></button>
         </div>
         {location.pathname === '/' && !clothingItemPresent && (

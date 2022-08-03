@@ -1,0 +1,97 @@
+.clothing-modal {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.clothing-modal__image {
+    margin: 0;
+    padding: 0;
+    max-height: 328px;
+    width: 325px;
+    border-radius: 4%;
+    overflow: hidden;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.clothing-modal__name-container {
+    width: 325px;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    z-index: 3;
+}
+
+.clothing-modal__name {
+    background-color: #ffff;
+    width: fit-content;
+    color: rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    padding: 2px 12px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.2;
+    margin: 16px 10px 0 0;
+}
+
+.clothing-modal__like {
+    margin: 20px 0 0 0;
+    background-image: url(../../images/heart.png);
+    background-color: transparent;
+    background-repeat: none;
+    background-size: 18px 15px;
+    width: 18px;
+    height: 15px;
+    border: none;
+    transition: 0.3s ease-out opacity;
+}
+
+.clothing-modal__like_active {
+    background-image: url(../../images/heart-liked.png);
+}
+
+.clothing-modal__like:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.clothing-modal__text-container {
+    margin: 12px 0 12px 28px;
+    padding: 0;
+}
+
+.clothing-modal__text {
+    margin: 16px 0 18px;
+    padding: 0;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 50%);
+}
+
+.clothing-modal__text:nth-of-type(4) {
+    margin: 16px 0 80%;
+} 
+
+.clothing-modal__text_type_heading {
+    margin: 0;
+    color: #000;
+}
+
+.clothing-modal__button {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000;
+    border: none;
+    background-color: transparent;
+}
+
+.clothing-modal__button:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}

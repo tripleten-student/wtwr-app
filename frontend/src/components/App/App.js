@@ -18,6 +18,7 @@ import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
 import EditClothingPreferencesModal from '../EditClothingPreferencesModal/EditClothingPreferencesModal';
+import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import {
@@ -30,7 +31,6 @@ import {
 import { fifteenMinutesInMilleseconds } from '../../utils/constants';
 import { login, register, checkToken } from '../../utils/auth';
 import api from '../../utils/api';
-// import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 
 /**
  * The main React **App** component.
@@ -46,6 +46,7 @@ const App = () => {
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
   const [clothingItems, setClothingItems] = useState([]);
+  const [selectedClothingCard, setSelectedClothingCard] = useState(null);
 
   // States related to Modals
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -58,6 +59,7 @@ const App = () => {
   const [isEditClothingModalOpen, setIsEditClothingModalOpen] = useState(false);
   const [isCreateClothingConfirmationModalOpen, setIsCreateClothingConfirmationModalOpen] = useState(false);
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] = useState(false);
+  const [isShowClothingModalOpen, setShowClothingModalOpen] = useState(false);
 
   // ********************************************************************************************* //
   //                   Fetch initial clothing items & user data on page load                       //
@@ -182,7 +184,8 @@ const App = () => {
     isCreateClothingModalOpen ||
     isEditClothingModalOpen ||
     isEditClothingPreferencesModalOpen ||
-    isCreateClothingConfirmationModalOpen;
+    isCreateClothingConfirmationModalOpen ||
+    isShowClothingModalOpen;
 
   React.useEffect(() => {
     const handleClickClose = (event) => {
@@ -219,6 +222,8 @@ const App = () => {
     setIsCreateClothingConfirmationModalOpen(false);
     setIsEditClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
+    setShowClothingModalOpen(false);
+    setIsEditClothingModalOpen(false);
   };
 
   // ********************************************************************************************* //
@@ -307,8 +312,14 @@ const App = () => {
       })
   };
 
-  const handlelChangePasswordSubmit = (password) => {
-    console.log('new password set');
+  const handlelChangePasswordSubmit = ({ oldPassword, newPassword }) => {
+    api
+      .updateCurrentUserPassword({ oldPassword, newPassword })
+      .then(() => console.log("Password changed successfully"))
+      .catch(err => {
+        console.log('Uh-oh! Error occurred while changing password to the server.');
+        console.log(err);
+      })
   };
 
   // mock clothingCardData for testing ClothingCard component, please test the like button
@@ -368,6 +379,13 @@ const App = () => {
 
   };
 
+  const handleClothingClick = (cardData) => {
+    if (isLoggedIn) {
+      setSelectedClothingCard(cardData);
+      setShowClothingModalOpen(true);
+    }
+  }
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -375,10 +393,6 @@ const App = () => {
           <CurrentTemperatureUnitContext.Provider
             value={{ currentTemperatureUnit, handleToggleSwitchChange }}
           >
-            {/* isLoggedIn will be determined by a future user context */}
-            {/* I left the userName state in for the purpose of seeing the different navigation css */}
-            {/** rewrite `{userName}` to `{currentUser}` when ready */}
-            {/** place login modal open state in Navigation*/}
             <Header weatherData={weatherData}>
               <Navigation
                 isLoggedIn={isLoggedIn}
@@ -391,7 +405,7 @@ const App = () => {
               <Route
                 exact
                 path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} />}
+                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} onCardClick={handleClothingClick} />}
               ></Route>
               <Route
                 exact
@@ -404,6 +418,7 @@ const App = () => {
                     <Profile
                       cardData={clothingCardData}
                       onCardLike={handleLikeClick}
+                      onCardClick={handleClothingClick}
                       onLogOutClick={handleLogOut}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                       onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
@@ -467,22 +482,21 @@ const App = () => {
               createdClothingItemUrl={newClothingItemUrl}
               createdClothingItemType={newClothingItemType}
             />
+            <ShowClothingModal
+              card={selectedClothingCard || clothingCardData}
+              /** uncomment when like logic is added 
+              onCardLike={handleLikeClick}
+              */
+              isOpen={isShowClothingModalOpen}
+              onClose={closeAllPopups}
+              handleClick={() => setIsEditClothingModalOpen(true)}
+            />
             <EditClothingModal
               isOpen={isEditClothingModalOpen}
               onClose={closeAllPopups}
               onSubmitEditGarment={handleEditClothing}
               currentGarment={clothingItems[0] || {}}
             />
-            {/* <ShowClothingModal
-              // clothingType={} if there is a function that returns the type of clothing is being shown in the modal
-              // tempType={} //function where it returns the kind of weather condition (hot, cold, etc)
-              // tempDegree={} // function or something that says what temp in degree the clothes are for
-              tempUnit={setCurrentTemperatureUnit || 'F+'}
-              // (above) will show which unit being used by user. 'F' is a placeholder for now.
-              isOpen={isShowClothingModalOpen}
-              onClose={closeAllPopups}
-              // handleClick={ replace with: set state of the edit modal open to true and this modal to close }
-            /> */}
             <Footer />
             <MobileNavigation
               isLoggedIn={isLoggedIn}
