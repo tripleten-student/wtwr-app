@@ -51,7 +51,10 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword }) => {
       values['new-login-password'] !== values['current-login-password'] &&
       values['new-login-password'] === values['confirm-login-password']
     ) {
-      onUpdatePassword(values['confirm-login-password']);
+      onUpdatePassword({
+        oldPassword: values['current-login-password'],
+        newPassword: values['confirm-login-password'],
+      });
       onClose();
     }
   };
