@@ -51,7 +51,7 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, userClothingPr
     }
   };
 
-  /** 2. To get the random item of clothes based in the favorited feature**/
+  /** 2. To get the random item of clothes based on propability added feature**/
   function getRandomItemByProbability(data) {
     // Declare new array
     let out = [];
