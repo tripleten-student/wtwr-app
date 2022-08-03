@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './ShowClothingModal.css';
 import Modal from '../Modal/Modal';
-import { weatherTypesInFahrenheit, weatherTypesInCelsius, accessoriesCategory, topsAndOuterwearCategory, bottomsCategory, shoesCategory } from '../../utils/formConstants';
+import {
+  weatherTypesInFahrenheit,
+  weatherTypesInCelsius,
+  accessoriesCategory,
+  topsAndOuterwearCategory,
+  bottomsCategory,
+  shoesCategory,
+} from '../../utils/formConstants';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 
 /**
@@ -17,31 +24,31 @@ const ShowClothingModal = ({ card, handleClick, onCardLike, isOpen, onClose }) =
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const [tempCondition, setTempCondition] = useState('');
   const [isLiked, setIsLiked] = useState('clothing-modal__like');
-  const [ cardType, setCardType ] = useState('');
+  const [cardType, setCardType] = useState('');
 
   useEffect(() => {
-    const accessoryTypes = accessoriesCategory.find(type => type === card.type);
-    const topsAndOuterwearTypes = topsAndOuterwearCategory.find(type => type === card.type);
-    const bottomsTypes = bottomsCategory.find(type => type === card.type);
-    const shoeTypes = shoesCategory.find(type => type === card.type);
+    const accessoryTypes = accessoriesCategory.find((type) => type === card.type);
+    const topsAndOuterwearTypes = topsAndOuterwearCategory.find((type) => type === card.type);
+    const bottomsTypes = bottomsCategory.find((type) => type === card.type);
+    const shoeTypes = shoesCategory.find((type) => type === card.type);
 
     switch (card.type) {
       case accessoryTypes:
-        setCardType("Accessories");
+        setCardType('Accessories');
         break;
       case topsAndOuterwearTypes:
-        setCardType("Tops & Outerwear");
+        setCardType('Tops & Outerwear');
         break;
       case bottomsTypes:
-        setCardType("Bottoms");
+        setCardType('Bottoms');
         break;
       case shoeTypes:
-        setCardType("Shoes");
+        setCardType('Shoes');
         break;
       default:
-        setCardType("Clothing");
+        setCardType('Clothing');
     }
-  }, [card.type])
+  }, [card.type]);
 
   useEffect(() => {
     card.isLiked === true

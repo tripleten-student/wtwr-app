@@ -392,6 +392,7 @@ const App = () => {
     }
 
     if (!cardData.imageUrl) {
+      setSelectedClothingCard(null);
       setShowClothingModalOpen(false);
     }
   };
