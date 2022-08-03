@@ -43,7 +43,7 @@ const SideBar = ({
       </div>
       <ul className="sidebar__links">
         <li className="sidebar__link" onClick={onChangePasswordClick}>
-          Change Password
+          Change password
         </li>
         <li className="sidebar__link" onClick={onChangeProfileClick}>
           Change profile data
