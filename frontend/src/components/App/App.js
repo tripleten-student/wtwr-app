@@ -123,13 +123,12 @@ const App = () => {
   // ********************************************************************************************* //
   const getWeatherDataUsingLocation = () => {
     if (userLocation.latitude && userLocation.longitude) {
-      getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
+      getForecastWeather(userLocation, undefined)
         .then((data) => {
           setweatherData(filterDataFromWeatherAPI(data));
           setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
         })
         .catch((err) => {
-          console.log('haha');
           setweatherData(generateWeatherDataWhenAPIFails());
           setIsWeatherApiFailModalOpen(true);
         });
