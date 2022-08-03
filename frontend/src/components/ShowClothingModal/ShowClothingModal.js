@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import './ShowClothingModal.css';
 import Modal from '../Modal/Modal';
 import { weatherTypesInFahrenheit, weatherTypesInCelsius, accessoriesCategory, topsAndOuterwearCategory, bottomsCategory, shoesCategory } from '../../utils/formConstants';
-import capImage from '../../images/Clothes/letter-embroidered-baseball-cap.png';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 
 /**
