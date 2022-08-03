@@ -45,10 +45,10 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, onCardClick })
   //In the final project the main item should receive the clothesData,
   // using "clothesTestData" for testing purposes
 
-  const accesoriesItem = getClothes(
+  const accessoriesItem = getClothes(
     clothesTestData.filter((cloth) => cloth.type === 'Accessories')
   );
-  const topsandoutwearItem = getClothes(
+  const topsAndOuterwearItem = getClothes(
     clothesTestData.filter((cloth) => cloth.type === 'Tops & outerwear')
   );
   const bottomsItem = getClothes(clothesTestData.filter((cloth) => cloth.type === 'Bottoms'));
@@ -71,16 +71,16 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, onCardClick })
         </div>
         <div className="clothesSectionMain__items">
           <ClothingCard
-            key={'accesories'}
+            key={'accessories'}
             apparelGroup={accessories}
-            cardData={accesoriesItem}
+            cardData={accessoriesItem}
             onCardLike={onCardLike}
             onCardClick={onCardClick}
           />
           <ClothingCard
-            key={'topsandoutwear'}
+            key={'topsAndOuterwear'}
             apparelGroup={top}
-            cardData={topsandoutwearItem}
+            cardData={topsAndOuterwearItem}
             onCardLike={onCardLike}
             onCardClick={onCardClick}
           />

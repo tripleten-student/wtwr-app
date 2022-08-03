@@ -29,7 +29,7 @@ const weatherTypesInFahrenheit = [
   { name: 'Extreme (97°F+)', value: 'extreme' },
 ];
 
-const weatherTypesInCelcius = [
+const weatherTypesInCelsius = [
   { name: 'Extremely Cold (-30°C to 0°C)', value: 'extremely-cold' },
   { name: 'Cold (1°C to 12°C)', value: 'cold' },
   { name: 'Cool (13°C to 18°C)', value: 'cool' },
@@ -46,5 +46,5 @@ export {
   bottomsCategory,
   shoesCategory,
   weatherTypesInFahrenheit,
-  weatherTypesInCelcius,
+  weatherTypesInCelsius,
 };
