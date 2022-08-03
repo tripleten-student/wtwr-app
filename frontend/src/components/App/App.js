@@ -17,6 +17,7 @@ import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
+import WeatherApiFailModal from '../WeatherApiFailModal/WeatherApiFailModal';
 import EditClothingPreferencesModal from '../EditClothingPreferencesModal/EditClothingPreferencesModal';
 import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
@@ -28,8 +29,9 @@ import {
   filterDataFromWeatherAPI,
   getWeatherDataWithExpiry,
   setWeatherDataWithExpiry,
+  generateWeatherDataWhenAPIFails,
 } from '../../utils/weatherApi';
-import { fifteenMinutesInMilleseconds } from '../../utils/constants';
+import { fifteenMinutesInMilliseconds } from '../../utils/constants';
 import { login, register, checkToken } from '../../utils/auth';
 import api from '../../utils/api';
 
@@ -43,7 +45,7 @@ const App = () => {
   const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
-  const [weatherData, setweatherData] = useState();
+  const [weatherData, setWeatherData] = useState();
   const [newClothingItemUrl, setNewClothingItemUrl] = useState('');
   const [newClothingItemType, setNewClothingItemType] = useState('');
   const [clothingItems, setClothingItems] = useState([]);
@@ -63,6 +65,7 @@ const App = () => {
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
     useState(false);
   const [isShowClothingModalOpen, setShowClothingModalOpen] = useState(false);
+  const [isWeatherApiFailModalOpen, setIsWeatherApiFailModalOpen] = useState(false);
 
   // ********************************************************************************************* //
   //                   Fetch initial clothing items & user data on page load                       //
@@ -123,16 +126,16 @@ const App = () => {
     if (userLocation.latitude && userLocation.longitude) {
       getForecastWeather(userLocation, process.env.REACT_APP_WEATHER_API_KEY)
         .then((data) => {
-          setweatherData(filterDataFromWeatherAPI(data));
-          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilleseconds);
+          setWeatherData(filterDataFromWeatherAPI(data));
+          setWeatherDataWithExpiry('weatherData', data, fifteenMinutesInMilliseconds);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          setWeatherData(generateWeatherDataWhenAPIFails());
+          setIsWeatherApiFailModalOpen(true);
         });
     }
   };
 
-  // Location gets read only once every time upon page refresh, this is not dependent upon weather api call
   useEffect(() => {
     getGeolocation()
       .then(({ coords }) => {
@@ -163,21 +166,14 @@ const App = () => {
       });
   }, []);
 
-  // Gets called every time the user changes location: when user initially disallowed location sharing.
-  // And then later allowed it, upon page refresh, the location and the weather updates right away, evne within 15 minutes */
-  useEffect(() => {
-    getWeatherDataUsingLocation();
-  }, [userLocation]);
-
-  // The weather API gets called or pulled from local storage every time the location changes or gets read
   useEffect(() => {
     getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation) &&
-      setweatherData(
+      setWeatherData(
         filterDataFromWeatherAPI(
           getWeatherDataWithExpiry('weatherData', getWeatherDataUsingLocation)
         )
       );
-  }, []);
+  }, [userLocation]);
 
   // ********************************************************************************************* //
   //                        Handle mouse click or Esc key down event                               //
@@ -230,8 +226,10 @@ const App = () => {
     setIsCreateClothingConfirmationModalOpen(false);
     setIsEditClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
+    setIsWeatherApiFailModalOpen(false);
     setShowClothingModalOpen(false);
     setIsEditClothingModalOpen(false);
+    setIsWeatherApiFailModalOpen(false);
   };
 
   // ********************************************************************************************* //
@@ -320,7 +318,7 @@ const App = () => {
       });
   };
 
-  const handlelChangePasswordSubmit = ({ oldPassword, newPassword }) => {
+  const handleChangePasswordSubmit = ({ oldPassword, newPassword }) => {
     api
       .updateCurrentUserPassword({ oldPassword, newPassword })
       .then(() => console.log('Password changed successfully'))
@@ -395,7 +393,7 @@ const App = () => {
     }
   };
 
-  if (!weatherData) return null;
+  // if (!weatherData) return null;
 
   return (
     <div className="page">
@@ -483,7 +481,7 @@ const App = () => {
             <EditPasswordModal
               isOpen={isEditPasswordModalOpen}
               onClose={closeAllPopups}
-              onUpdatePassword={handlelChangePasswordSubmit}
+              onUpdatePassword={handleChangePasswordSubmit}
             />
             <EditClothingPreferencesModal
               isOpen={isEditClothingPreferencesModalOpen}
@@ -521,6 +519,7 @@ const App = () => {
               onSubmitEditGarment={handleEditClothing}
               currentGarment={clothingItems[0] || {}}
             />
+            <WeatherApiFailModal isOpen={isWeatherApiFailModalOpen} onClose={closeAllPopups} />
             <Footer />
             <MobileNavigation
               isLoggedIn={isLoggedIn}

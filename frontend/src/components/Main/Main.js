@@ -128,6 +128,20 @@ function Main({
     console.log('Randomize');
   }
 
+  function random_clothes(clothes) {
+    return clothes[Math.floor(Math.random() * clothes.length)];
+  }
+
+  function getClothes(clothes) {
+    const likedClothes = clothes.filter((cloth) => cloth.isLiked === true);
+    if (likedClothes.length === 0) {
+      return random_clothes(clothes);
+    } else {
+      return random_clothes(likedClothes);
+    }
+  }
+  /**UNTIL HERE**/
+
   return (
     <main className="main">
       <WeatherCards weatherData={weatherData} />
@@ -145,14 +159,14 @@ function Main({
         </div>
         <div className="clothesSectionMain__items">
           <ClothingCard
-            key={'accesories'}
+            key={'accessories'}
             apparelGroup={accessories}
             cardData={!accesoriesItem ? false : accesoriesItem}
             onCardLike={onCardLike}
             onCardClick={onCardClick}
           />
           <ClothingCard
-            key={'topsandoutwear'}
+            key={'topsAndOuterwear'}
             apparelGroup={top}
             cardData={!topsandoutwearItem ? false : topsandoutwearItem}
             onCardLike={onCardLike}

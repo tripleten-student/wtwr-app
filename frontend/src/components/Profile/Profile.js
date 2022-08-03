@@ -21,10 +21,11 @@ function Profile({
   onLogOutClick,
   onDeleteProfileClick,
 }) {
-  const accessories = clothes.filter((cloth) => cloth.apparelGroup === 'Accessories');
-  const topsandoutwear = clothes.filter((cloth) => cloth.apparelGroup === 'Tops & outerwear');
-  const bottoms = clothes.filter((cloth) => cloth.apparelGroup === 'Bottoms');
-  const shoes = clothes.filter((cloth) => cloth.apparelGroup === 'Shoes');
+  // Once ready we will change "clothes" for "cardData".
+  const accessories = clothes.filter((cloth) => cloth.type === 'Accessories');
+  const topsAndOuterwear = clothes.filter((cloth) => cloth.type === 'Tops & outerwear');
+  const bottoms = clothes.filter((cloth) => cloth.type === 'Bottoms');
+  const shoes = clothes.filter((cloth) => cloth.type === 'Shoes');
 
   return (
     <div className="profile">
@@ -47,7 +48,7 @@ function Profile({
         />
         <ClothesSection
           sectionName={'Tops & outerwear'}
-          sectionData={topsandoutwear}
+          sectionData={topsAndOuterwear}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
           onCardClick={onCardClick}
