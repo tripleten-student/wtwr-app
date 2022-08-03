@@ -52,14 +52,14 @@ function Profile({
       </section>
       <section className="profile-clothes">
         <ClothesSection
-          sectionName={'Accessories'}
+          sectionName="Accessories"
           sectionData={accessories}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
           onCardClick={onCardClick}
         />
         <ClothesSection
-          sectionName={'Tops & outerwear'}
+          sectionName="Tops & outerwear"
           sectionData={topsandoutwear}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
@@ -67,7 +67,7 @@ function Profile({
         />
 
         <ClothesSection
-          sectionName={'Bottoms'}
+          sectionName="Bottoms"
           sectionData={bottoms}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}
@@ -75,7 +75,7 @@ function Profile({
         />
 
         <ClothesSection
-          sectionName={'Shoes'}
+          sectionName="Shoes"
           sectionData={shoes}
           onAddNewClick={onAddNewClick}
           onCardLike={onCardLike}

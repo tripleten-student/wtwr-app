@@ -305,6 +305,7 @@ const App = () => {
       .then(updatedClothingItem => {
         console.log("The clothing item has been updated");
         console.log(updatedClothingItem);
+        setSelectedClothingCard(updatedClothingItem);
       })
       .catch(err => {
         console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
@@ -364,6 +365,11 @@ const App = () => {
       setSelectedClothingCard(cardData);
       setShowClothingModalOpen(true);
     }
+  }
+
+  const handleShowClothingModalEditClick = () => {
+    closeAllPopups();
+    setIsEditClothingModalOpen(true);
   }
 
   // mock clothingCardData for testing ClothingCard component, please test the like button
@@ -483,13 +489,13 @@ const App = () => {
               */
               isOpen={isShowClothingModalOpen}
               onClose={closeAllPopups}
-              handleClick={() => setIsEditClothingModalOpen(true)}
+              handleClick={handleShowClothingModalEditClick}
             />
             <EditClothingModal
               isOpen={isEditClothingModalOpen}
               onClose={closeAllPopups}
               onSubmitEditGarment={handleEditClothing}
-              currentGarment={clothingItems[0] || {}}
+              currentGarment={selectedClothingCard || {}}
             />
             <Footer />
             <MobileNavigation

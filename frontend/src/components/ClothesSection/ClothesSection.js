@@ -29,10 +29,12 @@ function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike, o
   );
 }
 
-// ClothesSection.propTypes = {
-//   sectionName: PropTypes.string.isRequired,
-//   sectionData: PropTypes.object.isRequired,
-//   onAddNewClick: PropTypes.func.isRequired,
-//   onCardLike: PropTypes.func.isRequired,
-// };
+ClothesSection.propTypes = {
+  sectionName: PropTypes.string.isRequired,
+  sectionData: PropTypes.array.isRequired,
+  onAddNewClick: PropTypes.func.isRequired,
+  onCardLike: PropTypes.func.isRequired,
+  onCardClick: PropTypes.func.isRequired,
+};
+
 export default ClothesSection;
