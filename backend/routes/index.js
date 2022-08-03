@@ -10,7 +10,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const { createUser, login } = require('../controllers/users');
-const { validateLogin, validateUser } = require('../middleware/validation');
+const { validateLogin, validateUser, validateRequestAuth } = require('../middleware/validation');
 
 const userRouter = require('./users');
 const clothingRouter = require('./clothing');
@@ -21,7 +21,7 @@ router.post('/signup', validateUser, createUser);
 // Authorization is currently disabled for testing purpose
 router.use(auth);
 
-router.use('/users', userRouter);
+router.use('/users', validateRequestAuth, userRouter);
 router.use('/clothing', clothingRouter);
 
 module.exports = router;

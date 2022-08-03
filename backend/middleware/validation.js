@@ -89,7 +89,7 @@ const validateUserId = celebrate({
 });
 
 const validatePreferences = celebrate({
-  headers: Joi.object()
+  body: Joi.object()
     .keys({
       _id: Joi.string().hex().length(24).messages({
         'string.empty': 'ID required',
