@@ -59,7 +59,11 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, onCardClick })
       <WeatherCards weatherData={weatherData} />
       <div className="clothesSectionMain">
         <div className="clothesSectionMain__info">
-          <p>{`Today is ${actualWeather.temperature[currentTemperatureUnit]} ${currentTemperatureUnit} and it is ${actualWeather.condition} / You may want to wear:`}</p>
+          <div className="clothesSectionMain__description-container">
+            <p className="clothesSectionMain__description">{`Today is ${actualWeather.temperature[currentTemperatureUnit]} ${currentTemperatureUnit} and it is ${actualWeather.condition}`}</p>
+            <p className="clothesSectionMain__description_slash"> / </p>
+            <p className="clothesSectionMain__description">You may want to wear:</p>
+          </div>
           <button className="randomize-button" type="button" onClick={handleRandomClick}>
             <img className={'randomize-icon'} alt="randomize" src={randomizeIcon} />
             Randomize
@@ -95,6 +99,14 @@ function Main({ weatherData, clothesData, onCardLike, isLoggedIn, onCardClick })
             onCardClick={onCardClick}
           />
         </div>
+        <button
+          className="randomize-button randomize-button_location_bottom"
+          type="button"
+          onClick={handleRandomClick}
+        >
+          <img className={'randomize-icon'} alt="randomize" src={randomizeIcon} />
+          Randomize
+        </button>
       </div>
     </main>
   );
