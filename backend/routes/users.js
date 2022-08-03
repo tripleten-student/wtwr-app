@@ -16,23 +16,19 @@ const {
   updateUserPreferences,
 } = require('../controllers/users');
 const {
-  validateRequestAuth,
   validateUserId,
   validatePasswordChange,
   validatePreferences,
+  validateProfileChanges,
+  validateRequestAuth,
 } = require('../middleware/validation');
 
-router.get('/', validateRequestAuth, getUsers);
-router.get('/me', validateRequestAuth, getCurrentUser);
+router.get('/', validateRequestAuth, validateUserId, getUsers);
+router.get('/me', validateRequestAuth, validateUserId, getCurrentUser);
 router.get('/:userId', validateRequestAuth, validateUserId, getUser);
-router.patch('/me/profile', validateRequestAuth, updateUserProfile);
-router.patch('/me/preferences', validatePreferences, updateUserPreferences);
-router.patch(
-  '/me/password',
-  validateRequestAuth,
-  validatePasswordChange,
-  updatePassword,
-);
-router.delete('/me', validateRequestAuth, deleteUser);
+router.patch('/me/profile', validateRequestAuth, validateProfileChanges, updateUserProfile);
+router.patch('/me/preferences', validateRequestAuth, validatePreferences, updateUserPreferences);
+router.patch('/me/password', validateRequestAuth, validatePasswordChange, updatePassword);
+router.delete('/me', validateUserId, deleteUser);
 
 module.exports = router;
