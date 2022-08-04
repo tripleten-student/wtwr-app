@@ -106,7 +106,7 @@
     .clothing-modal__name-container {
         max-width: 325px;
         width: 50%;
-        right: 40%;
+        left: 10%;
     }
 
     .clothing-modal__button {
