@@ -90,6 +90,7 @@ const App = () => {
             avatar: data.avatar,
             username: data.name,
             preferences: data.preferences,
+            temperatureSelection: data.temperatureSelection
           });
         })
         .catch((err) => console.log(err));
@@ -292,6 +293,9 @@ const App = () => {
     currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
       : setCurrentTemperatureUnit('F');
+      console.log(currentTemperatureUnit)
+      api.updateCurrentUserTemperatureSelection(currentTemperatureUnit)
+      .then((data)=> console.log(data))
   };
 
   const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
