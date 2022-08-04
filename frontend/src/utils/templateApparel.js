@@ -11,13 +11,13 @@ const accessories = [
     name: 'Cap',
     apparelGroup: 'accessories',
     type: 'cap',
-    weather: 'warm',
+    weather: 'cool',
   },
   {
     name: 'Sunglasses',
     apparelGroup: 'accessories',
     type: 'cap',
-    weather: 'warm',
+    weather: 'cool',
   },
 ];
 
@@ -26,31 +26,31 @@ const top = [
     name: 't-shirt',
     apparelGroup: 'top',
     type: 't-shirt',
-    weather: 'warm',
+    weather: 'cool',
   },
   {
     name: 'Shirt',
     apparelGroup: 'top',
     type: 't-shirt',
-    weather: 'warm',
+    weather: 'cool',
   },
   {
     name: 'Jacket',
     apparelGroup: 'top',
     type: 'jacket',
-    weather: 'warm',
+    weather: 'cool',
   },
   {
     name: 'Hoodie',
     apparelGroup: 'top',
     type: 'hoodie',
-    weather: 'warm',
+    weather: 'cool',
   },
   {
     name: 'Coat',
     apparelGroup: 'top',
     type: 'coat',
-    weather: 'cold',
+    weather: 'cool',
   },
 ];
 

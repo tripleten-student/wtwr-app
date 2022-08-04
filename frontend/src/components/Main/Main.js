@@ -175,6 +175,7 @@ function Main({
             cardData={!accesoriesItem ? false : accesoriesItem}
             onCardLike={onCardLike}
             onCardClick={onCardClick}
+            weatherType={weatherType}
           />
           <ClothingCard
             key={'topsAndOuterwear'}
