@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import WeatherCards from '../WeatherCards/WeatherCards';
 import './Main.css';
 import ClothingCard from '../ClothingCard/ClothingCard';
-import Clothes from '../Clothes';
 import randomizeIcon from '../../images/randomizeIcon.svg';
 import { clothes } from '../../utils/testData';
 import { accessories, top, bottom, shoes } from '../../utils/templateApparel';
