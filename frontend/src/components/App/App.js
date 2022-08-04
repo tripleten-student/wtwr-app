@@ -144,6 +144,9 @@ const App = () => {
         })
         .catch(() => {
           setWeatherData(generateWeatherDataWhenAPIFails());
+          setErrorMessage(
+            'Oops, it seems that the Weather API ran into issues... Your live location and weather information could not be accessed. We apologize for the inconvenience and have used our best guesses on your weather and location. Enjoy!'
+          );
           setErrorMessageModalOpen(true);
         })
         .finally(() => {
