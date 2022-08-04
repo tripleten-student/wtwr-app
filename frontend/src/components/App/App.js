@@ -92,6 +92,7 @@ const App = () => {
             preferences: data.preferences,
             temperatureSelection: data.temperatureSelection
           });
+          setCurrentTemperatureUnit(data.temperatureSelection)
         })
         .catch((err) => console.log(err));
   }, [isLoggedIn]);
@@ -290,11 +291,12 @@ const App = () => {
   };
 
   const handleToggleSwitchChange = () => {
-    currentTemperatureUnit === 'F'
-      ? setCurrentTemperatureUnit('C')
-      : setCurrentTemperatureUnit('F');
+    // currentTemperatureUnit === 'F'
+    //   ? setCurrentTemperatureUnit('C')
+    //   : setCurrentTemperatureUnit('F');
       api.updateCurrentUserTemperatureSelection(currentTemperatureUnit ==='F'? 'C' : 'F')
-      .then((data)=> console.log(data))
+      .then((data)=> {setCurrentTemperatureUnit(data.temperatureSelection)
+      })
   };
 
   const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
