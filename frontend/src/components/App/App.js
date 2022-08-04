@@ -51,7 +51,7 @@ const App = () => {
   const [clothingItems, setClothingItems] = useState([]);
   const [selectedClothingCard, setSelectedClothingCard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [ isLiked, setIsLiked ] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   // States related to Modals
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -322,8 +322,11 @@ const App = () => {
     api
       .updateClothingItem(updatedClothingItemData)
       .then((updatedClothingItem) => {
-        console.log('The clothing item has been updated');
-        console.log(updatedClothingItem);
+        const tempClothingItems = clothingItems.filter(
+          (item) => item._id !== updatedClothingItem._id
+        );
+        setClothingItems([...tempClothingItems, updatedClothingItem]);
+        setSelectedClothingCard(updatedClothingItem);
       })
       .catch((err) => {
         console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
@@ -339,15 +342,6 @@ const App = () => {
         console.log('Uh-oh! Error occurred while changing password to the server.');
         console.log(err);
       });
-  };
-
-  // mock clothingCardData for testing ClothingCard component, please test the like button
-  // by changing favorited from true to false
-  const clothingCardData = {
-    name: 'T-shirt',
-    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
-    isLiked: true,
-    type: 't-shirt',
   };
 
   const handleUpdateProfileData = (userData) => {
@@ -394,28 +388,42 @@ const App = () => {
       });
   };
 
-  const handleClothingClick = (cardData) => {
+  const handleClothingItemCardClick = (cardData) => {
     if (isLoggedIn) {
       setSelectedClothingCard(cardData);
       setShowClothingModalOpen(true);
     }
   };
 
-  const handleLikeClick = (cardData) => {
+  const handleShowClothingModalEditClick = () => {
+    closeAllPopups();
+    setIsEditClothingModalOpen(true);
+  };
+
+  // mock clothingCardData for testing ClothingCard component, please test the like button
+  // by changing favorited from true to false
+  const clothingCardData = {
+    name: 'T-shirt',
+    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
+    isLiked: true,
+    type: 't-shirt',
+  };
+
+  const handleClothingItemLikeClick = (cardData) => {
     console.log(cardData);
     const itemLike = cardData.isLiked === isLiked;
 
     api
-    // will probably return an id
-        .toggleClothingItemLikeStatus(cardData._id)
-        // set the like status of the card
-        .then(() => {
-          console.log(itemLike);
-          itemLike ? setIsLiked(true) : setIsLiked(false);
-          setIsLoginOpen(false);
-        })
-        .catch((err) => console.log(err));
-  }
+      // will probably return an id
+      .toggleClothingItemLikeStatus(cardData._id)
+      // set the like status of the card
+      .then(() => {
+        console.log(itemLike);
+        itemLike ? setIsLiked(true) : setIsLiked(false);
+        setIsLoginOpen(false);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleItemDelete = (cardData) => {
     api
@@ -425,7 +433,7 @@ const App = () => {
         closeAllPopups();
       })
       .catch((err) => console.log(err));
-  }
+  };
 
   return (
     <div className="page">
@@ -450,11 +458,11 @@ const App = () => {
                   <Main
                     weatherData={weatherData}
                     isLoggedIn={isLoggedIn}
-                    onCardClick={handleClothingClick}
-                    onCardLike={handleLikeClick}
+                    onCardClick={handleClothingItemCardClick}
+                    onCardLike={handleClothingItemLikeClick}
                   />
                 }
-              ></Route>
+              />
               <Route
                 exact
                 path="/profile"
@@ -464,9 +472,9 @@ const App = () => {
                     isLoggedIn={isLoggedIn}
                   >
                     <Profile
-                      cardData={clothingCardData}
-                      onCardLike={handleLikeClick}
-                      onCardClick={handleClothingClick}
+                      clothingItems={clothingItems}
+                      onCardLike={handleClothingItemLikeClick}
+                      onCardClick={handleClothingItemCardClick}
                       onLogOutClick={handleLogOut}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                       onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
@@ -538,16 +546,16 @@ const App = () => {
             />
             <ShowClothingModal
               card={selectedClothingCard || clothingCardData}
-              onCardLike={handleLikeClick}
+              onCardLike={handleClothingItemLikeClick}
               isOpen={isShowClothingModalOpen}
               onClose={closeAllPopups}
-              handleClick={() => setIsEditClothingModalOpen(true)}
+              handleClick={handleShowClothingModalEditClick}
             />
             <EditClothingModal
               isOpen={isEditClothingModalOpen}
               onClose={closeAllPopups}
               onSubmitEditGarment={handleEditClothing}
-              currentGarment={clothingItems[0] || {}}
+              currentGarment={selectedClothingCard || {}}
             />
             <WeatherApiFailModal isOpen={isWeatherApiFailModalOpen} onClose={closeAllPopups} />
             <LoadingSpinner isLoading={isLoading} />

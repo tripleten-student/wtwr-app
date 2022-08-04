@@ -14,6 +14,11 @@ const clothingItems = [
   { name: 'Down Jacket', value: 'down-jacket' },
 ];
 
+const accessoriesCategory = ['sunglasses'];
+const topsAndOuterwearCategory = ['t-shirt', 'shirt', 'dress', 'jacket', 'coat', 'down-jacket'];
+const bottomsCategory = ['jeans', 'skirt', 'shorts', 'sport-pants'];
+const shoesCategory = ['sneakers', 'boots'];
+
 const weatherTypesInFahrenheit = [
   { name: 'Extremely Cold (-22°F to 32°F)', value: 'extremely-cold' },
   { name: 'Cold (33°F to 53°F)', value: 'cold' },
@@ -36,6 +41,10 @@ const weatherTypesInCelsius = [
 
 export {
   clothingItems,
+  accessoriesCategory,
+  topsAndOuterwearCategory,
+  bottomsCategory,
+  shoesCategory,
   weatherTypesInFahrenheit,
   weatherTypesInCelsius,
 };

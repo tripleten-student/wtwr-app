@@ -91,6 +91,10 @@
 }
 
 @media screen and (max-width: 425px) {
+  .clothingcard {
+    max-width: 240px;
+  }
+
   .clothingcard__title {
     max-width: 72px;
   }
