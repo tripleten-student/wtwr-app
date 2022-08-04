@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import './ClothingCard.css';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -8,8 +9,17 @@ import PropTypes from 'prop-types';
  * @author [Yuffie](https://github.com/yuff1006) & @author [Santiago](https://github.com/Santiag0SR)
  */
 
-const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLoggedIn }) => {
+const ClothingCard = ({
+  weatherData,
+  cardData,
+  onCardLike,
+  apparelGroup,
+  onCardClick,
+  isLoggedIn,
+}) => {
   const location = useLocation();
+  const [templateItem, setTemplateItem] = useState({});
+  const clothingItemPresent = cardData;
 
   function createTemplateItem(apparelGroup) {
     if (apparelGroup) {
@@ -19,8 +29,9 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
     }
   }
 
-  const clothingItemPresent = cardData;
-  const templateItem = createTemplateItem(apparelGroup);
+  useEffect(() => {
+    setTemplateItem(createTemplateItem(apparelGroup));
+  }, [weatherData]);
 
   const handleLike = () => {
     onCardLike(cardData);
@@ -31,7 +42,6 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
     cardData && cardData.isLiked
       ? 'clothingcard__like clothingcard__like_active'
       : 'clothingcard__like';
-
 
   const handleCardClick = (event) => {
     if (!event.target.className.includes('clothingcard__like')) {
@@ -48,23 +58,32 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
             ? cardData.imageUrl
             : require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`)
         }
-        alt={clothingItemPresent ? cardData.name : templateItem.type}
+        alt={clothingItemPresent ? cardData.name : templateItem.name}
       />
       <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
           <p className="clothingcard__title">
             {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
             {location.pathname === '/' &&
-              (clothingItemPresent
-                ? cardData.name.charAt(0).toUpperCase() + cardData.name.slice(1)
-                : templateItem.type.charAt(0).toUpperCase() + templateItem.type.slice(1))}
+              (!clothingItemPresent ? templateItem.name : cardData.name)}
           </p>
-          <button
-            className={cardHeartButtonClassName}
-            type="button"
-            aria-label="Like"
-            onClick={handleLike}
-          ></button>
+
+          {location.pathname === '/profile' && !apparelGroup && (
+            <button
+              className={cardHeartButtonClassName}
+              type="button"
+              aria-label="Like"
+              onClick={handleLike}
+            ></button>
+          )}
+          {location.pathname === '/' && clothingItemPresent && (
+            <button
+              className={cardHeartButtonClassName}
+              type="button"
+              aria-label="Like"
+              onClick={handleLike}
+            ></button>
+          )}
         </div>
         {location.pathname === '/' && !clothingItemPresent && (
           <button aria-label="Add Photo" className="clothingcard__add-photo" type="button">

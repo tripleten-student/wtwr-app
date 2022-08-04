@@ -430,6 +430,8 @@ const App = () => {
   //     .catch((err) => console.log(err));
   // };
 
+  if (!weatherData) return null;
+
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -455,6 +457,7 @@ const App = () => {
                     isLoggedIn={isLoggedIn}
                     onCardClick={handleClothingItemCardClick}
                     onCardLike={handleClothingItemLikeClick}
+                    clothingItems={clothingItems}
                   />
                 }
               />
@@ -481,7 +484,7 @@ const App = () => {
                     />
                   </ProtectedRoute>
                 }
-              ></Route>
+              />
             </Routes>
             {/* Replace the ModalWithForm below with specific modals */}
             <Login
