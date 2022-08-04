@@ -22,7 +22,6 @@ import EditClothingPreferencesModal from '../EditClothingPreferencesModal/EditCl
 import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import { clothes } from '../../utils/testData';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import {
   getGeolocation,
