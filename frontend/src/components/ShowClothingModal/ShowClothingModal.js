@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './ShowClothingModal.css';
 import Modal from '../Modal/Modal';
-import { weatherTypesInFahrenheit, weatherTypesInCelsius } from '../../utils/formConstants';
-import capImage from '../../images/Clothes/letter-embroidered-baseball-cap.png';
+import {
+  weatherTypesInFahrenheit,
+  weatherTypesInCelsius,
+  accessoriesCategory,
+  topsAndOuterwearCategory,
+  bottomsCategory,
+  shoesCategory,
+} from '../../utils/formConstants';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 
 /**
@@ -18,6 +24,36 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const [tempCondition, setTempCondition] = useState('');
   const [isLiked, setIsLiked] = useState('clothing-modal__like');
+  const [cardType, setCardType] = useState('');
+  const [showCardImg, setShowCardImg] = useState('');
+
+  useEffect(() => {
+    (isOpen && card) ? setShowCardImg(card.imageUrl) : setShowCardImg('');
+  }, [isOpen]);
+
+  useEffect(() => {
+    const accessoryTypes = accessoriesCategory.find((type) => type === card.type);
+    const topsAndOuterwearTypes = topsAndOuterwearCategory.find((type) => type === card.type);
+    const bottomsTypes = bottomsCategory.find((type) => type === card.type);
+    const shoeTypes = shoesCategory.find((type) => type === card.type);
+
+    switch (card.type) {
+      case accessoryTypes:
+        setCardType('Accessories');
+        break;
+      case topsAndOuterwearTypes:
+        setCardType('Tops & Outerwear');
+        break;
+      case bottomsTypes:
+        setCardType('Bottoms');
+        break;
+      case shoeTypes:
+        setCardType('Shoes');
+        break;
+      default:
+        setCardType('Clothing');
+    }
+  }, [card.type]);
 
   useEffect(() => {
     card.isLiked === true
@@ -71,13 +107,13 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose }) => {
           <span className={isLiked} alt="like-button"></span>
         </div>
         <img
-          src={(card && card.imageUrl) || capImage}
+          src={(card && showCardImg) || ''}
           alt={(card && card.name) || ''}
           className="clothing-modal__image"
         />
         <div className="clothing-modal__text-container">
           <p className="clothing-modal__text clothing-modal__text_type_heading">Type:</p>
-          <p className="clothing-modal__text">{card.type || 'Accessories'}</p>
+          <p className="clothing-modal__text">{cardType}</p>
           <p className="clothing-modal__text clothing-modal__text_type_heading">
             Temperature:
           </p>{' '}
