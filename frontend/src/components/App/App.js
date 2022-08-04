@@ -34,6 +34,7 @@ import {
 import { fifteenMinutesInMilliseconds } from '../../utils/constants';
 import { login, register, checkToken } from '../../utils/auth';
 import api from '../../utils/api';
+import { stackTraceLimit } from '../../../../backend/errors/not-found-error';
 
 /**
  * The main React **App** component.
@@ -411,16 +412,17 @@ const App = () => {
 
   const handleClothingItemLikeClick = (cardData) => {
     console.log(cardData);
-    const itemLike = cardData.isLiked === isLiked;
-
+    // const itemLike = cardData.isLiked === isLiked;
     api
       // will probably return an id
       .toggleClothingItemLikeStatus(cardData._id)
       // set the like status of the card
-      .then(() => {
-        console.log(itemLike);
-        itemLike ? setIsLiked(true) : setIsLiked(false);
+      .then((likedItem) => {
         setIsLoginOpen(false);
+        setClothingItems((state) => {
+          state.map((currentItem) =>
+            currentItem._id === cardData._id ? likedItem : currentItem)
+        })
       })
       .catch((err) => console.log(err));
   };

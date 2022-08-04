@@ -63,6 +63,7 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
             className={cardHeartButtonClassName}
             type="button"
             aria-label="Like"
+            onClick={handleLike}
           ></button>
         </div>
         {location.pathname === '/' && !clothingItemPresent && (
