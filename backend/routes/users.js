@@ -14,6 +14,7 @@ const {
   deleteUser,
   getCurrentUser,
   updateUserPreferences,
+  updateUserTemperatureSelection,
 } = require('../controllers/users');
 
 const {
@@ -21,6 +22,7 @@ const {
   validatePasswordChange,
   validatePreferences,
   validateProfileChanges,
+  validateTemperatureSelection,
 } = require('../middleware/validation');
 
 router.get('/', validateUserId, getUsers);
@@ -32,6 +34,8 @@ router.get('/:userId', validateUserId, getUser);
 router.patch('/me/profile', validateProfileChanges, updateUserProfile);
 
 router.patch('/me/preferences', validatePreferences, updateUserPreferences);
+
+router.patch('/me/temperature', validateTemperatureSelection, updateUserTemperatureSelection);
 
 router.patch('/me/password', validatePasswordChange, updatePassword);
 

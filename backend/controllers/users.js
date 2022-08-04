@@ -150,6 +150,30 @@ const updateUserPreferences = (req, res, next) => {
     });
 };
 
+const updateUserTemperatureSelection = (req, res, next) => {
+  const currentUser = req.user._id;
+  const { temperatureSelection } = req.body;
+  User.findByIdAndUpdate(
+    currentUser,
+    { temperatureSelection },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .orFail(new NotFoundError('User ID not found'))
+    .then((user) => res.status(HTTP_SUCCESS_OK).send(user))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Invalid Unit'));
+      } else if (err.name === 'CastError') {
+        next(new BadRequestError('Invalid User ID'));
+      } else {
+        next(err);
+      }
+    });
+};
+
 // Change password
 const updatePassword = (req, res, next) => {
   const currentUser = req.user._id;
@@ -206,6 +230,7 @@ module.exports = {
   getUser,
   updateUserProfile,
   updateUserPreferences,
+  updateUserTemperatureSelection,
   updatePassword,
   deleteUser,
   getCurrentUser,
