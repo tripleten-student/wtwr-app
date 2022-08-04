@@ -156,10 +156,7 @@ class Api {
 
 }
 
-const BASE_URL =
-  process.env.NODE_ENV === 'production'
-    ? ''
-    : 'http://localhost:4000';
+const BASE_URL =  process.env.REACT_APP_API_URL|| 'http://localhost:4000';
 
 export default new Api({
   baseUrl: BASE_URL,
