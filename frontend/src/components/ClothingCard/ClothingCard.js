@@ -32,7 +32,6 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
       ? 'clothingcard__like clothingcard__like_active'
       : 'clothingcard__like';
 
-
   const handleCardClick = (event) => {
     if (!event.target.className.includes('clothingcard__like')) {
       onCardClick(cardData);
@@ -59,11 +58,7 @@ const ClothingCard = ({ cardData, onCardLike, apparelGroup, onCardClick, isLogge
                 ? cardData.name.charAt(0).toUpperCase() + cardData.name.slice(1)
                 : templateItem.type.charAt(0).toUpperCase() + templateItem.type.slice(1))}
           </p>
-          <button
-            className={cardHeartButtonClassName}
-            type="button"
-            aria-label="Like"
-          ></button>
+          <button className={cardHeartButtonClassName} type="button" aria-label="Like"></button>
         </div>
         {location.pathname === '/' && !clothingItemPresent && (
           <button aria-label="Add Photo" className="clothingcard__add-photo" type="button">

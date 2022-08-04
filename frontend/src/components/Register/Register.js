@@ -11,7 +11,7 @@ import { clothingItems } from '../../utils/formConstants';
  * @author [Devin](https://github.com/mentalcaries)
  */
 
-const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
+const Register = ({ isOpen, onClose, onSubmit, openLoginModal, registerFailMessage }) => {
   const [credentialsOpen, setCredentialsOpen] = useState(true);
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
@@ -51,7 +51,7 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
     'register-password': '',
     'confirm-password': '',
     'register-name': '',
-    'register-avatar': ''
+    'register-avatar': '',
   };
 
   const handleInputChange = (event) => handleChange(event);
@@ -102,11 +102,17 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
 
   // Set form elements classnames
   const setInputLabelClassName = (name, isRequired) =>
-    `form__input-label ${isRequired && `form__input-label_required`} ${(!isValid && errors[name]) && `form__input-label_error`}`;
-  const setInputClassName = (name) => `form__input ${(!isValid && errors[name]) && `form__input_error`}`;
-  const setErrorClassName = (name) => `form__error ${(!isValid && errors[name]) && `form__error_visible`}`;
+    `form__input-label ${isRequired && `form__input-label_required`} ${
+      !isValid && errors[name] && `form__input-label_error`
+    }`;
+  const setInputClassName = (name) =>
+    `form__input ${!isValid && errors[name] && `form__input_error`}`;
+  const setErrorClassName = (name) =>
+    `form__error ${!isValid && errors[name] && `form__error_visible`}`;
 
-  const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'} `;
+  const submitButtonClassName = `form__submit-button ${
+    !isFormValid && 'form__submit-button_disabled'
+  } `;
 
   return (
     <ModalWithForm
@@ -129,11 +135,14 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
         <>
           <div className="form__input-container">
             <div className="form__input-label-container">
-              <label htmlFor="register-email" className={setInputLabelClassName('register-email', true)}>
+              <label
+                htmlFor="register-email"
+                className={setInputLabelClassName('register-email', true)}
+              >
                 Email
               </label>
               <p id="register-email-error" className={setErrorClassName('register-email')}>
-                {(errors['register-email']) && '(this is not a valid email address)'}
+                {errors['register-email'] && '(this is not a valid email address)'}
               </p>
             </div>
             <input
@@ -150,11 +159,14 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
           </div>
           <div className="form__input-container">
             <div className="form__input-label-container">
-              <label htmlFor="register-password" className={setInputLabelClassName('register-password', true)}>
+              <label
+                htmlFor="register-password"
+                className={setInputLabelClassName('register-password', true)}
+              >
                 Password
               </label>
               <p id="register-password-error" className={setErrorClassName('register-password')}>
-                {(errors['register-password']) && '(this is not a valid password)'}
+                {errors['register-password'] && '(this is not a valid password)'}
               </p>
             </div>
             <input
@@ -171,11 +183,14 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
           </div>
           <div className="form__input-container">
             <div className="form__input-label-container">
-              <label htmlFor="confirm-password" className={setInputLabelClassName('confirm-password', true)}>
+              <label
+                htmlFor="confirm-password"
+                className={setInputLabelClassName('confirm-password', true)}
+              >
                 Confirm Password
               </label>
               <p id="confirm-password-error" className={setErrorClassName('confirm-password')}>
-                {(errors['confirm-password']) && '(this is not a valid password)'}
+                {errors['confirm-password'] && '(this is not a valid password)'}
               </p>
             </div>
             <input
@@ -200,7 +215,12 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
               Next
             </button>
             <p>or</p>
-            <button onClick={openLoginModal} type="button" className="form__secondary-button" aria-label="Login">
+            <button
+              onClick={openLoginModal}
+              type="button"
+              className="form__secondary-button"
+              aria-label="Login"
+            >
               Log in
             </button>
           </div>
@@ -211,11 +231,14 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
         <>
           <div className="form__input-container">
             <div className="form__input-label-container">
-              <label htmlFor="register-name" className={setInputLabelClassName('register-name', true)}>
+              <label
+                htmlFor="register-name"
+                className={setInputLabelClassName('register-name', true)}
+              >
                 Name
               </label>
               <p id="register-name-error" className={setErrorClassName('register-name')}>
-                {(errors['register-name']) && '(this is not a valid name)'}
+                {errors['register-name'] && '(this is not a valid name)'}
               </p>
             </div>
             <input
@@ -234,11 +257,14 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
 
           <div className="form__input-container">
             <div className="form__input-label-container">
-              <label htmlFor="register-avatar" className={setInputLabelClassName('register-avatar', false)}>
+              <label
+                htmlFor="register-avatar"
+                className={setInputLabelClassName('register-avatar', false)}
+              >
                 Avatar
               </label>
               <p id="register-avatar-error" className={setErrorClassName('register-avatar')}>
-                {(errors['register-avatar']) && '(this is not a valid url)'}
+                {errors['register-avatar'] && '(this is not a valid url)'}
               </p>
             </div>
             <input
@@ -262,7 +288,12 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
               Next
             </button>
             <p>or</p>
-            <button onClick={openLoginModal} type="button" className="form__secondary-button" aria-label="Register">
+            <button
+              onClick={openLoginModal}
+              type="button"
+              className="form__secondary-button"
+              aria-label="Register"
+            >
               Login
             </button>
           </div>
@@ -296,14 +327,26 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
               Register
             </button>
             <p>or</p>
-            <button onClick={openLoginModal} type="button" className="form__secondary-button" aria-label="Register">
+            <button
+              onClick={openLoginModal}
+              type="button"
+              className="form__secondary-button"
+              aria-label="Register"
+            >
               Login
             </button>
+            <p
+              className={`form__invalid-message ${
+                registerFailMessage && 'form__invalid-message_active'
+              }`}
+            >
+              {registerFailMessage}
+            </p>
           </div>
         </>
       )}
     </ModalWithForm>
   );
-}
+};
 
 export default Register;
