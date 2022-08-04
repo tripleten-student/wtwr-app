@@ -539,6 +539,7 @@ const App = () => {
             <ShowClothingModal
               card={selectedClothingCard || clothingCardData}
               isOpen={isShowClothingModalOpen}
+              onCardLike={handleClothingItemLikeClick}
               onClose={closeAllPopups}
               handleClick={handleShowClothingModalEditClick}
             />

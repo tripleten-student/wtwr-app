@@ -20,13 +20,13 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  *
  */
 
-const ShowClothingModal = ({ card, handleClick, isOpen, onClose }) => {
+const ShowClothingModal = ({ card, handleClick, isOpen, onClose, onCardLike }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const [tempCondition, setTempCondition] = useState('');
   const [isLiked, setIsLiked] = useState('clothing-modal__like');
   const [cardType, setCardType] = useState('');
   const [showCardImg, setShowCardImg] = useState('');
-
+  
   useEffect(() => {
     (isOpen && card) ? setShowCardImg(card.imageUrl) : setShowCardImg('');
   }, [isOpen]);
@@ -93,6 +93,11 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose }) => {
     }
   }, [card.weather, currentTemperatureUnit]);
 
+  const handleLike = () => {
+    console.log("am liked");
+    onCardLike(card)
+  }
+
   return (
     <Modal
       name="ShowClothingModal"
@@ -104,7 +109,7 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose }) => {
       <div className="clothing-modal">
         <div className="clothing-modal__name-container">
           <p className="clothing-modal__name">{card.name}</p>
-          <span className={isLiked} alt="like-button"></span>
+          <button className={isLiked} alt="like-button" onClick={handleLike}></button>
         </div>
         <img
           src={(card && showCardImg) || ''}
