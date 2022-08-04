@@ -35,7 +35,6 @@ const ClothingCard = ({
 
   const handleLike = () => {
     onCardLike(cardData);
-    console.log('card liked');
   };
 
   const cardHeartButtonClassName =
