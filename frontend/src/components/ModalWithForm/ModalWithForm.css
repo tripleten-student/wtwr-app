@@ -214,3 +214,6 @@
 .form__invalid-message {
   color: rgba(255, 77, 0, 1);
 }
+.form__valid-message {
+  color: rgb(36, 162, 51);
+}

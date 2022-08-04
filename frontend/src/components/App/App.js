@@ -68,6 +68,7 @@ const App = () => {
   const [isShowClothingModalOpen, setShowClothingModalOpen] = useState(false);
   const [isErrorMessageModalOpen, setErrorMessageModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
 
   // ********************************************************************************************* //
   //                   Fetch initial clothing items & user data on page load                       //
@@ -246,6 +247,7 @@ const App = () => {
     setIsEditClothingModalOpen(false);
     // once the error message modal closes, the error message will be reset
     setErrorMessage('');
+    setPasswordChangeSuccess(false);
   };
 
   // ********************************************************************************************* //
@@ -323,9 +325,8 @@ const App = () => {
         setNewClothingItemUrl(newClothingItem.imageUrl);
         setIsCreateClothingConfirmationModalOpen(true);
       })
-      .catch((err) => {
+      .catch(() => {
         setErrorMessage('Oops, an error occurred on the server.');
-        setErrorMessageModalOpen(true);
       });
   };
 
@@ -339,19 +340,21 @@ const App = () => {
         );
         setClothingItems([...tempClothingItems, updatedClothingItem]);
         setSelectedClothingCard(updatedClothingItem);
+        closeAllPopups();
       })
-      .catch((err) => {
+      .catch(() => {
         setErrorMessage('Oops, an error occurred on the server');
-        setErrorMessageModalOpen(true);
       });
   };
 
   const handleChangePasswordSubmit = ({ oldPassword, newPassword }) => {
     api
       .updateCurrentUserPassword({ oldPassword, newPassword })
-      .then(() => console.log('Password changed successfully'))
-      .catch((err) => {
-        setErrorMessage(err);
+      .then(() => {
+        setPasswordChangeSuccess(true);
+      })
+      .catch(() => {
+        setErrorMessage('Invalid username/password');
       });
   };
 
@@ -364,8 +367,11 @@ const App = () => {
           username: response.name,
           avatar: response.avatar,
         });
+        closeAllPopups();
       })
-      .catch((error) => console.error(`${error}: Could not update`));
+      .catch(() => {
+        setErrorMessage('Oops, an error occurred on the server.');
+      });
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
@@ -376,8 +382,9 @@ const App = () => {
           ...currentUser,
           preferences,
         });
+        closeAllPopups();
       })
-      .catch((err) => {
+      .catch(() => {
         setErrorMessage('Oops, an error occurred on the server.');
       });
   };
@@ -386,12 +393,12 @@ const App = () => {
     api
       .deleteCurrentUser()
       .then(() => {
-        console.log('User is deleted');
         closeAllPopups();
         handleLogOut();
       })
-      .catch((err) => {
+      .catch(() => {
         setErrorMessage('Oops, an error occurred on the server');
+        setErrorMessageModalOpen(true);
       });
   };
 
@@ -504,16 +511,20 @@ const App = () => {
               isOpen={isEditProfileDataModalOpen}
               onClose={closeAllPopups}
               onUpdateUserProfile={handleUpdateProfileData}
+              errorMessage={errorMessage}
             />
             <EditPasswordModal
               isOpen={isEditPasswordModalOpen}
               onClose={closeAllPopups}
               onUpdatePassword={handleChangePasswordSubmit}
+              errorMessage={errorMessage}
+              success={passwordChangeSuccess}
             />
             <EditClothingPreferencesModal
               isOpen={isEditClothingPreferencesModalOpen}
               onClose={closeAllPopups}
               onSubmit={handleEditClothingPreferencesSubmit}
+              errorMessage={errorMessage}
             />
             <DeleteProfileModal
               isOpen={isDeleteProfileOpen}
@@ -524,6 +535,7 @@ const App = () => {
               isOpen={isCreateClothingModalOpen}
               onClose={closeAllPopups}
               onSubmitAddGarment={handleCreateClothingItem}
+              errorMessage={errorMessage}
             />
             <CreateClothingConfirmationModal
               isOpen={isCreateClothingConfirmationModalOpen}
@@ -545,6 +557,7 @@ const App = () => {
               onClose={closeAllPopups}
               onSubmitEditGarment={handleEditClothing}
               currentGarment={selectedClothingCard || {}}
+              errorMessage={errorMessage}
             />
             <ErrorMessageModal
               isOpen={isErrorMessageModalOpen}
