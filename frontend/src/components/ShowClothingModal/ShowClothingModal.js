@@ -25,6 +25,11 @@ const ShowClothingModal = ({ card, handleClick, onCardLike, isOpen, onClose }) =
   const [tempCondition, setTempCondition] = useState('');
   const [isLiked, setIsLiked] = useState('clothing-modal__like');
   const [cardType, setCardType] = useState('');
+  const [showCardImg, setShowCardImg] = useState('');
+
+  useEffect(() => {
+    (isOpen && card) ? setShowCardImg(card.imageUrl) : setShowCardImg('');
+  }, [isOpen]);
 
   useEffect(() => {
     const accessoryTypes = accessoriesCategory.find((type) => type === card.type);
@@ -102,7 +107,7 @@ const ShowClothingModal = ({ card, handleClick, onCardLike, isOpen, onClose }) =
           <button className={isLiked} alt="like-button" onClick={onCardLike}></button>
         </div>
         <img
-          src={(card && card.imageUrl) || ''}
+          src={(card && showCardImg) || ''}
           alt={(card && card.name) || ''}
           className="clothing-modal__image"
         />
