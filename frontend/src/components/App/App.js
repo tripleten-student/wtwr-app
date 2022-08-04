@@ -34,7 +34,6 @@ import {
 import { fifteenMinutesInMilliseconds } from '../../utils/constants';
 import { login, register, checkToken } from '../../utils/auth';
 import api from '../../utils/api';
-import { stackTraceLimit } from '../../../../backend/errors/not-found-error';
 
 /**
  * The main React **App** component.
@@ -411,31 +410,25 @@ const App = () => {
   };
 
   const handleClothingItemLikeClick = (cardData) => {
-    console.log(cardData);
-    // const itemLike = cardData.isLiked === isLiked;
     api
-      // will probably return an id
       .toggleClothingItemLikeStatus(cardData._id)
-      // set the like status of the card
-      .then((likedItem) => {
-        setIsLoginOpen(false);
-        setClothingItems((state) => {
-          state.map((currentItem) =>
-            currentItem._id === cardData._id ? likedItem : currentItem)
-        })
+      .then((likedCard) => {
+        setClothingItems((state) =>
+          state.map((currentItem) => (currentItem._id === cardData._id ? likedCard : currentItem))
+        );
       })
       .catch((err) => console.log(err));
   };
 
-  const handleItemDelete = (cardData) => {
-    api
-      .deleteClothingItem(cardData._id)
-      .then(() => {
-        setClothingItems(clothingItems.filter((deletedItem) => deletedItem._id !== cardData._id));
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err));
-  };
+  // const handleItemDelete = (cardData) => {
+  //   api
+  //     .deleteClothingItem(cardData._id)
+  //     .then(() => {
+  //       setClothingItems(clothingItems.filter((deletedItem) => deletedItem._id !== cardData._id));
+  //       closeAllPopups();
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   return (
     <div className="page">
@@ -548,7 +541,6 @@ const App = () => {
             />
             <ShowClothingModal
               card={selectedClothingCard || clothingCardData}
-              onCardLike={handleClothingItemLikeClick}
               isOpen={isShowClothingModalOpen}
               onClose={closeAllPopups}
               handleClick={handleShowClothingModalEditClick}
