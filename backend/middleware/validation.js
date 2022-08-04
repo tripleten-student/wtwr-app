@@ -99,6 +99,17 @@ const validatePreferences = celebrate({
     .unknown(true),
 });
 
+const validateTemperatureSelection = celebrate({
+  body: Joi.object()
+    .keys({
+      _id: Joi.string().hex().length(24).messages({
+        'string.empty': 'ID required',
+      }),
+      temperatureSelection: Joi.string().length(1).required(),
+    })
+    .unknown(true),
+});
+
 const validateProfileChanges = celebrate({
   body: Joi.object()
     .keys({
@@ -143,6 +154,7 @@ module.exports = {
   validateUser,
   validateUserId,
   validatePreferences,
+  validateTemperatureSelection,
   validateProfileChanges,
   validatePasswordChange,
   validateItem,
