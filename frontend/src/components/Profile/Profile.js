@@ -30,7 +30,6 @@ function Profile({
   const [bottoms, setBottoms] = useState([]);
   const [shoes, setShoes] = useState([]);
 
-  console.log(accessoriesCategory);
   // Divide all the clothing items into broader categories on page load
   useEffect(() => {
     setAccessories(
