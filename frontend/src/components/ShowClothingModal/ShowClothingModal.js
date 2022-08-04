@@ -23,13 +23,15 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
 const ShowClothingModal = ({ card, handleClick, isOpen, onClose, onCardLike }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const [tempCondition, setTempCondition] = useState('');
-  const [isLiked, setIsLiked] = useState(card.isLiked);
+  const [isLiked, setIsLiked] = useState(false);
   const [cardType, setCardType] = useState('');
   const [showCardImg, setShowCardImg] = useState('');
-  
+
+  // Reset the states when modal is opened
   useEffect(() => {
     (isOpen && card) ? setShowCardImg(card.imageUrl) : setShowCardImg('');
-  }, [isOpen]);
+    (isOpen && card) ? setIsLiked(card.isLiked) : setIsLiked(false);
+  }, [isOpen, card]);
 
   useEffect(() => {
     const accessoryTypes = accessoriesCategory.find((type) => type === card.type);
