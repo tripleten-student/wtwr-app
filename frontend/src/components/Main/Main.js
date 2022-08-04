@@ -3,7 +3,6 @@ import WeatherCards from '../WeatherCards/WeatherCards';
 import './Main.css';
 import ClothingCard from '../ClothingCard/ClothingCard';
 import randomizeIcon from '../../images/randomizeIcon.svg';
-import { clothes } from '../../utils/testData';
 import { accessories, top, bottom, shoes } from '../../utils/templateApparel';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';

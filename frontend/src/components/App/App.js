@@ -443,7 +443,7 @@ const App = () => {
                     onCardClick={handleClothingItemCardClick}
                   />
                 }
-              ></Route>
+              />
               <Route
                 exact
                 path="/profile"
@@ -467,7 +467,7 @@ const App = () => {
                     />
                   </ProtectedRoute>
                 }
-              ></Route>
+              />
             </Routes>
             {/* Replace the ModalWithForm below with specific modals */}
             <Login
