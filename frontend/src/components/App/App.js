@@ -292,12 +292,11 @@ const App = () => {
   };
 
   const handleToggleSwitchChange = () => {
-    // currentTemperatureUnit === 'F'
-    //   ? setCurrentTemperatureUnit('C')
-    //   : setCurrentTemperatureUnit('F');
-      api.updateCurrentUserTemperatureSelection(currentTemperatureUnit ==='F'? 'C' : 'F')
-      .then((data)=> {setCurrentTemperatureUnit(data.temperatureSelection)
+    api.updateCurrentUserTemperatureSelection(currentTemperatureUnit === 'F' ? 'C' : 'F')
+      .then((data) => {
+        setCurrentTemperatureUnit(data.temperatureSelection)
       })
+      .catch((err) => console.log(err));
   };
 
   const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -322,7 +321,6 @@ const App = () => {
       });
   };
 
-  // Need to work on this event handler when rendering the Clothing Cards logic has been sorted
   const handleEditClothing = (updatedClothingItemData) => {
     api
       .updateClothingItem(updatedClothingItemData)
@@ -410,15 +408,6 @@ const App = () => {
     setIsEditClothingModalOpen(true);
   };
 
-  // mock clothingCardData for testing ClothingCard component, please test the like button
-  // by changing favorited from true to false
-  const clothingCardData = {
-    name: 'T-shirt',
-    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
-    isLiked: true,
-    type: 't-shirt',
-  };
-
   const handleClothingItemLikeClick = (cardData) => {
     api
       .toggleClothingItemLikeStatus(cardData._id)
@@ -488,7 +477,6 @@ const App = () => {
                 }
               />
             </Routes>
-            {/* Replace the ModalWithForm below with specific modals */}
             <Login
               isOpen={isLoginOpen}
               onClose={closeAllPopups}
@@ -545,8 +533,9 @@ const App = () => {
               createdClothingItemType={newClothingItemType}
             />
             <ShowClothingModal
-              card={selectedClothingCard || clothingCardData}
+              card={selectedClothingCard || {}}
               isOpen={isShowClothingModalOpen}
+              onCardLike={handleClothingItemLikeClick}
               onClose={closeAllPopups}
               handleClick={handleShowClothingModalEditClick}
             />
