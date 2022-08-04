@@ -320,8 +320,10 @@ const App = () => {
   const handleEditClothing = (updatedClothingItemData) => {
     api
       .updateClothingItem(updatedClothingItemData)
-      .then(updatedClothingItem => {
-        const tempClothingItems = clothingItems.filter(item => item._id !== updatedClothingItem._id);
+      .then((updatedClothingItem) => {
+        const tempClothingItems = clothingItems.filter(
+          (item) => item._id !== updatedClothingItem._id
+        );
         setClothingItems([...tempClothingItems, updatedClothingItem]);
         setSelectedClothingCard(updatedClothingItem);
       })
@@ -400,7 +402,7 @@ const App = () => {
   const handleShowClothingModalEditClick = () => {
     closeAllPopups();
     setIsEditClothingModalOpen(true);
-  }
+  };
 
   // mock clothingCardData for testing ClothingCard component, please test the like button
   // by changing favorited from true to false
@@ -414,7 +416,9 @@ const App = () => {
   const handleClothingItemLikeClick = (cardData) => {
     // insert logic to interact with WTWR API
     setIsLoginOpen(false);
-  }
+  };
+
+  if (!weatherData) return null;
 
   return (
     <div className="page">
@@ -435,7 +439,14 @@ const App = () => {
               <Route
                 exact
                 path="/"
-                element={<Main weatherData={weatherData} isLoggedIn={isLoggedIn} onCardClick={handleClothingItemCardClick} />}
+                element={
+                  <Main
+                    weatherData={weatherData}
+                    isLoggedIn={isLoggedIn}
+                    clothingItems={clothingItems}
+                    onCardClick={handleClothingItemCardClick}
+                  />
+                }
               />
               <Route
                 exact
@@ -460,7 +471,7 @@ const App = () => {
                     />
                   </ProtectedRoute>
                 }
-              ></Route>
+              />
             </Routes>
             {/* Replace the ModalWithForm below with specific modals */}
             <Login

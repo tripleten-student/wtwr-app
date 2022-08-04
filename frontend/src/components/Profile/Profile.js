@@ -25,7 +25,6 @@ function Profile({
   onLogOutClick,
   onDeleteProfileClick,
 }) {
-
   const [accessories, setAccessories] = useState([]);
   const [topsandoutwear, setTopsandoutwear] = useState([]);
   const [bottoms, setBottoms] = useState([]);
@@ -33,10 +32,14 @@ function Profile({
 
   // Divide all the clothing items into broader categories on page load
   useEffect(() => {
-    setAccessories(clothingItems.filter(clothingItem => accessoriesCategory.includes(clothingItem.type)));
-    setTopsandoutwear(clothingItems.filter(clothingItem => topsAndOuterwearCategory.includes(clothingItem.type)));
-    setBottoms(clothingItems.filter(clothingItem => bottomsCategory.includes(clothingItem.type)));
-    setShoes(clothingItems.filter(clothingItem => shoesCategory.includes(clothingItem.type)));
+    setAccessories(
+      clothingItems.filter((clothingItem) => accessoriesCategory.includes(clothingItem.type))
+    );
+    setTopsandoutwear(
+      clothingItems.filter((clothingItem) => topsAndOuterwearCategory.includes(clothingItem.type))
+    );
+    setBottoms(clothingItems.filter((clothingItem) => bottomsCategory.includes(clothingItem.type)));
+    setShoes(clothingItems.filter((clothingItem) => shoesCategory.includes(clothingItem.type)));
   }, [clothingItems]);
 
   return (
