@@ -51,7 +51,6 @@ const App = () => {
   const [clothingItems, setClothingItems] = useState([]);
   const [selectedClothingCard, setSelectedClothingCard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
 
   // States related to Modals
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -419,16 +418,6 @@ const App = () => {
       })
       .catch((err) => console.log(err));
   };
-
-  // const handleItemDelete = (cardData) => {
-  //   api
-  //     .deleteClothingItem(cardData._id)
-  //     .then(() => {
-  //       setClothingItems(clothingItems.filter((deletedItem) => deletedItem._id !== cardData._id));
-  //       closeAllPopups();
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
 
   if (!weatherData) return null;
 
