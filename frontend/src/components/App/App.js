@@ -409,8 +409,14 @@ const App = () => {
   };
 
   const handleClothingItemLikeClick = (cardData) => {
-    // insert logic to interact with WTWR API
-    setIsLoginOpen(false);
+    api
+      .toggleClothingItemLikeStatus(cardData._id)
+      .then((likedCard) => {
+        setClothingItems((state) =>
+          state.map((currentItem) => (currentItem._id === cardData._id ? likedCard : currentItem))
+        );
+      })
+      .catch((err) => console.log(err));
   };
 
   if (!weatherData) return null;
@@ -438,8 +444,9 @@ const App = () => {
                   <Main
                     weatherData={weatherData}
                     isLoggedIn={isLoggedIn}
-                    clothingItems={clothingItems}
                     onCardClick={handleClothingItemCardClick}
+                    onCardLike={handleClothingItemLikeClick}
+                    clothingItems={clothingItems}
                   />
                 }
               />
@@ -526,9 +533,6 @@ const App = () => {
             />
             <ShowClothingModal
               card={selectedClothingCard || clothingCardData}
-              /** uncomment when like logic is added 
-              onCardLike={handleClothingItemLikeClick}
-              */
               isOpen={isShowClothingModalOpen}
               onClose={closeAllPopups}
               handleClick={handleShowClothingModalEditClick}
