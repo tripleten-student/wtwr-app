@@ -91,7 +91,9 @@ const App = () => {
             avatar: data.avatar,
             username: data.name,
             preferences: data.preferences,
+            temperatureSelection: data.temperatureSelection
           });
+          setCurrentTemperatureUnit(data.temperatureSelection)
         })
         .catch((err) => console.log(err));
   }, [isLoggedIn]);
@@ -290,9 +292,12 @@ const App = () => {
   };
 
   const handleToggleSwitchChange = () => {
-    currentTemperatureUnit === 'F'
-      ? setCurrentTemperatureUnit('C')
-      : setCurrentTemperatureUnit('F');
+    // currentTemperatureUnit === 'F'
+    //   ? setCurrentTemperatureUnit('C')
+    //   : setCurrentTemperatureUnit('F');
+      api.updateCurrentUserTemperatureSelection(currentTemperatureUnit ==='F'? 'C' : 'F')
+      .then((data)=> {setCurrentTemperatureUnit(data.temperatureSelection)
+      })
   };
 
   const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -392,6 +397,11 @@ const App = () => {
     if (isLoggedIn) {
       setSelectedClothingCard(cardData);
       setShowClothingModalOpen(true);
+    }
+
+    if (!cardData.imageUrl) {
+      setSelectedClothingCard(null);
+      setShowClothingModalOpen(false);
     }
   };
 
