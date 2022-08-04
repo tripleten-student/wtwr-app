@@ -23,6 +23,7 @@ const EditClothingModal = ({
   onSubmitEditGarment,
   currentGarment,
   errorMessage,
+  resetErrorMessage,
 }) => {
   // Component states & ref
   const formRef = useRef();
@@ -62,6 +63,7 @@ const EditClothingModal = ({
   const handleCloseImagePreviewButtonClick = () => setShowImagePreview(false);
 
   const handleInputChange = (event) => {
+    resetErrorMessage();
     if (event.target.name === 'user-garment-image-url') {
       checkIfImageExists(event.target.value, (exists) => {
         if (exists) {

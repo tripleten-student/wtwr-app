@@ -11,7 +11,13 @@ import './EditClothingPreferencesModal.css';
  *
  * @author [Shraddha](https://github.com/5hraddha)
  */
-const EditClothingPreferences = ({ isOpen, onClose, onSubmit, errorMessage }) => {
+const EditClothingPreferences = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  errorMessage,
+  resetErrorMessage,
+}) => {
   const ref = useRef();
   const { preferences } = useContext(CurrentUserContext);
   const [clothingPreferences, setClothingPreferences] = useState([]);
@@ -21,6 +27,7 @@ const EditClothingPreferences = ({ isOpen, onClose, onSubmit, errorMessage }) =>
   }, [preferences]);
 
   const handleClothingItemSelect = (selection) => {
+    resetErrorMessage();
     clothingPreferences.includes(selection)
       ? setClothingPreferences(clothingPreferences.filter((item) => item !== selection))
       : setClothingPreferences([...clothingPreferences, selection]);

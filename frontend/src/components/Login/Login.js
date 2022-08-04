@@ -16,6 +16,7 @@ const Login = ({
   setLoginPassword,
   openRegisterModal,
   errorMessage,
+  resetErrorMessage,
 }) => {
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'login-email',
@@ -43,7 +44,10 @@ const Login = ({
   // Event Handlers
   const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
 
-  const handleInputChange = (event) => handleChange(event);
+  const handleInputChange = (event) => {
+    handleChange(event);
+    resetErrorMessage();
+  };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();

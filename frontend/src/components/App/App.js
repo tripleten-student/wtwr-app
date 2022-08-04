@@ -354,7 +354,7 @@ const App = () => {
         setPasswordChangeSuccess(true);
       })
       .catch(() => {
-        setErrorMessage('Invalid username/password');
+        setErrorMessage('Old password is invalid');
       });
   };
 
@@ -502,6 +502,7 @@ const App = () => {
                 setIsLoginOpen(false);
               }}
               errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
             <Register
               isOpen={isRegisterOpen}
@@ -511,7 +512,6 @@ const App = () => {
                 setIsLoginOpen(true);
                 setIsRegisterOpen(false);
               }}
-              errorMessage={errorMessage}
             />
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}
@@ -522,6 +522,7 @@ const App = () => {
               onClose={closeAllPopups}
               onUpdateUserProfile={handleUpdateProfileData}
               errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
             <EditPasswordModal
               isOpen={isEditPasswordModalOpen}
@@ -529,12 +530,15 @@ const App = () => {
               onUpdatePassword={handleChangePasswordSubmit}
               errorMessage={errorMessage}
               success={passwordChangeSuccess}
+              resetErrorMessage={() => setErrorMessage('')}
+              resetSuccessMessage={() => setPasswordChangeSuccess(false)}
             />
             <EditClothingPreferencesModal
               isOpen={isEditClothingPreferencesModalOpen}
               onClose={closeAllPopups}
               onSubmit={handleEditClothingPreferencesSubmit}
               errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
             <DeleteProfileModal
               isOpen={isDeleteProfileOpen}
@@ -546,6 +550,7 @@ const App = () => {
               onClose={closeAllPopups}
               onSubmitAddGarment={handleCreateClothingItem}
               errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
             <CreateClothingConfirmationModal
               isOpen={isCreateClothingConfirmationModalOpen}
@@ -565,6 +570,7 @@ const App = () => {
               onSubmitEditGarment={handleEditClothing}
               currentGarment={selectedClothingCard || {}}
               errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
             <ErrorMessageModal
               isOpen={isErrorMessageModalOpen}

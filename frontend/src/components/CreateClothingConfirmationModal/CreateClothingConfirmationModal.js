@@ -12,7 +12,6 @@ const CreateClothingConfirmationModal = ({
   onClose,
   createdClothingItemUrl,
   createdClothingItemType,
-  errorMessage,
 }) => {
   const handleHyphenatedWords = (clothingItemType) => {
     if (clothingItemType.includes('-')) {
@@ -48,7 +47,6 @@ const CreateClothingConfirmationModal = ({
         <button className="confirmation__button" type="button" autoFocus onClick={onClose}>
           Ok
         </button>
-        {errorMessage && <p className="form__invalid-message">{errorMessage}</p>}
       </div>
     </Modal>
   );

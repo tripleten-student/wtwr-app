@@ -9,7 +9,15 @@ import { useFormAndValidation } from '../../hooks/useFormAndValidation';
  *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
 
-const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword, errorMessage, success }) => {
+const EditPasswordModal = ({
+  isOpen,
+  onClose,
+  onUpdatePassword,
+  errorMessage,
+  success,
+  resetErrorMessage,
+  resetSuccessMessage,
+}) => {
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'current-login-password',
     'new-login-password',
@@ -41,7 +49,11 @@ const EditPasswordModal = ({ isOpen, onClose, onUpdatePassword, errorMessage, su
 
   // Event handlers
   const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
-  const handleInputChange = (event) => handleChange(event);
+  const handleInputChange = (event) => {
+    handleChange(event);
+    resetErrorMessage();
+    resetSuccessMessage();
+  };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();

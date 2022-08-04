@@ -11,7 +11,7 @@ import { clothingItems } from '../../utils/formConstants';
  * @author [Devin](https://github.com/mentalcaries)
  */
 
-const Register = ({ isOpen, onClose, onSubmit, openLoginModal, errorMessage }) => {
+const Register = ({ isOpen, onClose, onSubmit, openLoginModal }) => {
   const [credentialsOpen, setCredentialsOpen] = useState(true);
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);

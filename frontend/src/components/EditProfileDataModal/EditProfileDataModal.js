@@ -10,7 +10,13 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
  * @author [Nuriya](https://github.com/NuriyaAkh)
  */
 
-const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile, errorMessage }) => {
+const EditProfileDataModal = ({
+  isOpen,
+  onClose,
+  onUpdateUserProfile,
+  errorMessage,
+  resetErrorMessage,
+}) => {
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'username',
     'avatarurl',
@@ -40,7 +46,10 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile, errorMessa
   // Event Handlers
   const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
 
-  const handleInputChange = (event) => handleChange(event);
+  const handleInputChange = (event) => {
+    handleChange(event);
+    resetErrorMessage();
+  };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
