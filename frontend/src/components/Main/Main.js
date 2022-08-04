@@ -27,6 +27,7 @@ function Main({
   isLoggedIn,
   userClothingPreferences,
   onCardClick,
+  likedCard,
 }) {
   const [accesoriesItem, setAccesoriesItem] = useState({});
   const [topsandoutwearItem, setTopsandoutwearItem] = useState({});
@@ -105,7 +106,23 @@ function Main({
     }
   });
 
-  /** 4. Get each item and set state for each type.**/
+  /**4.This code gets the likedCard and checks were it should go and changes that component only.
+   * This will stop randomization when Like Button is clickedStop randomize when LIKE is clicked**/
+  useEffect(() => {
+    if (accessoriesCategory.includes(likedCard.type) === true) {
+      setAccesoriesItem(likedCard);
+    } else if (topsAndOuterwearCategory.includes(likedCard.type) === true) {
+      setTopsandoutwearItem(likedCard);
+    } else if (bottomsCategory.includes(likedCard.type) === true) {
+      setBottomsItem(likedCard);
+    } else if (shoesCategory.includes(likedCard.type) === true) {
+      setShoesItem(likedCard);
+    }
+  }, [clothingItems]);
+
+  /**5.Get each item by category and set state for each one.
+   * Only triggered when this changes:
+   * [weatherData, isLoggedIn, CurrentUserPreferences, clothingItems.length, randomize]**/
   useEffect(() => {
     const accesoriesFilter = ItemsProbability.filter(
       (cloth) =>
@@ -126,7 +143,7 @@ function Main({
     setTopsandoutwearItem(getRandomItemByProbability(topsandoutwearFilter));
     setBottomsItem(getRandomItemByProbability(bottomsFilter));
     setShoesItem(getRandomItemByProbability(shoesFilter));
-  }, [weatherData, isLoggedIn, CurrentUserPreferences, clothingItems, randomize]);
+  }, [weatherData, isLoggedIn, CurrentUserPreferences, clothingItems.length, randomize]);
 
   function handleRandomClick() {
     if (randomize === true) {
