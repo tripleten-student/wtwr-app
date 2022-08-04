@@ -56,7 +56,7 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose, onCardLike }) =
   }, [card.type]);
 
   useEffect(() => {
-    card.isLiked === true
+    card.isLiked
       ? setIsLiked('clothing-modal__like clothing-modal__like_active')
       : setIsLiked('clothing-modal__like');
   }, [card.isLiked]);
