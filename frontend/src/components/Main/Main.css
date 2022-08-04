@@ -105,3 +105,9 @@
     grid-auto-rows: 164px;
   }
 }
+
+@media screen and (max-width: 320px) {
+  .clothesSectionMain__items {
+    grid-auto-rows: 244px;
+  }
+}

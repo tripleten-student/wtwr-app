@@ -8,6 +8,12 @@ import { clothes } from '../../utils/testData';
 import { accessories, top, bottom, shoes } from '../../utils/templateApparel';
 import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnitContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
+import {
+  accessoriesCategory,
+  topsAndOuterwearCategory,
+  bottomsCategory,
+  shoesCategory,
+} from '../../utils/formConstants';
 
 /**
  * The **Main** component puts toguether the components of the main page,
@@ -18,7 +24,7 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 function Main({
   weatherData,
-  clothesData,
+  clothingItems,
   onCardLike,
   isLoggedIn,
   userClothingPreferences,
@@ -28,6 +34,7 @@ function Main({
   const [topsandoutwearItem, setTopsandoutwearItem] = useState({});
   const [bottomsItem, setBottomsItem] = useState({});
   const [shoesItem, setShoesItem] = useState({});
+  const [randomize, setRandomize] = useState(true);
 
   // To get the weather in the actual moment
 
@@ -36,8 +43,6 @@ function Main({
   // To get the Userpreferences
   const currentUser = React.useContext(CurrentUserContext);
   const CurrentUserPreferences = !currentUser.preferences ? [{}] : currentUser.preferences;
-
-  /**DISPLAY WEATHER TEXT**/
 
   /**DISPLAY CARDS**/
   // 1. Weather intervals for type of clothes in relation with the temperature.
@@ -61,7 +66,7 @@ function Main({
     } else if (newWeather >= 33 && newWeather <= 53) {
       return 'cold';
     } else if (newWeather >= -22 && newWeather <= 32) {
-      return 'extremely cold';
+      return 'extremely-cold';
     }
   };
 
@@ -83,10 +88,10 @@ function Main({
   }
 
   /** 3. Display cards only if LoggedIn.**/
-  const clothesItems = isLoggedIn ? clothes : [{}];
+  const clothesData = isLoggedIn ? clothingItems : [{}];
 
   /** 3. Increase probability to items liked and in the preferences.**/
-  const ItemsProbability = clothesItems.map((item) => {
+  const ItemsProbability = clothesData.map((item) => {
     if (item.isLiked === true && CurrentUserPreferences.includes(item.type) === true) {
       item['prob'] = 4;
       return item;
@@ -104,43 +109,34 @@ function Main({
 
   /** 4. Get each item and set state for each type.**/
   useEffect(() => {
-    // Filter throught the item to get the correct cloth by it's type and weather range or temperature.
     const accesoriesFilter = ItemsProbability.filter(
-      (cloth) => cloth.apparelGroup === 'Accessories' && cloth.weather === weatherType()
+      (cloth) =>
+        accessoriesCategory.includes(cloth.type) === true && cloth.weather === weatherType()
     );
     const topsandoutwearFilter = ItemsProbability.filter(
-      (cloth) => cloth.apparelGroup === 'Tops & outerwear' && cloth.weather === weatherType()
+      (cloth) =>
+        topsAndOuterwearCategory.includes(cloth.type) === true && cloth.weather === weatherType()
     );
     const bottomsFilter = ItemsProbability.filter(
-      (cloth) => cloth.apparelGroup === 'Bottoms' && cloth.weather === weatherType()
+      (cloth) => bottomsCategory.includes(cloth.type) === true && cloth.weather === weatherType()
     );
     const shoesFilter = ItemsProbability.filter(
-      (cloth) => cloth.apparelGroup === 'Shoes' && cloth.weather === weatherType()
+      (cloth) => shoesCategory.includes(cloth.type) === true && cloth.weather === weatherType()
     );
-
+    // Filter throught the item to get the correct cloth by it's type and weather range or temperature.å
     setAccesoriesItem(getRandomItemByProbability(accesoriesFilter));
     setTopsandoutwearItem(getRandomItemByProbability(topsandoutwearFilter));
     setBottomsItem(getRandomItemByProbability(bottomsFilter));
     setShoesItem(getRandomItemByProbability(shoesFilter));
-  }, [weatherData, isLoggedIn, CurrentUserPreferences]);
+  }, [weatherData, isLoggedIn, CurrentUserPreferences, clothingItems, randomize]);
 
   function handleRandomClick() {
-    console.log('Randomize');
-  }
-
-  function random_clothes(clothes) {
-    return clothes[Math.floor(Math.random() * clothes.length)];
-  }
-
-  function getClothes(clothes) {
-    const likedClothes = clothes.filter((cloth) => cloth.isLiked === true);
-    if (likedClothes.length === 0) {
-      return random_clothes(clothes);
+    if (randomize === true) {
+      setRandomize(false);
     } else {
-      return random_clothes(likedClothes);
+      setRandomize(true);
     }
   }
-  /**UNTIL HERE**/
 
   return (
     <main className="main">
