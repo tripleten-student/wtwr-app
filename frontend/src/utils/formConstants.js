@@ -12,9 +12,10 @@ const clothingItems = [
   { name: 'Shorts', value: 'shorts' },
   { name: 'Sport Pants', value: 'sport-pants' },
   { name: 'Down Jacket', value: 'down-jacket' },
+  { name: 'Headwear', value: 'headwear' },
 ];
 
-const accessoriesCategory = ['sunglasses'];
+const accessoriesCategory = ['sunglasses', 'headwear'];
 const topsAndOuterwearCategory = ['t-shirt', 'shirt', 'dress', 'jacket', 'coat', 'down-jacket'];
 const bottomsCategory = ['jeans', 'skirt', 'shorts', 'sport-pants'];
 const shoesCategory = ['sneakers', 'boots'];
