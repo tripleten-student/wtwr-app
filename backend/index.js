@@ -38,7 +38,7 @@ app.use(
     methods: DEFAULT_ALLOWED_METHODS,
   }),
 );
-app.options('*', cors());
+// app.options('*', cors());
 app.use(requestLogger);
 
 app.use('/', mainRouter);
