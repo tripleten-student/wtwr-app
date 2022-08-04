@@ -23,7 +23,7 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
 const ShowClothingModal = ({ card, handleClick, isOpen, onClose, onCardLike }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const [tempCondition, setTempCondition] = useState('');
-  const [isLiked, setIsLiked] = useState('clothing-modal__like');
+  const [isLiked, setIsLiked] = useState(card.isLiked);
   const [cardType, setCardType] = useState('');
   const [showCardImg, setShowCardImg] = useState('');
   
@@ -54,12 +54,6 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose, onCardLike }) =
         setCardType('Clothing');
     }
   }, [card.type]);
-
-  useEffect(() => {
-    card.isLiked
-      ? setIsLiked('clothing-modal__like clothing-modal__like_active')
-      : setIsLiked('clothing-modal__like');
-  }, [card.isLiked]);
 
   useEffect(() => {
     const handleFahrenheit = () => {
@@ -93,10 +87,12 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose, onCardLike }) =
     }
   }, [card.weather, currentTemperatureUnit]);
 
-  const handleLike = () => {
-    console.log("am liked");
+  const handleLikeClick = () => {
+    setIsLiked(!isLiked);
     onCardLike(card)
   }
+
+  const likeButtonClassName = `clothing-modal__like ${isLiked && `clothing-modal__like_active`}`;
 
   return (
     <Modal
@@ -109,7 +105,7 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose, onCardLike }) =
       <div className="clothing-modal">
         <div className="clothing-modal__name-container">
           <p className="clothing-modal__name">{card.name}</p>
-          <button className={isLiked} alt="like-button" onClick={handleLike}></button>
+          <button className={likeButtonClassName} alt="like-button" onClick={handleLikeClick}></button>
         </div>
         <img
           src={(card && showCardImg) || ''}
