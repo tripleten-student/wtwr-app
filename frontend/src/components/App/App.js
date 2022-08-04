@@ -51,6 +51,7 @@ const App = () => {
   const [clothingItems, setClothingItems] = useState([]);
   const [selectedClothingCard, setSelectedClothingCard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [likedCard, setLikeCard] = useState({});
 
   // States related to Modals
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -415,6 +416,7 @@ const App = () => {
         setClothingItems((state) =>
           state.map((currentItem) => (currentItem._id === cardData._id ? likedCard : currentItem))
         );
+        setLikeCard(likedCard);
       })
       .catch((err) => console.log(err));
   };
@@ -447,6 +449,7 @@ const App = () => {
                     onCardClick={handleClothingItemCardClick}
                     onCardLike={handleClothingItemLikeClick}
                     clothingItems={clothingItems}
+                    likedCard={likedCard}
                   />
                 }
               />
