@@ -106,7 +106,8 @@ function Main({
     }
   });
 
-  /**Stop randomize when LIKE is clicked*/
+  /**4.This code gets the likedCard and checks were it should go and changes that component only.
+   * This will stop randomization when Like Button is clickedStop randomize when LIKE is clicked**/
   useEffect(() => {
     if (accessoriesCategory.includes(likedCard.type) === true) {
       setAccesoriesItem(likedCard);
@@ -119,7 +120,9 @@ function Main({
     }
   }, [clothingItems]);
 
-  /**Get each item by category and set state for each one.**/
+  /**5.Get each item by category and set state for each one.
+   * Only triggered when this changes:
+   * [weatherData, isLoggedIn, CurrentUserPreferences, clothingItems.length, randomize]**/
   useEffect(() => {
     const accesoriesFilter = ItemsProbability.filter(
       (cloth) =>
