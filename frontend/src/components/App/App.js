@@ -22,6 +22,7 @@ import EditClothingPreferencesModal from '../EditClothingPreferencesModal/EditCl
 import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import {
   getGeolocation,
   getForecastWeather,
@@ -49,6 +50,8 @@ const App = () => {
   const [newClothingItemType, setNewClothingItemType] = useState('');
   const [clothingItems, setClothingItems] = useState([]);
   const [selectedClothingCard, setSelectedClothingCard] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [likedCard, setLikeCard] = useState({});
 
   // States related to Modals
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -69,6 +72,14 @@ const App = () => {
   // ********************************************************************************************* //
   //                   Fetch initial clothing items & user data on page load                       //
   // ********************************************************************************************* //
+
+  useEffect(() => {
+    if (!weatherData) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [weatherData]);
   // Get the current user info if the user is logged in
   useEffect(() => {
     isLoggedIn &&
@@ -80,7 +91,9 @@ const App = () => {
             avatar: data.avatar,
             username: data.name,
             preferences: data.preferences,
+            temperatureSelection: data.temperatureSelection
           });
+          setCurrentTemperatureUnit(data.temperatureSelection)
         })
         .catch((err) => console.log(err));
   }, [isLoggedIn]);
@@ -131,6 +144,9 @@ const App = () => {
         .catch(() => {
           setWeatherData(generateWeatherDataWhenAPIFails());
           setIsWeatherApiFailModalOpen(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   };
@@ -190,7 +206,7 @@ const App = () => {
     isCreateClothingConfirmationModalOpen ||
     isShowClothingModalOpen;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickClose = (event) => {
       if (event.target.classList.contains('modal_opened')) {
         closeAllPopups();
@@ -276,9 +292,12 @@ const App = () => {
   };
 
   const handleToggleSwitchChange = () => {
-    currentTemperatureUnit === 'F'
-      ? setCurrentTemperatureUnit('C')
-      : setCurrentTemperatureUnit('F');
+    // currentTemperatureUnit === 'F'
+    //   ? setCurrentTemperatureUnit('C')
+    //   : setCurrentTemperatureUnit('F');
+      api.updateCurrentUserTemperatureSelection(currentTemperatureUnit ==='F'? 'C' : 'F')
+      .then((data)=> {setCurrentTemperatureUnit(data.temperatureSelection)
+      })
   };
 
   const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -308,8 +327,11 @@ const App = () => {
     api
       .updateClothingItem(updatedClothingItemData)
       .then((updatedClothingItem) => {
-        console.log('The clothing item has been updated');
-        console.log(updatedClothingItem);
+        const tempClothingItems = clothingItems.filter(
+          (item) => item._id !== updatedClothingItem._id
+        );
+        setClothingItems([...tempClothingItems, updatedClothingItem]);
+        setSelectedClothingCard(updatedClothingItem);
       })
       .catch((err) => {
         console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
@@ -326,20 +348,6 @@ const App = () => {
         console.log(err);
       });
   };
-
-  // mock clothingCardData for testing ClothingCard component, please test the like button
-  // by changing favorited from true to false
-  const clothingCardData = {
-    name: 'T-shirt',
-    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
-    isLiked: true,
-    type: 't-shirt',
-  };
-
-  function handleLikeClick(cardData) {
-    // insert logic to interact with WTWR API
-    setIsLoginOpen(false);
-  }
 
   const handleUpdateProfileData = (userData) => {
     api
@@ -385,12 +393,45 @@ const App = () => {
       });
   };
 
-  const handleClothingClick = (cardData) => {
+  const handleClothingItemCardClick = (cardData) => {
     if (isLoggedIn) {
       setSelectedClothingCard(cardData);
       setShowClothingModalOpen(true);
     }
+
+    if (!cardData.imageUrl) {
+      setSelectedClothingCard(null);
+      setShowClothingModalOpen(false);
+    }
   };
+
+  const handleShowClothingModalEditClick = () => {
+    closeAllPopups();
+    setIsEditClothingModalOpen(true);
+  };
+
+  // mock clothingCardData for testing ClothingCard component, please test the like button
+  // by changing favorited from true to false
+  const clothingCardData = {
+    name: 'T-shirt',
+    imageUrl: 'https://hollywoodchamber.net/wp-content/uploads/2020/06/tshirt-2.jpg',
+    isLiked: true,
+    type: 't-shirt',
+  };
+
+  const handleClothingItemLikeClick = (cardData) => {
+    api
+      .toggleClothingItemLikeStatus(cardData._id)
+      .then((likedCard) => {
+        setClothingItems((state) =>
+          state.map((currentItem) => (currentItem._id === cardData._id ? likedCard : currentItem))
+        );
+        setLikeCard(likedCard);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  if (!weatherData) return null;
 
   return (
     <div className="page">
@@ -415,10 +456,13 @@ const App = () => {
                   <Main
                     weatherData={weatherData}
                     isLoggedIn={isLoggedIn}
-                    onCardClick={handleClothingClick}
+                    onCardClick={handleClothingItemCardClick}
+                    onCardLike={handleClothingItemLikeClick}
+                    clothingItems={clothingItems}
+                    likedCard={likedCard}
                   />
                 }
-              ></Route>
+              />
               <Route
                 exact
                 path="/profile"
@@ -428,9 +472,9 @@ const App = () => {
                     isLoggedIn={isLoggedIn}
                   >
                     <Profile
-                      cardData={clothingCardData}
-                      onCardLike={handleLikeClick}
-                      onCardClick={handleClothingClick}
+                      clothingItems={clothingItems}
+                      onCardLike={handleClothingItemLikeClick}
+                      onCardClick={handleClothingItemCardClick}
                       onLogOutClick={handleLogOut}
                       onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                       onChangePasswordClick={() => setIsEditPasswordModalOpen(true)}
@@ -442,7 +486,7 @@ const App = () => {
                     />
                   </ProtectedRoute>
                 }
-              ></Route>
+              />
             </Routes>
             {/* Replace the ModalWithForm below with specific modals */}
             <Login
@@ -502,21 +546,19 @@ const App = () => {
             />
             <ShowClothingModal
               card={selectedClothingCard || clothingCardData}
-              /** uncomment when like logic is added 
-              onCardLike={handleLikeClick}
-              */
               isOpen={isShowClothingModalOpen}
               onClose={closeAllPopups}
-              handleClick={() => setIsEditClothingModalOpen(true)}
+              handleClick={handleShowClothingModalEditClick}
             />
             <EditClothingModal
               isOpen={isEditClothingModalOpen}
               onClose={closeAllPopups}
               onSubmitEditGarment={handleEditClothing}
-              currentGarment={clothingItems[0] || {}}
+              currentGarment={selectedClothingCard || {}}
             />
             <WeatherApiFailModal isOpen={isWeatherApiFailModalOpen} onClose={closeAllPopups} />
-            <Footer />
+            <LoadingSpinner isLoading={isLoading} />
+            <Footer weatherData={weatherData} />
             <MobileNavigation
               isLoggedIn={isLoggedIn}
               openLoginModal={() => setIsLoginOpen(true)}

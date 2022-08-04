@@ -53,6 +53,10 @@
 }
 .clothingcard__title {
   padding: 2px 12px;
+  max-width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: 700;
   font-size: 16px;
   line-height: 1.2;
@@ -91,6 +95,10 @@
 }
 
 @media screen and (max-width: 425px) {
+  .clothingcard {
+    max-width: 240px;
+  }
+
   .clothingcard__title {
     max-width: 72px;
   }

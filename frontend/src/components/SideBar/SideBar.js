@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 /**
- * The **SideBar** component displays all the
- *links to open the modals that will allow the user to modify some of the data
+ * The **SideBar** component displays all the links to open the modals that will allow the user to modify some of the data
  *
  * @author [Santiago](https://github.com/Santiag0SR)
  */
@@ -63,12 +62,12 @@ const SideBar = ({
   );
 };
 
-// SideBar.propTypes = {
-//   onChangePasswordClick: PropTypes.func.isRequired,
-//   onChangeProfileClick: PropTypes.func.isRequired,
-//   onChangeClothesPreferencesClick: PropTypes.func.isRequired,
-//   onLogOutClick: PropTypes.func.isRequired,
-//   onDeleteProfileClick: PropTypes.func.isRequired,
-// };
+SideBar.propTypes = {
+  onChangePasswordClick: PropTypes.func.isRequired,
+  onChangeProfileClick: PropTypes.func.isRequired,
+  onChangeClothesPreferencesClick: PropTypes.func.isRequired,
+  onLogOutClick: PropTypes.func.isRequired,
+  onDeleteProfileClick: PropTypes.func.isRequired,
+};
 
 export default SideBar;

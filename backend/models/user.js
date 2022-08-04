@@ -43,6 +43,11 @@ const userSchema = new mongoose.Schema({
       enum: ['t-shirt', 'shirt', 'jeans', 'skirt', 'dress', 'sneakers', 'boots', 'jacket', 'coat', 'sunglasses', 'shorts', 'sport-pants', 'down-jacket', 'headwear'],
     },
   ],
+  temperatureSelection: {
+    type: String,
+    enum: ['F', 'C'],
+    default: 'F',
+  },
 });
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(
