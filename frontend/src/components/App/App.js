@@ -293,8 +293,7 @@ const App = () => {
     currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
       : setCurrentTemperatureUnit('F');
-      console.log(currentTemperatureUnit)
-      api.updateCurrentUserTemperatureSelection(currentTemperatureUnit)
+      api.updateCurrentUserTemperatureSelection(currentTemperatureUnit ==='F'? 'C' : 'F')
       .then((data)=> console.log(data))
   };
 
