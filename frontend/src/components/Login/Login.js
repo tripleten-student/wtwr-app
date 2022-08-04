@@ -15,8 +15,9 @@ const Login = ({
   setLoginEmail,
   setLoginPassword,
   openRegisterModal,
+  errorMessage,
 }) => {
-  const { values, isValid, errors, handleChange, resetForm, loginSuccess } = useFormAndValidation([
+  const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'login-email',
     'login-password',
   ]);
@@ -141,9 +142,7 @@ const Login = ({
         >
           Register
         </button>
-        <p className={`form__invalid-message ${!loginSuccess && 'form__invalid-message_active'}`}>
-          Invalid log in credentials.
-        </p>
+        {errorMessage && <p className="form__invalid-message">{errorMessage}</p>}
       </div>
     </ModalWithForm>
   );

@@ -11,7 +11,7 @@ import { clothingItems } from '../../utils/formConstants';
  * @author [Devin](https://github.com/mentalcaries)
  */
 
-const Register = ({ isOpen, onClose, onSubmit, openLoginModal, registerFailMessage }) => {
+const Register = ({ isOpen, onClose, onSubmit, openLoginModal, errorMessage }) => {
   const [credentialsOpen, setCredentialsOpen] = useState(true);
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
@@ -335,13 +335,6 @@ const Register = ({ isOpen, onClose, onSubmit, openLoginModal, registerFailMessa
             >
               Login
             </button>
-            <p
-              className={`form__invalid-message ${
-                registerFailMessage && 'form__invalid-message_active'
-              }`}
-            >
-              {registerFailMessage}
-            </p>
           </div>
         </>
       )}

@@ -212,9 +212,5 @@
 }
 
 .form__invalid-message {
-  display: none;
-}
-.form__invalid-message_active {
   color: rgba(255, 77, 0, 1);
-  display: block;
 }

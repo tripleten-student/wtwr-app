@@ -93,7 +93,10 @@ const App = () => {
             preferences: data.preferences,
           });
         })
-        .catch((err) => setErrorMessage('Oops, an error occurred on the server.'));
+        .catch((err) => {
+          setErrorMessage('Oops, an error occurred on the server.');
+          setErrorMessageModalOpen(true);
+        });
   }, [isLoggedIn]);
 
   const verifyToken = useCallback(() => {
@@ -106,6 +109,7 @@ const App = () => {
           }
         })
         .catch((err) => {
+          // if token is invalid, user will be logged out, no error needs to be displayed to the user
           console.log(err);
         });
     }
@@ -123,6 +127,7 @@ const App = () => {
         .then(setClothingItems)
         .catch((err) => {
           setErrorMessage('Oops, an error occurred on the server.');
+          setErrorMessageModalOpen(true);
         });
   }, [isLoggedIn]);
 
@@ -239,29 +244,36 @@ const App = () => {
     setErrorMessageModalOpen(false);
     setShowClothingModalOpen(false);
     setIsEditClothingModalOpen(false);
+    // once the error message modal closes, the error message will be reset
+    setErrorMessage('');
   };
 
   // ********************************************************************************************* //
   //                         Handle all the events on the web page                                 //
   // ********************************************************************************************* //
   const handleLoginSubmit = (loginCredentials) => {
-    login(loginCredentials).then(({ data, token }) => {
-      if (data) {
-        api.updateAuthUserToken(token);
-        setCurrentUser({
-          ...currentUser,
-          email: data.email,
-          avatar: data.avatar,
-          username: data.name,
-          preferences: data.preferences,
-        });
-        setLoginEmail('');
-        setLoginPassword('');
-        setIsLoggedIn(true);
-        setIsLoginOpen(false);
-      }
-    });
-
+    login(loginCredentials)
+      .then(({ data, token }) => {
+        if (data) {
+          api.updateAuthUserToken(token);
+          setCurrentUser({
+            ...currentUser,
+            email: data.email,
+            avatar: data.avatar,
+            username: data.name,
+            preferences: data.preferences,
+          });
+          setLoginEmail('');
+          setLoginPassword('');
+          setIsLoggedIn(true);
+          setIsLoginOpen(false);
+        } else {
+          setErrorMessage('Invalid login credentials.');
+        }
+      })
+      .catch((err) => {
+        setErrorMessage('Invalid login credentials.');
+      });
     //else catch error
   };
 
@@ -278,6 +290,7 @@ const App = () => {
         } else {
           setErrorMessage('Invalid registration credentials.');
         }
+        setErrorMessageModalOpen(true);
       });
   };
 
@@ -312,6 +325,7 @@ const App = () => {
       })
       .catch((err) => {
         setErrorMessage('Oops, an error occurred on the server.');
+        setErrorMessageModalOpen(true);
       });
   };
 
@@ -328,6 +342,7 @@ const App = () => {
       })
       .catch((err) => {
         setErrorMessage('Oops, an error occurred on the server');
+        setErrorMessageModalOpen(true);
       });
   };
 
@@ -469,6 +484,7 @@ const App = () => {
                 setIsRegisterOpen(true);
                 setIsLoginOpen(false);
               }}
+              errorMessage={errorMessage}
             />
             <Register
               isOpen={isRegisterOpen}
@@ -478,7 +494,7 @@ const App = () => {
                 setIsLoginOpen(true);
                 setIsRegisterOpen(false);
               }}
-              registerFailMessage={registerFailMessage}
+              errorMessage={errorMessage}
             />
             <CompleteRegistrationModal
               isOpen={isCompleteRegistrationOpen}
