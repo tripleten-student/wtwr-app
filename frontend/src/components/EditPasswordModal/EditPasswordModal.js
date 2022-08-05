@@ -181,9 +181,11 @@ const EditPasswordModal = ({
     </ModalWithForm>
   );
 };
+
 EditPasswordModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onUpdatePassword: PropTypes.func.isRequired,
 };
+
 export default EditPasswordModal;

@@ -41,8 +41,6 @@ import api from '../../utils/api';
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setWeatherData] = useState();
@@ -270,8 +268,6 @@ const App = () => {
             username: data.name,
             preferences: data.preferences,
           });
-          setLoginEmail('');
-          setLoginPassword('');
           setIsLoggedIn(true);
           setIsLoginOpen(false);
         } else {
@@ -281,7 +277,6 @@ const App = () => {
       .catch((err) => {
         setErrorMessage('Invalid login credentials.');
       });
-    //else catch error
   };
 
   const handleRegisterSubmit = (registerCredentials) => {
@@ -471,6 +466,8 @@ const App = () => {
                       onCardLike={handleClothingItemLikeClick}
                       clothingItems={clothingItems}
                       likedCard={likedCard}
+                      handleLoginOpen={() => setIsLoginOpen(true)}
+                      onAddNewClick={() => setIsCreateClothingModalOpen(true)}
                     />
                   ) : (
                     <LoadingSpinner isLoading={isLoading} />
@@ -506,8 +503,6 @@ const App = () => {
               isOpen={isLoginOpen}
               onClose={closeAllPopups}
               onSubmit={handleLoginSubmit}
-              setLoginEmail={setLoginEmail}
-              setLoginPassword={setLoginPassword}
               openRegisterModal={() => {
                 setIsRegisterOpen(true);
                 setIsLoginOpen(false);

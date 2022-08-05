@@ -12,8 +12,6 @@ const Login = ({
   isOpen,
   onClose,
   onSubmit,
-  setLoginEmail,
-  setLoginPassword,
   openRegisterModal,
   errorMessage,
   resetErrorMessage,
@@ -36,10 +34,8 @@ const Login = ({
       'login-email': '',
       'login-password': '',
     };
-    setLoginEmail('');
-    setLoginPassword('');
     resetForm({ ...initialValues }, { ...initialValues }, true);
-  }, [isOpen, resetForm, setLoginEmail, setLoginPassword]);
+  }, [isOpen, resetForm]);
 
   // Event Handlers
   const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
@@ -58,17 +54,15 @@ const Login = ({
 
   // Set form elements classnames
   const setInputLabelClassName = (name, isRequired) =>
-    `form__input-label ${isRequired && `form__input-label_required`} ${
-      !isValid && errors[name] && `form__input-label_error`
+    `form__input-label ${isRequired && `form__input-label_required`} ${!isValid && errors[name] && `form__input-label_error`
     }`;
   const setInputClassName = (name) =>
     `form__input ${!isValid && errors[name] && `form__input_error`}`;
   const setErrorClassName = (name) =>
     `form__error ${!isValid && errors[name] && `form__error_visible`}`;
 
-  const submitButtonClassName = `form__submit-button ${
-    !isFormValid && 'form__submit-button_disabled'
-  }`;
+  const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'
+    }`;
 
   return (
     <ModalWithForm
@@ -156,8 +150,9 @@ Login.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  setLoginEmail: PropTypes.func.isRequired,
-  setLoginPassword: PropTypes.func.isRequired,
+  openRegisterModal: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string.isRequired,
+  resetErrorMessage: PropTypes.func.isRequired,
 };
 
 export default Login;
