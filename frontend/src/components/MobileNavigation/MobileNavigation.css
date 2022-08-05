@@ -5,19 +5,18 @@
 @media screen and (max-width: 768px) {
   .navigation-mobile {
     display: flex;
-    width: 100%;
+    width: calc(100% + 80px);
     border-top: 1px solid #dbdbdb;
-    margin: 7px 0 0;
+    margin: 7px 0 0 -40px;
     background-color: #f3f3f3;
-
     position: sticky;
     bottom: 0;
     z-index: 100;
   }
 
   .navigation-mobile__container {
-    margin: 11px 0 16px;
-    padding: 0;
+    margin: 11px 0 0;
+    padding: 0 40px;
     max-height: 60px;
     width: 100%;
     display: flex;
@@ -101,5 +100,16 @@
 
   .navigation-mobile__user:hover {
     cursor: pointer;
+  }
+}
+@media screen and (max-width: 477px) {
+  .navigation-mobile {
+    width: calc(100% + 32px);
+    margin: 7px 0 0 -16px;
+  }
+
+  .navigation-mobile__container {
+    margin: 11px 0 0;
+    padding: 0 16px;
   }
 }

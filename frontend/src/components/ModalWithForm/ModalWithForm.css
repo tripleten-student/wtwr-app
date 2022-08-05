@@ -38,7 +38,7 @@
   padding-right: 4px;
   color: rgba(0, 0, 0, 1);
   position: relative;
-  transition: all .3s linear;
+  transition: all 0.3s linear;
 }
 
 .form__input-label_required {
@@ -62,7 +62,7 @@
   border: 0;
   outline: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 1);
-  transition: all .3s linear;
+  transition: all 0.3s linear;
 }
 
 .form__input::placeholder {
@@ -81,7 +81,7 @@
   font-size: 14px;
   color: rgba(255, 77, 0, 1);
   opacity: 0;
-  transition: all .3s linear;
+  transition: all 0.3s linear;
 }
 
 .form__error_visible {
@@ -150,7 +150,7 @@
 
 .form__delete-button:hover {
   cursor: pointer;
-  background-color: rgba(255, 77, 0, .8);
+  background-color: rgba(255, 77, 0, 0.8);
 }
 
 .form__dropdown-container {
@@ -192,15 +192,15 @@
   background-position: center;
   background-size: contain;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
-  transition: all .3s ease-in;
+  transition: all 0.3s ease-in;
 }
 
 .form__image-preview-close:hover {
   cursor: pointer;
-  opacity: .7;
+  opacity: 0.7;
 }
 
-.form__text{
+.form__text {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -209,4 +209,11 @@
 
 .form__text + .form__text {
   margin-top: 8px;
+}
+
+.form__invalid-message {
+  color: rgba(255, 77, 0, 1);
+}
+.form__valid-message {
+  color: rgb(36, 162, 51);
 }

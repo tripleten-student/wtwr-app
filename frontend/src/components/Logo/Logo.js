@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import './Logo.css';
 import logoImg from '../../images/logo.svg';
+
 /**
  * The **Logo** component renders logo of the web app
  *

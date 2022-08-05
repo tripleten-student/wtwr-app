@@ -17,7 +17,14 @@ import './EditClothingModal.css';
  *
  *  @author [Nuriya](https://github.com/NuriyaAkh)
  */
-const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarment }) => {
+const EditClothingModal = ({
+  isOpen,
+  onClose,
+  onSubmitEditGarment,
+  currentGarment,
+  errorMessage,
+  resetErrorMessage,
+}) => {
   // Component states & ref
   const formRef = useRef();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -56,6 +63,7 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
   const handleCloseImagePreviewButtonClick = () => setShowImagePreview(false);
 
   const handleInputChange = (event) => {
+    resetErrorMessage();
     if (event.target.name === 'user-garment-image-url') {
       checkIfImageExists(event.target.value, (exists) => {
         if (exists) {
@@ -77,26 +85,27 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (isValid) {
-      onSubmitEditGarment(
-        {
-          itemId: currentGarment._id,
-          name: values['user-garment-name'],
-          type: garmentTypeChoice,
-          weather: weatherTypeChoice,
-          imageUrl: values['user-garment-image-url'],
-        }
-      );
-      onClose();
+      onSubmitEditGarment({
+        itemId: currentGarment._id,
+        name: values['user-garment-name'],
+        type: garmentTypeChoice,
+        weather: weatherTypeChoice,
+        imageUrl: values['user-garment-image-url'],
+      });
     }
   };
   const handleCancelClick = () => onClose();
 
   // Set form elements classnames
-  const setInputLabelClassName = (name) => `form__input-label ${(!isValid && errors[name]) && `form__input-label_error`}`;
-  const setInputClassName = (name) => `form__input ${(!isValid && errors[name]) && `form__input_error`}`;
-  const setErrorClassName = (name) => `form__error ${(!isValid && errors[name]) && `form__error_visible`}`;
-  const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'
-    }`;
+  const setInputLabelClassName = (name) =>
+    `form__input-label ${!isValid && errors[name] && `form__input-label_error`}`;
+  const setInputClassName = (name) =>
+    `form__input ${!isValid && errors[name] && `form__input_error`}`;
+  const setErrorClassName = (name) =>
+    `form__error ${!isValid && errors[name] && `form__error_visible`}`;
+  const submitButtonClassName = `form__submit-button ${
+    !isFormValid && 'form__submit-button_disabled'
+  }`;
 
   return (
     <ModalWithForm
@@ -112,11 +121,14 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
     >
       <div className="form__input-container">
         <div className="form__input-label-container">
-          <label htmlFor="user-garment-name" className={setInputLabelClassName('user-garment-name')}>
+          <label
+            htmlFor="user-garment-name"
+            className={setInputLabelClassName('user-garment-name')}
+          >
             Name
           </label>
           <p id="user-garment-name-error" className={setErrorClassName('user-garment-name')}>
-            {(errors['user-garment-name']) && '(this is not a valid name)'}
+            {errors['user-garment-name'] && '(this is not a valid name)'}
           </p>
         </div>
         <input
@@ -146,7 +158,9 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
         <Dropdown
           dropdownName="weather-types"
           header="Weather"
-          options={(currentTemperatureUnit === 'F') ? weatherTypesInFahrenheit : weatherTypesInCelsius}
+          options={
+            currentTemperatureUnit === 'F' ? weatherTypesInFahrenheit : weatherTypesInCelsius
+          }
           onDropdownItemClick={setWeatherTypeChoice}
           userPreferenceValue={currentGarment.weather || ''}
           setIsFormValid={setIsFormValid}
@@ -154,11 +168,17 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
       </div>
       <div className="form__input-container">
         <div className="form__input-label-container">
-          <label htmlFor="user-garment-image-url" className={setInputLabelClassName('user-garment-image-url')}>
+          <label
+            htmlFor="user-garment-image-url"
+            className={setInputLabelClassName('user-garment-image-url')}
+          >
             Image
           </label>
-          <p id="user-garment-image-url-error" className={setErrorClassName('user-garment-image-url')}>
-            {(errors['user-garment-image-url']) && '(this is not a valid url)'}
+          <p
+            id="user-garment-image-url-error"
+            className={setErrorClassName('user-garment-image-url')}
+          >
+            {errors['user-garment-image-url'] && '(this is not a valid url)'}
           </p>
         </div>
         <input
@@ -171,25 +191,23 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
           onChange={handleInputChange}
           required
         />
-      </div >
+      </div>
       {/* If Image URL actully exists & there is no validation error, then display preview */}
-      {
-        showImagePreview && !errors['user-garment-image-url'] && (
-          <div className="form__image-preview-container">
-            <img
-              src={values['user-garment-image-url']}
-              alt="new garment"
-              className="form__image-preview"
-            />
-            <button
-              className="form__image-preview-close"
-              type="button"
-              aria-label="Close image preview"
-              onClick={handleCloseImagePreviewButtonClick}
-            />
-          </div>
-        )
-      }
+      {showImagePreview && !errors['user-garment-image-url'] && (
+        <div className="form__image-preview-container">
+          <img
+            src={values['user-garment-image-url']}
+            alt="new garment"
+            className="form__image-preview"
+          />
+          <button
+            className="form__image-preview-close"
+            type="button"
+            aria-label="Close image preview"
+            onClick={handleCloseImagePreviewButtonClick}
+          />
+        </div>
+      )}
       <div className="form__button-grp">
         <button
           type="submit"
@@ -207,8 +225,9 @@ const EditClothingModal = ({ isOpen, onClose, onSubmitEditGarment, currentGarmen
         >
           Cancel
         </button>
+        {errorMessage && <p className="form__invalid-message">{errorMessage}</p>}
       </div>
-    </ModalWithForm >
+    </ModalWithForm>
   );
 };
 

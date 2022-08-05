@@ -10,7 +10,13 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
  * @author [Nuriya](https://github.com/NuriyaAkh)
  */
 
-const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
+const EditProfileDataModal = ({
+  isOpen,
+  onClose,
+  onUpdateUserProfile,
+  errorMessage,
+  resetErrorMessage,
+}) => {
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
     'username',
     'avatarurl',
@@ -40,7 +46,10 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
   // Event Handlers
   const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
 
-  const handleInputChange = (event) => handleChange(event);
+  const handleInputChange = (event) => {
+    handleChange(event);
+    resetErrorMessage();
+  };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -49,18 +58,23 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
       // naming of the fields to be checked again when backend API is connected
       onUpdateUserProfile({
         name: username,
-        avatar: avatarurl
+        avatar: avatarurl,
       });
-      onClose();
     }
   };
 
   // Set form elements classnames
   const setInputLabelClassName = (name, isRequired) =>
-    `form__input-label ${isRequired && `form__input-label_required`} ${(!isValid && errors[name]) && `form__input-label_error`}`;
-  const setInputClassName = (name) => `form__input ${(!isValid && errors[name]) && `form__input_error`}`;
-  const setErrorClassName = (name) => `form__error ${(!isValid && errors[name]) && `form__error_visible`}`;
-  const submitButtonClassName = `form__submit-button ${!isFormValid && 'form__submit-button_disabled'}`;
+    `form__input-label ${isRequired && `form__input-label_required`} ${
+      !isValid && errors[name] && `form__input-label_error`
+    }`;
+  const setInputClassName = (name) =>
+    `form__input ${!isValid && errors[name] && `form__input_error`}`;
+  const setErrorClassName = (name) =>
+    `form__error ${!isValid && errors[name] && `form__error_visible`}`;
+  const submitButtonClassName = `form__submit-button ${
+    !isFormValid && 'form__submit-button_disabled'
+  }`;
 
   return (
     <ModalWithForm
@@ -80,7 +94,7 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
             Name
           </label>
           <p id="username-error" className={setErrorClassName('username')}>
-            {(errors['username']) && '(this is not a valid name)'}
+            {errors['username'] && '(this is not a valid name)'}
           </p>
         </div>
         <input
@@ -103,7 +117,7 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
             Avatar
           </label>
           <p id="avatarurl-error" className={setErrorClassName('avatarurl')}>
-            {(errors['avatarurl']) && '(this is not a valid url)'}
+            {errors['avatarurl'] && '(this is not a valid url)'}
           </p>
         </div>
         <input
@@ -126,6 +140,7 @@ const EditProfileDataModal = ({ isOpen, onClose, onUpdateUserProfile }) => {
         >
           Save changes
         </button>
+        {errorMessage && <p className="form__invalid-message">{errorMessage}</p>}
       </div>
     </ModalWithForm>
   );
@@ -136,4 +151,5 @@ EditProfileDataModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onUpdateUserProfile: PropTypes.func.isRequired,
 };
+
 export default EditProfileDataModal;

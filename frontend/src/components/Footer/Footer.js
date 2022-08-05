@@ -6,9 +6,7 @@ import './Footer.css';
  */
 
 const Footer = ({ weatherData }) => {
-  if (!weatherData) {
-    return null;
-  }
+  if (!weatherData) return null;
   return (
     <footer className="footer">
       <p className="footer__copyright">© Developed by Practicum Students</p>
