@@ -56,17 +56,20 @@ const ClothingCard = ({
     }
   };
 
-  console.log(templateItem.type);
+  const urlImage = () => {
+    if (clothingItemPresent) {
+      return cardData.imageUrl;
+    } else if (templateItem.type) {
+      return require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`);
+    }
+  };
+
   return (
     <div className="clothingcard" onClick={handleCardClick}>
-      {!templateItem.type && (
+      {urlImage() !== undefined && (
         <img
           className={`clothingcard__image ${!clothingItemPresent && 'clothingcard__image_default'}`}
-          src={
-            clothingItemPresent
-              ? cardData.imageUrl
-              : require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`)
-          }
+          src={urlImage()}
           alt={clothingItemPresent ? cardData.name : templateItem.name}
         />
       )}
