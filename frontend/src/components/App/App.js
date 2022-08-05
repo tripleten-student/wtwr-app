@@ -292,14 +292,15 @@ const App = () => {
   };
 
   const handleToggleSwitchChange = () => {
-    isLoggedIn
-      ? api
-          .updateCurrentUserTemperatureSelection(currentTemperatureUnit === 'F' ? 'C' : 'F')
-          .then((data) => {
-            setCurrentTemperatureUnit(data.temperatureSelection);
-          })
-          .catch((err) => console.log(err))
-      : currentTemperatureUnit === 'F'
+    if (isLoggedIn) {
+      api
+        .updateCurrentUserTemperatureSelection(currentTemperatureUnit === 'F' ? 'C' : 'F')
+        .then((data) => {
+          setCurrentTemperatureUnit(data.temperatureSelection);
+        })
+        .catch((err) => console.log(err));
+    }
+    currentTemperatureUnit === 'F'
       ? setCurrentTemperatureUnit('C')
       : setCurrentTemperatureUnit('F');
   };
