@@ -25,15 +25,13 @@ const MobileNavigation = ({ isLoggedIn, openNewGarmentModal, openLoginModal }) =
         <li className="navigation-mobile__toggle">
           <ToggleSwitch />
         </li>
-        <li>
-          <button className="navigation-mobile__addButton" onClick={openNewGarmentModal}>
-            <img
-              className="navigation-mobile__addButton-plus"
-              src={mobileAddButton}
-              alt="+"
-            />
-          </button>
-        </li>
+        {isLoggedIn && (
+          <li>
+            <button className="navigation-mobile__addButton" onClick={openNewGarmentModal}>
+              <img className="navigation-mobile__addButton-plus" src={mobileAddButton} alt="+" />
+            </button>
+          </li>
+        )}
         <li>
           {isLoggedIn ? (
             <NavLink to="/profile" className="navigation-mobile__link">
