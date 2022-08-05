@@ -9,8 +9,6 @@ import './WeatherCards.css';
  */
 
 const WeatherCards = ({ weatherData }) => {
-  if (!weatherData) return null;
-
   return (
     // modifier to adjust different CSS grid layout according to different times of the day
     <div className="weathercards">

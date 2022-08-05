@@ -9,7 +9,6 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
 
 const WeatherCard = ({ weatherData }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  if (!weatherData) return null;
 
   const { condition, temperature, dayOrNight, elongate, displayedTime, description } = weatherData;
 
