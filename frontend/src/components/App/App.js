@@ -130,8 +130,7 @@ const App = () => {
         .getAllClothingItems()
         .then(setClothingItems)
         .catch((err) => {
-          setErrorMessage('Oops, an error occurred on the server.');
-          setErrorMessageModalOpen(true);
+          console.log(err);
         });
   }, [isLoggedIn]);
 
