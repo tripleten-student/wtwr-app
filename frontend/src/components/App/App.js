@@ -51,6 +51,7 @@ const App = () => {
   const [clothingItems, setClothingItems] = useState([]);
   const [selectedClothingCard, setSelectedClothingCard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [likedCard, setLikeCard] = useState({});
 
   // States related to Modals
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -92,7 +93,9 @@ const App = () => {
             avatar: data.avatar,
             username: data.name,
             preferences: data.preferences,
+            temperatureSelection: data.temperatureSelection
           });
+          setCurrentTemperatureUnit(data.temperatureSelection)
         })
         .catch((err) => {
           setErrorMessage('Oops, an error occurred on the server.');
@@ -307,9 +310,13 @@ const App = () => {
   };
 
   const handleToggleSwitchChange = () => {
-    currentTemperatureUnit === 'F'
-      ? setCurrentTemperatureUnit('C')
-      : setCurrentTemperatureUnit('F');
+    // currentTemperatureUnit === 'F'
+    //   ? setCurrentTemperatureUnit('C')
+    //   : setCurrentTemperatureUnit('F');
+    api.updateCurrentUserTemperatureSelection(currentTemperatureUnit === 'F' ? 'C' : 'F')
+      .then((data) => {
+        setCurrentTemperatureUnit(data.temperatureSelection)
+      })
   };
 
   const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
@@ -410,6 +417,11 @@ const App = () => {
       setSelectedClothingCard(cardData);
       setShowClothingModalOpen(true);
     }
+
+    if (!cardData.imageUrl) {
+      setSelectedClothingCard(null);
+      setShowClothingModalOpen(false);
+    }
   };
 
   const handleShowClothingModalEditClick = () => {
@@ -433,6 +445,7 @@ const App = () => {
         setClothingItems((state) =>
           state.map((currentItem) => (currentItem._id === cardData._id ? likedCard : currentItem))
         );
+        setLikeCard(likedCard);
       })
       .catch((err) => console.log(err));
   };
@@ -464,6 +477,7 @@ const App = () => {
                       onCardClick={handleClothingItemCardClick}
                       onCardLike={handleClothingItemLikeClick}
                       clothingItems={clothingItems}
+                      likedCard={likedCard}
                     />
                   )
                 }

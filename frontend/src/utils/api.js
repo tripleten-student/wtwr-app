@@ -76,6 +76,17 @@ class Api {
     })
       .then(this._checkResponseStatus);
   }
+  
+  updateCurrentUserTemperatureSelection = (unit) => {
+    return fetch(`${this._baseUrl}/users/me/temperature`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        temperatureSelection: unit
+      })
+    })
+      .then(this._checkResponseStatus);
+  }
 
   /**
   * Deletes the current user's profile from the server using a DELETE request.
