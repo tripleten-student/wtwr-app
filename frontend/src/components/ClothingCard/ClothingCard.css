@@ -93,6 +93,12 @@
   object-position: baseline;
 }
 
+@media screen and (max-width: 887px) {
+  .clothingcard {
+    max-width: 325px;
+  }
+}
+
 @media screen and (max-width: 750px) {
   .clothingcard__title {
     max-width: 100px;

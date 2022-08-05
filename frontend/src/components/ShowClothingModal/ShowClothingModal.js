@@ -20,16 +20,18 @@ import CurrentTemperatureUnitContext from '../../contexts/CurrentTemperatureUnit
  *
  */
 
-const ShowClothingModal = ({ card, handleClick, isOpen, onClose }) => {
+const ShowClothingModal = ({ card, handleClick, isOpen, onClose, onCardLike }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const [tempCondition, setTempCondition] = useState('');
-  const [isLiked, setIsLiked] = useState('clothing-modal__like');
+  const [isLiked, setIsLiked] = useState(false);
   const [cardType, setCardType] = useState('');
   const [showCardImg, setShowCardImg] = useState('');
 
+  // Reset the states when modal is opened
   useEffect(() => {
     (isOpen && card) ? setShowCardImg(card.imageUrl) : setShowCardImg('');
-  }, [isOpen]);
+    (isOpen && card) ? setIsLiked(card.isLiked) : setIsLiked(false);
+  }, [isOpen, card]);
 
   useEffect(() => {
     const accessoryTypes = accessoriesCategory.find((type) => type === card.type);
@@ -54,12 +56,6 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose }) => {
         setCardType('Clothing');
     }
   }, [card.type]);
-
-  useEffect(() => {
-    card.isLiked === true
-      ? setIsLiked('clothing-modal__like clothing-modal__like_active')
-      : setIsLiked('clothing-modal__like');
-  }, [card.isLiked]);
 
   useEffect(() => {
     const handleFahrenheit = () => {
@@ -93,6 +89,13 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose }) => {
     }
   }, [card.weather, currentTemperatureUnit]);
 
+  const handleLikeClick = () => {
+    setIsLiked(!isLiked);
+    onCardLike(card)
+  }
+
+  const likeButtonClassName = `clothing-modal__like ${isLiked && `clothing-modal__like_active`}`;
+
   return (
     <Modal
       name="ShowClothingModal"
@@ -104,7 +107,7 @@ const ShowClothingModal = ({ card, handleClick, isOpen, onClose }) => {
       <div className="clothing-modal">
         <div className="clothing-modal__name-container">
           <p className="clothing-modal__name">{card.name}</p>
-          <span className={isLiked} alt="like-button"></span>
+          <button className={likeButtonClassName} alt="like-button" onClick={handleLikeClick}></button>
         </div>
         <img
           src={(card && showCardImg) || ''}
