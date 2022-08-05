@@ -292,11 +292,17 @@ const App = () => {
   };
 
   const handleToggleSwitchChange = () => {
-    api.updateCurrentUserTemperatureSelection(currentTemperatureUnit === 'F' ? 'C' : 'F')
-      .then((data) => {
-        setCurrentTemperatureUnit(data.temperatureSelection)
-      })
-      .catch((err) => console.log(err));
+    if (isLoggedIn) {
+      api
+        .updateCurrentUserTemperatureSelection(currentTemperatureUnit === 'F' ? 'C' : 'F')
+        .then((data) => {
+          setCurrentTemperatureUnit(data.temperatureSelection);
+        })
+        .catch((err) => console.log(err));
+    }
+    currentTemperatureUnit === 'F'
+      ? setCurrentTemperatureUnit('C')
+      : setCurrentTemperatureUnit('F');
   };
 
   const handleCreateClothingItem = (garmentName, garmentType, weatherType, garmentUrl) => {
