@@ -29,7 +29,13 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
 }
+
+.clothingcard__info-container_image_default{
+  cursor: default;
+}
+
 .clothingcard__title-and-like {
   display: flex;
   align-items: center;

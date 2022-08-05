@@ -69,7 +69,7 @@ const ClothingCard = ({
           alt={clothingItemPresent ? cardData.name : templateItem.name}
         />
       )}
-      <div className="clothingcard__info-container">
+      <div className={`clothingcard__info-container ${!clothingItemPresent && 'clothingcard__info-container_image_default'}`}>
         <div className="clothingcard__title-and-like">
           <p className="clothingcard__title">
             {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
