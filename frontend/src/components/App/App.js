@@ -17,7 +17,7 @@ import DeleteProfileModal from '../DeleteProfileModal/DeleteProfileModal';
 import CreateClothingModal from '../CreateClothingModal/CreateClothingModal';
 import CreateClothingConfirmationModal from '../CreateClothingConfirmationModal/CreateClothingConfirmationModal';
 import EditClothingModal from '../EditClothingModal/EditClothingModal';
-import WeatherApiFailModal from '../WeatherApiFailModal/WeatherApiFailModal';
+import ErrorMessageModal from '../ErrorMessageModal/ErrorMessageModal';
 import EditClothingPreferencesModal from '../EditClothingPreferencesModal/EditClothingPreferencesModal';
 import ShowClothingModal from '../ShowClothingModal/ShowClothingModal';
 import MobileNavigation from '../MobileNavigation/MobileNavigation';
@@ -67,7 +67,9 @@ const App = () => {
   const [isEditClothingPreferencesModalOpen, setIsEditClothingPreferencesModalOpen] =
     useState(false);
   const [isShowClothingModalOpen, setShowClothingModalOpen] = useState(false);
-  const [isWeatherApiFailModalOpen, setIsWeatherApiFailModalOpen] = useState(false);
+  const [isErrorMessageModalOpen, setErrorMessageModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
 
   // ********************************************************************************************* //
   //                   Fetch initial clothing items & user data on page load                       //
@@ -91,11 +93,14 @@ const App = () => {
             avatar: data.avatar,
             username: data.name,
             preferences: data.preferences,
-            temperatureSelection: data.temperatureSelection
+            temperatureSelection: data.temperatureSelection,
           });
-          setCurrentTemperatureUnit(data.temperatureSelection)
+          setCurrentTemperatureUnit(data.temperatureSelection);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setErrorMessage('Oops, an error occurred on the server.');
+          setErrorMessageModalOpen(true);
+        });
   }, [isLoggedIn]);
 
   const verifyToken = useCallback(() => {
@@ -108,6 +113,7 @@ const App = () => {
           }
         })
         .catch((err) => {
+          // if token is invalid, user will be logged out, no error needs to be displayed to the user
           console.log(err);
         });
     }
@@ -124,9 +130,6 @@ const App = () => {
         .getAllClothingItems()
         .then(setClothingItems)
         .catch((err) => {
-          console.log(
-            'Uh-oh! Error occurred while fetching the existing clothing items from the server.'
-          );
           console.log(err);
         });
   }, [isLoggedIn]);
@@ -143,7 +146,10 @@ const App = () => {
         })
         .catch(() => {
           setWeatherData(generateWeatherDataWhenAPIFails());
-          setIsWeatherApiFailModalOpen(true);
+          setErrorMessage(
+            'Oops, it seems that the Weather API ran into issues... Your live location and weather information could not be accessed. We apologize for the inconvenience and have used our best guesses on your weather and location. Enjoy!'
+          );
+          setErrorMessageModalOpen(true);
         })
         .finally(() => {
           setIsLoading(false);
@@ -241,33 +247,40 @@ const App = () => {
     setIsCreateClothingConfirmationModalOpen(false);
     setIsEditClothingModalOpen(false);
     setIsEditClothingPreferencesModalOpen(false);
-    setIsWeatherApiFailModalOpen(false);
+    setErrorMessageModalOpen(false);
     setShowClothingModalOpen(false);
     setIsEditClothingModalOpen(false);
-    setIsWeatherApiFailModalOpen(false);
+    // once the error message modal closes, the error message will be reset
+    setErrorMessage('');
+    setPasswordChangeSuccess(false);
   };
 
   // ********************************************************************************************* //
   //                         Handle all the events on the web page                                 //
   // ********************************************************************************************* //
   const handleLoginSubmit = (loginCredentials) => {
-    login(loginCredentials).then(({ data, token }) => {
-      if (data) {
-        api.updateAuthUserToken(token);
-        setCurrentUser({
-          ...currentUser,
-          email: data.email,
-          avatar: data.avatar,
-          username: data.name,
-          preferences: data.preferences,
-        });
-        setLoginEmail('');
-        setLoginPassword('');
-        setIsLoggedIn(true);
-        setIsLoginOpen(false);
-      }
-    });
-
+    login(loginCredentials)
+      .then(({ data, token }) => {
+        if (data) {
+          api.updateAuthUserToken(token);
+          setCurrentUser({
+            ...currentUser,
+            email: data.email,
+            avatar: data.avatar,
+            username: data.name,
+            preferences: data.preferences,
+          });
+          setLoginEmail('');
+          setLoginPassword('');
+          setIsLoggedIn(true);
+          setIsLoginOpen(false);
+        } else {
+          setErrorMessage('Invalid login credentials.');
+        }
+      })
+      .catch((err) => {
+        setErrorMessage('Invalid login credentials.');
+      });
     //else catch error
   };
 
@@ -279,8 +292,12 @@ const App = () => {
         handleLoginSubmit(registerCredentials);
       })
       .catch((err) => {
-        // clarify behaviour for errors: invalid username/password
-        console.log(err);
+        if (err === 'Error: 409') {
+          setErrorMessage('A user with this email address already exists.');
+        } else {
+          setErrorMessage('Invalid registration credentials.');
+        }
+        setErrorMessageModalOpen(true);
       });
   };
 
@@ -321,9 +338,8 @@ const App = () => {
         setNewClothingItemUrl(newClothingItem.imageUrl);
         setIsCreateClothingConfirmationModalOpen(true);
       })
-      .catch((err) => {
-        console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
-        console.log(err);
+      .catch(() => {
+        setErrorMessage('Oops, an error occurred on the server.');
       });
   };
 
@@ -336,20 +352,21 @@ const App = () => {
         );
         setClothingItems([...tempClothingItems, updatedClothingItem]);
         setSelectedClothingCard(updatedClothingItem);
+        closeAllPopups();
       })
-      .catch((err) => {
-        console.log('Uh-oh! Error occurred while adding a new clothing item to the server.');
-        console.log(err);
+      .catch(() => {
+        setErrorMessage('Oops, an error occurred on the server');
       });
   };
 
   const handleChangePasswordSubmit = ({ oldPassword, newPassword }) => {
     api
       .updateCurrentUserPassword({ oldPassword, newPassword })
-      .then(() => console.log('Password changed successfully'))
-      .catch((err) => {
-        console.log('Uh-oh! Error occurred while changing password to the server.');
-        console.log(err);
+      .then(() => {
+        setPasswordChangeSuccess(true);
+      })
+      .catch(() => {
+        setErrorMessage('Old password is invalid');
       });
   };
 
@@ -362,8 +379,11 @@ const App = () => {
           username: response.name,
           avatar: response.avatar,
         });
+        closeAllPopups();
       })
-      .catch((error) => console.error(`${error}: Could not update`));
+      .catch(() => {
+        setErrorMessage('Oops, an error occurred on the server.');
+      });
   };
 
   const handleEditClothingPreferencesSubmit = (clothingPreferences) => {
@@ -374,12 +394,10 @@ const App = () => {
           ...currentUser,
           preferences,
         });
+        closeAllPopups();
       })
-      .catch((err) => {
-        console.log(
-          'Uh-oh! Error occurred while updating current user clothing preference to the server.'
-        );
-        console.log(err);
+      .catch(() => {
+        setErrorMessage('Oops, an error occurred on the server.');
       });
   };
 
@@ -387,13 +405,12 @@ const App = () => {
     api
       .deleteCurrentUser()
       .then(() => {
-        console.log('User is deleted');
         closeAllPopups();
         handleLogOut();
       })
-      .catch((err) => {
-        console.log('Uh-oh! Error occurred while deleting the profile from the server.');
-        console.log(err);
+      .catch(() => {
+        setErrorMessage('Oops, an error occurred on the server');
+        setErrorMessageModalOpen(true);
       });
   };
 
@@ -426,8 +443,6 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
-  if (!weatherData) return null;
-
   return (
     <div className="page">
       <div className="page__wrapper">
@@ -448,14 +463,16 @@ const App = () => {
                 exact
                 path="/"
                 element={
-                  <Main
-                    weatherData={weatherData}
-                    isLoggedIn={isLoggedIn}
-                    onCardClick={handleClothingItemCardClick}
-                    onCardLike={handleClothingItemLikeClick}
-                    clothingItems={clothingItems}
-                    likedCard={likedCard}
-                  />
+                  weatherData && (
+                    <Main
+                      weatherData={weatherData}
+                      isLoggedIn={isLoggedIn}
+                      onCardClick={handleClothingItemCardClick}
+                      onCardLike={handleClothingItemLikeClick}
+                      clothingItems={clothingItems}
+                      likedCard={likedCard}
+                    />
+                  )
                 }
               />
               <Route
@@ -493,6 +510,8 @@ const App = () => {
                 setIsRegisterOpen(true);
                 setIsLoginOpen(false);
               }}
+              errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
             <Register
               isOpen={isRegisterOpen}
@@ -511,16 +530,24 @@ const App = () => {
               isOpen={isEditProfileDataModalOpen}
               onClose={closeAllPopups}
               onUpdateUserProfile={handleUpdateProfileData}
+              errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
             <EditPasswordModal
               isOpen={isEditPasswordModalOpen}
               onClose={closeAllPopups}
               onUpdatePassword={handleChangePasswordSubmit}
+              errorMessage={errorMessage}
+              success={passwordChangeSuccess}
+              resetErrorMessage={() => setErrorMessage('')}
+              resetSuccessMessage={() => setPasswordChangeSuccess(false)}
             />
             <EditClothingPreferencesModal
               isOpen={isEditClothingPreferencesModalOpen}
               onClose={closeAllPopups}
               onSubmit={handleEditClothingPreferencesSubmit}
+              errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
             <DeleteProfileModal
               isOpen={isDeleteProfileOpen}
@@ -531,6 +558,8 @@ const App = () => {
               isOpen={isCreateClothingModalOpen}
               onClose={closeAllPopups}
               onSubmitAddGarment={handleCreateClothingItem}
+              errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
             <CreateClothingConfirmationModal
               isOpen={isCreateClothingConfirmationModalOpen}
@@ -550,8 +579,14 @@ const App = () => {
               onClose={closeAllPopups}
               onSubmitEditGarment={handleEditClothing}
               currentGarment={selectedClothingCard || {}}
+              errorMessage={errorMessage}
+              resetErrorMessage={() => setErrorMessage('')}
             />
-            <WeatherApiFailModal isOpen={isWeatherApiFailModalOpen} onClose={closeAllPopups} />
+            <ErrorMessageModal
+              isOpen={isErrorMessageModalOpen}
+              onClose={closeAllPopups}
+              errorMessage={errorMessage}
+            />
             <LoadingSpinner isLoading={isLoading} />
             <Footer weatherData={weatherData} />
             <MobileNavigation
