@@ -463,7 +463,7 @@ const App = () => {
                 exact
                 path="/"
                 element={
-                  weatherData && (
+                  weatherData ? (
                     <Main
                       weatherData={weatherData}
                       isLoggedIn={isLoggedIn}
@@ -472,6 +472,8 @@ const App = () => {
                       clothingItems={clothingItems}
                       likedCard={likedCard}
                     />
+                  ) : (
+                    <LoadingSpinner isLoading={isLoading} />
                   )
                 }
               />
@@ -587,7 +589,6 @@ const App = () => {
               onClose={closeAllPopups}
               errorMessage={errorMessage}
             />
-            <LoadingSpinner isLoading={isLoading} />
             <Footer weatherData={weatherData} />
             <MobileNavigation
               isLoggedIn={isLoggedIn}
