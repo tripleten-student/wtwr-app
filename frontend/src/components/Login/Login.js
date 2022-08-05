@@ -12,8 +12,6 @@ const Login = ({
   isOpen,
   onClose,
   onSubmit,
-  setLoginEmail,
-  setLoginPassword,
   openRegisterModal
 }) => {
   const { values, isValid, errors, handleChange, resetForm } = useFormAndValidation([
@@ -34,10 +32,8 @@ const Login = ({
       'login-email': '',
       'login-password': '',
     };
-    setLoginEmail('');
-    setLoginPassword('');
     resetForm({ ...initialValues }, { ...initialValues }, true);
-  }, [isOpen, resetForm, setLoginEmail, setLoginPassword]);
+  }, [isOpen, resetForm]);
 
   // Event Handlers
   const handleFormChange = () => setIsFormValid(formRef.current.checkValidity());
@@ -137,8 +133,7 @@ Login.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  setLoginEmail: PropTypes.func.isRequired,
-  setLoginPassword: PropTypes.func.isRequired,
+  openRegisterModal: PropTypes.func.isRequired,
 }
 
 export default Login;

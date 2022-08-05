@@ -41,8 +41,6 @@ import api from '../../utils/api';
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
   const [userLocation, setUserLocation] = useState({ latitude: '', longitude: '' });
   const [weatherData, setWeatherData] = useState();
@@ -261,8 +259,6 @@ const App = () => {
           username: data.name,
           preferences: data.preferences,
         });
-        setLoginEmail('');
-        setLoginPassword('');
         setIsLoggedIn(true);
         setIsLoginOpen(false);
       }
@@ -489,8 +485,6 @@ const App = () => {
               isOpen={isLoginOpen}
               onClose={closeAllPopups}
               onSubmit={handleLoginSubmit}
-              setLoginEmail={setLoginEmail}
-              setLoginPassword={setLoginPassword}
               openRegisterModal={() => {
                 setIsRegisterOpen(true);
                 setIsLoginOpen(false);

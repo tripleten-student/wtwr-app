@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ClothingCard.css';
 import { useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { blankCard } from '../../utils/templateApparel';
 
 /**
@@ -11,7 +10,6 @@ import { blankCard } from '../../utils/templateApparel';
  */
 
 const ClothingCard = ({
-  weatherData,
   cardData,
   onCardLike,
   apparelGroup,
@@ -36,9 +34,7 @@ const ClothingCard = ({
   }
 
   useEffect(() => {
-    {
-      location.pathname === '/' && setTemplateItem(createTemplateItem(apparelGroup));
-    }
+    location.pathname === '/' && setTemplateItem(createTemplateItem(apparelGroup));
   }, [weatherType, randomize]);
 
   const handleLike = () => {
@@ -135,9 +131,4 @@ const ClothingCard = ({
   );
 };
 
-// ClothingCard.propTypes = {
-//   // name: PropTypes.string,
-//   // imageUrl: PropTypes.string,
-//   // type: PropTypes.string,
-// };
 export default ClothingCard;

@@ -136,4 +136,5 @@ EditProfileDataModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onUpdateUserProfile: PropTypes.func.isRequired,
 };
+
 export default EditProfileDataModal;

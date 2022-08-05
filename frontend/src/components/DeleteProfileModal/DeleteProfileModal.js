@@ -57,4 +57,5 @@ DeleteProfileModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onDeleteProfile: PropTypes.func.isRequired,
 };
+
 export default DeleteProfileModal;
