@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext, } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import ClothingSelectorButton from '../ClothingSelectorButton/ClothingSelectorButton';
@@ -11,7 +11,13 @@ import './EditClothingPreferencesModal.css';
  *
  * @author [Shraddha](https://github.com/5hraddha)
  */
-const EditClothingPreferences = ({ isOpen, onClose, onSubmit }) => {
+const EditClothingPreferences = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  errorMessage,
+  resetErrorMessage,
+}) => {
   const ref = useRef();
   const { preferences } = useContext(CurrentUserContext);
   const [clothingPreferences, setClothingPreferences] = useState([]);
@@ -21,6 +27,7 @@ const EditClothingPreferences = ({ isOpen, onClose, onSubmit }) => {
   }, [preferences]);
 
   const handleClothingItemSelect = (selection) => {
+    resetErrorMessage();
     clothingPreferences.includes(selection)
       ? setClothingPreferences(clothingPreferences.filter((item) => item !== selection))
       : setClothingPreferences([...clothingPreferences, selection]);
@@ -29,7 +36,6 @@ const EditClothingPreferences = ({ isOpen, onClose, onSubmit }) => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     onSubmit(clothingPreferences);
-    onClose();
   };
 
   return (
@@ -55,22 +61,19 @@ const EditClothingPreferences = ({ isOpen, onClose, onSubmit }) => {
       </div>
 
       <div className="form__button-grp">
-        <button
-          type="submit"
-          className="form__submit-button"
-          aria-label="Save Changes"
-        >
+        <button type="submit" className="form__submit-button" aria-label="Save Changes">
           Save Changes
         </button>
+        {errorMessage && <p className="form__invalid-message">{errorMessage}</p>}
       </div>
     </ModalWithForm>
   );
-}
+};
 
 EditClothingPreferences.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-}
+};
 
 export default EditClothingPreferences;
