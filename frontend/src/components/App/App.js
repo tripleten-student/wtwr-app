@@ -359,6 +359,9 @@ const App = () => {
       .updateCurrentUserPassword({ oldPassword, newPassword })
       .then(() => {
         setPasswordChangeSuccess(true);
+        setTimeout(() => {
+          closeAllPopups();
+        }, 2000);
       })
       .catch(() => {
         setErrorMessage('Old password is invalid');
