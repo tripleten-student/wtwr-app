@@ -28,6 +28,8 @@ function Main({
   userClothingPreferences,
   onCardClick,
   likedCard,
+  handleLoginOpen,
+  onAddNewClick,
 }) {
   const [accesoriesItem, setAccesoriesItem] = useState({});
   const [topsandoutwearItem, setTopsandoutwearItem] = useState({});
@@ -175,7 +177,11 @@ function Main({
             cardData={!accesoriesItem ? false : accesoriesItem}
             onCardLike={onCardLike}
             onCardClick={onCardClick}
-            weatherType={weatherType}
+            weatherType={weatherType()}
+            randomize={randomize}
+            isLoggedIn={isLoggedIn}
+            handleLoginOpen={handleLoginOpen}
+            onAddNewClick={onAddNewClick}
           />
           <ClothingCard
             key={'topsAndOuterwear'}
@@ -183,6 +189,11 @@ function Main({
             cardData={!topsandoutwearItem ? false : topsandoutwearItem}
             onCardLike={onCardLike}
             onCardClick={onCardClick}
+            weatherType={weatherType()}
+            randomize={randomize}
+            isLoggedIn={isLoggedIn}
+            handleLoginOpen={handleLoginOpen}
+            onAddNewClick={onAddNewClick}
           />
           <ClothingCard
             key={'bottoms'}
@@ -190,6 +201,11 @@ function Main({
             cardData={!bottomsItem ? false : bottomsItem}
             onCardLike={onCardLike}
             onCardClick={onCardClick}
+            weatherType={weatherType()}
+            randomize={randomize}
+            isLoggedIn={isLoggedIn}
+            handleLoginOpen={handleLoginOpen}
+            onAddNewClick={onAddNewClick}
           />
           <ClothingCard
             key={'shoes'}
@@ -197,6 +213,11 @@ function Main({
             cardData={!shoesItem ? false : shoesItem}
             onCardLike={onCardLike}
             onCardClick={onCardClick}
+            weatherType={weatherType()}
+            randomize={randomize}
+            isLoggedIn={isLoggedIn}
+            handleLoginOpen={handleLoginOpen}
+            onAddNewClick={onAddNewClick}
           />
         </div>
         <button

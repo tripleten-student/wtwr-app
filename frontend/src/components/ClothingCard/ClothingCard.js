@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ClothingCard.css';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { blankCard } from '../../utils/templateApparel';
 
 /**
  * The **ClothingCard** component is one of the four clothing cards displayed in the main section of the home page. This component displays clothing recommendation according to the type, temperature, and user preferences
@@ -16,6 +17,10 @@ const ClothingCard = ({
   apparelGroup,
   onCardClick,
   isLoggedIn,
+  weatherType,
+  randomize,
+  handleLoginOpen,
+  onAddNewClick,
 }) => {
   const location = useLocation();
   const [templateItem, setTemplateItem] = useState({});
@@ -23,15 +28,18 @@ const ClothingCard = ({
 
   function createTemplateItem(apparelGroup) {
     if (apparelGroup) {
-      return apparelGroup[Math.floor(Math.random() * apparelGroup.length)];
+      const filterGroup = apparelGroup.filter((cloth) => cloth.weather.includes(weatherType));
+      return filterGroup[Math.floor(Math.random() * filterGroup.length)];
     } else {
-      return 'profileTemplate';
+      return blankCard;
     }
   }
 
   useEffect(() => {
-    setTemplateItem(createTemplateItem(apparelGroup));
-  }, [weatherData]);
+    {
+      location.pathname === '/' && setTemplateItem(createTemplateItem(apparelGroup));
+    }
+  }, [weatherType, randomize]);
 
   const handleLike = () => {
     onCardLike(cardData);
@@ -48,23 +56,28 @@ const ClothingCard = ({
     }
   };
 
+  console.log(templateItem.type);
   return (
     <div className="clothingcard" onClick={handleCardClick}>
-      <img
-        className={`clothingcard__image ${!clothingItemPresent && 'clothingcard__image_default'}`}
-        src={
-          clothingItemPresent
-            ? cardData.imageUrl
-            : require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`)
-        }
-        alt={clothingItemPresent ? cardData.name : templateItem.name}
-      />
+      {!templateItem.type && (
+        <img
+          className={`clothingcard__image ${!clothingItemPresent && 'clothingcard__image_default'}`}
+          src={
+            clothingItemPresent
+              ? cardData.imageUrl
+              : require(`../../images/ClothingCard/${templateItem.type.toLowerCase()}.svg`)
+          }
+          alt={clothingItemPresent ? cardData.name : templateItem.name}
+        />
+      )}
       <div className="clothingcard__info-container">
         <div className="clothingcard__title-and-like">
           <p className="clothingcard__title">
             {location.pathname === '/profile' && (!apparelGroup ? cardData.name : apparelGroup)}
             {location.pathname === '/' &&
-              (!clothingItemPresent ? templateItem.name : cardData.name)}
+              (!clothingItemPresent && templateItem !== undefined
+                ? templateItem.name
+                : cardData.name)}
           </p>
 
           {location.pathname === '/profile' && !apparelGroup && (
@@ -84,13 +97,33 @@ const ClothingCard = ({
             ></button>
           )}
         </div>
-        {location.pathname === '/' && !clothingItemPresent && (
-          <button aria-label="Add Photo" className="clothingcard__add-photo" type="button">
+        {location.pathname === '/' && !clothingItemPresent && isLoggedIn === false && (
+          <button
+            aria-label="Add Photo"
+            className="clothingcard__add-photo"
+            type="button"
+            onClick={handleLoginOpen}
+          >
+            + Add your photo
+          </button>
+        )}
+        {location.pathname === '/' && !clothingItemPresent && isLoggedIn === true && (
+          <button
+            aria-label="Add Photo"
+            className="clothingcard__add-photo"
+            type="button"
+            onClick={onAddNewClick}
+          >
             + Add your photo
           </button>
         )}
         {location.pathname === '/profile' && apparelGroup && (
-          <button aria-label="Add Photo" className="clothingcard__add-photo" type="button">
+          <button
+            aria-label="Add Photo"
+            className="clothingcard__add-photo"
+            type="button"
+            onClick={onAddNewClick}
+          >
             + Add your photo
           </button>
         )}

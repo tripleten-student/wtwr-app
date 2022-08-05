@@ -18,10 +18,21 @@ function ClothesSection({ sectionName, sectionData, onAddNewClick, onCardLike, o
       </div>
       <ul className="clothes-section__list">
         {sectionData.length === 0 ? (
-          <ClothingCard cardData={sectionData} apparelGroup={sectionName} onCardLike={onCardLike} onCardClick={onCardClick} />
+          <ClothingCard
+            cardData={sectionData}
+            apparelGroup={sectionName}
+            onCardLike={onCardLike}
+            onCardClick={onCardClick}
+            onAddNewClick={onAddNewClick}
+          />
         ) : (
           sectionData.map((card) => (
-            <ClothingCard key={card.name} cardData={card} onCardLike={onCardLike} onCardClick={onCardClick} />
+            <ClothingCard
+              key={card.name}
+              cardData={card}
+              onCardLike={onCardLike}
+              onCardClick={onCardClick}
+            />
           ))
         )}
       </ul>
